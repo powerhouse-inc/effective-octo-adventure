@@ -7,43 +7,41 @@ import { generateMock } from "@powerhousedao/codegen";
 import { utils as documentModelUtils } from "document-model/document";
 
 import utils from "../../gen/utils";
-import { z, UpdateScopeInput, PopulateScopeInput } from "../../gen/schema";
+import { z, AddTagsInput, RemoveTagsInput } from "../../gen/schema";
 import { reducer } from "../../gen/reducer";
-import * as creators from "../../gen/scope/creators";
+import * as creators from "../../gen/tags/creators";
 import { AtlasScopeDocument } from "../../gen/types";
 
-describe("Scope Operations", () => {
+describe("Tags Operations", () => {
   let document: AtlasScopeDocument;
 
   beforeEach(() => {
     document = utils.createDocument();
   });
 
-  it("should handle updateScope operation", () => {
+  it("should handle addTags operation", () => {
     // generate a random id
     // const id = documentModelUtils.hashKey();
 
-    const input: UpdateScopeInput = generateMock(z.UpdateScopeInputSchema());
+    const input: AddTagsInput = generateMock(z.AddTagsInputSchema());
 
-    const updatedDocument = reducer(document, creators.updateScope(input));
+    const updatedDocument = reducer(document, creators.addTags(input));
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("UPDATE_SCOPE");
+    expect(updatedDocument.operations.global[0].type).toBe("ADD_TAGS");
     expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
-  it("should handle populateScope operation", () => {
+  it("should handle removeTags operation", () => {
     // generate a random id
     // const id = documentModelUtils.hashKey();
 
-    const input: PopulateScopeInput = generateMock(
-      z.PopulateScopeInputSchema(),
-    );
+    const input: RemoveTagsInput = generateMock(z.RemoveTagsInputSchema());
 
-    const updatedDocument = reducer(document, creators.populateScope(input));
+    const updatedDocument = reducer(document, creators.removeTags(input));
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("POPULATE_SCOPE");
+    expect(updatedDocument.operations.global[0].type).toBe("REMOVE_TAGS");
     expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });

@@ -11,68 +11,146 @@ scalar Currency
 scalar PHID
 scalar OID
 type AtlasScopeState {
-  name: String
-  docNo: String # e.g, A.1
-  content: String # change to markdown later (includes links, tables...)
-  masterStatus: Status # Aggregation: MasterStatus can exist independently of Scope
+  """
+    Full name of the Scope without the document number. 
+    For example: "The Support Scope" 
+  """
+  name: OLabel
+
+  """
+    Document number of the scope document within Atlas. 
+    For example: "A.1" for the Governance Scope. 
+  """
+  docNo: String
+
+  """
+    Entire content body of the scope document within Atlas. 
+    For example: "The Governance Scope regulates the governance processes and balance..."
+  """
+  content: String
+
+  """
+    Master status as managed by the Atlas Axis facilitator group.
+  """
+  masterStatus: Status
+
+  """
+    Document tags as managed by the Atlas Axis facilitator group.
+  """
   globalTags: [GlobalTag!]!
-	originalContextData: [PHID!]!
-	provenance: URL # p0Hub backlink
-	notionId: String # verify if this can be changed to UUID type
+
+  """
+    List of Atlas documents that were relevant for the creation of the scope document. 
+  """
+  originalContextData: [DocumentInfo!]!
+
+  """
+    Link to the original P0hub Notion environment.
+  """
+  provenance: URL
+
+  """
+    Original Notion document ID of the scope document.
+  """
+  notionId: String
 }
 
+"""
+   Reference to a document within Atlas with optional name and document number for display reasons. 
+"""
+type DocumentInfo {
+  id: PHID!
+  name: OLabel
+  docNo: String
+}
 
 enum Status {
   PLACEHOLDER
-  PROVISIONAL # enables ecosystem participants to interact with the material in a practical context, resulting in valuable feedback or other data concerning the Document's appropriateness.
-  APPROVED # material instance can be integrated into the Atlas
+  PROVISIONAL
+  APPROVED
   DEFERRED
   ARCHIVED
 }
 
 enum GlobalTag {
-    RECURSIVE_IMPROVEMENT,
-    SCOPE_ADVISOR,
-    DAO_TOOLKIT,
-    PURPOSE_SYSTEM,
-    ML__LOW_PRIORITY,
-    EXTERNAL_REFERENCE,
-    ML__DEFER,
-    SUBDAO_INCUBATION,
-    V1__MIP,
-    ML__HIGH_PRIORITY,
-    ECOSYSTEM_INTELLIGENCE,
-    LEGACY_TERM__USE_APPROVED,
-    CAIS,
-    INTERNAL_REFERENCE,
-    FACILITATORDAO,
-    ML___MED_PRIORITY,
-    AVC,
-    P0_HUB_ENTRY_NEEDED,
-    ANON_WORKFORCE,
-    NEWCHAIN,
-    ML__SUPPORT_DOCS_NEEDED,
-    SUBDAO_REWARDS,
-    TWO_STAGE_BRIDGE,
+  RECURSIVE_IMPROVEMENT
+  SCOPE_ADVISOR
+  DAO_TOOLKIT
+  PURPOSE_SYSTEM
+  ML_LOW_PRIORITY
+  EXTERNAL_REFERENCE
+  ML_DEFER
+  SUBDAO_INCUBATION
+  V1_MIP
+  ML_HIGH_PRIORITY
+  ECOSYSTEM_INTELLIGENCE
+  LEGACY_TERM_USE_APPROVED
+  CAIS
+  INTERNAL_REFERENCE
+  FACILITATORDAO
+  ML_MED_PRIORITY
+  AVC
+  P0_HUB_ENTRY_NEEDED
+  ANON_WORKFORCE
+  NEWCHAIN
+  ML_SUPPORT_DOCS_NEEDED
+  SUBDAO_REWARDS
+  TWO_STAGE_BRIDGE
 }
 
 
 
+# general
 
-# scope
-
-input UpdateScopeInput {
-  masterStatus: Status
-  globalTags: [GlobalTag!]
+input SetScopeNameInput {
+  "New name for Scope"
+  name: OLabel!
 }
 
-input PopulateScopeInput {
+input SetDocNumberInput {
+  "New document number for the scope document"
+  docNo: String!
+}
+
+input SetContentInput {
+  "Update the content of the scope document"
+  content: String!
+}
+
+input SetMasterStatusInput {
+  "New master status"
+  masterStatus: Status!
+}
+
+# tags
+
+input AddTagsInput {
+  "Tags to be added"
+  newTags: [GlobalTag!]!
+}
+
+input RemoveTagsInput {
+  "Tags to be removed"
+  tags: [GlobalTag!]!
+}
+
+# context
+
+input AddContextDataInput {
+  id: PHID!
   name: String
-  docNo: String # e.g, A.1
-  content: String # change to markdown later (includes links, tables...)
-  masterStatus: Status
-  globalTags: [GlobalTag!]
-	originalContextData: [PHID!]
-	provenance: URL # p0Hub backlink
-	notionId: String # verify if this can be changed to UUID type
+  docNo: String
+}
+
+input RemoveContextDataInput {
+  id: PHID!
+}
+
+input SetProvenanceInput {
+  provenance: URL
+}
+
+input SetNotionIdInput {
+  "Add your inputs here"
+  notionID: String
 }

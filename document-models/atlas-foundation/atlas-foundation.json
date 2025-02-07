@@ -1,0 +1,183 @@
+{
+    "id": "sky/atlas-foundation",
+    "name": "Atlas Foundation",
+    "extension": ".afn",
+    "description": "Foundational document type (Article, Section, CoreDocument, ActiveDataController).",
+    "author": {
+        "name": "Sky",
+        "website": "https://sky.money/"
+    },
+    "specifications": [
+        {
+            "version": 1,
+            "changeLog": [],
+            "state": {
+                "global": {
+                    "schema": "type AtlasFoundationState {\n  \"\"\"\n    Full name of the Foundation entity.  \n  \"\"\"\n  name: String\n\n  \"\"\"\n    Unique document number assigned to the Foundation entity within Atlas.  \n  \n  \"\"\"\n  docNo: String\n\n  \"\"\"\n    Parent entity that this Foundation belongs to.  \n    This is a reference to another Atlas document.\n  \"\"\"\n  parent: PHID!\n\n  \"\"\"\n    The type of the Foundation entity within Atlas.  \n    Example: DAO, Governance Body, Research Hub, etc.\n  \"\"\"\n  atlasType: FAtlasType! \n\n  \"\"\"\n    Entire content body of the Foundation document within Atlas.  \n  \"\"\"\n  content: String\n\n  \"\"\"\n    Master status of the Foundation entity as managed by the Atlas Axis facilitator group.  \n  \n  \"\"\"\n  masterStatus: FStatus!\n\n  \"\"\"\n    Document tags managed by the Atlas Axis facilitator group for classification.  \n  \n  \"\"\"\n  globalTags: [FGlobalTag!]!\n\n  \"\"\"\n    References to other Atlas entities that are linked to this Foundation.  \n  \n  \"\"\"\n  references: [PHID!]!\n\n  \"\"\"\n    List of Atlas documents that were relevant for the creation of this Foundation document.  \n   \n  \"\"\"\n  originalContextData: [DocumentInfo!]!\n\n  \"\"\"\n    Link to the original P0hub Notion environment where this document was first created or referenced.\n  \"\"\"\n  provenance: URL\n\n  \"\"\"\n    Original Notion document ID of the Foundation document.  \n    Used for cross-system referencing and linking back to the original Notion source.\n  \"\"\"\n  notionId: String\n}\n\"\"\"\n   Reference to a document within Atlas with optional name and document number for display reasons. \n\"\"\"\n\ntype DocumentInfo {\n\n id:PHID!\n  name:OLabel\n  docNo: String \n}\n\n\"\"\"\nDomain (i.e., Atlas) specific document types with the same document model global schema. \n\n\"\"\"\nenum FAtlasType {\nARTICLE\nSECTION\nCORE\nACTIVE_DATA_CONTROLLER\n}\n\nenum FStatus {\n  PLACEHOLDER\n  PROVISIONAL\n  APPROVED\n  DEFERRED\n  ARCHIVED\n}\n\n\n\"\"\"\nThese global tags differ from the ones in Scopes. \n\"\"\"\nenum FGlobalTag {\n  SCOPE_ADVISOR\n  AVC\n  CAIS\n  ML_LOW_PRIORITY\n  EXTERNAL_REFERENCE\n  DAO_TOOLKIT\n  ML_DEFER\n  PURPOSE_SYSTEM\n  NEWCHAIN\n  ML_SUPPORT_DOCS_NEEDED\n  TWO_STAGE_BRIDGE\n  ECOSYSTEM_INTELLIGENCE\n  RECURSIVE_IMPROVEMENT\n  LEGACY_TERM_USE_APPROVED\n}\n\n\n",
+                    "initialValue": "{\n  \"name\": \"\",\n  \"docNo\": \"\",\n  \"parent\": \"\",\n  \"atlasType\": \"ARTICLE\",\n  \"content\": \"\",\n  \"masterStatus\": \"PLACEHOLDER\",\n  \"globalTags\": [],\n  \"references\": [],\n  \"originalContextData\": [],\n  \"provenance\": \"\",\n  \"notionId\": \"\"\n}",
+                    "examples": []
+                },
+                "local": {
+                    "schema": "",
+                    "initialValue": "",
+                    "examples": []
+                }
+            },
+            "modules": [
+                {
+                    "id": "TU2S778qFpH66a8FE1qZ5Dx6vXI=",
+                    "name": "general",
+                    "description": "",
+                    "operations": [
+                        {
+                            "id": "susTeqrRl45S8oQ1G1ncC+qMxYk=",
+                            "name": "SET_FOUNDATION_NAME",
+                            "description": "",
+                            "schema": "input SetFoundationNameInput {\n  \"Add your inputs here\"\n  name: OLabel!\n}",
+                            "template": "",
+                            "reducer": "",
+                            "errors": [],
+                            "examples": [],
+                            "scope": "global"
+                        },
+                        {
+                            "id": "v4PAjAoE3LbwBkfqgp1Tb/ectpA=",
+                            "name": "SET_DOC_NUMBER",
+                            "description": "",
+                            "schema": "    input SetDocNumberInput {\n  \"Add your inputs here\"\n  docNo: String!\n}",
+                            "template": "",
+                            "reducer": "",
+                            "errors": [],
+                            "examples": [],
+                            "scope": "global"
+                        },
+                        {
+                            "id": "GcNCvvKWvOOMPmTlvkaALCvG3AQ=",
+                            "name": "SET_CONTENT",
+                            "description": "",
+                            "schema": "input SetContentInput {\n  \"Add your inputs here\"\n  content: String!\n}",
+                            "template": "",
+                            "reducer": "",
+                            "errors": [],
+                            "examples": [],
+                            "scope": "global"
+                        },
+                        {
+                            "id": "BnKdfbViBZl9emZos2vzlzgWx8o=",
+                            "name": "SET_MASTER_STATUS",
+                            "description": "",
+                            "schema": "input SetMasterStatusInput {\n  \"Add your inputs here\"\n  masterStatus: FStatus! \n}",
+                            "template": "",
+                            "reducer": "",
+                            "errors": [],
+                            "examples": [],
+                            "scope": "global"
+                        },
+                        {
+                            "id": "qVfkJKEGfwpQrizJW5doBTv0Rh0=",
+                            "name": "SET_REFERENCES",
+                            "description": "",
+                            "schema": "input SetReferencesInput {\n  \"Add your inputs here\"\n  reference: [PHID!]\n}",
+                            "template": "",
+                            "reducer": "",
+                            "errors": [],
+                            "examples": [],
+                            "scope": "global"
+                        },
+                        {
+                            "id": "TAtlkX1HDxb/z1KxHnw5aAxCRxM=",
+                            "name": "SET_ATLAS_TYPE",
+                            "description": "",
+                            "schema": "input SetAtlasTypeInput {\n  \"Add your inputs here\"\n  atlasType: [FAtlasType!]\n}",
+                            "template": "",
+                            "reducer": "",
+                            "errors": [],
+                            "examples": [],
+                            "scope": "global"
+                        }
+                    ]
+                },
+                {
+                    "id": "FMigseA2AvbOObdVObwg5yRlrew=",
+                    "name": "tags",
+                    "description": "",
+                    "operations": [
+                        {
+                            "id": "l6zFYnQFbQ9jK2smwlTOSWErgVM=",
+                            "name": "ADD_TAGS",
+                            "description": "",
+                            "schema": "input AddTagsInput {\n  \"Add your inputs here\"\n  newTags: [FGlobalTag!]!\n}",
+                            "template": "",
+                            "reducer": "",
+                            "errors": [],
+                            "examples": [],
+                            "scope": "global"
+                        },
+                        {
+                            "id": "fWW+V6+D1RN90Gri+uqMxRSMvww=",
+                            "name": "REMOVE_TAGS",
+                            "description": "",
+                            "schema": "input RemoveTagsInput {\n  \"Add your inputs here\"\n  tags: [FGlobalTag!]!\n}",
+                            "template": "",
+                            "reducer": "",
+                            "errors": [],
+                            "examples": [],
+                            "scope": "global"
+                        }
+                    ]
+                },
+                {
+                    "id": "db8GYdgODbhILWMBw6+uamfZzPo=",
+                    "name": "context",
+                    "description": "",
+                    "operations": [
+                        {
+                            "id": "qTnjXgF1LBIomkVwKeqrM9aiPNk=",
+                            "name": "ADD_CONTEXT_DATA",
+                            "description": "",
+                            "schema": "input AddContextDataInput {\n  \"Add your inputs here\"\n  id: PHID!\n  name: String\n  docNo: String\n}",
+                            "template": "",
+                            "reducer": "",
+                            "errors": [],
+                            "examples": [],
+                            "scope": "global"
+                        },
+                        {
+                            "id": "dwiQmyMPXVmdLwp1gcWtHrgSEQY=",
+                            "name": "REMOVE_CONTEXT_DATA",
+                            "description": "",
+                            "schema": "input RemoveContextDataInput {\n  \"Add your inputs here\"\n  id: PHID! \n}",
+                            "template": "",
+                            "reducer": "",
+                            "errors": [],
+                            "examples": [],
+                            "scope": "global"
+                        },
+                        {
+                            "id": "hdblfl0fY4Frt6ek1C8IBsYuQ4U=",
+                            "name": "SET_PROVENANCE",
+                            "description": "",
+                            "schema": "input SetProvenanceInput {\n  \"Add your inputs here\"\n  provenance: URL\n}",
+                            "template": "",
+                            "reducer": "",
+                            "errors": [],
+                            "examples": [],
+                            "scope": "global"
+                        },
+                        {
+                            "id": "5pEuE+fOKcz6++YIdgziy+lA3Zg=",
+                            "name": "SET_NOTION_ID",
+                            "description": "",
+                            "schema": "input SetNotionIdInput {\n  \"Add your inputs here\"\n  notionID: String\n}",
+                            "template": "",
+                            "reducer": "",
+                            "errors": [],
+                            "examples": [],
+                            "scope": "global"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

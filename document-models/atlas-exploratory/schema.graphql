@@ -1,0 +1,219 @@
+scalar Amount_Tokens
+scalar EthereumAddress
+scalar Amount_Percentage
+scalar EmailAddress
+scalar Date
+scalar DateTime
+scalar URL
+scalar Amount_Money
+scalar OLabel
+scalar Currency
+scalar PHID
+scalar OID
+type AtlasExploratoryState {
+  
+  """
+  Full name of the Grounding document entity.  
+  """
+  
+  name: String
+  """
+  Unique document number assigned to the Grounding document within Atlas.  
+  """
+  docNo: String
+  """
+  Parent entity that this Grounding document belongs to.  
+  This is a reference to another Atlas document.
+  """
+  parent: PHID!
+  """
+  The type of the Grounding document within Atlas.  
+  Example: Tenet, Original Context Data, Active Data.
+  """
+  atlasType: EAtlasType!
+  """Entire content body of the Grounding document within Atlas.  """
+  content: String
+  """
+  Master status of the Grounding document as managed by the Atlas Axis facilitator group.  
+  """
+  masterStatus: EStatus!
+  """
+  Document tags managed by the Atlas Axis facilitator group for classification.  
+  """
+  globalTags: [EGlobalTag!]!
+  """
+  References to other Atlas entities that are linked to this Grounding document.  
+  """
+  references: [PHID!]!
+  """
+  List of Atlas documents that were relevant for the creation of this Grounding document.  
+  """
+  originalContextData: [DocumentInfo!]!
+  """
+  Link to the original P0hub Notion environment where this document was first created or referenced.
+  """
+  provenance: URL
+  """
+  Original Notion document ID of the Grounding document.  
+  Used for cross-system referencing and linking back to the original Notion source.
+  """
+  notionId: String
+
+"""
+Alignmnet boolean findings. 
+"""
+
+findings: Finding! 
+
+
+"""
+Additional commentary and context for guidance. 
+"""
+
+additionalGuidance: String!
+  
+}
+
+"""
+Reference to a document within Atlas with optional name and document number for display reasons. 
+"""
+type Finding {
+  isAligned: Boolean!
+  comment: String
+}
+
+type DocumentInfo {
+  id: PHID!
+  name: OLabel
+  docNo: String
+}
+
+
+"""
+Domain (i.e., Atlas) specific document types with the same document model global schema.  
+"""
+enum EAtlasType {
+  SCENARIO
+  SCENARIO_VARIATION
+}
+
+"""Defines the lifecycle stage of the Grounding document within Atlas.  """
+enum EStatus {
+  PLACEHOLDER
+  PROVISIONAL
+  APPROVED
+  DEFERRED
+  ARCHIVED
+}
+
+"""
+These global tags are used for classification in Grounding documents.  
+"""
+enum EGlobalTag {
+  SCOPE_ADVISOR
+  AVC
+  CAIS
+  ML_LOW_PRIORITY
+  EXTERNAL_REFERENCE
+  DAO_TOOLKIT
+  ML_DEFER
+  PURPOSE_SYSTEM
+  NEWCHAIN
+  ML_SUPPORT_DOCS_NEEDED
+  TWO_STAGE_BRIDGE
+  ECOSYSTEM_INTELLIGENCE
+  RECURSIVE_IMPROVEMENT
+  LEGACY_TERM_USE_APPROVED
+}
+
+
+
+# general
+
+input SetExploratoryNameInput {
+  "Add your inputs here"
+  name: String!
+}
+
+input SetDocNumberInput {
+  "Add your inputs here"
+  docNo: String! 
+}
+
+input SetContentInput {
+  "Add your inputs here"
+  content: String! 
+}
+
+input SetMasterStatusInput {
+  "Add your inputs here"
+  masterStatus: EStatus!
+}
+
+input SetParentInput {
+  "Add your inputs here"
+  parent: [PHID!]
+}
+
+input RemoveParentInput {
+  "Add your inputs here"
+  parent: [PHID!]
+}
+
+input SetAtlasTypeInput {
+  "Add your inputs here"
+  atlasType: EAtlasType! 
+}
+
+input SetFindingsInput {
+  "Add your inputs here"
+  isAligned: Boolean!
+}
+
+# tags
+
+input AddTagsInput {
+  "Add your inputs here"
+  newTags: [EGlobalTag!]!
+}
+
+input RemoveTagsInput {
+  "Add your inputs here"
+  tags: [EGlobalTag!]!
+}
+
+# context
+
+input AddContextDataInput {
+  "Add your inputs here"
+  id: PHID!
+  name: String
+  docNo: String
+  
+}
+
+input RemoveContextDataInput {
+  "Add your inputs here"
+  id: PHID!
+}
+
+input SetProvenanceInput {
+  "Add your inputs here"
+  provenance: URL
+  
+}
+
+input SetNotionIdInput {
+  "Add your inputs here"
+  notionID: String
+}
+
+input AddAdditionalGuidanceInput {
+  "Add your inputs here"
+  additionalGuidance: String!
+}
+
+input RemoveAdditionalGuidanceInput {
+  "Add your inputs here"
+  additionalGuidance: String!
+}

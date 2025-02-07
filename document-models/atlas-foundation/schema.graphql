@@ -1,0 +1,199 @@
+scalar Amount_Tokens
+scalar EthereumAddress
+scalar Amount_Percentage
+scalar EmailAddress
+scalar Date
+scalar DateTime
+scalar URL
+scalar Amount_Money
+scalar OLabel
+scalar Currency
+scalar PHID
+scalar OID
+type AtlasFoundationState {
+  """
+    Full name of the Foundation entity.  
+  """
+  name: String
+
+  """
+    Unique document number assigned to the Foundation entity within Atlas.  
+  
+  """
+  docNo: String
+
+  """
+    Parent entity that this Foundation belongs to.  
+    This is a reference to another Atlas document.
+  """
+  parent: PHID!
+
+  """
+    The type of the Foundation entity within Atlas.  
+    Example: DAO, Governance Body, Research Hub, etc.
+  """
+  atlasType: FAtlasType! 
+
+  """
+    Entire content body of the Foundation document within Atlas.  
+  """
+  content: String
+
+  """
+    Master status of the Foundation entity as managed by the Atlas Axis facilitator group.  
+  
+  """
+  masterStatus: FStatus!
+
+  """
+    Document tags managed by the Atlas Axis facilitator group for classification.  
+  
+  """
+  globalTags: [FGlobalTag!]!
+
+  """
+    References to other Atlas entities that are linked to this Foundation.  
+  
+  """
+  references: [PHID!]!
+
+  """
+    List of Atlas documents that were relevant for the creation of this Foundation document.  
+   
+  """
+  originalContextData: [DocumentInfo!]!
+
+  """
+    Link to the original P0hub Notion environment where this document was first created or referenced.
+  """
+  provenance: URL
+
+  """
+    Original Notion document ID of the Foundation document.  
+    Used for cross-system referencing and linking back to the original Notion source.
+  """
+  notionId: String
+}
+"""
+   Reference to a document within Atlas with optional name and document number for display reasons. 
+"""
+
+type DocumentInfo {
+
+ id:PHID!
+  name:OLabel
+  docNo: String 
+}
+
+"""
+Domain (i.e., Atlas) specific document types with the same document model global schema. 
+
+"""
+enum FAtlasType {
+ARTICLE
+SECTION
+CORE
+ACTIVE_DATA_CONTROLLER
+}
+
+enum FStatus {
+  PLACEHOLDER
+  PROVISIONAL
+  APPROVED
+  DEFERRED
+  ARCHIVED
+}
+
+
+"""
+These global tags differ from the ones in Scopes. 
+"""
+enum FGlobalTag {
+  SCOPE_ADVISOR
+  AVC
+  CAIS
+  ML_LOW_PRIORITY
+  EXTERNAL_REFERENCE
+  DAO_TOOLKIT
+  ML_DEFER
+  PURPOSE_SYSTEM
+  NEWCHAIN
+  ML_SUPPORT_DOCS_NEEDED
+  TWO_STAGE_BRIDGE
+  ECOSYSTEM_INTELLIGENCE
+  RECURSIVE_IMPROVEMENT
+  LEGACY_TERM_USE_APPROVED
+}
+
+
+
+
+
+
+# general
+
+input SetFoundationNameInput {
+  "Add your inputs here"
+  name: OLabel!
+}
+
+    input SetDocNumberInput {
+  "Add your inputs here"
+  docNo: String!
+}
+
+input SetContentInput {
+  "Add your inputs here"
+  content: String!
+}
+
+input SetMasterStatusInput {
+  "Add your inputs here"
+  masterStatus: FStatus! 
+}
+
+input SetReferencesInput {
+  "Add your inputs here"
+  reference: [PHID!]
+}
+
+input SetAtlasTypeInput {
+  "Add your inputs here"
+  atlasType: [FAtlasType!]
+}
+
+# tags
+
+input AddTagsInput {
+  "Add your inputs here"
+  newTags: [FGlobalTag!]!
+}
+
+input RemoveTagsInput {
+  "Add your inputs here"
+  tags: [FGlobalTag!]!
+}
+
+# context
+
+input AddContextDataInput {
+  "Add your inputs here"
+  id: PHID!
+  name: String
+  docNo: String
+}
+
+input RemoveContextDataInput {
+  "Add your inputs here"
+  id: PHID! 
+}
+
+input SetProvenanceInput {
+  "Add your inputs here"
+  provenance: URL
+}
+
+input SetNotionIdInput {
+  "Add your inputs here"
+  notionID: String
+}

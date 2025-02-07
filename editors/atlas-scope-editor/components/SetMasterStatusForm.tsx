@@ -1,0 +1,37 @@
+/* eslint-disable react/jsx-no-bind */
+import { EnumField, Form } from "@powerhousedao/design-system/scalars";
+import { SetMasterStatusInput } from "document-models/atlas-scope";
+import React from "react";
+
+type Props = {
+  readonly defaultValue: SetMasterStatusInput;
+  readonly dispatch: (input: SetMasterStatusInput) => void;
+};
+
+export function SetMasterStatusForm(props: Props) {
+  function onSubmit(input: SetMasterStatusInput) {
+    props.dispatch(input);
+  }
+
+  const formRef = React.createRef<any>();
+
+  return (
+    <Form onSubmit={onSubmit} ref={formRef} submitChangesOnly>
+      <EnumField
+        defaultValue={props.defaultValue.masterStatus}
+        label="Status"
+        name="masterStatus"
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+        onChange={() => formRef.current?.handleSubmit(onSubmit)()}
+        options={[
+          { value: "PLACEHOLDER", label: "PLACEHOLDER" },
+          { value: "PROVISIONAL", label: "PROVISIONAL" },
+          { value: "APPROVED", label: "APPROVED " },
+          { value: "DEFERRED", label: "DEFERRED" },
+          { value: "ARCHIVED", label: "ARCHIVED" },
+        ]}
+        variant="Select"
+      />
+    </Form>
+  );
+}

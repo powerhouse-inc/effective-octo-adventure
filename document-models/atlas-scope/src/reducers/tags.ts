@@ -8,8 +8,7 @@ import { AtlasScopeTagsOperations } from "../../gen/tags/operations";
 
 export const reducer: AtlasScopeTagsOperations = {
   addTagsOperation(state, action, dispatch) {
-    // TODO: Implement "addTagsOperation" reducer
-    throw new Error('Reducer "addTagsOperation" not yet implemented');
+    state.globalTags = action.input.newTags;
   },
   removeTagsOperation(state, action, dispatch) {
     // TODO: Implement "removeTagsOperation" reducer

@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
 import { EnumField, Form } from "@powerhousedao/design-system/scalars";
-import { SetMasterStatusInput } from "document-models/atlas-scope";
+import { SetMasterStatusInput } from "document-models/atlas-grounding";
 import React from "react";
 
 type Props = {

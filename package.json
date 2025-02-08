@@ -49,7 +49,8 @@
     "install:storybook": "tsx scripts/index.ts",
     "service": "ph-cli service",
     "service-startup": "bash ./node_modules/@powerhousedao/ph-cli/dist/scripts/service-startup.sh",
-    "service-unstartup": "bash ./node_modules/@powerhousedao/ph-cli/dist/scripts/service-unstartup.sh"
+    "service-unstartup": "bash ./node_modules/@powerhousedao/ph-cli/dist/scripts/service-unstartup.sh",
+    "script:fetch-data": "bun run ./scripts/fetch-data.ts"
   },
   "peerDependencies": {
     "document-model": "^2.18.0",
@@ -65,6 +66,7 @@
     "@powerhousedao/codegen": "^0.32.0",
     "@powerhousedao/config": "^1.13.0",
     "@powerhousedao/design-system": "1.22.5-canary.12",
+    "@powerhousedao/mips-parser": "2.2.2-alpha.0",
     "@powerhousedao/ph-cli": "^0.30.0",
     "@powerhousedao/reactor-api": "^1.17.0",
     "@powerhousedao/reactor-local": "^1.16.0",

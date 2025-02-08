@@ -1,35 +1,35 @@
-.atlas-scope-header {
+.atlas-header {
   margin: 1em 5%;
   font-size: xx-large;
   border-bottom: 4px solid #efefef;
 }
 
-.atlas-scope {
+.atlas-grid {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   gap: 1em;
   margin: 2em 5%;
 }
 
-.atlas-scope-docNo {
+.atlas-cell-docNo {
   min-width: 5em;
 }
 
-.atlas-scope-name {
+.atlas-cell-name {
   grid-column: 2/7;
 }
 
-.atlas-scope-masterStatus {
+.atlas-cell-masterStatus {
   grid-column: 7/9;
   min-width: 10em;
 }
 
-.atlas-scope-content {
+.atlas-cell-content {
   grid-column: 1/9;
   grid-row: 2/3;
 }
 
-.atlas-scope-tags {
+.atlas-cell-tags {
   grid-column: 1/9;
 }
 

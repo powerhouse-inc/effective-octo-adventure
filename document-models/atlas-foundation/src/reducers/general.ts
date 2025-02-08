@@ -1,34 +1,24 @@
-/**
- * This is a scaffold file meant for customization:
- * - modify it by implementing the reducer functions
- * - delete the file and run the code generator again to have it reset
- */
-
 import { AtlasFoundationGeneralOperations } from "../../gen/general/operations";
 
 export const reducer: AtlasFoundationGeneralOperations = {
   setFoundationNameOperation(state, action, dispatch) {
-    // TODO: Implement "setFoundationNameOperation" reducer
-    throw new Error('Reducer "setFoundationNameOperation" not yet implemented');
+    state.name = action.input.name;
   },
   setDocNumberOperation(state, action, dispatch) {
-    // TODO: Implement "setDocNumberOperation" reducer
-    throw new Error('Reducer "setDocNumberOperation" not yet implemented');
+    state.docNo = action.input.docNo;
   },
   setContentOperation(state, action, dispatch) {
-    // TODO: Implement "setContentOperation" reducer
-    throw new Error('Reducer "setContentOperation" not yet implemented');
+    state.content = action.input.content;
   },
   setMasterStatusOperation(state, action, dispatch) {
-    // TODO: Implement "setMasterStatusOperation" reducer
-    throw new Error('Reducer "setMasterStatusOperation" not yet implemented');
+    state.masterStatus = action.input.masterStatus;
   },
   setReferencesOperation(state, action, dispatch) {
-    // TODO: Implement "setReferencesOperation" reducer
-    throw new Error('Reducer "setReferencesOperation" not yet implemented');
+    // TODO: change input structure
+    state.references = action.input.reference || [];
   },
   setAtlasTypeOperation(state, action, dispatch) {
-    // TODO: Implement "setAtlasTypeOperation" reducer
-    throw new Error('Reducer "setAtlasTypeOperation" not yet implemented');
+    // TODO: change input to singular type
+    //state.atlasType = action.input.atlasType;
   },
 };

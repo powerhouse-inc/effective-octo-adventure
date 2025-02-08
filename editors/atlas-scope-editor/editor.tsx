@@ -32,9 +32,9 @@ export default function Editor(props: IProps) {
 
   return (
     <>
-      <h1 className="atlas-scope-header">Scope Document</h1>
-      <div className="atlas-scope">
-        <div className="atlas-scope-docNo">
+      <h1 className="atlas-header">Scope Document</h1>
+      <div className="atlas-grid">
+        <div className="atlas-cell-docNo">
           <SetDocNumberForm
             defaultValue={{ docNo: props.document.state.global.docNo || "" }}
             dispatch={(input: SetDocNumberInput) => {
@@ -42,7 +42,7 @@ export default function Editor(props: IProps) {
             }}
           />
         </div>
-        <div className="atlas-scope-name">
+        <div className="atlas-cell-name">
           <SetScopeNameForm
             defaultValue={{ name: props.document.state.global.name || "" }}
             dispatch={(input: SetScopeNameInput) => {
@@ -50,7 +50,7 @@ export default function Editor(props: IProps) {
             }}
           />
         </div>
-        <div className="atlas-scope-masterStatus">
+        <div className="atlas-cell-masterStatus">
           <SetMasterStatusForm
             defaultValue={{
               masterStatus:
@@ -61,7 +61,7 @@ export default function Editor(props: IProps) {
             }}
           />
         </div>
-        <div className="atlas-scope-content">
+        <div className="atlas-cell-content">
           <SetContentForm
             defaultValue={{
               content: props.document.state.global.content || "",
@@ -71,7 +71,7 @@ export default function Editor(props: IProps) {
             }}
           />
         </div>
-        <div className="atlas-scope-tags">
+        <div className="atlas-cell-tags">
           <SetTagsForm
             defaultValue={{
               newTags: props.document.state.global.globalTags,

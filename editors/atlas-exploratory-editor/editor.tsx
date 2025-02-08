@@ -3,27 +3,27 @@
 import "../atlas.css";
 import { EditorProps } from "document-model/document";
 import {
-  AtlasGroundingState,
-  AtlasGroundingAction,
-  AtlasGroundingLocalState,
+  AtlasExploratoryState,
+  AtlasExploratoryAction,
+  AtlasExploratoryLocalState,
   actions,
   SetDocNumberInput,
-  SetGroundingNameInput,
+  SetExploratoryNameInput,
   SetMasterStatusInput,
   SetContentInput,
   AddTagsInput,
-} from "../../document-models/atlas-grounding";
+} from "../../document-models/atlas-exploratory";
 import { utils as documentModelUtils } from "document-model/document";
 import { SetDocNumberForm } from "./components/SetDocNumberForm";
-import { SetGroundingNameForm } from "./components/SetGroundingNameForm";
+import { SetExploratoryNameForm } from "./components/SetExploratoryNameForm";
 import { SetMasterStatusForm } from "./components/SetMasterStatusForm";
 import { SetContentForm } from "./components/SetContentForm";
 import { SetTagsForm } from "./components/SetTagsForm";
 
 export type IProps = EditorProps<
-  AtlasGroundingState,
-  AtlasGroundingAction,
-  AtlasGroundingLocalState
+  AtlasExploratoryState,
+  AtlasExploratoryAction,
+  AtlasExploratoryLocalState
 >;
 
 export default function Editor(props: IProps) {
@@ -32,7 +32,7 @@ export default function Editor(props: IProps) {
 
   return (
     <>
-      <h1 className="atlas-header">Grounding Document</h1>
+      <h1 className="atlas-header">Exploratory Document</h1>
       <div className="atlas-grid">
         <div className="atlas-cell-docNo">
           <SetDocNumberForm
@@ -43,10 +43,10 @@ export default function Editor(props: IProps) {
           />
         </div>
         <div className="atlas-cell-name">
-          <SetGroundingNameForm
+          <SetExploratoryNameForm
             defaultValue={{ name: props.document.state.global.name || "" }}
-            dispatch={(input: SetGroundingNameInput) => {
-              props.dispatch(actions.setGroundingName(input));
+            dispatch={(input: SetExploratoryNameInput) => {
+              props.dispatch(actions.setExploratoryName(input));
             }}
           />
         </div>

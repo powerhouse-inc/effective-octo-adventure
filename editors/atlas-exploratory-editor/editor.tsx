@@ -5,9 +5,10 @@ import {
   AtlasExploratoryAction,
   AtlasExploratoryLocalState,
   actions,
+  SetDocNumberInput,
 } from "../../document-models/atlas-exploratory";
 import { utils as documentModelUtils } from "document-model/document";
-import { Button } from "@powerhousedao/design-system";
+import { SetDocNumberForm } from "./components/SetDocNumberForm";
 
 export type IProps = EditorProps<
   AtlasExploratoryState,
@@ -22,6 +23,17 @@ export default function Editor(props: IProps) {
   return (
     <>
       <h1 className="atlas-header">Exploratory Document</h1>
+      <div className="atlas-grid">
+        <div className="atlas-cell-docNo">
+            <SetDocNumberForm
+              defaultValue={{ docNo: props.document.state.global.docNo || "" }}
+              dispatch={(input: SetDocNumberInput) => {
+                props.dispatch(actions.setDocNumber(input));
+              }}
+            />
+          </div>
+
+      </div>
     </>
   );
 }

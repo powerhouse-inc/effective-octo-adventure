@@ -34,7 +34,7 @@ export default function Editor(props: IProps) {
     <>
       <h1 className="atlas-header">Scope Document</h1>
       <div className="atlas-grid">
-        <div className="atlas-docNo">
+        <div className="atlas-cell-docNo">
           <SetDocNumberForm
             defaultValue={{ docNo: props.document.state.global.docNo || "" }}
             dispatch={(input: SetDocNumberInput) => {

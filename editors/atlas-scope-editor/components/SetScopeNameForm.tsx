@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-bind */
 import { Form, StringField } from "@powerhousedao/design-system/scalars";
 import { SetScopeNameInput } from "document-models/atlas-scope";
-import React from "react";
+import { useRef } from "react";
 
 type Props = {
   readonly defaultValue: SetScopeNameInput;
@@ -13,7 +13,9 @@ export function SetScopeNameForm(props: Props) {
     props.dispatch(input);
   }
 
-  const formRef = React.createRef<any>();
+  // use "useRef" over "createRef" to avoid new refs on every render
+  // https://www.geeksforgeeks.org/difference-between-useref-and-createref-in-reactjs/
+  const formRef = useRef<any>(null);
 
   return (
     <Form onSubmit={onSubmit} ref={formRef} submitChangesOnly>

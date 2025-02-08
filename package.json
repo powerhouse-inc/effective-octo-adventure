@@ -64,7 +64,7 @@
     "@powerhousedao/analytics-engine-core": "^0.3.2",
     "@powerhousedao/codegen": "^0.32.0",
     "@powerhousedao/config": "^1.13.0",
-    "@powerhousedao/design-system": "^1.22.1",
+    "@powerhousedao/design-system": "1.22.5-canary.12",
     "@powerhousedao/ph-cli": "^0.30.0",
     "@powerhousedao/reactor-api": "^1.17.0",
     "@powerhousedao/reactor-local": "^1.16.0",

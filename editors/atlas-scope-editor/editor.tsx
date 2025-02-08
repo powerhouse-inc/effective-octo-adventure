@@ -32,7 +32,7 @@ export default function Editor(props: IProps) {
 
   return (
     <>
-      <h1 className="atlas-scope-header">Scope Document</h1>
+      <h1 className="atlas-header">Scope Document</h1>
       <div className="atlas-scope">
         <div className="atlas-scope-docNo">
           <SetDocNumberForm

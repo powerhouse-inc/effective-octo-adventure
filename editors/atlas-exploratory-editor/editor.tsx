@@ -1,18 +1,18 @@
 import "../atlas.css";
 import { EditorProps } from "document-model/document";
 import {
-  AtlasGroundingState,
-  AtlasGroundingAction,
-  AtlasGroundingLocalState,
+  AtlasExploratoryState,
+  AtlasExploratoryAction,
+  AtlasExploratoryLocalState,
   actions,
-} from "../../document-models/atlas-grounding";
+} from "../../document-models/atlas-exploratory";
 import { utils as documentModelUtils } from "document-model/document";
 import { Button } from "@powerhousedao/design-system";
 
 export type IProps = EditorProps<
-  AtlasGroundingState,
-  AtlasGroundingAction,
-  AtlasGroundingLocalState
+  AtlasExploratoryState,
+  AtlasExploratoryAction,
+  AtlasExploratoryLocalState
 >;
 
 export default function Editor(props: IProps) {
@@ -21,7 +21,7 @@ export default function Editor(props: IProps) {
 
   return (
     <>
-      <h1 className="atlas-header">Grounding Document</h1>
+      <h1 className="atlas-header">Exploratory Document</h1>
     </>
   );
 }

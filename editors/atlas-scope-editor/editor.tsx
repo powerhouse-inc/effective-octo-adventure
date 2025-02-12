@@ -19,6 +19,7 @@ import { SetDocNumberForm } from "./components/SetDocNumberForm";
 import { SetContentForm } from "./components/SetContentForm";
 import { SetMasterStatusForm } from "./components/SetMasterStatusForm";
 import { SetTagsForm } from "./components/SetTagsForm";
+import { EditorLayout } from "./components/EditorLayout";
 
 export type IProps = EditorProps<
   AtlasScopeState,
@@ -31,8 +32,10 @@ export default function Editor(props: IProps) {
   // const id = documentModelUtils.hashKey();
 
   return (
-    <>
-      <h1 className="atlas-header">Scope Document</h1>
+    <EditorLayout>
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-50">
+        Scope Document
+      </h1>
       <div className="atlas-grid">
         <div className="atlas-cell-docNo">
           <SetDocNumberForm
@@ -82,6 +85,6 @@ export default function Editor(props: IProps) {
           />
         </div>
       </div>
-    </>
+    </EditorLayout>
   );
 }

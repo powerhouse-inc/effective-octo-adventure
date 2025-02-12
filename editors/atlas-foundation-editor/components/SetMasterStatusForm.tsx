@@ -13,26 +13,25 @@ export function SetMasterStatusForm(props: Props) {
     props.dispatch(input);
   }
 
-  const formRef = React.createRef<any>();
-
   return (
-    <Form onSubmit={onSubmit} ref={formRef} submitChangesOnly>
-      <EnumField
-        defaultValue={props.defaultValue.masterStatus}
-        label="Status"
-        name="masterStatus"
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-        onChange={() => formRef.current?.handleSubmit(onSubmit)()}
-        options={[
-          { value: "PLACEHOLDER", label: "PLACEHOLDER" },
-          { value: "PROVISIONAL", label: "PROVISIONAL" },
-          { value: "APPROVED", label: "APPROVED " },
-          { value: "DEFERRED", label: "DEFERRED" },
-          { value: "ARCHIVED", label: "ARCHIVED" },
-        ]}
-        required
-        variant="Select"
-      />
+    <Form onSubmit={onSubmit} submitChangesOnly>
+      {({ handleSubmit }) => (
+        <EnumField
+          defaultValue={props.defaultValue.masterStatus}
+          label="Status"
+          name="masterStatus"
+          onChange={() => handleSubmit(onSubmit)()}
+          options={[
+            { value: "PLACEHOLDER", label: "PLACEHOLDER" },
+            { value: "PROVISIONAL", label: "PROVISIONAL" },
+            { value: "APPROVED", label: "APPROVED " },
+            { value: "DEFERRED", label: "DEFERRED" },
+            { value: "ARCHIVED", label: "ARCHIVED" },
+          ]}
+          required
+          variant="Select"
+        />
+      )}
     </Form>
   );
 }

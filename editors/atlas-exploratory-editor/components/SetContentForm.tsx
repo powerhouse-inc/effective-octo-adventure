@@ -13,18 +13,17 @@ export function SetContentForm(props: Props) {
     props.dispatch(input);
   }
 
-  const formRef = React.createRef<any>();
-
   return (
-    <Form onSubmit={onSubmit} ref={formRef} submitChangesOnly>
-      <StringField
-        autoExpand
-        defaultValue={props.defaultValue.content}
-        multiline
-        name="content"
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-        onBlur={() => formRef.current?.handleSubmit(onSubmit)()}
-      />
+    <Form onSubmit={onSubmit} submitChangesOnly>
+      {({ handleSubmit }) => (
+        <StringField
+          autoExpand
+          defaultValue={props.defaultValue.content}
+          multiline
+          name="content"
+          onBlur={() => handleSubmit(onSubmit)()}
+        />
+      )}
     </Form>
   );
 }

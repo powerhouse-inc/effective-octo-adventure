@@ -50,7 +50,8 @@
     "service": "ph-cli service",
     "service-startup": "bash ./node_modules/@powerhousedao/ph-cli/dist/scripts/service-startup.sh",
     "service-unstartup": "bash ./node_modules/@powerhousedao/ph-cli/dist/scripts/service-unstartup.sh",
-    "script:fetch-data": "bun run ./scripts/fetch-data.ts"
+    "script:fetch-data": "bun run ./scripts/fetch-data.ts",
+    "script:regen-all": "bash ./docmodel-zips/generate-all.sh"
   },
   "peerDependencies": {
     "document-model": "^2.18.0",
@@ -103,5 +104,8 @@
     "vitest": "^2.1.8",
     "zod": "^3.24.1"
   },
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "graphql-tag": "^2.12.6"
+  }
 }

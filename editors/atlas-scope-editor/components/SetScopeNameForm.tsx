@@ -18,15 +18,16 @@ export function SetScopeNameForm(props: Props) {
   const formRef = useRef<any>(null);
 
   return (
-    <Form onSubmit={onSubmit} ref={formRef} submitChangesOnly>
-      <StringField
-        defaultValue={props.defaultValue.name}
-        label="Scope"
-        name="name"
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-        onBlur={() => formRef.current?.handleSubmit(onSubmit)()}
-        placeholder="Enter the scope name"
-      />
+    <Form onSubmit={onSubmit} submitChangesOnly>
+      {({ handleSubmit }) => (
+        <StringField
+          defaultValue={props.defaultValue.name}
+          label="Scope"
+          name="name"
+          onBlur={() => handleSubmit(onSubmit)()}
+          placeholder="Enter the scope name"
+        />
+      )}
     </Form>
   );
 }

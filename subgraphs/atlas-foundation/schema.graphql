@@ -1,0 +1,223 @@
+"""
+Subgraph definition for AtlasFoundation (sky/atlas-foundation)
+"""
+type AtlasFoundationState {
+  """
+  Full name of the Foundation entity.
+  """
+  name: String
+
+  """
+  Unique document number assigned to the Foundation entity within Atlas.
+  """
+  docNo: String
+
+  """
+  Parent entity that this Foundation belongs to.
+  This is a reference to another Atlas document.
+  """
+  parent: PHID!
+
+  """
+  The type of the Foundation entity within Atlas.
+  Example: DAO, Governance Body, Research Hub, etc.
+  """
+  atlasType: FAtlasType!
+
+  """
+  Entire content body of the Foundation document within Atlas.
+  """
+  content: String
+
+  """
+  Master status of the Foundation entity as managed by the Atlas Axis facilitator group.
+  """
+  masterStatus: FStatus!
+
+  """
+  Document tags managed by the Atlas Axis facilitator group for classification.
+  """
+  globalTags: [FGlobalTag!]!
+
+  """
+  References to other Atlas entities that are linked to this Foundation.
+  """
+  references: [PHID!]!
+
+  """
+  List of Atlas documents that were relevant for the creation of this Foundation document.
+  """
+  originalContextData: [DocumentInfo!]!
+
+  """
+  Link to the original P0hub Notion environment where this document was first created or referenced.
+  """
+  provenance: URL
+
+  """
+  Original Notion document ID of the Foundation document.
+  Used for cross-system referencing and linking back to the original Notion source.
+  """
+  notionId: String
+}
+"""
+Reference to a document within Atlas with optional name and document number for display reasons.
+"""
+type DocumentInfo {
+  id: PHID!
+  name: OLabel
+  docNo: String
+}
+
+"""
+Domain (i.e., Atlas) specific document types with the same document model global schema.
+"""
+enum FAtlasType {
+  ARTICLE
+  SECTION
+  CORE
+  ACTIVE_DATA_CONTROLLER
+}
+
+enum FStatus {
+  PLACEHOLDER
+  PROVISIONAL
+  APPROVED
+  DEFERRED
+  ARCHIVED
+}
+
+"""
+These global tags differ from the ones in Scopes.
+"""
+enum FGlobalTag {
+  SCOPE_ADVISOR
+  AVC
+  CAIS
+  ML_LOW_PRIORITY
+  EXTERNAL_REFERENCE
+  DAO_TOOLKIT
+  ML_DEFER
+  PURPOSE_SYSTEM
+  NEWCHAIN
+  ML_SUPPORT_DOCS_NEEDED
+  TWO_STAGE_BRIDGE
+  ECOSYSTEM_INTELLIGENCE
+  RECURSIVE_IMPROVEMENT
+  LEGACY_TERM_USE_APPROVED
+}
+
+"""
+Mutations: AtlasFoundation
+"""
+type Mutation {
+  AtlasFoundation_createDocument(name: String): String
+
+  AtlasFoundation_setFoundationName(
+    docId: PHID
+    input: AtlasFoundation_SetFoundationNameInput
+  ): Int
+  AtlasFoundation_setDocNumber(
+    docId: PHID
+    input: AtlasFoundation_SetDocNumberInput
+  ): Int
+  AtlasFoundation_setContent(
+    docId: PHID
+    input: AtlasFoundation_SetContentInput
+  ): Int
+  AtlasFoundation_setMasterStatus(
+    docId: PHID
+    input: AtlasFoundation_SetMasterStatusInput
+  ): Int
+  AtlasFoundation_setReferences(
+    docId: PHID
+    input: AtlasFoundation_SetReferencesInput
+  ): Int
+  AtlasFoundation_setAtlasType(
+    docId: PHID
+    input: AtlasFoundation_SetAtlasTypeInput
+  ): Int
+  AtlasFoundation_addTags(docId: PHID, input: AtlasFoundation_AddTagsInput): Int
+  AtlasFoundation_removeTags(
+    docId: PHID
+    input: AtlasFoundation_RemoveTagsInput
+  ): Int
+  AtlasFoundation_addContextData(
+    docId: PHID
+    input: AtlasFoundation_AddContextDataInput
+  ): Int
+  AtlasFoundation_removeContextData(
+    docId: PHID
+    input: AtlasFoundation_RemoveContextDataInput
+  ): Int
+  AtlasFoundation_setProvenance(
+    docId: PHID
+    input: AtlasFoundation_SetProvenanceInput
+  ): Int
+  AtlasFoundation_setNotionId(
+    docId: PHID
+    input: AtlasFoundation_SetNotionIdInput
+  ): Int
+}
+
+"""
+Module: General
+"""
+input AtlasFoundation_SetFoundationNameInput {
+  "Add your inputs here"
+  name: OLabel!
+}
+input AtlasFoundation_SetDocNumberInput {
+  "Add your inputs here"
+  docNo: String!
+}
+input AtlasFoundation_SetContentInput {
+  "Add your inputs here"
+  content: String!
+}
+input AtlasFoundation_SetMasterStatusInput {
+  "Add your inputs here"
+  masterStatus: FStatus!
+}
+input AtlasFoundation_SetReferencesInput {
+  "Add your inputs here"
+  reference: [PHID!]
+}
+input AtlasFoundation_SetAtlasTypeInput {
+  "Add your inputs here"
+  atlasType: [FAtlasType!]
+}
+
+"""
+Module: Tags
+"""
+input AtlasFoundation_AddTagsInput {
+  "Add your inputs here"
+  newTags: [FGlobalTag!]!
+}
+input AtlasFoundation_RemoveTagsInput {
+  "Add your inputs here"
+  tags: [FGlobalTag!]!
+}
+
+"""
+Module: Context
+"""
+input AtlasFoundation_AddContextDataInput {
+  "Add your inputs here"
+  id: PHID!
+  name: String
+  docNo: String
+}
+input AtlasFoundation_RemoveContextDataInput {
+  "Add your inputs here"
+  id: PHID!
+}
+input AtlasFoundation_SetProvenanceInput {
+  "Add your inputs here"
+  provenance: URL
+}
+input AtlasFoundation_SetNotionIdInput {
+  "Add your inputs here"
+  notionID: String
+}

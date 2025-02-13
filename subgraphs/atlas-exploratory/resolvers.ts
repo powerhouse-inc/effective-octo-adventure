@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Subgraph } from "@powerhousedao/reactor-api";
 import { actions } from "../../document-models/atlas-exploratory";
 import { actions as driveActions } from "document-model-libs/document-drive";
@@ -11,7 +14,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       AtlasExploratory_createDocument: async (_: any, args: any) => {
         const docId = docUtils.generateId();
 
-        reactor.addDriveAction(
+        await reactor.addDriveAction(
           driveId,
           driveActions.addFile({
             id: docId,

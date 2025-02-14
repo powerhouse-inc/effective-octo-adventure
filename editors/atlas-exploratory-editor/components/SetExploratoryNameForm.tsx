@@ -13,18 +13,17 @@ export function SetExploratoryNameForm(props: Props) {
     props.dispatch(input);
   }
 
-  const formRef = React.createRef<any>();
-
   return (
-    <Form onSubmit={onSubmit} ref={formRef} submitChangesOnly>
-      <StringField
-        defaultValue={props.defaultValue.name}
-        label="Scope"
-        name="name"
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-        onBlur={() => formRef.current?.handleSubmit(onSubmit)()}
-        placeholder="Enter the scope name"
-      />
+    <Form onSubmit={onSubmit} submitChangesOnly>
+      {({ handleSubmit }) => (
+        <StringField
+          defaultValue={props.defaultValue.name}
+          label="Name"
+          name="name"
+          onBlur={() => handleSubmit(onSubmit)()}
+          placeholder="Enter the document name"
+        />
+      )}
     </Form>
   );
 }

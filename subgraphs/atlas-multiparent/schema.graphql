@@ -1,0 +1,218 @@
+"""
+Subgraph definition for AtlasMultiParent (sky/atlas-multiparent)
+"""
+type AtlasMultiParentState {
+  """
+  Full name of the Grounding document entity.
+  """
+  name: String
+  """
+  Unique document number assigned to the Grounding document within Atlas.
+  """
+  docNo: String
+  """
+  Parent entity that this Grounding document belongs to.
+  This is a reference to another Atlas document.
+  """
+  parent: [PHID!]!
+  """
+  The type of the Grounding document within Atlas.
+  Example: Tenet, Original Context Data, Active Data.
+  """
+  atlasType: MAtlasType!
+  """
+  Entire content body of the Grounding document within Atlas.
+  """
+  content: String
+  """
+  Master status of the Grounding document as managed by the Atlas Axis facilitator group.
+  """
+  masterStatus: MStatus!
+  """
+  Document tags managed by the Atlas Axis facilitator group for classification.
+  """
+  globalTags: [MGlobalTag!]!
+  """
+  References to other Atlas entities that are linked to this Grounding document.
+  """
+  references: [PHID!]!
+  """
+  List of Atlas documents that were relevant for the creation of this Grounding document.
+  """
+  originalContextData: [DocumentInfo!]!
+  """
+  Link to the original P0hub Notion environment where this document was first created or referenced.
+  """
+  provenance: URL
+  """
+  Original Notion document ID of the Grounding document.
+  Used for cross-system referencing and linking back to the original Notion source.
+  """
+  notionId: String
+}
+
+"""
+Reference to a document within Atlas with optional name and document number for display reasons.
+"""
+type DocumentInfo {
+  id: PHID!
+  name: OLabel
+  docNo: String
+}
+
+"""
+Domain (i.e., Atlas) specific document types with the same document model global schema.
+"""
+enum MAtlasType {
+  ANNOTATION
+  NEEDED_RESEARCH
+}
+
+"""
+Defines the lifecycle stage of the Grounding document within Atlas.
+"""
+enum MStatus {
+  PLACEHOLDER
+  PROVISIONAL
+  APPROVED
+  DEFERRED
+  ARCHIVED
+}
+
+"""
+These global tags are used for classification in Grounding documents.
+"""
+enum MGlobalTag {
+  SCOPE_ADVISOR
+  AVC
+  CAIS
+  ML_LOW_PRIORITY
+  EXTERNAL_REFERENCE
+  DAO_TOOLKIT
+  ML_DEFER
+  PURPOSE_SYSTEM
+  NEWCHAIN
+  ML_SUPPORT_DOCS_NEEDED
+  TWO_STAGE_BRIDGE
+  ECOSYSTEM_INTELLIGENCE
+  RECURSIVE_IMPROVEMENT
+  LEGACY_TERM_USE_APPROVED
+}
+
+"""
+Mutations: AtlasMultiParent
+"""
+type Mutation {
+  AtlasMultiParent_createDocument(name: String): String
+
+  AtlasMultiParent_setMultiparentName(
+    docId: PHID
+    input: AtlasMultiParent_SetMultiparentNameInput
+  ): Int
+  AtlasMultiParent_setDocNumber(
+    docId: PHID
+    input: AtlasMultiParent_SetDocNumberInput
+  ): Int
+  AtlasMultiParent_setContent(
+    docId: PHID
+    input: AtlasMultiParent_SetContentInput
+  ): Int
+  AtlasMultiParent_setMasterStatus(
+    docId: PHID
+    input: AtlasMultiParent_SetMasterStatusInput
+  ): Int
+  AtlasMultiParent_setParent(
+    docId: PHID
+    input: AtlasMultiParent_SetParentInput
+  ): Int
+  AtlasMultiParent_setAtlasType(
+    docId: PHID
+    input: AtlasMultiParent_SetAtlasTypeInput
+  ): Int
+  AtlasMultiParent_addTags(
+    docId: PHID
+    input: AtlasMultiParent_AddTagsInput
+  ): Int
+  AtlasMultiParent_removeTags(
+    docId: PHID
+    input: AtlasMultiParent_RemoveTagsInput
+  ): Int
+  AtlasMultiParent_addContextData(
+    docId: PHID
+    input: AtlasMultiParent_AddContextDataInput
+  ): Int
+  AtlasMultiParent_removeContextData(
+    docId: PHID
+    input: AtlasMultiParent_RemoveContextDataInput
+  ): Int
+  AtlasMultiParent_setProvenance(
+    docId: PHID
+    input: AtlasMultiParent_SetProvenanceInput
+  ): Int
+  AtlasMultiParent_setNotionId(
+    docId: PHID
+    input: AtlasMultiParent_SetNotionIdInput
+  ): Int
+}
+
+"""
+Module: General
+"""
+input AtlasMultiParent_SetMultiparentNameInput {
+  "Add your inputs here"
+  name: String!
+}
+input AtlasMultiParent_SetDocNumberInput {
+  "Add your inputs here"
+  docNo: String!
+}
+input AtlasMultiParent_SetContentInput {
+  "Add your inputs here"
+  content: String!
+}
+input AtlasMultiParent_SetMasterStatusInput {
+  "Add your inputs here"
+  masterStatus: MStatus!
+}
+input AtlasMultiParent_SetParentInput {
+  "Add your inputs here"
+  parent: [PHID!]
+}
+input AtlasMultiParent_SetAtlasTypeInput {
+  "Add your inputs here"
+  atlasType: [MAtlasType!]
+}
+
+"""
+Module: Tags
+"""
+input AtlasMultiParent_AddTagsInput {
+  "Add your inputs here"
+  newTags: [MGlobalTag!]!
+}
+input AtlasMultiParent_RemoveTagsInput {
+  "Add your inputs here"
+  tags: [MGlobalTag!]!
+}
+
+"""
+Module: Context
+"""
+input AtlasMultiParent_AddContextDataInput {
+  "Add your inputs here"
+  id: PHID!
+  name: String
+  docNo: String
+}
+input AtlasMultiParent_RemoveContextDataInput {
+  "Add your inputs here"
+  id: PHID!
+}
+input AtlasMultiParent_SetProvenanceInput {
+  "Add your inputs here"
+  provenance: URL
+}
+input AtlasMultiParent_SetNotionIdInput {
+  "Add your inputs here"
+  notionID: String
+}

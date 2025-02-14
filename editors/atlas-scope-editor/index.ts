@@ -17,7 +17,7 @@ export const module: ExtendedEditor<
   config: {
     id: "editor-id",
     disableExternalControls: true,
-    documentToolbarEnabled: false,
+    documentToolbarEnabled: true,
     showSwitchboardLink: true,
   },
 };

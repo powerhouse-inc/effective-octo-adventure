@@ -20,7 +20,10 @@ export const reducer: AtlasGroundingContextOperations = {
     throw new Error('Reducer "setProvenanceOperation" not yet implemented');
   },
   setNotionIdOperation(state, action, dispatch) {
-    // TODO: Implement "setNotionIdOperation" reducer
-    throw new Error('Reducer "setNotionIdOperation" not yet implemented');
+    if (action.input.notionID) {
+      state.notionId = action.input.notionID;
+    } else {
+      throw new Error("Notion ID missing from input.");
+    }
   },
 };

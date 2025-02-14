@@ -1,11 +1,9 @@
-import data from "../data/view-node-tree.json";
+import { getPNDTitle, documentIndex as index } from "../document-models/utils";
 import { AtlasScopeClient } from "./apply-changes/AtlasScopeClient";
-import { Tree, TreeNode } from "./apply-changes/Tree";
-import { getTitle } from "./apply-changes/utils";
+import { ParsedNotionDocument } from "./apply-changes/NotionTypes";
 
 const GQL_ENDPOINT = 'http://localhost:4001/'
 const PROCESS_LIMIT = 6;
-const tree = data as Tree;
 
 const skipNodes: {[id: string]: boolean} = {
     '422bae2b-2aec-4324-ae40-33c544820db3': false,
@@ -22,32 +20,30 @@ const clients = {
 async function main() {
     console.log("Processing input documents...");
 
-    const queue = Object.keys(tree)
-        .filter(k => tree[k].type == 'scope')
-        .map(k => tree[k])
-        .sort((a, b) => (a.title.formalId.numberPath[0] || 0) - (b.title.formalId.numberPath[0] || 0));
+    const queue = Object.values(index)
+        .filter(pnd => pnd!.type == 'scope')
+        .sort((a, b) => a!.docNo < b!.docNo ? -1 : 1);
 
-    let processed = 0, skipped = 0, node: TreeNode | undefined;
+    let processed = 0, skipped = 0, notionDoc: ParsedNotionDocument | undefined;
 
-    while(node = queue.shift()) {
+    while(notionDoc = queue.shift()) {
         if (processed >= PROCESS_LIMIT) {
             console.log(`Process limit reached.`);
             break;
         }
 
-        if (skipNodes[node.id]) {
-            console.log(`SKIP [${node.id}]: ${getTitle(node)} (${node.type})`);
+        if (skipNodes[notionDoc.id]) {
+            console.log(`SKIP [${notionDoc.id}]: ${getPNDTitle(notionDoc)} (${notionDoc.type})`);
             skipped++;
             continue;
         }
 
-        console.log(`>> ${processed+1} [${node.id}]: ${getTitle(node)} (${node.type})`);
+        console.log(`>> ${processed+1} [${notionDoc.id}]: ${getPNDTitle(notionDoc)} (${notionDoc.type})`);
 
-        if (node.type === 'scope') {
-            await clients.scopes.update(node);
+        if (notionDoc.type === 'scope') {
+            await clients.scopes.update(notionDoc);
         }
 
-        node.subDocuments.forEach((subNode) => queue.push(subNode));
         processed++;
     };
 

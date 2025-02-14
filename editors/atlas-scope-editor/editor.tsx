@@ -13,12 +13,16 @@ import {
   SetMasterStatusInput,
   AddTagsInput,
 } from "../../document-models/atlas-scope";
-import { utils as documentModelUtils } from "document-model/document";
 import { SetScopeNameForm } from "./components/SetScopeNameForm";
 import { SetDocNumberForm } from "./components/SetDocNumberForm";
 import { SetContentForm } from "./components/SetContentForm";
 import { SetMasterStatusForm } from "./components/SetMasterStatusForm";
 import { SetTagsForm } from "./components/SetTagsForm";
+import {
+  getOriginalNotionDocument,
+  pndContentToString,
+} from "../../document-models/utils";
+import { DiffField } from "./components/DiffField";
 
 export type IProps = EditorProps<
   AtlasScopeState,
@@ -27,13 +31,26 @@ export type IProps = EditorProps<
 >;
 
 export default function Editor(props: IProps) {
-  // generate a random id
-  // const id = documentModelUtils.hashKey();
+  const originalNode = getOriginalNotionDocument(
+    props.document.state.global.notionId || "notion-id-not-set",
+    "scope",
+  );
 
   return (
     <>
-      <h1 className="atlas-header">Scope Document</h1>
-      <div className="atlas-grid">
+      <h1 className="atlas-header">
+        {props.document.state.global.docNo
+          ? props.document.state.global.docNo + " - "
+          : ""}
+        {props.document.state.global.name || "Scope Document"}
+      </h1>
+      <div className="atlas-grid-double">
+        <div className="atlas-cell-notionId">
+          <span className="atlas-cell-notionId-label">Notion ID</span>
+          <span className="atlas-cell-notionId-value">
+            {props.document.state.global.notionId}
+          </span>
+        </div>
         <div className="atlas-cell-docNo">
           <SetDocNumberForm
             defaultValue={{ docNo: props.document.state.global.docNo || "" }}
@@ -61,6 +78,25 @@ export default function Editor(props: IProps) {
             }}
           />
         </div>
+        <div className="atlas-cell-docNo-double">
+          <DiffField
+            original={originalNode.docNo}
+            value={props.document.state.global.docNo || ""}
+          />
+        </div>
+        <div className="atlas-cell-name-double">
+          <DiffField
+            original={originalNode.name}
+            value={props.document.state.global.name || ""}
+          />
+        </div>
+        <div className="atlas-cell-masterStatus-double">
+          <DiffField
+            hideAdditions={!!originalNode.masterStatusNames[0]}
+            original={(originalNode.masterStatusNames[0] || "").toUpperCase()}
+            value={props.document.state.global.masterStatus || "PLACEHOLDER"}
+          />
+        </div>
         <div className="atlas-cell-content">
           <SetContentForm
             defaultValue={{
@@ -69,6 +105,14 @@ export default function Editor(props: IProps) {
             dispatch={(input: SetContentInput) => {
               props.dispatch(actions.setContent(input));
             }}
+          />
+        </div>
+        <div className="atlas-cell-content-double">
+          <DiffField
+            original={originalNode.content
+              .map((c) => pndContentToString(c))
+              .join("\n")}
+            value={props.document.state.global.content || ""}
           />
         </div>
         <div className="atlas-cell-tags">
@@ -82,6 +126,9 @@ export default function Editor(props: IProps) {
           />
         </div>
       </div>
+      <pre style={{ display: "none", margin: "2em 5%" }}>
+        {JSON.stringify(originalNode, null, 2)}
+      </pre>
     </>
   );
 }

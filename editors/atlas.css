@@ -24,6 +24,37 @@
   min-width: 10em;
 }
 
+.diff-field {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid rgba(216, 217, 218, 0.5);
+  border-radius: 6px;
+  height: 100%;
+  overflow: hidden;
+  white-space-collapse: preserve;
+}
+
+.diff-add {
+  padding: 0 0.2em;
+  margin: 0 0.1em;
+  background-color: rgb(190, 254, 190);
+  color: darkgreen;
+  border-radius: 4px;
+}
+
+.diff-del {
+  padding: 0 0.2em;
+  margin: 0 0.1em;
+  background-color: rgb(255, 208, 216);
+  color: darkred;
+  border-radius: 4px;
+}
+
+.diff-strike {
+  text-decoration: line-through;
+  color: rgba(139, 0, 0, 0.3);
+}
+
 .atlas-cell-content {
   grid-column: 1/9;
   grid-row: 2/3;

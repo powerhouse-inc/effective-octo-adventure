@@ -581,7 +581,7 @@ const typesTree = {
 };
 let verbose = false;
 let headers = {};
-let url = "http://localhost:4001atlas-exploratory";
+let url = "http://localhost:4001/atlas-exploratory";
 let retryConfig = {
   max: 0,
   before: void 0,

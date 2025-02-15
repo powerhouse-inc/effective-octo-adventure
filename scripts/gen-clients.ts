@@ -1,10 +1,9 @@
 import { generateTypescriptClient } from "graphql-ts-client";
 import path from "node:path";
-import { env } from "node:process";
 
 async function generateClient(endpointBase: string, subgraphName: string) {
     const endpoint = endpointBase + (endpointBase.slice(-1) == '/' ? '' : '/') + subgraphName;
-    const clientFile = path.join(__dirname, `./clients/${subgraphName}.ts`);
+    const clientFile = path.join(__dirname, `./clients/${subgraphName.replaceAll('/', '_')}.ts`);
     console.log("Generating GraphQL client at " + clientFile + " for " + endpoint);
 
     await generateTypescriptClient({

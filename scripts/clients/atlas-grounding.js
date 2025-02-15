@@ -541,7 +541,7 @@ const typesTree = {
 };
 let verbose = false;
 let headers = {};
-let url = "http://localhost:4001atlas-grounding";
+let url = "http://localhost:4001/atlas-grounding";
 let retryConfig = {
   max: 0,
   before: void 0,

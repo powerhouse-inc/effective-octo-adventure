@@ -1,5 +1,5 @@
-import { queryGraphQL } from "scripts/apply-changes/gql-utils";
-import { request, gql } from "graphql-request";
+import { queryGraphQL } from "./gql-utils";
+import { gql } from "graphql-request";
 
 export type DriveResultNode = {
   id: string,

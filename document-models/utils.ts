@@ -6,7 +6,7 @@ import {
   ViewTree,
   ParsedNotionDocument,
   ParsedNotionDocumentContent,
-} from "scripts/apply-changes/NotionTypes";
+} from "scripts/apply-changes/atlas-base/NotionTypes";
 
 import viewTreeData from "../data/view-node-tree.json";
 import documentIndexData from "../data/parsed/all-items.json";

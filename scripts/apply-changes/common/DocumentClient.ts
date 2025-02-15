@@ -94,8 +94,11 @@ export abstract class DocumentClient<StateType, InputType> {
     }
 
     for (const documentId of documentIds) {
-      await this.patchDocument(
-        this.documentsCache.getDocumentCacheEntry(this.documentType, documentId),
+      const currentState = await this.loadDocumentState(this.documentType, documentId);
+      await this.patchDocumentState(
+        documentId,
+        currentState,
+        this.getTargetState(inputDocument, currentState),
         inputDocument
       );
     }
@@ -137,5 +140,6 @@ export abstract class DocumentClient<StateType, InputType> {
   protected abstract getInputIdFromInput(input: InputType): Maybe<string>;
   protected abstract getNameFromInput(input: InputType): Maybe<string>;
   protected abstract createDocumentFromInput(input: InputType): Promise<string>;
-  protected abstract patchDocument(document: DocumentCacheEntry, target: InputType): Promise<boolean>;
+  protected abstract getTargetState(input: InputType, current: StateType): StateType;
+  protected abstract patchDocumentState(id: string, current: StateType, target: StateType, input: InputType): Promise<boolean>;
 }

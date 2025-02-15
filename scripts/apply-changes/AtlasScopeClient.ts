@@ -1,11 +1,11 @@
 import { getPNDTitle, pndContentToString } from 'document-models/utils';
 import { client as writeClient, Status } from '../clients/atlas-scope';
 import { ParsedNotionDocument } from './atlas-base/NotionTypes';
-import { DocumentsCache, DocumentCacheEntry } from './common/DocumentsCache';
+import { DocumentsCache } from './common/DocumentsCache';
 import { ReactorClient } from './common/ReactorClient';
 import { gql } from 'graphql-request';
-import { AtlasScopeState } from 'document-models/atlas-scope';
-import { AtlasBaseClient } from './atlas-base/AtlasBaseClient';
+import { AtlasScopeState, SetContentInput, SetDocNumberInput, SetMasterStatusInput, SetNotionIdInput, SetScopeNameInput } from 'document-models/atlas-scope';
+import { AtlasBaseClient, mutationArg } from './atlas-base/AtlasBaseClient';
 
 const DOCUMENT_TYPE = 'sky/atlas-scope';
 
@@ -49,59 +49,51 @@ export class AtlasScopeClient extends AtlasBaseClient<AtlasScopeState, typeof wr
 
   protected createDocumentFromInput(notionDoc: ParsedNotionDocument) {
     return this.writeClient.mutations.AtlasScope_createDocument(
-      { __args: { name: getPNDTitle(notionDoc) }}
+      { __args: { name: getPNDTitle(notionDoc) } }
     );
   }
 
-  protected async patchDocument(document: DocumentCacheEntry, notionDoc: ParsedNotionDocument): Promise<boolean> {
-    //const current = await this.loadDocumentState(DOCUMENT_TYPE, document.id);
-    //console.log("Patching", current, notionDoc); 
+  protected getTargetState(input: ParsedNotionDocument, currentState: AtlasScopeState): AtlasScopeState {
+    return {
+      ...currentState,
+      docNo: input.docNo,
+      name: getPNDTitle(input, false),
+      masterStatus: statusStringToEnum(input.masterStatusNames[0] || 'PLACEHOLDER'),
+      content: input.content.map(c => pndContentToString(c)).join("\n"),
+      notionId: input.id,
+      //globalTags: [],
+    };
+  }
 
-    await this.writeClient.mutations.AtlasScope_setDocNumber({
-      __args: {
-        docId: document.id,
-        input: {
-          docNo: notionDoc.docNo,
-        }
-      }
-    });
+  protected async patchField<K extends keyof AtlasScopeState>(id: string, fieldName: K, current: AtlasScopeState[K], target: AtlasScopeState[K]) {
+    console.log(` > ${fieldName}: ${current ? current + ' ' : ''}> ${target}`);
+    const patch = this.writeClient.mutations, arg = mutationArg(id);
 
-    await this.writeClient.mutations.AtlasScope_setScopeName({
-      __args: {
-        docId: document.id,
-        input: {
-          name: getPNDTitle(notionDoc, false),
-        }
-      }
-    });
-
-    await this.writeClient.mutations.AtlasScope_setMasterStatus({
-      __args: {
-        docId: document.id,
-        input: {
-          masterStatus: statusStringToEnum(notionDoc.masterStatusNames[0] || 'PLACEHOLDER'),
-        }
-      }
-    });
-
-    await this.writeClient.mutations.AtlasScope_setContent({
-      __args: {
-        docId: document.id,
-        input: {
-          content: notionDoc.content.map(c => pndContentToString(c)).join("\n"),
-        }
-      }
-    });
-
-    await this.writeClient.mutations.AtlasScope_setNotionId({
-      __args: {
-        docId: document.id,
-        input: {
-          notionID: notionDoc.id
-        }
-      }
-    });
-
-    return true;
+    switch (fieldName) {
+      case 'docNo':
+        await patch.AtlasScope_setDocNumber(arg<SetDocNumberInput>({ docNo: target as string }));
+        break;
+      case 'name':
+        await patch.AtlasScope_setScopeName(arg<SetScopeNameInput>({ name: target as string }));
+        break;
+      case 'masterStatus':
+        await patch.AtlasScope_setMasterStatus(arg<any>({ masterStatus: target as Status }));
+        break;
+      case 'content':
+        await patch.AtlasScope_setContent(arg<SetContentInput>({ content: target as string }));
+        break;
+      case 'notionId':
+        await patch.AtlasScope_setNotionId(arg<any>({ notionID: target || undefined }));
+        break;
+      case 'globalTags':
+        throw new Error('globalTags patcher is not implemented yet.');
+        break;
+      case 'originalContextData':
+        throw new Error('originalContextData patcher is not implemented yet.');
+        break;
+      case 'provenance':
+        throw new Error('provenance patcher is not implemented yet.');
+        break;
+    }
   }
 }

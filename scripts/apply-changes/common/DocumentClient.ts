@@ -61,6 +61,7 @@ export abstract class DocumentClient<StateType, InputType> {
         documentType: this.documentType,
         inputId: this.getInputIdFromState(d.document.state),
         name: this.getNameFromState(d.document.state) || undefined,
+        state: (typeof d.document.state === 'object' ? d.document.state as Object : undefined)
       }));
 
       i += batchSize;
@@ -100,6 +101,35 @@ export abstract class DocumentClient<StateType, InputType> {
     }
 
     return newDocumentId;
+  }
+
+  public async loadDocument(documentType:string, id:string, skipCache:boolean = false, requireState:boolean = true) {
+    if (skipCache || !this.documentsCache.hasDocument(documentType, id, requireState)) {
+      const data = await this.getDocumentData(id);
+      
+      if (requireState && this.documentsCache.hasDocument(documentType, id)) {
+        this.documentsCache.updateDocument({
+          ...this.documentsCache.getDocumentCacheEntry(documentType, id),
+          state: (typeof data.document.state === 'object' ? data.document.state as Object : undefined)
+        });
+
+      } else {
+        this.documentsCache.createDocument({
+          documentType,
+          id,
+          inputId: this.getInputIdFromState(data.document.state),
+          name: this.getNameFromState(data.document.state) || undefined,
+          state: (typeof data.document.state === 'object' ? data.document.state as Object : undefined)
+        });
+      }
+    }
+
+    return this.documentsCache.getDocumentCacheEntry(documentType, id);
+  }
+
+  public async loadDocumentState(documentType:string, id:string, skipCache:boolean = false) {
+    const document = await this.loadDocument(documentType, id, skipCache, true);
+    return document.state as StateType;
   }
 
   protected abstract getInputIdFromState(state: StateType): Maybe<string>;

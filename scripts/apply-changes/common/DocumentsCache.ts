@@ -6,6 +6,7 @@ export type DocumentCacheEntry = {
   inputId: string | null,
   parentFolder?: string,
   name?: string,
+  state?: Object,
 }
 
 export class DocumentsCache {
@@ -79,6 +80,11 @@ export class DocumentsCache {
     }
 
     return this.documentsByType[documentType][id];
+  }
+
+  public hasDocument(documentType:string, id:string, requireObject:boolean = false): boolean {
+    const hasDocumentEntry = !!this.documentsByType[documentType][id];
+    return hasDocumentEntry && (!requireObject || !!this.documentsByType[documentType][id].state);
   }
 
   public hasInputDocument(inputId: string): boolean {

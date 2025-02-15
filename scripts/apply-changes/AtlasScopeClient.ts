@@ -54,6 +54,9 @@ export class AtlasScopeClient extends AtlasBaseClient<AtlasScopeState, typeof wr
   }
 
   protected async patchDocument(document: DocumentCacheEntry, notionDoc: ParsedNotionDocument): Promise<boolean> {
+    //const current = await this.loadDocumentState(DOCUMENT_TYPE, document.id);
+    //console.log("Patching", current, notionDoc); 
+
     await this.writeClient.mutations.AtlasScope_setDocNumber({
       __args: {
         docId: document.id,

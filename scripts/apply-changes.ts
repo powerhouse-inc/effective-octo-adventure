@@ -1,9 +1,12 @@
-import { getPNDTitle, documentIndex as index } from "../document-models/utils";
+import { getPNDTitle, documentIndex as notionDocsIndex } from "../document-models/utils";
+import { AtlasDocumentsCache } from "./apply-changes/AtlasDocumentsCache";
 import { AtlasScopeClient } from "./apply-changes/AtlasScopeClient";
 import { ParsedNotionDocument } from "./apply-changes/NotionTypes";
+import { ReactorClient } from "./clients/ReactorClient";
 
-const GQL_ENDPOINT = 'http://localhost:4001/'
-const PROCESS_LIMIT = 6;
+const GQL_ENDPOINT = 'http://localhost:4001/';
+const DRIVE_NAME = 'powerhouse';
+const PROCESS_LIMIT = 1000;
 
 const skipNodes: {[id: string]: boolean} = {
     '422bae2b-2aec-4324-ae40-33c544820db3': false,
@@ -13,14 +16,23 @@ const skipNodes: {[id: string]: boolean} = {
     '9e3f76e6-3343-4e70-af0b-c914be2e8d5a': false,
 };
 
-const clients = {
-    scopes: new AtlasScopeClient(GQL_ENDPOINT),
-};
+const readClient = new ReactorClient(GQL_ENDPOINT, DRIVE_NAME);
 
 async function main() {
-    console.log("Processing input documents...");
+    console.log("Loading drive documents cache...");
+    const driveNodes = await readClient.getDriveNodes();
+    const documentsCache = new AtlasDocumentsCache(driveNodes);
 
-    const queue = Object.values(index)
+    const clients = {
+        scopes: new AtlasScopeClient(GQL_ENDPOINT, documentsCache, readClient),
+    }
+
+    await clients.scopes.updateDriveDocumentCache();
+    console.log(documentsCache.getDocumentsCount());
+
+    console.log("\nProcessing Notion documents...");
+
+    const queue = Object.values(notionDocsIndex)
         .filter(pnd => pnd!.type == 'scope')
         .sort((a, b) => a!.docNo < b!.docNo ? -1 : 1);
 
@@ -28,7 +40,7 @@ async function main() {
 
     while(notionDoc = queue.shift()) {
         if (processed >= PROCESS_LIMIT) {
-            console.log(`Process limit reached.`);
+            console.log(`\nProcess limit reached.`);
             break;
         }
 
@@ -41,13 +53,13 @@ async function main() {
         console.log(`>> ${processed+1} [${notionDoc.id}]: ${getPNDTitle(notionDoc)} (${notionDoc.type})`);
 
         if (notionDoc.type === 'scope') {
-            await clients.scopes.update(notionDoc);
+            const newDocumentId = await clients.scopes.update(notionDoc);
         }
 
         processed++;
     };
 
-    console.log(`Processed: ${processed}. Skipped: ${skipped}. Remaining: ${queue.length}.`);
+    console.log(`Processed: ${processed}. Skipped: ${skipped}. Queued: ${queue.length}.`);
 }
 
 await main();

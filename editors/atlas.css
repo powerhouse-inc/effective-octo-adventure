@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .atlas-header {
   margin: 1em 5%;
   font-size: xx-large;

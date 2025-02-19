@@ -50,8 +50,10 @@
     "service": "ph-cli service",
     "service-startup": "bash ./node_modules/@powerhousedao/ph-cli/dist/scripts/service-startup.sh",
     "service-unstartup": "bash ./node_modules/@powerhousedao/ph-cli/dist/scripts/service-unstartup.sh",
+    "script:apply-changes": "bun run ./scripts/apply-changes.ts",
     "script:fetch-data": "bun run ./scripts/fetch-data.ts",
-    "script:regen-all": "bash ./docmodel-zips/generate-all.sh"
+    "script:generate-gql-clients": "bun run ./scripts/gen-clients.ts",
+    "script:generate-all": "bash ./docmodel-zips/generate-all.sh"
   },
   "peerDependencies": {
     "document-model": "^2.18.0",
@@ -66,7 +68,7 @@
     "@powerhousedao/analytics-engine-core": "^0.3.2",
     "@powerhousedao/codegen": "^0.32.0",
     "@powerhousedao/config": "1.16.0",
-    "@powerhousedao/design-system": "1.22.5-canary.21",
+    "@powerhousedao/design-system": "1.22.5-canary.32",
     "@powerhousedao/mips-parser": "2.2.2-alpha.0",
     "@powerhousedao/ph-cli": "^0.30.0",
     "@powerhousedao/reactor-api": "^1.17.0",
@@ -78,8 +80,8 @@
     "@typescript-eslint/eslint-plugin": "^8.21.0",
     "@typescript-eslint/parser": "^8.21.0",
     "autoprefixer": "^10.4.20",
-    "document-model": "^2.18.0",
-    "document-model-libs": "^1.128.0",
+    "document-model": "2.19.0",
+    "document-model-libs": "1.131.2",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.3",
@@ -106,6 +108,7 @@
   },
   "description": "",
   "dependencies": {
-    "graphql-tag": "^2.12.6"
+    "graphql-tag": "^2.12.6",
+    "graphql-ts-client": "^10.4.0"
   }
 }

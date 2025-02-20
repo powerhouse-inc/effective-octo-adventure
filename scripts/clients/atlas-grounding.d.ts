@@ -400,14 +400,14 @@ export interface AtlasGrounding {
 export interface AtlasFoundation_AtlasFoundationState {
   name?: string
   docNo?: string
-  parent: PHID
+  parent?: AtlasFoundation_FDocumentLink
   atlasType: AtlasFoundation_FAtlasType
   content?: string
   masterStatus: AtlasFoundation_FStatus
   globalTags: AtlasFoundation_FGlobalTag[]
-  references: PHID[]
-  originalContextData: AtlasFoundation_DocumentInfo[]
-  provenance?: URL
+  references: AtlasFoundation_FDocumentLink[]
+  originalContextData: AtlasFoundation_FDocumentLink[]
+  provenance: URL[]
   notionId?: string
 }
 
@@ -415,7 +415,7 @@ export interface AtlasFoundation_AtlasFoundationState {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasFoundation_DocumentInfo {
+export interface AtlasFoundation_FDocumentLink {
   id: PHID
   name?: OLabel
   docNo?: string
@@ -946,18 +946,18 @@ export interface AtlasGroundingSelection {
 export interface AtlasFoundation_AtlasFoundationStateSelection {
   name?: boolean
   docNo?: boolean
-  parent?: boolean
+  parent?: AtlasFoundation_FDocumentLinkSelection
   atlasType?: boolean
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  references?: boolean
-  originalContextData?: AtlasFoundation_DocumentInfoSelection
+  references?: AtlasFoundation_FDocumentLinkSelection
+  originalContextData?: AtlasFoundation_FDocumentLinkSelection
   provenance?: boolean
   notionId?: boolean
 }
 
-export interface AtlasFoundation_DocumentInfoSelection {
+export interface AtlasFoundation_FDocumentLinkSelection {
   id?: boolean
   name?: boolean
   docNo?: boolean

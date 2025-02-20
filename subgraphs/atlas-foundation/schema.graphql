@@ -16,7 +16,7 @@ type AtlasFoundationState {
   Parent entity that this Foundation belongs to.
   This is a reference to another Atlas document.
   """
-  parent: PHID!
+  parent: FDocumentLink
 
   """
   The type of the Foundation entity within Atlas.
@@ -42,17 +42,17 @@ type AtlasFoundationState {
   """
   References to other Atlas entities that are linked to this Foundation.
   """
-  references: [PHID!]!
+  references: [FDocumentLink!]!
 
   """
   List of Atlas documents that were relevant for the creation of this Foundation document.
   """
-  originalContextData: [DocumentInfo!]!
+  originalContextData: [FDocumentLink!]!
 
   """
   Link to the original P0hub Notion environment where this document was first created or referenced.
   """
-  provenance: URL
+  provenance: [URL!]!
 
   """
   Original Notion document ID of the Foundation document.
@@ -63,7 +63,7 @@ type AtlasFoundationState {
 """
 Reference to a document within Atlas with optional name and document number for display reasons.
 """
-type DocumentInfo {
+type FDocumentLink {
   id: PHID!
   name: OLabel
   docNo: String
@@ -129,13 +129,21 @@ type Mutation {
     docId: PHID
     input: AtlasFoundation_SetMasterStatusInput
   ): Int
-  AtlasFoundation_setReferences(
+  AtlasFoundation_addReference(
     docId: PHID
-    input: AtlasFoundation_SetReferencesInput
+    input: AtlasFoundation_AddReferenceInput
   ): Int
   AtlasFoundation_setAtlasType(
     docId: PHID
     input: AtlasFoundation_SetAtlasTypeInput
+  ): Int
+  AtlasFoundation_removeReference(
+    docId: PHID
+    input: AtlasFoundation_RemoveReferenceInput
+  ): Int
+  AtlasFoundation_setParent(
+    docId: PHID
+    input: AtlasFoundation_SetParentInput
   ): Int
   AtlasFoundation_addTags(docId: PHID, input: AtlasFoundation_AddTagsInput): Int
   AtlasFoundation_removeTags(
@@ -164,39 +172,41 @@ type Mutation {
 Module: General
 """
 input AtlasFoundation_SetFoundationNameInput {
-  "Add your inputs here"
-  name: OLabel!
+  name: String!
 }
 input AtlasFoundation_SetDocNumberInput {
-  "Add your inputs here"
   docNo: String!
 }
 input AtlasFoundation_SetContentInput {
-  "Add your inputs here"
   content: String!
 }
 input AtlasFoundation_SetMasterStatusInput {
-  "Add your inputs here"
   masterStatus: FStatus!
 }
-input AtlasFoundation_SetReferencesInput {
-  "Add your inputs here"
-  reference: [PHID!]
+input AtlasFoundation_AddReferenceInput {
+  id: PHID!
+  name: OLabel
+  docNo: String
 }
 input AtlasFoundation_SetAtlasTypeInput {
-  "Add your inputs here"
-  atlasType: [FAtlasType!]
+  atlasType: FAtlasType!
+}
+input AtlasFoundation_RemoveReferenceInput {
+  id: PHID!
+}
+input AtlasFoundation_SetParentInput {
+  id: PHID!
+  name: OLabel
+  docNo: String
 }
 
 """
 Module: Tags
 """
 input AtlasFoundation_AddTagsInput {
-  "Add your inputs here"
-  newTags: [FGlobalTag!]!
+  tags: [FGlobalTag!]!
 }
 input AtlasFoundation_RemoveTagsInput {
-  "Add your inputs here"
   tags: [FGlobalTag!]!
 }
 
@@ -204,20 +214,16 @@ input AtlasFoundation_RemoveTagsInput {
 Module: Context
 """
 input AtlasFoundation_AddContextDataInput {
-  "Add your inputs here"
   id: PHID!
   name: String
   docNo: String
 }
 input AtlasFoundation_RemoveContextDataInput {
-  "Add your inputs here"
   id: PHID!
 }
 input AtlasFoundation_SetProvenanceInput {
-  "Add your inputs here"
-  provenance: URL
+  provenance: [URL!]!
 }
 input AtlasFoundation_SetNotionIdInput {
-  "Add your inputs here"
-  notionID: String
+  notionID: String!
 }

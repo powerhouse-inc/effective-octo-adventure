@@ -90,14 +90,14 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
         return doc.revision.global + 1;
       },
 
-      AtlasFoundation_setReferences: async (_: any, args: any) => {
+      AtlasFoundation_addReference: async (_: any, args: any) => {
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
         await reactor.addAction(
           driveId,
           docId,
-          actions.setReferences({ ...args.input }),
+          actions.addReference({ ...args.input }),
         );
 
         return doc.revision.global + 1;
@@ -111,6 +111,32 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
           driveId,
           docId,
           actions.setAtlasType({ ...args.input }),
+        );
+
+        return doc.revision.global + 1;
+      },
+
+      AtlasFoundation_removeReference: async (_: any, args: any) => {
+        const docId: string = args.docId || "";
+        const doc = await reactor.getDocument(driveId, docId);
+
+        await reactor.addAction(
+          driveId,
+          docId,
+          actions.removeReference({ ...args.input }),
+        );
+
+        return doc.revision.global + 1;
+      },
+
+      AtlasFoundation_setParent: async (_: any, args: any) => {
+        const docId: string = args.docId || "";
+        const doc = await reactor.getDocument(driveId, docId);
+
+        await reactor.addAction(
+          driveId,
+          docId,
+          actions.setParent({ ...args.input }),
         );
 
         return doc.revision.global + 1;

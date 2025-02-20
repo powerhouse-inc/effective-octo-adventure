@@ -482,9 +482,11 @@ const typesTree = {
     originalContextData: {}
   },
   AtlasFoundation_AtlasFoundationState: {
+    parent: {},
     globalTags: {},
     references: {},
-    originalContextData: {}
+    originalContextData: {},
+    provenance: {}
   },
   AtlasExploratory_AtlasExploratoryState: {
     globalTags: {},

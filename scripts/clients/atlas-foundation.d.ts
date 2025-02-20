@@ -266,13 +266,21 @@ export interface AtlasFoundationSetMasterStatusArgs {
   docId?: PHID
   input?: AtlasFoundation_SetMasterStatusInput
 }
-export interface AtlasFoundationSetReferencesArgs {
+export interface AtlasFoundationAddReferenceArgs {
   docId?: PHID
-  input?: AtlasFoundation_SetReferencesInput
+  input?: AtlasFoundation_AddReferenceInput
 }
 export interface AtlasFoundationSetAtlasTypeArgs {
   docId?: PHID
   input?: AtlasFoundation_SetAtlasTypeInput
+}
+export interface AtlasFoundationRemoveReferenceArgs {
+  docId?: PHID
+  input?: AtlasFoundation_RemoveReferenceInput
+}
+export interface AtlasFoundationSetParentArgs {
+  docId?: PHID
+  input?: AtlasFoundation_SetParentInput
 }
 export interface AtlasFoundationAddTagsArgs {
   docId?: PHID
@@ -405,14 +413,14 @@ export interface AtlasGrounding {
 export interface AtlasFoundation_AtlasFoundationState {
   name?: string
   docNo?: string
-  parent: PHID
+  parent?: AtlasFoundation_FDocumentLink
   atlasType: AtlasFoundation_FAtlasType
   content?: string
   masterStatus: AtlasFoundation_FStatus
   globalTags: AtlasFoundation_FGlobalTag[]
-  references: PHID[]
-  originalContextData: AtlasFoundation_DocumentInfo[]
-  provenance?: URL
+  references: AtlasFoundation_FDocumentLink[]
+  originalContextData: AtlasFoundation_FDocumentLink[]
+  provenance: URL[]
   notionId?: string
 }
 
@@ -420,7 +428,7 @@ export interface AtlasFoundation_AtlasFoundationState {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasFoundation_DocumentInfo {
+export interface AtlasFoundation_FDocumentLink {
   id: PHID
   name?: OLabel
   docNo?: string
@@ -730,14 +738,14 @@ export interface DocumentDrive {
 export interface AtlasFoundationState {
   name?: string
   docNo?: string
-  parent: PHID
+  parent?: FDocumentLink
   atlasType: FAtlasType
   content?: string
   masterStatus: FStatus
   globalTags: FGlobalTag[]
-  references: PHID[]
-  originalContextData: DocumentInfo[]
-  provenance?: URL
+  references: FDocumentLink[]
+  originalContextData: FDocumentLink[]
+  provenance: URL[]
   notionId?: string
 }
 
@@ -745,7 +753,7 @@ export interface AtlasFoundationState {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface DocumentInfo {
+export interface FDocumentLink {
   id: PHID
   name?: OLabel
   docNo?: string
@@ -761,8 +769,10 @@ export interface Mutation {
   AtlasFoundation_setDocNumber?: number
   AtlasFoundation_setContent?: number
   AtlasFoundation_setMasterStatus?: number
-  AtlasFoundation_setReferences?: number
+  AtlasFoundation_addReference?: number
   AtlasFoundation_setAtlasType?: number
+  AtlasFoundation_removeReference?: number
+  AtlasFoundation_setParent?: number
   AtlasFoundation_addTags?: number
   AtlasFoundation_removeTags?: number
   AtlasFoundation_addContextData?: number
@@ -776,7 +786,7 @@ export interface Mutation {
  */
 
 export interface AtlasFoundation_SetFoundationNameInput {
-  name: OLabel
+  name: string
 }
 
 /**
@@ -807,8 +817,10 @@ export interface AtlasFoundation_SetMasterStatusInput {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasFoundation_SetReferencesInput {
-  reference?: PHID[]
+export interface AtlasFoundation_AddReferenceInput {
+  id: PHID
+  name?: OLabel
+  docNo?: string
 }
 
 /**
@@ -816,7 +828,25 @@ export interface AtlasFoundation_SetReferencesInput {
  */
 
 export interface AtlasFoundation_SetAtlasTypeInput {
-  atlasType?: FAtlasType[]
+  atlasType: FAtlasType
+}
+
+/**
+ * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
+ */
+
+export interface AtlasFoundation_RemoveReferenceInput {
+  id: PHID
+}
+
+/**
+ * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
+ */
+
+export interface AtlasFoundation_SetParentInput {
+  id: PHID
+  name?: OLabel
+  docNo?: string
 }
 
 /**
@@ -824,7 +854,7 @@ export interface AtlasFoundation_SetAtlasTypeInput {
  */
 
 export interface AtlasFoundation_AddTagsInput {
-  newTags: FGlobalTag[]
+  tags: FGlobalTag[]
 }
 
 /**
@@ -858,7 +888,7 @@ export interface AtlasFoundation_RemoveContextDataInput {
  */
 
 export interface AtlasFoundation_SetProvenanceInput {
-  provenance?: URL
+  provenance: URL[]
 }
 
 /**
@@ -866,7 +896,7 @@ export interface AtlasFoundation_SetProvenanceInput {
  */
 
 export interface AtlasFoundation_SetNotionIdInput {
-  notionID?: string
+  notionID: string
 }
 
 /**
@@ -960,18 +990,18 @@ export interface AtlasGroundingSelection {
 export interface AtlasFoundation_AtlasFoundationStateSelection {
   name?: boolean
   docNo?: boolean
-  parent?: boolean
+  parent?: AtlasFoundation_FDocumentLinkSelection
   atlasType?: boolean
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  references?: boolean
-  originalContextData?: AtlasFoundation_DocumentInfoSelection
+  references?: AtlasFoundation_FDocumentLinkSelection
+  originalContextData?: AtlasFoundation_FDocumentLinkSelection
   provenance?: boolean
   notionId?: boolean
 }
 
-export interface AtlasFoundation_DocumentInfoSelection {
+export interface AtlasFoundation_FDocumentLinkSelection {
   id?: boolean
   name?: boolean
   docNo?: boolean
@@ -1215,18 +1245,18 @@ export interface DocumentDriveSelection {
 export interface AtlasFoundationStateSelection {
   name?: boolean
   docNo?: boolean
-  parent?: boolean
+  parent?: FDocumentLinkSelection
   atlasType?: boolean
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  references?: boolean
-  originalContextData?: DocumentInfoSelection
+  references?: FDocumentLinkSelection
+  originalContextData?: FDocumentLinkSelection
   provenance?: boolean
   notionId?: boolean
 }
 
-export interface DocumentInfoSelection {
+export interface FDocumentLinkSelection {
   id?: boolean
   name?: boolean
   docNo?: boolean
@@ -1263,17 +1293,29 @@ export interface MutationSelection {
     __alias?: string
     __args?: { docId?: PHID; input?: AtlasFoundation_SetMasterStatusInput }
   }
-  AtlasFoundation_setReferences?: {
+  AtlasFoundation_addReference?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasFoundation_SetReferencesInput }
+    __args?: { docId?: PHID; input?: AtlasFoundation_AddReferenceInput }
   }
   AtlasFoundation_setAtlasType?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
     __args?: { docId?: PHID; input?: AtlasFoundation_SetAtlasTypeInput }
+  }
+  AtlasFoundation_removeReference?: {
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: { docId?: PHID; input?: AtlasFoundation_RemoveReferenceInput }
+  }
+  AtlasFoundation_setParent?: {
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: { docId?: PHID; input?: AtlasFoundation_SetParentInput }
   }
   AtlasFoundation_addTags?: {
     __headers?: { [key: string]: string }
@@ -1329,16 +1371,28 @@ export interface AtlasFoundation_SetMasterStatusInputSelection {
   masterStatus?: boolean
 }
 
-export interface AtlasFoundation_SetReferencesInputSelection {
-  reference?: boolean
+export interface AtlasFoundation_AddReferenceInputSelection {
+  id?: boolean
+  name?: boolean
+  docNo?: boolean
 }
 
 export interface AtlasFoundation_SetAtlasTypeInputSelection {
   atlasType?: boolean
 }
 
+export interface AtlasFoundation_RemoveReferenceInputSelection {
+  id?: boolean
+}
+
+export interface AtlasFoundation_SetParentInputSelection {
+  id?: boolean
+  name?: boolean
+  docNo?: boolean
+}
+
 export interface AtlasFoundation_AddTagsInputSelection {
-  newTags?: boolean
+  tags?: boolean
 }
 
 export interface AtlasFoundation_RemoveTagsInputSelection {
@@ -1439,12 +1493,12 @@ export declare const client: {
       number,
       AllEnums
     >
-    AtlasFoundation_setReferences: Endpoint<
+    AtlasFoundation_addReference: Endpoint<
       {
         __headers?: { [key: string]: string }
         __retry?: boolean
         __alias?: string
-        __args?: AtlasFoundationSetReferencesArgs
+        __args?: AtlasFoundationAddReferenceArgs
       },
       number,
       AllEnums
@@ -1455,6 +1509,26 @@ export declare const client: {
         __retry?: boolean
         __alias?: string
         __args?: AtlasFoundationSetAtlasTypeArgs
+      },
+      number,
+      AllEnums
+    >
+    AtlasFoundation_removeReference: Endpoint<
+      {
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasFoundationRemoveReferenceArgs
+      },
+      number,
+      AllEnums
+    >
+    AtlasFoundation_setParent: Endpoint<
+      {
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasFoundationSetParentArgs
       },
       number,
       AllEnums

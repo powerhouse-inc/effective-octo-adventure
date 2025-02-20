@@ -401,11 +401,11 @@ const typesTree = {
         }
       };
     },
-    get AtlasFoundation_setReferences() {
+    get AtlasFoundation_addReference() {
       return {
         __args: {
           docId: "PHID",
-          input: "AtlasFoundation_SetReferencesInput"
+          input: "AtlasFoundation_AddReferenceInput"
         }
       };
     },
@@ -414,6 +414,22 @@ const typesTree = {
         __args: {
           docId: "PHID",
           input: "AtlasFoundation_SetAtlasTypeInput"
+        }
+      };
+    },
+    get AtlasFoundation_removeReference() {
+      return {
+        __args: {
+          docId: "PHID",
+          input: "AtlasFoundation_RemoveReferenceInput"
+        }
+      };
+    },
+    get AtlasFoundation_setParent() {
+      return {
+        __args: {
+          docId: "PHID",
+          input: "AtlasFoundation_SetParentInput"
         }
       };
     },
@@ -491,9 +507,11 @@ const typesTree = {
     originalContextData: {}
   },
   AtlasFoundation_AtlasFoundationState: {
+    parent: {},
     globalTags: {},
     references: {},
-    originalContextData: {}
+    originalContextData: {},
+    provenance: {}
   },
   AtlasExploratory_AtlasExploratoryState: {
     globalTags: {},
@@ -540,9 +558,11 @@ const typesTree = {
     triggers: {}
   },
   AtlasFoundationState: {
+    parent: {},
     globalTags: {},
     references: {},
-    originalContextData: {}
+    originalContextData: {},
+    provenance: {}
   },
   Query: {
     _service: {}
@@ -595,8 +615,10 @@ const client = {
     AtlasFoundation_setDocNumber: apiEndpoint("mutation", "AtlasFoundation_setDocNumber"),
     AtlasFoundation_setContent: apiEndpoint("mutation", "AtlasFoundation_setContent"),
     AtlasFoundation_setMasterStatus: apiEndpoint("mutation", "AtlasFoundation_setMasterStatus"),
-    AtlasFoundation_setReferences: apiEndpoint("mutation", "AtlasFoundation_setReferences"),
+    AtlasFoundation_addReference: apiEndpoint("mutation", "AtlasFoundation_addReference"),
     AtlasFoundation_setAtlasType: apiEndpoint("mutation", "AtlasFoundation_setAtlasType"),
+    AtlasFoundation_removeReference: apiEndpoint("mutation", "AtlasFoundation_removeReference"),
+    AtlasFoundation_setParent: apiEndpoint("mutation", "AtlasFoundation_setParent"),
     AtlasFoundation_addTags: apiEndpoint("mutation", "AtlasFoundation_addTags"),
     AtlasFoundation_removeTags: apiEndpoint("mutation", "AtlasFoundation_removeTags"),
     AtlasFoundation_addContextData: apiEndpoint("mutation", "AtlasFoundation_addContextData"),

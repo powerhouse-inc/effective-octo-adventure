@@ -16,7 +16,7 @@ type AtlasGroundingState {
   Parent entity that this Grounding document belongs to.
   This is a reference to another Atlas document.
   """
-  parent: PHID!
+  parent: GDocumentLink!
 
   """
   The type of the Grounding document within Atlas.
@@ -42,17 +42,17 @@ type AtlasGroundingState {
   """
   References to other Atlas entities that are linked to this Grounding document.
   """
-  references: [PHID!]!
+  references: [GDocumentLink!]!
 
   """
   List of Atlas documents that were relevant for the creation of this Grounding document.
   """
-  originalContextData: [DocumentInfo!]!
+  originalContextData: [GDocumentLink!]!
 
   """
   Link to the original P0hub Notion environment where this document was first created or referenced.
   """
-  provenance: URL
+  provenance: [URL!]!
 
   """
   Original Notion document ID of the Grounding document.
@@ -64,7 +64,7 @@ type AtlasGroundingState {
 """
 Reference to a document within Atlas with optional name and document number for display reasons.
 """
-type DocumentInfo {
+type GDocumentLink {
   id: PHID!
   name: OLabel
   docNo: String
@@ -136,6 +136,10 @@ type Mutation {
     docId: PHID
     input: AtlasGrounding_SetAtlasTypeInput
   ): Int
+  AtlasGrounding_setParent(
+    docId: PHID
+    input: AtlasGrounding_SetParentInput
+  ): Int
   AtlasGrounding_addTags(docId: PHID, input: AtlasGrounding_AddTagsInput): Int
   AtlasGrounding_removeTags(
     docId: PHID
@@ -157,21 +161,26 @@ type Mutation {
     docId: PHID
     input: AtlasGrounding_SetNotionIdInput
   ): Int
+  AtlasGrounding_addReference(
+    docId: PHID
+    input: AtlasGrounding_AddReferenceInput
+  ): Int
+  AtlasGrounding_removeReference(
+    docId: PHID
+    input: AtlasGrounding_RemoveReferenceInput
+  ): Int
 }
 
 """
 Module: General
 """
 input AtlasGrounding_SetGroundingNameInput {
-  "Add your inputs here"
   name: String!
 }
 input AtlasGrounding_SetDocNumberInput {
-  "Add your inputs here"
   docNo: String!
 }
 input AtlasGrounding_SetContentInput {
-  "Add your inputs here"
   content: String!
 }
 input AtlasGrounding_SetMasterStatusInput {
@@ -179,19 +188,21 @@ input AtlasGrounding_SetMasterStatusInput {
   masterStatus: GStatus!
 }
 input AtlasGrounding_SetAtlasTypeInput {
-  "Add your inputs here"
-  atlasType: [GAtlasType!]
+  atlasType: GAtlasType!
+}
+input AtlasGrounding_SetParentInput {
+  id: PHID!
+  name: OLabel
+  docNo: String
 }
 
 """
 Module: Tags
 """
 input AtlasGrounding_AddTagsInput {
-  "Add your inputs here"
-  newTags: [GGlobalTag!]!
+  tags: [GGlobalTag!]!
 }
 input AtlasGrounding_RemoveTagsInput {
-  "Add your inputs here"
   tags: [GGlobalTag!]!
 }
 
@@ -199,20 +210,24 @@ input AtlasGrounding_RemoveTagsInput {
 Module: Context
 """
 input AtlasGrounding_AddContextDataInput {
-  "Add your inputs here"
   id: PHID!
   name: String
   docNo: String
 }
 input AtlasGrounding_RemoveContextDataInput {
-  "Add your inputs here"
   id: PHID!
 }
 input AtlasGrounding_SetProvenanceInput {
-  "Add your inputs here"
-  provenance: URL
+  provenance: [URL!]!
 }
 input AtlasGrounding_SetNotionIdInput {
-  "Add your inputs here"
-  notionID: String
+  notionID: String!
+}
+input AtlasGrounding_AddReferenceInput {
+  id: PHID!
+  name: String
+  docNo: String
+}
+input AtlasGrounding_RemoveReferenceInput {
+  id: PHID!
 }

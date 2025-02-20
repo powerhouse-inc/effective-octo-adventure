@@ -14,6 +14,13 @@ export const reducer: AtlasGroundingGeneralOperations = {
     state.masterStatus = action.input.masterStatus;
   },
   setAtlasTypeOperation(state, action, dispatch) {
-    // TODO: change input to singular value
+    state.atlasType = action.input.atlasType;
+  },
+  setParentOperation(state, action, dispatch) {
+    state.parent = {
+      id: action.input.id,
+      name: action.input.name || null,
+      docNo: action.input.docNo || null,
+    };
   },
 };

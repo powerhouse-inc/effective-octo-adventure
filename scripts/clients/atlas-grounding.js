@@ -408,6 +408,14 @@ const typesTree = {
         }
       };
     },
+    get AtlasGrounding_setParent() {
+      return {
+        __args: {
+          docId: "PHID",
+          input: "AtlasGrounding_SetParentInput"
+        }
+      };
+    },
     get AtlasGrounding_addTags() {
       return {
         __args: {
@@ -455,6 +463,22 @@ const typesTree = {
           input: "AtlasGrounding_SetNotionIdInput"
         }
       };
+    },
+    get AtlasGrounding_addReference() {
+      return {
+        __args: {
+          docId: "PHID",
+          input: "AtlasGrounding_AddReferenceInput"
+        }
+      };
+    },
+    get AtlasGrounding_removeReference() {
+      return {
+        __args: {
+          docId: "PHID",
+          input: "AtlasGrounding_RemoveReferenceInput"
+        }
+      };
     }
   },
   PHOperationContext: {
@@ -477,9 +501,11 @@ const typesTree = {
     }
   },
   AtlasGrounding_AtlasGroundingState: {
+    parent: {},
     globalTags: {},
     references: {},
-    originalContextData: {}
+    originalContextData: {},
+    provenance: {}
   },
   AtlasFoundation_AtlasFoundationState: {
     parent: {},
@@ -533,9 +559,11 @@ const typesTree = {
     triggers: {}
   },
   AtlasGroundingState: {
+    parent: {},
     globalTags: {},
     references: {},
-    originalContextData: {}
+    originalContextData: {},
+    provenance: {}
   },
   Query: {
     _service: {}
@@ -589,12 +617,15 @@ const client = {
     AtlasGrounding_setContent: apiEndpoint("mutation", "AtlasGrounding_setContent"),
     AtlasGrounding_setMasterStatus: apiEndpoint("mutation", "AtlasGrounding_setMasterStatus"),
     AtlasGrounding_setAtlasType: apiEndpoint("mutation", "AtlasGrounding_setAtlasType"),
+    AtlasGrounding_setParent: apiEndpoint("mutation", "AtlasGrounding_setParent"),
     AtlasGrounding_addTags: apiEndpoint("mutation", "AtlasGrounding_addTags"),
     AtlasGrounding_removeTags: apiEndpoint("mutation", "AtlasGrounding_removeTags"),
     AtlasGrounding_addContextData: apiEndpoint("mutation", "AtlasGrounding_addContextData"),
     AtlasGrounding_removeContextData: apiEndpoint("mutation", "AtlasGrounding_removeContextData"),
     AtlasGrounding_setProvenance: apiEndpoint("mutation", "AtlasGrounding_setProvenance"),
-    AtlasGrounding_setNotionId: apiEndpoint("mutation", "AtlasGrounding_setNotionId")
+    AtlasGrounding_setNotionId: apiEndpoint("mutation", "AtlasGrounding_setNotionId"),
+    AtlasGrounding_addReference: apiEndpoint("mutation", "AtlasGrounding_addReference"),
+    AtlasGrounding_removeReference: apiEndpoint("mutation", "AtlasGrounding_removeReference")
   }
 };
 var stdin_default = client;

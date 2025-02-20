@@ -359,14 +359,14 @@ export interface Operation {
 export interface AtlasGrounding_AtlasGroundingState {
   name?: string
   docNo?: string
-  parent: PHID
+  parent: AtlasGrounding_GDocumentLink
   atlasType: AtlasGrounding_GAtlasType
   content?: string
   masterStatus: AtlasGrounding_GStatus
   globalTags: AtlasGrounding_GGlobalTag[]
-  references: PHID[]
-  originalContextData: AtlasGrounding_DocumentInfo[]
-  provenance?: URL
+  references: AtlasGrounding_GDocumentLink[]
+  originalContextData: AtlasGrounding_GDocumentLink[]
+  provenance: URL[]
   notionId?: string
 }
 
@@ -374,7 +374,7 @@ export interface AtlasGrounding_AtlasGroundingState {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasGrounding_DocumentInfo {
+export interface AtlasGrounding_GDocumentLink {
   id: PHID
   name?: OLabel
   docNo?: string
@@ -921,18 +921,18 @@ export interface OperationSelection {
 export interface AtlasGrounding_AtlasGroundingStateSelection {
   name?: boolean
   docNo?: boolean
-  parent?: boolean
+  parent?: AtlasGrounding_GDocumentLinkSelection
   atlasType?: boolean
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  references?: boolean
-  originalContextData?: AtlasGrounding_DocumentInfoSelection
+  references?: AtlasGrounding_GDocumentLinkSelection
+  originalContextData?: AtlasGrounding_GDocumentLinkSelection
   provenance?: boolean
   notionId?: boolean
 }
 
-export interface AtlasGrounding_DocumentInfoSelection {
+export interface AtlasGrounding_GDocumentLinkSelection {
   id?: boolean
   name?: boolean
   docNo?: boolean

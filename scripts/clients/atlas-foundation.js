@@ -502,9 +502,11 @@ const typesTree = {
     }
   },
   AtlasGrounding_AtlasGroundingState: {
+    parent: {},
     globalTags: {},
     references: {},
-    originalContextData: {}
+    originalContextData: {},
+    provenance: {}
   },
   AtlasFoundation_AtlasFoundationState: {
     parent: {},

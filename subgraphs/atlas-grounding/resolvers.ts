@@ -103,6 +103,19 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
         return doc.revision.global + 1;
       },
 
+      AtlasGrounding_setParent: async (_: any, args: any) => {
+        const docId: string = args.docId || "";
+        const doc = await reactor.getDocument(driveId, docId);
+
+        await reactor.addAction(
+          driveId,
+          docId,
+          actions.setParent({ ...args.input }),
+        );
+
+        return doc.revision.global + 1;
+      },
+
       AtlasGrounding_addTags: async (_: any, args: any) => {
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
@@ -176,6 +189,32 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
           driveId,
           docId,
           actions.setNotionId({ ...args.input }),
+        );
+
+        return doc.revision.global + 1;
+      },
+
+      AtlasGrounding_addReference: async (_: any, args: any) => {
+        const docId: string = args.docId || "";
+        const doc = await reactor.getDocument(driveId, docId);
+
+        await reactor.addAction(
+          driveId,
+          docId,
+          actions.addReference({ ...args.input }),
+        );
+
+        return doc.revision.global + 1;
+      },
+
+      AtlasGrounding_removeReference: async (_: any, args: any) => {
+        const docId: string = args.docId || "";
+        const doc = await reactor.getDocument(driveId, docId);
+
+        await reactor.addAction(
+          driveId,
+          docId,
+          actions.removeReference({ ...args.input }),
         );
 
         return doc.revision.global + 1;

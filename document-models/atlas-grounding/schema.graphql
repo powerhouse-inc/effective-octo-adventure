@@ -25,7 +25,7 @@ type AtlasGroundingState {
     Parent entity that this Grounding document belongs to.  
     This is a reference to another Atlas document.
   """
-  parent: PHID!
+  parent: GDocumentLink!
 
   """
     The type of the Grounding document within Atlas.  
@@ -51,17 +51,17 @@ type AtlasGroundingState {
   """
     References to other Atlas entities that are linked to this Grounding document.  
   """
-  references: [PHID!]!
+  references: [GDocumentLink!]!
 
   """
     List of Atlas documents that were relevant for the creation of this Grounding document.  
   """
-  originalContextData: [DocumentInfo!]!
+  originalContextData: [GDocumentLink!]!
 
   """
     Link to the original P0hub Notion environment where this document was first created or referenced.
   """
-  provenance: URL
+  provenance: [URL!]!
 
   """
     Original Notion document ID of the Grounding document.  
@@ -74,13 +74,11 @@ type AtlasGroundingState {
    Reference to a document within Atlas with optional name and document number for display reasons. 
 """
 
-type DocumentInfo {
-
- id:PHID!
-  name:OLabel
+type GDocumentLink {
+  id: PHID!
+  name: OLabel
   docNo: String 
 }
-
 
 """
   Domain (i.e., Atlas) specific document types with the same document model global schema.  
@@ -90,7 +88,6 @@ enum GAtlasType {
   ORIGINAL_CONTEXT_DATA
   ACTIVE_DATA
 }
-
 
 """
   Defines the lifecycle stage of the Grounding document within Atlas.  
@@ -129,17 +126,14 @@ enum GGlobalTag {
 # general
 
 input SetGroundingNameInput {
-  "Add your inputs here"
   name: String!
 }
 
 input SetDocNumberInput {
-  "Add your inputs here"
   docNo: String! 
 }
 
 input SetContentInput {
-  "Add your inputs here"
   content: String! 
 }
 
@@ -149,44 +143,51 @@ input SetMasterStatusInput {
 }
 
 input SetAtlasTypeInput {
-  "Add your inputs here"
-  atlasType: [GAtlasType!]
+  atlasType: GAtlasType!
+}
+
+input SetParentInput {
+  id: PHID!
+  name: OLabel 
+  docNo: String
 }
 
 # tags
 
 input AddTagsInput {
-  "Add your inputs here"
-  newTags: [GGlobalTag!]!
+  tags: [GGlobalTag!]!
 }
 
 input RemoveTagsInput {
-  "Add your inputs here"
   tags: [GGlobalTag!]!
 }
 
 # context
 
 input AddContextDataInput {
-  "Add your inputs here"
   id: PHID!
   name: String
   docNo: String
-  
 }
 
 input RemoveContextDataInput {
-  "Add your inputs here"
   id: PHID!
 }
 
 input SetProvenanceInput {
-  "Add your inputs here"
-  provenance: URL
-  
+  provenance: [URL!]!
 }
 
 input SetNotionIdInput {
-  "Add your inputs here"
-  notionID: String
+  notionID: String!
+}
+
+input AddReferenceInput {
+  id: PHID!
+  name: String
+  docNo: String
+}
+
+input RemoveReferenceInput {
+  id: PHID!
 }

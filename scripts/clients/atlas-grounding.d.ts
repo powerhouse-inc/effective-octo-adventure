@@ -269,6 +269,10 @@ export interface AtlasGroundingSetAtlasTypeArgs {
   docId?: PHID
   input?: AtlasGrounding_SetAtlasTypeInput
 }
+export interface AtlasGroundingSetParentArgs {
+  docId?: PHID
+  input?: AtlasGrounding_SetParentInput
+}
 export interface AtlasGroundingAddTagsArgs {
   docId?: PHID
   input?: AtlasGrounding_AddTagsInput
@@ -292,6 +296,14 @@ export interface AtlasGroundingSetProvenanceArgs {
 export interface AtlasGroundingSetNotionIdArgs {
   docId?: PHID
   input?: AtlasGrounding_SetNotionIdInput
+}
+export interface AtlasGroundingAddReferenceArgs {
+  docId?: PHID
+  input?: AtlasGrounding_AddReferenceInput
+}
+export interface AtlasGroundingRemoveReferenceArgs {
+  docId?: PHID
+  input?: AtlasGrounding_RemoveReferenceInput
 }
 
 // Input/Output Types
@@ -356,14 +368,14 @@ export interface Operation {
 export interface AtlasGrounding_AtlasGroundingState {
   name?: string
   docNo?: string
-  parent: PHID
+  parent: AtlasGrounding_GDocumentLink
   atlasType: AtlasGrounding_GAtlasType
   content?: string
   masterStatus: AtlasGrounding_GStatus
   globalTags: AtlasGrounding_GGlobalTag[]
-  references: PHID[]
-  originalContextData: AtlasGrounding_DocumentInfo[]
-  provenance?: URL
+  references: AtlasGrounding_GDocumentLink[]
+  originalContextData: AtlasGrounding_GDocumentLink[]
+  provenance: URL[]
   notionId?: string
 }
 
@@ -371,7 +383,7 @@ export interface AtlasGrounding_AtlasGroundingState {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasGrounding_DocumentInfo {
+export interface AtlasGrounding_GDocumentLink {
   id: PHID
   name?: OLabel
   docNo?: string
@@ -725,14 +737,14 @@ export interface DocumentDrive {
 export interface AtlasGroundingState {
   name?: string
   docNo?: string
-  parent: PHID
+  parent: GDocumentLink
   atlasType: GAtlasType
   content?: string
   masterStatus: GStatus
   globalTags: GGlobalTag[]
-  references: PHID[]
-  originalContextData: DocumentInfo[]
-  provenance?: URL
+  references: GDocumentLink[]
+  originalContextData: GDocumentLink[]
+  provenance: URL[]
   notionId?: string
 }
 
@@ -740,7 +752,7 @@ export interface AtlasGroundingState {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface DocumentInfo {
+export interface GDocumentLink {
   id: PHID
   name?: OLabel
   docNo?: string
@@ -757,12 +769,15 @@ export interface Mutation {
   AtlasGrounding_setContent?: number
   AtlasGrounding_setMasterStatus?: number
   AtlasGrounding_setAtlasType?: number
+  AtlasGrounding_setParent?: number
   AtlasGrounding_addTags?: number
   AtlasGrounding_removeTags?: number
   AtlasGrounding_addContextData?: number
   AtlasGrounding_removeContextData?: number
   AtlasGrounding_setProvenance?: number
   AtlasGrounding_setNotionId?: number
+  AtlasGrounding_addReference?: number
+  AtlasGrounding_removeReference?: number
 }
 
 /**
@@ -802,7 +817,17 @@ export interface AtlasGrounding_SetMasterStatusInput {
  */
 
 export interface AtlasGrounding_SetAtlasTypeInput {
-  atlasType?: GAtlasType[]
+  atlasType: GAtlasType
+}
+
+/**
+ * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
+ */
+
+export interface AtlasGrounding_SetParentInput {
+  id: PHID
+  name?: OLabel
+  docNo?: string
 }
 
 /**
@@ -810,7 +835,7 @@ export interface AtlasGrounding_SetAtlasTypeInput {
  */
 
 export interface AtlasGrounding_AddTagsInput {
-  newTags: GGlobalTag[]
+  tags: GGlobalTag[]
 }
 
 /**
@@ -844,7 +869,7 @@ export interface AtlasGrounding_RemoveContextDataInput {
  */
 
 export interface AtlasGrounding_SetProvenanceInput {
-  provenance?: URL
+  provenance: URL[]
 }
 
 /**
@@ -852,7 +877,25 @@ export interface AtlasGrounding_SetProvenanceInput {
  */
 
 export interface AtlasGrounding_SetNotionIdInput {
-  notionID?: string
+  notionID: string
+}
+
+/**
+ * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
+ */
+
+export interface AtlasGrounding_AddReferenceInput {
+  id: PHID
+  name?: string
+  docNo?: string
+}
+
+/**
+ * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
+ */
+
+export interface AtlasGrounding_RemoveReferenceInput {
+  id: PHID
 }
 
 /**
@@ -909,18 +952,18 @@ export interface OperationSelection {
 export interface AtlasGrounding_AtlasGroundingStateSelection {
   name?: boolean
   docNo?: boolean
-  parent?: boolean
+  parent?: AtlasGrounding_GDocumentLinkSelection
   atlasType?: boolean
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  references?: boolean
-  originalContextData?: AtlasGrounding_DocumentInfoSelection
+  references?: AtlasGrounding_GDocumentLinkSelection
+  originalContextData?: AtlasGrounding_GDocumentLinkSelection
   provenance?: boolean
   notionId?: boolean
 }
 
-export interface AtlasGrounding_DocumentInfoSelection {
+export interface AtlasGrounding_GDocumentLinkSelection {
   id?: boolean
   name?: boolean
   docNo?: boolean
@@ -1201,18 +1244,18 @@ export interface DocumentDriveSelection {
 export interface AtlasGroundingStateSelection {
   name?: boolean
   docNo?: boolean
-  parent?: boolean
+  parent?: GDocumentLinkSelection
   atlasType?: boolean
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  references?: boolean
-  originalContextData?: DocumentInfoSelection
+  references?: GDocumentLinkSelection
+  originalContextData?: GDocumentLinkSelection
   provenance?: boolean
   notionId?: boolean
 }
 
-export interface DocumentInfoSelection {
+export interface GDocumentLinkSelection {
   id?: boolean
   name?: boolean
   docNo?: boolean
@@ -1255,6 +1298,12 @@ export interface MutationSelection {
     __alias?: string
     __args?: { docId?: PHID; input?: AtlasGrounding_SetAtlasTypeInput }
   }
+  AtlasGrounding_setParent?: {
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: { docId?: PHID; input?: AtlasGrounding_SetParentInput }
+  }
   AtlasGrounding_addTags?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
@@ -1291,6 +1340,18 @@ export interface MutationSelection {
     __alias?: string
     __args?: { docId?: PHID; input?: AtlasGrounding_SetNotionIdInput }
   }
+  AtlasGrounding_addReference?: {
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: { docId?: PHID; input?: AtlasGrounding_AddReferenceInput }
+  }
+  AtlasGrounding_removeReference?: {
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: { docId?: PHID; input?: AtlasGrounding_RemoveReferenceInput }
+  }
 }
 
 export interface AtlasGrounding_SetGroundingNameInputSelection {
@@ -1313,8 +1374,14 @@ export interface AtlasGrounding_SetAtlasTypeInputSelection {
   atlasType?: boolean
 }
 
+export interface AtlasGrounding_SetParentInputSelection {
+  id?: boolean
+  name?: boolean
+  docNo?: boolean
+}
+
 export interface AtlasGrounding_AddTagsInputSelection {
-  newTags?: boolean
+  tags?: boolean
 }
 
 export interface AtlasGrounding_RemoveTagsInputSelection {
@@ -1337,6 +1404,16 @@ export interface AtlasGrounding_SetProvenanceInputSelection {
 
 export interface AtlasGrounding_SetNotionIdInputSelection {
   notionID?: boolean
+}
+
+export interface AtlasGrounding_AddReferenceInputSelection {
+  id?: boolean
+  name?: boolean
+  docNo?: boolean
+}
+
+export interface AtlasGrounding_RemoveReferenceInputSelection {
+  id?: boolean
 }
 
 export interface _ServiceSelection {
@@ -1425,6 +1502,16 @@ export declare const client: {
       number,
       AllEnums
     >
+    AtlasGrounding_setParent: Endpoint<
+      {
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasGroundingSetParentArgs
+      },
+      number,
+      AllEnums
+    >
     AtlasGrounding_addTags: Endpoint<
       {
         __headers?: { [key: string]: string }
@@ -1481,6 +1568,26 @@ export declare const client: {
         __retry?: boolean
         __alias?: string
         __args?: AtlasGroundingSetNotionIdArgs
+      },
+      number,
+      AllEnums
+    >
+    AtlasGrounding_addReference: Endpoint<
+      {
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasGroundingAddReferenceArgs
+      },
+      number,
+      AllEnums
+    >
+    AtlasGrounding_removeReference: Endpoint<
+      {
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasGroundingRemoveReferenceArgs
       },
       number,
       AllEnums

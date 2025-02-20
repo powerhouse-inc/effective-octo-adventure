@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
 import { EnumField, Form } from "@powerhousedao/design-system/scalars";
 import { AddTagsInput } from "document-models/atlas-foundation";
-import React from "react";
 
 type Props = {
   readonly defaultValue: AddTagsInput;
@@ -17,7 +16,7 @@ export function SetTagsForm(props: Props) {
     <Form onSubmit={onSubmit} submitChangesOnly>
       {({ handleSubmit }) => (
         <EnumField
-          defaultValue={props.defaultValue.newTags}
+          defaultValue={props.defaultValue.tags}
           label="Tags"
           multiple
           name="newTags"

@@ -108,9 +108,9 @@
 .atlas-cell-notionId-label {
   padding: 4px 0.3em 4px 0.5em;
   margin: 0;
-  background-color: #F1F1F1;
+  background-color: #f1f1f1;
   border-radius: 6px 0 0 6px;
-  border: 1px solid #DDDDDD;
+  border: 1px solid #dddddd;
   font-weight: bold;
   user-select: none;
 }
@@ -118,9 +118,9 @@
 .atlas-cell-notionId-value {
   padding: 4px 0.5em 4px 0.3em;
   margin: 0;
-  background-color: #F1F1F1;
+  background-color: #f1f1f1;
   border-radius: 0 6px 6px 0;
-  border: 1px solid #DDDDDD;
+  border: 1px solid #dddddd;
   border-left: none;
   user-select: all;
   text-transform: uppercase;

@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
 import { Form, StringField } from "@powerhousedao/design-system/scalars";
 import { SetDocNumberInput } from "document-models/atlas-foundation";
-import React from "react";
 
 type Props = {
   readonly defaultValue: SetDocNumberInput;

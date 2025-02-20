@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
 import { EnumField, Form } from "@powerhousedao/design-system/scalars";
 import { SetMasterStatusInput } from "document-models/atlas-foundation";
-import React from "react";
 
 type Props = {
   readonly defaultValue: SetMasterStatusInput;

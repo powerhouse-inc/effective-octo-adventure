@@ -3,10 +3,11 @@ import { DocumentsCache } from "./apply-changes/common/DocumentsCache";
 import { AtlasScopeClient } from "./apply-changes/AtlasScopeClient";
 import { ParsedNotionDocument } from "./apply-changes/atlas-base/NotionTypes";
 import { ReactorClient } from "./apply-changes/common/ReactorClient";
+import { AtlasFoundationClient } from "./apply-changes/AtlasFoundationClient";
 
 const GQL_ENDPOINT = 'http://localhost:4001/';
 const DRIVE_NAME = 'powerhouse';
-const PROCESS_LIMIT = 1000;
+const PROCESS_LIMIT = 5000;
 
 const skipNodes: { [id: string]: boolean } = {
   '422bae2b-2aec-4324-ae40-33c544820db3': false,
@@ -25,9 +26,12 @@ async function main() {
 
   const clients = {
     scopes: new AtlasScopeClient(new URL('/atlas-scope', GQL_ENDPOINT).href, documentsCache, readClient),
-  }
+    foundation: new AtlasFoundationClient(new URL('/atlas-foundation', GQL_ENDPOINT).href, documentsCache, readClient),
+  };
 
-  await clients.scopes.loadDriveDocumentCache();
+  for (const client of Object.values(clients)) {
+    await client.loadDriveDocumentCache();
+  }
   console.log(documentsCache.getDocumentsCount());
 
   console.log("\nProcessing Notion documents...");
@@ -52,9 +56,25 @@ async function main() {
 
     console.log(`>> ${processed + 1} [${notionDoc.id}]: ${getPNDTitle(notionDoc)} (${notionDoc.type})`);
 
-    if (notionDoc.type === 'scope') {
-      const newDocumentId = await clients.scopes.update(notionDoc);
+    try {
+      if (notionDoc.type === 'scope') {
+        const newDocumentId = await clients.scopes.update(notionDoc);
+      } else if(['article', 'section', 'core', 'activeDataController'].includes(notionDoc.type)) {
+        const newDocumentId = await clients.foundation.update(notionDoc);
+      } else {
+        console.log(`Update for type ${notionDoc.type} not implemented yet.`);
+      }
+    } catch (e) {
+      console.error(e);
     }
+
+    notionDoc.children.forEach((childNotionId) => {
+      if (!notionDocsIndex[childNotionId]) {
+        //console.warn(`Cannot find notion document ${childNotionId} (child ref of scope ${notionDoc?.name})`);
+      } else {
+        queue.push(notionDocsIndex[childNotionId]);
+      }
+    });
 
     processed++;
   };

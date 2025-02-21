@@ -53,7 +53,8 @@ export const getPNDTitle = (
 export const pndContentToString = (
   content: ParsedNotionDocumentContent,
 ): string => {
-  const result: string[] = content.heading ? [content.heading] : [];
+  //const result: string[] = content.heading ? [content.heading] : [];
+  const result: string[] = [];
 
   if (typeof content.text === "string") {
     result.push(content.text);
@@ -69,7 +70,10 @@ export const pndContentToString = (
     });
   }
 
-  return result.join("\n");
+  return result
+    .map((t) => t.trim())
+    .join("\n")
+    .trim();
 };
 
 export const viewNodeContentToString = (content: ViewTreeContentValue) => {

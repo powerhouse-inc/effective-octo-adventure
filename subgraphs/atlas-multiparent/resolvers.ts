@@ -90,14 +90,14 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
         return doc.revision.global + 1;
       },
 
-      AtlasMultiParent_setParent: async (_: any, args: any) => {
+      AtlasMultiParent_addParent: async (_: any, args: any) => {
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
         await reactor.addAction(
           driveId,
           docId,
-          actions.setParent({ ...args.input }),
+          actions.addParent({ ...args.input }),
         );
 
         return doc.revision.global + 1;
@@ -111,6 +111,19 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
           driveId,
           docId,
           actions.setAtlasType({ ...args.input }),
+        );
+
+        return doc.revision.global + 1;
+      },
+
+      AtlasMultiParent_removeParent: async (_: any, args: any) => {
+        const docId: string = args.docId || "";
+        const doc = await reactor.getDocument(driveId, docId);
+
+        await reactor.addAction(
+          driveId,
+          docId,
+          actions.removeParent({ ...args.input }),
         );
 
         return doc.revision.global + 1;
@@ -189,6 +202,32 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
           driveId,
           docId,
           actions.setNotionId({ ...args.input }),
+        );
+
+        return doc.revision.global + 1;
+      },
+
+      AtlasMultiParent_addReference: async (_: any, args: any) => {
+        const docId: string = args.docId || "";
+        const doc = await reactor.getDocument(driveId, docId);
+
+        await reactor.addAction(
+          driveId,
+          docId,
+          actions.addReference({ ...args.input }),
+        );
+
+        return doc.revision.global + 1;
+      },
+
+      AtlasMultiParent_removeReference: async (_: any, args: any) => {
+        const docId: string = args.docId || "";
+        const doc = await reactor.getDocument(driveId, docId);
+
+        await reactor.addAction(
+          driveId,
+          docId,
+          actions.removeReference({ ...args.input }),
         );
 
         return doc.revision.global + 1;

@@ -8,11 +8,15 @@ import { AtlasExploratoryTagsOperations } from "../../gen/tags/operations";
 
 export const reducer: AtlasExploratoryTagsOperations = {
   addTagsOperation(state, action, dispatch) {
-    // TODO: Implement "addTagsOperation" reducer
-    throw new Error('Reducer "addTagsOperation" not yet implemented');
+    action.input.newTags.forEach((t) => {
+      if (!state.globalTags.includes(t)) {
+        state.globalTags.push(t);
+      }
+    });
   },
   removeTagsOperation(state, action, dispatch) {
-    // TODO: Implement "removeTagsOperation" reducer
-    throw new Error('Reducer "removeTagsOperation" not yet implemented');
+    state.globalTags = state.globalTags.filter(
+      (t) => !action.input.tags.includes(t),
+    );
   },
 };

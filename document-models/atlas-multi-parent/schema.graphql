@@ -11,44 +11,58 @@ scalar Currency
 scalar PHID
 scalar OID
 type AtlasMultiParentState {
-  """Full name of the Grounding document entity.  """
+  """
+  Full name of the Grounding document entity.
+  """
   name: String
+  
   """
   Unique document number assigned to the Grounding document within Atlas.  
   """
   docNo: String
+  
   """
   Parent entity that this Grounding document belongs to.  
   This is a reference to another Atlas document.
   """
-  parent: [PHID!]!
+  parents: [MDocumentLink!]!
+  
   """
   The type of the Grounding document within Atlas.  
   Example: Tenet, Original Context Data, Active Data.
   """
   atlasType: MAtlasType!
-  """Entire content body of the Grounding document within Atlas.  """
+  
+  """
+  Entire content body of the Grounding document within Atlas.
+  """
   content: String
+  
   """
   Master status of the Grounding document as managed by the Atlas Axis facilitator group.  
   """
   masterStatus: MStatus!
+  
   """
   Document tags managed by the Atlas Axis facilitator group for classification.  
   """
   globalTags: [MGlobalTag!]!
+  
   """
   References to other Atlas entities that are linked to this Grounding document.  
   """
-  references: [PHID!]!
+  references: [MDocumentLink!]!
+  
   """
   List of Atlas documents that were relevant for the creation of this Grounding document.  
   """
-  originalContextData: [DocumentInfo!]!
+  originalContextData: [MDocumentLink!]!
+  
   """
   Link to the original P0hub Notion environment where this document was first created or referenced.
   """
-  provenance: URL
+  provenance: [URL!]!
+  
   """
   Original Notion document ID of the Grounding document.  
   Used for cross-system referencing and linking back to the original Notion source.
@@ -59,7 +73,7 @@ type AtlasMultiParentState {
 """
 Reference to a document within Atlas with optional name and document number for display reasons. 
 """
-type DocumentInfo {
+type MDocumentLink {
   id: PHID!
   name: OLabel
   docNo: String
@@ -73,7 +87,9 @@ enum MAtlasType {
   NEEDED_RESEARCH 
 }
 
-"""Defines the lifecycle stage of the Grounding document within Atlas.  """
+"""
+Defines the lifecycle stage of the Grounding document within Atlas.
+"""
 enum MStatus {
   PLACEHOLDER
   PROVISIONAL
@@ -83,7 +99,7 @@ enum MStatus {
 }
 
 """
-These global tags are used for classification in Grounding documents.  
+These global tags are used for classification in Grounding documents. 
 """
 enum MGlobalTag {
   SCOPE_ADVISOR
@@ -104,6 +120,7 @@ enum MGlobalTag {
 
 
 
+
 # general
 
 input SetMultiparentNameInput {
@@ -112,64 +129,68 @@ input SetMultiparentNameInput {
 }
 
 input SetDocNumberInput {
-  "Add your inputs here"
   docNo: String! 
 }
 
 input SetContentInput {
-  "Add your inputs here"
   content: String! 
 }
 
 input SetMasterStatusInput {
-  "Add your inputs here"
   masterStatus: MStatus! 
 }
 
-input SetParentInput {
-  "Add your inputs here"
-  parent: [PHID!]
+input AddParentInput {
+  id: PHID!
+  name: OLabel
+  docNo: String
 }
 
 input SetAtlasTypeInput {
-  "Add your inputs here"
-  atlasType: [MAtlasType!]
+  atlasType: MAtlasType!
+}
+
+input RemoveParentInput {
+  id: PHID!
 }
 
 # tags
 
 input AddTagsInput {
-  "Add your inputs here"
-  newTags: [MGlobalTag!]!
+  tags: [MGlobalTag!]!
 }
 
 input RemoveTagsInput {
-  "Add your inputs here"
   tags: [MGlobalTag!]!
 }
 
 # context
 
 input AddContextDataInput {
-  "Add your inputs here"
   id: PHID!
-  name: String
+  name: OLabel
   docNo: String
-  
 }
 
 input RemoveContextDataInput {
-  "Add your inputs here"
   id: PHID!
 }
 
 input SetProvenanceInput {
-  "Add your inputs here"
-  provenance: URL
+  provenance: [URL!]!
   
 }
 
 input SetNotionIdInput {
-  "Add your inputs here"
-  notionID: String
+  notionID: String!
+}
+
+input AddReferenceInput {
+  id: PHID!
+  name: OLabel
+  docNo: String
+}
+
+input RemoveReferenceInput {
+  id: PHID!
 }

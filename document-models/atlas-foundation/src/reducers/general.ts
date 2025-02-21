@@ -30,13 +30,15 @@ export const reducer: AtlasFoundationGeneralOperations = {
   },
 
   addReferenceOperation(state, action, dispatch) {
-    const newReference = {
+    state.references = state.references.filter(
+      (ref) => ref.id !== action.input.id,
+    );
+
+    state.references.push({
       id: action.input.id,
       name: action.input.name || null,
       docNo: action.input.docNo || null,
-    };
-
-    state.references.push(newReference);
+    });
   },
 
   removeReferenceOperation(state, action, dispatch) {

@@ -1,29 +1,45 @@
-/**
- * This is a scaffold file meant for customization:
- * - modify it by implementing the reducer functions
- * - delete the file and run the code generator again to have it reset
- */
-
 import { AtlasMultiParentContextOperations } from "../../gen/context/operations";
 
 export const reducer: AtlasMultiParentContextOperations = {
   addContextDataOperation(state, action, dispatch) {
-    // TODO: Implement "addContextDataOperation" reducer
-    throw new Error('Reducer "addContextDataOperation" not yet implemented');
+    state.originalContextData = state.originalContextData.filter(
+      (ocd) => ocd.id !== action.input.id,
+    );
+
+    state.originalContextData.push({
+      id: action.input.id,
+      name: action.input.name || null,
+      docNo: action.input.docNo || null,
+    });
   },
+
   removeContextDataOperation(state, action, dispatch) {
-    // TODO: Implement "removeContextDataOperation" reducer
-    throw new Error('Reducer "removeContextDataOperation" not yet implemented');
+    state.originalContextData = state.originalContextData.filter(
+      (ocd) => ocd.id !== action.input.id,
+    );
   },
+
   setProvenanceOperation(state, action, dispatch) {
-    // TODO: Implement "setProvenanceOperation" reducer
-    throw new Error('Reducer "setProvenanceOperation" not yet implemented');
+    state.provenance = action.input.provenance;
   },
+
   setNotionIdOperation(state, action, dispatch) {
-    if (action.input.notionID) {
-      state.notionId = action.input.notionID;
-    } else {
-      throw new Error("Notion ID missing from input.");
-    }
+    state.notionId = action.input.notionID;
+  },
+
+  addReferenceOperation(state, action, dispatch) {
+    state.references = state.references.filter(
+      (ref) => ref.id !== action.input.id,
+    );
+
+    state.references.push({
+      id: action.input.id,
+      name: action.input.name || null,
+      docNo: action.input.docNo || null,
+    });
+  },
+
+  removeReferenceOperation(state, action, dispatch) {
+    state.references = state.references.filter((r) => r.id !== action.input.id);
   },
 };

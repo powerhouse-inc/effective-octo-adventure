@@ -13,12 +13,19 @@ import {
   SetContentInput,
   AddTagsInput,
 } from "../../document-models/atlas-foundation";
+import docsIndex from "../index.json";
 import { utils as documentModelUtils } from "document-model/document";
 import { SetDocNumberForm } from "./components/SetDocNumberForm";
 import { SetFoundationNameForm } from "./components/SetFoundationNameForm";
 import { SetMasterStatusForm } from "./components/SetMasterStatusForm";
 import { SetContentForm } from "./components/SetContentForm";
 import { SetTagsForm } from "./components/SetTagsForm";
+import {
+  Form,
+  PHIDField,
+  UrlField,
+} from "@powerhousedao/design-system/scalars";
+import { AutocompleteOption } from "node_modules/@powerhousedao/design-system/dist/src/scalars/components/fragments/autocomplete-field/types";
 
 export type IProps = EditorProps<
   AtlasFoundationState,
@@ -29,6 +36,28 @@ export type IProps = EditorProps<
 export default function Editor(props: IProps) {
   // generate a random id
   // const id = documentModelUtils.hashKey();
+
+  const parentTitle = [
+    props.document.state.global.parent?.docNo || null,
+    props.document.state.global.parent?.name || null,
+  ]
+    .filter((el) => el !== null)
+    .join(" - ");
+
+  const parentInfo = {
+    value: "phd:" + (props.document.state.global.parent?.id || ""),
+    title: parentTitle,
+    path: "sky/atlas-scope",
+    icon: "File" as const,
+    description: " ",
+  };
+
+  // eslint-disable-next-line @typescript-eslint/require-await
+  const cb = async (phid: string): Promise<AutocompleteOption[]> =>
+    (docsIndex as AutocompleteOption[]).filter(
+      (entry) =>
+        entry.value.includes(phid) || (entry.title || "").includes(phid),
+    );
 
   return (
     <>
@@ -71,17 +100,58 @@ export default function Editor(props: IProps) {
             }}
           />
         </div>
+        <div className="atlas-cell-parent">
+          <Form
+            onSubmit={function (data: any): void | Promise<void> {
+              throw new Error("Function not implemented.");
+            }}
+          >
+            <PHIDField
+              defaultValue={parentInfo.value}
+              fetchOptionsCallback={cb}
+              fetchSelectedOptionCallback={(x) => cb(x).then((x) => x[0])}
+              initialOptions={[parentInfo]}
+              label="Parent Document:"
+              name="parentId"
+              placeholder="phd:"
+              variant="withValueTitleAndDescription"
+            />
+          </Form>
+        </div>
         <div className="atlas-cell-tags">
           <SetTagsForm
             defaultValue={{
-              newTags: props.document.state.global.globalTags,
+              tags: props.document.state.global.globalTags,
             }}
             dispatch={(input: AddTagsInput) => {
               props.dispatch(actions.addTags(input));
             }}
           />
         </div>
+        <div className="atlas-cell-provenance">
+          {props.document.state.global.provenance.map((provenanceUrl) => (
+            <Form
+              key={provenanceUrl}
+              onSubmit={function (data: any): void | Promise<void> {
+                throw new Error("Function not implemented.");
+              }}
+            >
+              <UrlField
+                defaultValue={provenanceUrl}
+                label="Provenance"
+                name="provenance"
+                platformIcons={{
+                  "notion.so": "Globe",
+                  "www.notion.so": "Globe",
+                }}
+              />
+            </Form>
+          ))}
+        </div>
       </div>
+      <pre style={{ display: "block", margin: "2em 5%" }}>
+        {JSON.stringify(props.document.state, null, 2)}
+      </pre>
     </>
   );
 }

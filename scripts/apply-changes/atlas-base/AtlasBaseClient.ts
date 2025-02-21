@@ -4,6 +4,7 @@ import { ReactorClient } from "../common/ReactorClient";
 import { DocumentClient } from "../common/DocumentClient";
 import { ParsedNotionDocument } from "./NotionTypes";
 import { getPNDTitle } from "document-models/utils";
+import _ from "lodash";
 
 type WriteClientBase = {
   setUrl(url: string): void;
@@ -55,7 +56,7 @@ export abstract class AtlasBaseClient<ScopeType extends AtlasStateType, WriteCli
     const stateFields = Object.keys(target) as (keyof AtlasStateType)[];
 
     for (const key of stateFields) {
-      if (target[key] != current[key]) {
+      if (!_.isEqual(target[key], current[key])) {
         try {
           await this.patchField(id, key, current[key], target[key]);
         } catch (e) {

@@ -59,7 +59,7 @@ export class AtlasScopeClient extends AtlasBaseClient<AtlasScopeState, typeof wr
       docNo: input.docNo,
       name: getPNDTitle(input, false),
       masterStatus: statusStringToEnum(input.masterStatusNames[0] || 'PLACEHOLDER'),
-      content: input.content.map(c => pndContentToString(c)).join("\n"),
+      content: input.content.map(c => pndContentToString(c)).join("\n").trim(),
       notionId: input.id,
       //globalTags: [],
     };

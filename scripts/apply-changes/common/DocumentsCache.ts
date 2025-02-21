@@ -1,4 +1,6 @@
+import { Maybe } from "document-model/document";
 import { DriveNodes } from "../common/ReactorClient";
+import fs from "fs";
 
 export type DocumentCacheEntry = {
   id: string,
@@ -14,7 +16,7 @@ export class DocumentsCache {
   private documentsByType: Record<string, Record<string, DocumentCacheEntry>> = {};
   private inputDocumentsLookup: Record<string, Record<string, string>> = {};
 
-  constructor(nodes: DriveNodes, inputTypeDebugName:string = "Input") {
+  constructor(nodes: DriveNodes, inputTypeDebugName: string = "Input") {
     this.initializeNodesByType(nodes);
     this.inputTypeDebugName = inputTypeDebugName;
   }
@@ -82,7 +84,19 @@ export class DocumentsCache {
     return this.documentsByType[documentType][id];
   }
 
-  public hasDocument(documentType:string, id:string, requireObject:boolean = false): boolean {
+  public searchDocument(id: string): Maybe<DocumentCacheEntry> {
+    let result: Maybe<DocumentCacheEntry> = null;
+
+    Object.keys(this.documentsByType).forEach(type => {
+      if (this.hasDocument(type, id)) {
+        result = this.getDocumentCacheEntry(type, id);
+      }
+    });
+
+    return result;
+  }
+
+  public hasDocument(documentType: string, id: string, requireObject: boolean = false): boolean {
     const hasDocumentEntry = !!this.documentsByType[documentType][id];
     return hasDocumentEntry && (!requireObject || !!this.documentsByType[documentType][id].state);
   }
@@ -102,12 +116,42 @@ export class DocumentsCache {
 
   public getDocumentsCount() {
     return Object.keys(this.documentsByType).reduce(
-      (result, key) => { 
+      (result, key) => {
         result[key] = Object.keys(this.documentsByType[key]).length;
-        return result; 
+        return result;
       },
       {} as Record<string, number>
     );
+  }
+
+  public saveToFile(filePath: string) {
+    const entries = Object.keys(this.documentsByType)
+      .filter(k => k != "folder")
+      .map(k => this.getFileEntries(k))
+      .reduce((prev, next) => prev.concat(...next), []);
+
+    fs.writeFileSync(filePath, JSON.stringify(entries, null, 2));
+  }
+
+  private getFileEntries(documentType: string) {
+    const map = this.documentsByType[documentType];
+
+    if (!map) {
+      throw new Error(`Cannot produce file entries: document type ${documentType} not found.`);
+    }
+
+    return Object.keys(map).map(key => ({
+      value: "phd:" + map[key].id,
+      path: documentType,
+      icon: "File" as const,
+      description: " ",
+      title: [
+        map[key].state?.docNo || null,
+        map[key].name || "Untitled"
+      ]
+        .filter(s => s !== null)
+        .join(" - ")
+    }));
   }
 
   private initializeNodesByType(nodes: DriveNodes) {

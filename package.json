@@ -125,8 +125,10 @@
   "dependencies": {
     "@powerhousedao/common": "^1.1.0",
     "@types/diff": "^7.0.1",
+    "@types/lodash": "^4.17.15",
     "diff": "^7.0.0",
     "graphql-tag": "^2.12.6",
-    "graphql-ts-client": "^10.4.0"
+    "graphql-ts-client": "^10.4.0",
+    "lodash": "^4.17.21"
   }
 }

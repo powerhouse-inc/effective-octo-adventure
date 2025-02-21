@@ -33,6 +33,14 @@
   grid-column: 2/7;
 }
 
+.atlas-cell-parent {
+  grid-column: 1/9;
+}
+
+.atlas-cell-provenance {
+  grid-column: 1/9;
+}
+
 .atlas-cell-name-double {
   margin-top: 35px;
   grid-column: 10/15;

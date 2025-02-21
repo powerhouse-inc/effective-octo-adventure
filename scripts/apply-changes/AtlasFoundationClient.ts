@@ -1,11 +1,12 @@
-import { getPNDTitle, pndContentToString } from 'document-models/utils';
+import { getPNDTitle, pndContentToString } from '../../document-models/utils';
 import { client as writeClient } from '../clients/atlas-foundation';
 import { ParsedNotionDocument } from './atlas-base/NotionTypes';
 import { DocumentsCache } from './common/DocumentsCache';
 import { ReactorClient } from './common/ReactorClient';
 import { gql } from 'graphql-request';
 import { AtlasBaseClient, mutationArg } from './atlas-base/AtlasBaseClient';
-import { AtlasFoundationState, SetContentInput, SetDocNumberInput, SetMasterStatusInput, SetNotionIdInput, SetFoundationNameInput, SetAtlasTypeInput, SetParentInput, SetProvenanceInput, FStatus  } from 'document-models/atlas-foundation';
+import { AtlasFoundationState, SetContentInput, SetDocNumberInput, SetMasterStatusInput, SetNotionIdInput, SetFoundationNameInput, SetAtlasTypeInput, SetParentInput, SetProvenanceInput, FStatus, Maybe, FDocumentLink  } from 'document-models/atlas-foundation';
+import { extractDocNoAndTitle } from './atlas-base/utils';
 
 const DOCUMENT_TYPE = 'sky/atlas-foundation';
 
@@ -54,14 +55,34 @@ export class AtlasFoundationClient extends AtlasBaseClient<AtlasFoundationState,
   }
 
   protected getTargetState(input: ParsedNotionDocument, currentState: AtlasFoundationState): AtlasFoundationState {
+    const [docNo, title] = extractDocNoAndTitle(input.docNo, input.name);
+    
+    let parent: Maybe<FDocumentLink> = null;
+    if (input.parents?.length > 0) {
+      const parentDocIds = this.documentsCache.resolveInputId(input.parents[0]);
+      if (parentDocIds.length) {
+        const parentDoc = this.documentsCache.searchDocument(parentDocIds[0]);
+        if (parentDoc) {
+          parent = {
+            id: parentDoc.id,
+            name: parentDoc.name || null,
+            docNo: parentDoc.state?.docNo || null
+          };
+        }
+      }
+    } else {
+      console.log(`No parents: ${JSON.stringify(input, null, 1)}`);
+    }
+
     return {
       ...currentState,
-      docNo: input.docNo,
-      name: getPNDTitle(input, false),
+      docNo,
+      name: title,
       masterStatus: input.masterStatusNames[0]?.toUpperCase() || "PLACEHOLDER",
-      content: input.content.map(c => pndContentToString(c)).join("\n"),
+      content: input.content.map(c => pndContentToString(c)).join("\n").trim(),
       notionId: input.id,
-      //globalTags: [],
+      provenance: input.hubUrls,
+      parent
     };
   }
 
@@ -92,8 +113,13 @@ export class AtlasFoundationClient extends AtlasBaseClient<AtlasFoundationState,
         throw new Error('originalContextData patcher is not implemented yet.');
         break;
       case 'provenance':
-        throw new Error('provenance patcher is not implemented yet.');
+        await patch.AtlasFoundation_setProvenance(arg<SetProvenanceInput>({ provenance: target }));
         break;
+      case 'parent':
+        await patch.AtlasFoundation_setParent(arg<SetParentInput>({ ...target }));
+        break;
+      default: 
+        throw new Error(`Patcher for field ${fieldName} not implemented`);
     }
   }
 }

@@ -7,14 +7,14 @@ import { AtlasFoundationClient } from "./apply-changes/AtlasFoundationClient";
 
 const GQL_ENDPOINT = 'http://localhost:4001/';
 const DRIVE_NAME = 'powerhouse';
-const PROCESS_LIMIT = 5000;
+const PROCESS_LIMIT = 50;
 
 const skipNodes: { [id: string]: boolean } = {
-  '422bae2b-2aec-4324-ae40-33c544820db3': false,
-  'eca5e587-79e3-480b-b70d-dd25697c9e1f': false,
+  '422bae2b-2aec-4324-ae40-33c544820db3': true,
+  'eca5e587-79e3-480b-b70d-dd25697c9e1f': true,
   'cde3202c-9073-43db-8405-4094624c57ea': false,
-  '0ba1b2bd-9513-487d-974c-0d08fb04b341': false,
-  '9e3f76e6-3343-4e70-af0b-c914be2e8d5a': false,
+  '0ba1b2bd-9513-487d-974c-0d08fb04b341': true,
+  '9e3f76e6-3343-4e70-af0b-c914be2e8d5a': true,
 };
 
 const readClient = new ReactorClient(GQL_ENDPOINT, DRIVE_NAME);
@@ -72,7 +72,11 @@ async function main() {
       if (!notionDocsIndex[childNotionId]) {
         //console.warn(`Cannot find notion document ${childNotionId} (child ref of scope ${notionDoc?.name})`);
       } else {
-        queue.push(notionDocsIndex[childNotionId]);
+        const item = {...notionDocsIndex[childNotionId]};
+        if (!item.parents || item.parents.indexOf(notionDoc.id) < 0) {
+          item.parents = [...(item.parents || []), notionDoc.id];
+        }
+        queue.push(item);
       }
     });
 
@@ -80,6 +84,9 @@ async function main() {
   };
 
   console.log(`Processed: ${processed}. Skipped: ${skipped}. Queued: ${queue.length}.`);
+
+  documentsCache.saveToFile("./editors/index.json");
+  console.log(`Document cache saved to file.`);
 }
 
 await main();

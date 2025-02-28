@@ -15,7 +15,7 @@ export const module: ExtendedEditor<
   Component: Editor,
   documentTypes: ["powerhouse/document-drive"],
   config: {
-    id: "editor-id",
+    id: "AtlasDriveExplorer",
     disableExternalControls: true,
     documentToolbarEnabled: true,
     showSwitchboardLink: true,

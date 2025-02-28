@@ -15,7 +15,7 @@ export const module: ExtendedEditor<
   Component: Editor,
   documentTypes: ["sky/atlas-grounding"],
   config: {
-    id: "editor-id",
+    id: "AtlasGrounding",
     disableExternalControls: true,
     documentToolbarEnabled: true,
     showSwitchboardLink: true,

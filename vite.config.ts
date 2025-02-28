@@ -12,6 +12,7 @@ const entry: Record<string, string> = {
   index: "index.ts",
   documentModels: path.resolve(documentModelsDir, "index.ts"),
   editors: path.resolve(editorsDir, "index.ts"),
+  manifest: "powerhouse.manifest.json",
 };
 
 // add subpackage for each editor
@@ -39,6 +40,8 @@ export default defineConfig(() => {
     "react-dom",
     /^document-model\//,
     "document-model-libs",
+    "@powerhousedao/reactor-browser",
+    /^@powerhousedao\/reactor-browser\//,
   ];
 
   const test: InlineConfig = {
@@ -48,6 +51,7 @@ export default defineConfig(() => {
   return {
     test,
     build: {
+      minify: false,
       outDir: `dist`,
       emptyOutDir: true,
       lib: {

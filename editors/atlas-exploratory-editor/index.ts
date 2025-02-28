@@ -15,7 +15,7 @@ export const module: ExtendedEditor<
   Component: Editor,
   documentTypes: ["sky/atlas-exploratory"],
   config: {
-    id: "editor-id",
+    id: "AtlasExploratory",
     disableExternalControls: true,
     documentToolbarEnabled: true,
     showSwitchboardLink: true,

@@ -1,9 +1,9 @@
 {
   "name": "@sky-ph/atlas",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "AGPL-3.0-only",
   "types": "dist/index.d.ts",
-  "main": "dist/index.cjs",
+  "main": "dist/index.js",
   "module": "dist/index.js",
   "type": "module",
   "publishConfig": {
@@ -16,17 +16,22 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/es/index.js",
-      "require": "./dist/cjs/index.cjs"
+      "require": "./dist/cjs/index.js"
     },
     "./editors": {
       "types": "./dist/editors.d.ts",
       "import": "./dist/es/editors.js",
-      "require": "./dist/cjs/editors.cjs"
+      "require": "./dist/cjs/editors.js"
     },
     "./document-models": {
       "types": "./dist/documentModels.d.ts",
       "import": "./dist/es/documentModels.js",
-      "require": "./dist/cjs/documentModels.cjs"
+      "require": "./dist/cjs/documentModels.js"
+    },
+    "./manifest": {
+      "types": "./dist/manifest.d.ts",
+      "require": "./dist/cjs/manifest.js",
+      "import": "./dist/es/manifest.js"
     }
   },
   "scripts": {
@@ -43,7 +48,6 @@
     "test": "vitest run",
     "test:nogen": "vitest run",
     "test:watch": "vitest",
-    "prepublishOnly": "npm run build",
     "connect": "ph-cli connect",
     "reactor": "ph-cli reactor",
     "install:storybook": "tsx scripts/index.ts",
@@ -56,6 +60,7 @@
     "script:generate-all": "bash ./docmodel-zips/generate-all.sh"
   },
   "peerDependencies": {
+    "@powerhousedao/reactor-browser": "^1.11.0",
     "document-model": "^2.20.0",
     "document-model-libs": "^1.132.1",
     "react": "^18.3.1",
@@ -66,14 +71,15 @@
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",
     "@powerhousedao/analytics-engine-core": "^0.3.2",
-    "@powerhousedao/codegen": "link:../powerhouse/packages/codegen",
-    "@powerhousedao/config": "link:../powerhouse/packages/config",
+    "@powerhousedao/codegen": "dev",
+    "@powerhousedao/config": "dev",
     "@powerhousedao/design-system": "1.22.5-canary.46",
     "@powerhousedao/mips-parser": "2.2.2-alpha.0",
-    "@powerhousedao/ph-cli": "link:../powerhouse/clis/ph-cli",
-    "@powerhousedao/reactor-api": "link:../powerhouse/packages/reactor-api",
-    "@powerhousedao/reactor-local": "link:../powerhouse/packages/reactor-local",
-    "@powerhousedao/scalars": "link:../powerhouse/packages/scalars",
+    "@powerhousedao/ph-cli": "dev",
+    "@powerhousedao/reactor-api": "dev",
+    "@powerhousedao/reactor-browser": "dev",
+    "@powerhousedao/reactor-local": "dev",
+    "@powerhousedao/scalars": "dev",
     "@storybook/addon-essentials": "^8.4.4",
     "@storybook/addon-interactions": "^8.4.4",
     "@storybook/addon-links": "^8.4.4",
@@ -91,7 +97,8 @@
     "@typescript-eslint/eslint-plugin": "^8.21.0",
     "@typescript-eslint/parser": "^8.21.0",
     "autoprefixer": "^10.4.20",
-    "document-model": "^2.20.0",
+    "document-drive": "dev",
+    "document-model": "2.20.0",
     "document-model-libs": "^1.132.1",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^9.1.0",
@@ -123,7 +130,7 @@
   },
   "description": "",
   "dependencies": {
-    "@powerhousedao/common": "^1.1.0",
+    "@powerhousedao/common": "dev",
     "@types/diff": "^7.0.1",
     "@types/lodash": "^4.17.15",
     "diff": "^7.0.0",

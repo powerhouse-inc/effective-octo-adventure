@@ -15,7 +15,7 @@ export const module: ExtendedEditor<
   Component: Editor,
   documentTypes: ["sky/atlas-multiparent"],
   config: {
-    id: "editor-id",
+    id: "AtlasMultiParent",
     disableExternalControls: true,
     documentToolbarEnabled: true,
     showSwitchboardLink: true,

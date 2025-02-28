@@ -15,7 +15,7 @@ export const module: ExtendedEditor<
   Component: Editor,
   documentTypes: ["sky/atlas-foundation"],
   config: {
-    id: "editor-id",
+    id: "AtlasFoundation",
     disableExternalControls: true,
     documentToolbarEnabled: true,
     showSwitchboardLink: true,

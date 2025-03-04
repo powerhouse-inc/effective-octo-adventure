@@ -3,35 +3,25 @@
  * Delete the file and run the code generator again to have it reset
  */
 
-import { actions as BaseActions, DocumentModel } from "document-model/document";
-import { actions as AtlasExploratoryActions, AtlasExploratory } from "./gen";
+import { actions as BaseActions, DocumentModelModule } from "document-model";
+import { actions as AtlasExploratoryActions } from "./gen";
 import { reducer } from "./gen/reducer";
 import { documentModel } from "./gen/document-model";
 import genUtils from "./gen/utils";
 import * as customUtils from "./src/utils";
-import {
-  AtlasExploratoryState,
-  AtlasExploratoryAction,
-  AtlasExploratoryLocalState,
-} from "./gen/types";
+import { AtlasExploratoryDocument } from "./gen/types";
 
-const Document = AtlasExploratory;
 const utils = { ...genUtils, ...customUtils };
 const actions = { ...BaseActions, ...AtlasExploratoryActions };
 
-export const module: DocumentModel<
-  AtlasExploratoryState,
-  AtlasExploratoryAction,
-  AtlasExploratoryLocalState
-> = {
-  Document,
+export const module: DocumentModelModule<AtlasExploratoryDocument> = {
   reducer,
   actions,
   utils,
   documentModel,
 };
 
-export { AtlasExploratory, Document, reducer, actions, utils, documentModel };
+export { reducer, actions, utils, documentModel };
 
 export * from "./gen/types";
 export * from "./src/utils";

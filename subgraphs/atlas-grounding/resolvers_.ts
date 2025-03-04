@@ -1,34 +1,36 @@
 import { Subgraph } from "@powerhousedao/reactor-api";
 import { actions } from "../../document-models/atlas-grounding";
 import { actions as driveActions } from "document-model-libs/document-drive";
-import { utils as docUtils } from "document-model/document";
+import { generateId, hashKey } from "document-model";
 
 export const getResolvers = (subgraph: Subgraph, driveId: string) => {
   const reactor = subgraph.reactor;
 
   return {
     Mutation: {
-
       AtlasGrounding_createDocument: async (_: any, args: any) => {
-        const docId = docUtils.generateId();
-        
-        reactor.addDriveAction(driveId, driveActions.addFile({
-          id: docId,
-          name: args.name,
-          documentType: "sky/atlas-grounding",
-          synchronizationUnits:[
-            { 
-              branch: "main", 
-              scope: "global", 
-              syncId: docUtils.hashKey(), 
-            },
-            { 
-              branch: "main", 
-              scope: "local", 
-              syncId: docUtils.hashKey(), 
-            }
-          ],
-        }));
+        const docId = generateId();
+
+        reactor.addDriveAction(
+          driveId,
+          driveActions.addFile({
+            id: docId,
+            name: args.name,
+            documentType: "sky/atlas-grounding",
+            synchronizationUnits: [
+              {
+                branch: "main",
+                scope: "global",
+                syncId: hashKey(),
+              },
+              {
+                branch: "main",
+                scope: "local",
+                syncId: hashKey(),
+              },
+            ],
+          }),
+        );
 
         return docId;
       },

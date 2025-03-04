@@ -1,35 +1,25 @@
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/jsx-max-depth */
 import "../atlas.css";
-import { EditorProps } from "document-model/document";
+import { EditorProps } from "document-model";
 import {
-  AtlasGroundingState,
-  AtlasGroundingAction,
-  AtlasGroundingLocalState,
   actions,
   SetDocNumberInput,
   SetGroundingNameInput,
   SetMasterStatusInput,
   SetContentInput,
   AddTagsInput,
+  AtlasGroundingDocument,
 } from "../../document-models/atlas-grounding";
-import { utils as documentModelUtils } from "document-model/document";
 import { SetDocNumberForm } from "./components/SetDocNumberForm";
 import { SetGroundingNameForm } from "./components/SetGroundingNameForm";
 import { SetMasterStatusForm } from "./components/SetMasterStatusForm";
 import { SetContentForm } from "./components/SetContentForm";
 import { SetTagsForm } from "./components/SetTagsForm";
 
-export type IProps = EditorProps<
-  AtlasGroundingState,
-  AtlasGroundingAction,
-  AtlasGroundingLocalState
->;
+export type IProps = EditorProps<AtlasGroundingDocument>;
 
 export default function Editor(props: IProps) {
-  // generate a random id
-  // const id = documentModelUtils.hashKey();
-
   return (
     <>
       <h1 className="atlas-header">Grounding Document</h1>

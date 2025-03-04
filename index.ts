@@ -1,4 +1,4 @@
-import { Manifest } from "document-model/document";
+import { Manifest } from "document-model";
 import * as documentModelsExports from "./document-models";
 import * as editorsExports from "./editors";
 

@@ -1,19 +1,16 @@
 /* eslint-disable react/jsx-max-depth */
 /* eslint-disable react/jsx-no-bind */
 import "../atlas.css";
-import { EditorProps } from "document-model/document";
+import { EditorProps } from "document-model";
 import {
-  AtlasScopeState,
-  AtlasScopeAction,
-  AtlasScopeLocalState,
   actions,
   SetScopeNameInput,
   SetDocNumberInput,
   SetContentInput,
   SetMasterStatusInput,
   AddTagsInput,
+  AtlasScopeDocument,
 } from "../../document-models/atlas-scope";
-import { utils as documentModelUtils } from "document-model/document";
 import { SetScopeNameForm } from "./components/SetScopeNameForm";
 import { SetDocNumberForm } from "./components/SetDocNumberForm";
 import { SetContentForm } from "./components/SetContentForm";
@@ -21,16 +18,9 @@ import { SetMasterStatusForm } from "./components/SetMasterStatusForm";
 import { SetTagsForm } from "./components/SetTagsForm";
 import { EditorLayout } from "./components/EditorLayout";
 
-export type IProps = EditorProps<
-  AtlasScopeState,
-  AtlasScopeAction,
-  AtlasScopeLocalState
->;
+export type IProps = EditorProps<AtlasScopeDocument>;
 
 export default function Editor(props: IProps) {
-  // generate a random id
-  // const id = documentModelUtils.hashKey();
-
   return (
     <EditorLayout>
       <style>

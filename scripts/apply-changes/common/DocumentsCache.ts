@@ -1,19 +1,20 @@
-import { Maybe } from "document-model/document";
+import { Maybe } from "document-model";
 import { DriveNodes } from "../common/ReactorClient";
 import fs from "fs";
 
 export type DocumentCacheEntry = {
-  id: string,
-  documentType: string,
-  inputId: string | null,
-  parentFolder?: string,
-  name?: string,
-  state?: Object,
-}
+  id: string;
+  documentType: string;
+  inputId: string | null;
+  parentFolder?: string;
+  name?: string;
+  state?: Object;
+};
 
 export class DocumentsCache {
   private inputTypeDebugName: string;
-  private documentsByType: Record<string, Record<string, DocumentCacheEntry>> = {};
+  private documentsByType: Record<string, Record<string, DocumentCacheEntry>> =
+    {};
   private inputDocumentsLookup: Record<string, Record<string, string>> = {};
 
   constructor(nodes: DriveNodes, inputTypeDebugName: string = "Input") {
@@ -27,7 +28,9 @@ export class DocumentsCache {
     }
 
     if (this.documentsByType[entry.documentType][entry.id]) {
-      throw new Error(`Document of type ${entry.documentType} already exists on cache create: ${entry.id}`);
+      throw new Error(
+        `Document of type ${entry.documentType} already exists on cache create: ${entry.id}`,
+      );
     }
 
     this.documentsByType[entry.documentType][entry.id] = { ...entry };
@@ -36,27 +39,36 @@ export class DocumentsCache {
 
   public updateDocument(entry: DocumentCacheEntry) {
     if (!this.documentsByType[entry.documentType]) {
-      throw new Error(`Cannot find document type on update cache: ${entry.documentType}`);
+      throw new Error(
+        `Cannot find document type on update cache: ${entry.documentType}`,
+      );
     }
 
     const existing = this.documentsByType[entry.documentType][entry.id];
     if (!existing) {
-      throw new Error(`Cannot find document of type ${entry.documentType} on cache update: ${entry.id}`);
+      throw new Error(
+        `Cannot find document of type ${entry.documentType} on cache update: ${entry.id}`,
+      );
     }
 
     this.documentsByType[entry.documentType][entry.id] = {
       ...existing,
-      ...entry
+      ...entry,
     };
 
     this.updateInputId(existing, entry);
   }
 
-  private updateInputId(existing: DocumentCacheEntry | null, update: DocumentCacheEntry) {
+  private updateInputId(
+    existing: DocumentCacheEntry | null,
+    update: DocumentCacheEntry,
+  ) {
     if (!existing || existing.inputId !== update.inputId) {
       if (existing && existing.inputId !== null) {
         if (!this.inputDocumentsLookup[existing.inputId][existing.id]) {
-          throw new Error(`Detected missing ${this.inputTypeDebugName} lookup entry for ${this.inputTypeDebugName} ID ${existing.inputId} (document ID ${existing.id})`);
+          throw new Error(
+            `Detected missing ${this.inputTypeDebugName} lookup entry for ${this.inputTypeDebugName} ID ${existing.inputId} (document ID ${existing.id})`,
+          );
         }
 
         delete this.inputDocumentsLookup[existing.inputId][existing.id];
@@ -67,7 +79,8 @@ export class DocumentsCache {
           this.inputDocumentsLookup[update.inputId] = {};
         }
 
-        this.inputDocumentsLookup[update.inputId][update.id] = update.documentType;
+        this.inputDocumentsLookup[update.inputId][update.id] =
+          update.documentType;
       }
     }
   }
@@ -76,9 +89,14 @@ export class DocumentsCache {
     return this.documentsByType[documentType] || [];
   }
 
-  public getDocumentCacheEntry(documentType: string, id: string): DocumentCacheEntry {
+  public getDocumentCacheEntry(
+    documentType: string,
+    id: string,
+  ): DocumentCacheEntry {
     if (!this.documentsByType[documentType][id]) {
-      throw new Error(`Cannot find document of type ${documentType} with id ${id}`);
+      throw new Error(
+        `Cannot find document of type ${documentType} with id ${id}`,
+      );
     }
 
     return this.documentsByType[documentType][id];
@@ -87,7 +105,7 @@ export class DocumentsCache {
   public searchDocument(id: string): Maybe<DocumentCacheEntry> {
     let result: Maybe<DocumentCacheEntry> = null;
 
-    Object.keys(this.documentsByType).forEach(type => {
+    Object.keys(this.documentsByType).forEach((type) => {
       if (this.hasDocument(type, id)) {
         result = this.getDocumentCacheEntry(type, id);
       }
@@ -96,9 +114,16 @@ export class DocumentsCache {
     return result;
   }
 
-  public hasDocument(documentType: string, id: string, requireObject: boolean = false): boolean {
+  public hasDocument(
+    documentType: string,
+    id: string,
+    requireObject: boolean = false,
+  ): boolean {
     const hasDocumentEntry = !!this.documentsByType[documentType][id];
-    return hasDocumentEntry && (!requireObject || !!this.documentsByType[documentType][id].state);
+    return (
+      hasDocumentEntry &&
+      (!requireObject || !!this.documentsByType[documentType][id].state)
+    );
   }
 
   public hasInputDocument(inputId: string): boolean {
@@ -120,14 +145,14 @@ export class DocumentsCache {
         result[key] = Object.keys(this.documentsByType[key]).length;
         return result;
       },
-      {} as Record<string, number>
+      {} as Record<string, number>,
     );
   }
 
   public saveToFile(filePath: string) {
     const entries = Object.keys(this.documentsByType)
-      .filter(k => k != "folder")
-      .map(k => this.getFileEntries(k))
+      .filter((k) => k != "folder")
+      .map((k) => this.getFileEntries(k))
       .reduce((prev, next) => prev.concat(...next), []);
 
     fs.writeFileSync(filePath, JSON.stringify(entries, null, 2));
@@ -137,20 +162,19 @@ export class DocumentsCache {
     const map = this.documentsByType[documentType];
 
     if (!map) {
-      throw new Error(`Cannot produce file entries: document type ${documentType} not found.`);
+      throw new Error(
+        `Cannot produce file entries: document type ${documentType} not found.`,
+      );
     }
 
-    return Object.keys(map).map(key => ({
+    return Object.keys(map).map((key) => ({
       value: "phd:" + map[key].id,
       path: documentType,
       icon: "File" as const,
       description: " ",
-      title: [
-        map[key].state?.docNo || null,
-        map[key].name || "Untitled"
-      ]
-        .filter(s => s !== null)
-        .join(" - ")
+      title: [map[key].state?.docNo || null, map[key].name || "Untitled"]
+        .filter((s) => s !== null)
+        .join(" - "),
     }));
   }
 
@@ -163,7 +187,9 @@ export class DocumentsCache {
       }
 
       if (this.documentsByType[key][node.id]) {
-        throw new Error("Found duplicate document ID while initializing index: " + node.id);
+        throw new Error(
+          "Found duplicate document ID while initializing index: " + node.id,
+        );
       }
 
       this.documentsByType[key][node.id] = {
@@ -175,4 +201,4 @@ export class DocumentsCache {
       };
     }
   }
-};
+}

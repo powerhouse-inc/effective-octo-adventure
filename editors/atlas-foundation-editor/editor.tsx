@@ -1,20 +1,17 @@
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/jsx-max-depth */
 import "../atlas.css";
-import { EditorProps } from "document-model/document";
+import { EditorProps } from "document-model";
 import {
-  AtlasFoundationState,
-  AtlasFoundationAction,
-  AtlasFoundationLocalState,
   actions,
   SetDocNumberInput,
   SetFoundationNameInput,
   SetMasterStatusInput,
   SetContentInput,
   AddTagsInput,
+  AtlasFoundationDocument,
 } from "../../document-models/atlas-foundation";
 import docsIndex from "../index.json";
-import { utils as documentModelUtils } from "document-model/document";
 import { SetDocNumberForm } from "./components/SetDocNumberForm";
 import { SetFoundationNameForm } from "./components/SetFoundationNameForm";
 import { SetMasterStatusForm } from "./components/SetMasterStatusForm";
@@ -27,16 +24,9 @@ import {
 } from "@powerhousedao/design-system/scalars";
 import { AutocompleteOption } from "node_modules/@powerhousedao/design-system/dist/src/scalars/components/fragments/autocomplete-field/types";
 
-export type IProps = EditorProps<
-  AtlasFoundationState,
-  AtlasFoundationAction,
-  AtlasFoundationLocalState
->;
+export type IProps = EditorProps<AtlasFoundationDocument>;
 
 export default function Editor(props: IProps) {
-  // generate a random id
-  // const id = documentModelUtils.hashKey();
-
   const parentTitle = [
     props.document.state.global.parent?.docNo || null,
     props.document.state.global.parent?.name || null,

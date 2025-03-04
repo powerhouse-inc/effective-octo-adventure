@@ -1,20 +1,13 @@
-import { EditorProps } from "document-model/document";
+import { EditorProps } from "document-model";
 
 import { EditorLayout } from "./components/editor-layout";
 
 import "../atlas.css";
-import {
-  DocumentDriveAction,
-  DocumentDriveLocalState,
-  DocumentDriveState,
-} from "document-model-libs/document-drive";
-import { GenericDriveExplorer } from "@powerhousedao/common";
 
-export type IProps = EditorProps<
-  DocumentDriveState,
-  DocumentDriveAction,
-  DocumentDriveLocalState
->;
+import { GenericDriveExplorer } from "@powerhousedao/common";
+import { DocumentDriveDocument } from "document-drive";
+
+export type IProps = EditorProps<DocumentDriveDocument>;
 
 const GenericDriveEditor = GenericDriveExplorer.Component;
 

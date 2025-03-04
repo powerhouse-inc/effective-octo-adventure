@@ -1,17 +1,15 @@
 /* eslint-disable react/jsx-max-depth */
 /* eslint-disable react/jsx-no-bind */
 import "../atlas.css";
-import { EditorProps } from "document-model/document";
+import { EditorProps } from "document-model";
 import {
-  AtlasScopeState,
-  AtlasScopeAction,
-  AtlasScopeLocalState,
   actions,
   SetScopeNameInput,
   SetDocNumberInput,
   SetContentInput,
   SetMasterStatusInput,
   AddTagsInput,
+  AtlasScopeDocument,
 } from "../../document-models/atlas-scope";
 import { SetScopeNameForm } from "./components/SetScopeNameForm";
 import { SetDocNumberForm } from "./components/SetDocNumberForm";
@@ -24,11 +22,7 @@ import {
 } from "../../document-models/utils";
 import { DiffField } from "./components/DiffField";
 
-export type IProps = EditorProps<
-  AtlasScopeState,
-  AtlasScopeAction,
-  AtlasScopeLocalState
->;
+export type IProps = EditorProps<AtlasScopeDocument>;
 
 export default function Editor(props: IProps) {
   const originalNode = getOriginalNotionDocument(

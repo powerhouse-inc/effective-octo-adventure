@@ -4,7 +4,7 @@
  */
 
 import { generateMock } from "@powerhousedao/codegen";
-import { utils as documentModelUtils } from "document-model/document";
+import { hashKey } from "document-model";
 
 import utils from "../../gen/utils";
 import {
@@ -29,7 +29,7 @@ describe("General Operations", () => {
 
   it("should handle setMultiparentName operation", () => {
     // generate a random id
-    // const id = documentModelUtils.hashKey();
+    // const id = hashKey();
 
     const input: SetMultiparentNameInput = generateMock(
       z.SetMultiparentNameInputSchema(),
@@ -49,7 +49,7 @@ describe("General Operations", () => {
   });
   it("should handle setDocNumber operation", () => {
     // generate a random id
-    // const id = documentModelUtils.hashKey();
+    // const id = hashKey();
 
     const input: SetDocNumberInput = generateMock(z.SetDocNumberInputSchema());
 
@@ -62,7 +62,7 @@ describe("General Operations", () => {
   });
   it("should handle setContent operation", () => {
     // generate a random id
-    // const id = documentModelUtils.hashKey();
+    // const id = hashKey();
 
     const input: SetContentInput = generateMock(z.SetContentInputSchema());
 
@@ -75,7 +75,7 @@ describe("General Operations", () => {
   });
   it("should handle setMasterStatus operation", () => {
     // generate a random id
-    // const id = documentModelUtils.hashKey();
+    // const id = hashKey();
 
     const input: SetMasterStatusInput = generateMock(
       z.SetMasterStatusInputSchema(),
@@ -90,7 +90,7 @@ describe("General Operations", () => {
   });
   it("should handle setParent operation", () => {
     // generate a random id
-    // const id = documentModelUtils.hashKey();
+    // const id = hashKey();
 
     const input: SetParentInput = generateMock(z.SetParentInputSchema());
 
@@ -103,7 +103,7 @@ describe("General Operations", () => {
   });
   it("should handle setAtlasType operation", () => {
     // generate a random id
-    // const id = documentModelUtils.hashKey();
+    // const id = hashKey();
 
     const input: SetAtlasTypeInput = generateMock(z.SetAtlasTypeInputSchema());
 

@@ -4,7 +4,7 @@
  */
 
 import { generateMock } from "@powerhousedao/codegen";
-import { utils as documentModelUtils } from "document-model/document";
+import { hashKey } from "document-model";
 
 import utils from "../../gen/utils";
 import { z, AddTagsInput, RemoveTagsInput } from "../../gen/schema";
@@ -21,7 +21,7 @@ describe("Tags Operations", () => {
 
   it("should handle addTags operation", () => {
     // generate a random id
-    // const id = documentModelUtils.hashKey();
+    // const id = hashKey();
 
     const input: AddTagsInput = generateMock(z.AddTagsInputSchema());
 
@@ -34,7 +34,7 @@ describe("Tags Operations", () => {
   });
   it("should handle removeTags operation", () => {
     // generate a random id
-    // const id = documentModelUtils.hashKey();
+    // const id = hashKey();
 
     const input: RemoveTagsInput = generateMock(z.RemoveTagsInputSchema());
 

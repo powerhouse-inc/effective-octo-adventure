@@ -16,7 +16,7 @@ const DRIVE_NAME =
   new Date()
     .toISOString()
     .substring(0, 16)
-    .replaceAll(/[\-:]/g, "")
+    .replaceAll(/[-:]/g, "")
     .replace("T", "_");
 
 // Preferred editor for the drive when it's created
@@ -40,7 +40,7 @@ export const getResolvers = (subgraph: Subgraph) => {
           },
         };
 
-        await syncDocuments(config);
+        syncDocuments(config);
 
         /*
         await reactor.addDriveAction(
@@ -65,7 +65,7 @@ export const getResolvers = (subgraph: Subgraph) => {
         );
         */
 
-        return 1;
+        return driveId;
       },
     },
   };

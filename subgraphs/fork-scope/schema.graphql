@@ -5,5 +5,5 @@ type Mutation {
   ForkAtlas(
     driveId: String
     docId: PHID
-  ): Int
+  ): String
 }

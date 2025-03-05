@@ -11,7 +11,7 @@ import {
   AddTagsInput,
   AtlasFoundationDocument,
 } from "../../document-models/atlas-foundation";
-import docsIndex from "../.././scripts/apply-changes/data/index.json";
+import docsIndex from "../../scripts/apply-changes/data/index.json";
 import { SetDocNumberForm } from "./components/SetDocNumberForm";
 import { SetFoundationNameForm } from "./components/SetFoundationNameForm";
 import { SetMasterStatusForm } from "./components/SetMasterStatusForm";

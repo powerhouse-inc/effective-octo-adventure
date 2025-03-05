@@ -1,6 +1,6 @@
 {
   "name": "@sky-ph/atlas",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "license": "AGPL-3.0-only",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
@@ -27,6 +27,11 @@
       "types": "./dist/documentModels.d.ts",
       "import": "./dist/es/documentModels.js",
       "require": "./dist/cjs/documentModels.js"
+    },
+    "./subgraphs": {
+      "types": "./dist/subgraphs.d.ts",
+      "import": "./dist/es/subgraphs.js",
+      "require": "./dist/cjs/subgraphs.js"
     },
     "./manifest": {
       "types": "./dist/manifest.d.ts",
@@ -124,6 +129,7 @@
     "vite": "^6.2.0",
     "vite-plugin-dts": "^4.5.3",
     "vite-plugin-generate-file": "^0.2.0",
+    "vite-plugin-graphql-loader": "^4.0.4",
     "vitest": "^2.1.9",
     "zod": "^3.24.2"
   },

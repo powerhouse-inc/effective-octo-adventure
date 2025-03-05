@@ -192,36 +192,6 @@ export declare enum DocumentDrive_TriggerType {
   pullResponder = "PullResponder",
 }
 
-export declare enum MAtlasType {
-  annotation = "ANNOTATION",
-  neededResearch = "NEEDED_RESEARCH",
-}
-
-export declare enum MStatus {
-  approved = "APPROVED",
-  archived = "ARCHIVED",
-  deferred = "DEFERRED",
-  placeholder = "PLACEHOLDER",
-  provisional = "PROVISIONAL",
-}
-
-export declare enum MGlobalTag {
-  avc = "AVC",
-  cais = "CAIS",
-  daoToolkit = "DAO_TOOLKIT",
-  ecosystemIntelligence = "ECOSYSTEM_INTELLIGENCE",
-  externalReference = "EXTERNAL_REFERENCE",
-  legacyTermUseApproved = "LEGACY_TERM_USE_APPROVED",
-  mlDefer = "ML_DEFER",
-  mlLowPriority = "ML_LOW_PRIORITY",
-  mlSupportDocsNeeded = "ML_SUPPORT_DOCS_NEEDED",
-  newchain = "NEWCHAIN",
-  purposeSystem = "PURPOSE_SYSTEM",
-  recursiveImprovement = "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor = "SCOPE_ADVISOR",
-  twoStageBridge = "TWO_STAGE_BRIDGE",
-}
-
 type AllEnums =
   | AtlasGrounding_GAtlasType
   | AtlasGrounding_GStatus
@@ -239,74 +209,27 @@ type AllEnums =
   | AtlasScope_GlobalTag
   | DocumentDrive_TransmitterType
   | DocumentDrive_TriggerType
-  | MAtlasType
-  | MStatus
-  | MGlobalTag
 
 // Args
+export interface DrivesArgs {}
+export interface DriveIdBySlugArgs {
+  slug: string
+}
 export interface ServiceArgs {}
-export interface AtlasMultiParentCreateDocumentArgs {
-  name?: string
+export interface AddDriveArgs {
+  global: DocumentDriveStateInput
+  preferredEditor?: string
 }
-export interface AtlasMultiParentSetMultiparentNameArgs {
-  docId?: PHID
-  input?: AtlasMultiParent_SetMultiparentNameInput
+export interface DeleteDriveArgs {
+  id: ID
 }
-export interface AtlasMultiParentSetDocNumberArgs {
-  docId?: PHID
-  input?: AtlasMultiParent_SetDocNumberInput
+export interface SetDriveIconArgs {
+  id: string
+  icon: string
 }
-export interface AtlasMultiParentSetContentArgs {
-  docId?: PHID
-  input?: AtlasMultiParent_SetContentInput
-}
-export interface AtlasMultiParentSetMasterStatusArgs {
-  docId?: PHID
-  input?: AtlasMultiParent_SetMasterStatusInput
-}
-export interface AtlasMultiParentAddParentArgs {
-  docId?: PHID
-  input?: AtlasMultiParent_AddParentInput
-}
-export interface AtlasMultiParentSetAtlasTypeArgs {
-  docId?: PHID
-  input?: AtlasMultiParent_SetAtlasTypeInput
-}
-export interface AtlasMultiParentRemoveParentArgs {
-  docId?: PHID
-  input?: AtlasMultiParent_RemoveParentInput
-}
-export interface AtlasMultiParentAddTagsArgs {
-  docId?: PHID
-  input?: AtlasMultiParent_AddTagsInput
-}
-export interface AtlasMultiParentRemoveTagsArgs {
-  docId?: PHID
-  input?: AtlasMultiParent_RemoveTagsInput
-}
-export interface AtlasMultiParentAddContextDataArgs {
-  docId?: PHID
-  input?: AtlasMultiParent_AddContextDataInput
-}
-export interface AtlasMultiParentRemoveContextDataArgs {
-  docId?: PHID
-  input?: AtlasMultiParent_RemoveContextDataInput
-}
-export interface AtlasMultiParentSetProvenanceArgs {
-  docId?: PHID
-  input?: AtlasMultiParent_SetProvenanceInput
-}
-export interface AtlasMultiParentSetNotionIdArgs {
-  docId?: PHID
-  input?: AtlasMultiParent_SetNotionIdInput
-}
-export interface AtlasMultiParentAddReferenceArgs {
-  docId?: PHID
-  input?: AtlasMultiParent_AddReferenceInput
-}
-export interface AtlasMultiParentRemoveReferenceArgs {
-  docId?: PHID
-  input?: AtlasMultiParent_RemoveReferenceInput
+export interface SetDriveNameArgs {
+  id: string
+  name: string
 }
 
 // Input/Output Types
@@ -737,28 +660,10 @@ export interface DocumentDrive {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasMultiParentState {
-  name?: string
-  docNo?: string
-  parents: MDocumentLink[]
-  atlasType: MAtlasType
-  content?: string
-  masterStatus: MStatus
-  globalTags: MGlobalTag[]
-  references: MDocumentLink[]
-  originalContextData: MDocumentLink[]
-  provenance: URL[]
-  notionId?: string
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface MDocumentLink {
-  id: PHID
-  name?: OLabel
-  docNo?: string
+export interface Query {
+  drives: string[]
+  driveIdBySlug?: string
+  _service: _Service
 }
 
 /**
@@ -766,148 +671,21 @@ export interface MDocumentLink {
  */
 
 export interface Mutation {
-  AtlasMultiParent_createDocument?: string
-  AtlasMultiParent_setMultiparentName?: number
-  AtlasMultiParent_setDocNumber?: number
-  AtlasMultiParent_setContent?: number
-  AtlasMultiParent_setMasterStatus?: number
-  AtlasMultiParent_addParent?: number
-  AtlasMultiParent_setAtlasType?: number
-  AtlasMultiParent_removeParent?: number
-  AtlasMultiParent_addTags?: number
-  AtlasMultiParent_removeTags?: number
-  AtlasMultiParent_addContextData?: number
-  AtlasMultiParent_removeContextData?: number
-  AtlasMultiParent_setProvenance?: number
-  AtlasMultiParent_setNotionId?: number
-  AtlasMultiParent_addReference?: number
-  AtlasMultiParent_removeReference?: number
+  addDrive?: DocumentDrive_DocumentDriveState
+  deleteDrive?: boolean
+  setDriveIcon?: boolean
+  setDriveName?: boolean
 }
 
 /**
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasMultiParent_SetMultiparentNameInput {
-  name: string
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface AtlasMultiParent_SetDocNumberInput {
-  docNo: string
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface AtlasMultiParent_SetContentInput {
-  content: string
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface AtlasMultiParent_SetMasterStatusInput {
-  masterStatus: MStatus
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface AtlasMultiParent_AddParentInput {
-  id: PHID
-  name?: OLabel
-  docNo?: string
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface AtlasMultiParent_SetAtlasTypeInput {
-  atlasType: MAtlasType
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface AtlasMultiParent_RemoveParentInput {
-  id: PHID
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface AtlasMultiParent_AddTagsInput {
-  tags: MGlobalTag[]
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface AtlasMultiParent_RemoveTagsInput {
-  tags: MGlobalTag[]
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface AtlasMultiParent_AddContextDataInput {
-  id: PHID
-  name?: OLabel
-  docNo?: string
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface AtlasMultiParent_RemoveContextDataInput {
-  id: PHID
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface AtlasMultiParent_SetProvenanceInput {
-  provenance: URL[]
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface AtlasMultiParent_SetNotionIdInput {
-  notionID: string
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface AtlasMultiParent_AddReferenceInput {
-  id: PHID
-  name?: OLabel
-  docNo?: string
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface AtlasMultiParent_RemoveReferenceInput {
-  id: PHID
+export interface DocumentDriveStateInput {
+  name?: string
+  id?: string
+  slug?: string
+  icon?: string
 }
 
 /**
@@ -916,14 +694,6 @@ export interface AtlasMultiParent_RemoveReferenceInput {
 
 export interface _Service {
   sdl?: string
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface Query {
-  _service: _Service
 }
 
 // Selection Types
@@ -1253,189 +1023,38 @@ export interface DocumentDriveSelection {
   state?: DocumentDrive_DocumentDriveStateSelection
 }
 
-export interface AtlasMultiParentStateSelection {
-  name?: boolean
-  docNo?: boolean
-  parents?: MDocumentLinkSelection
-  atlasType?: boolean
-  content?: boolean
-  masterStatus?: boolean
-  globalTags?: boolean
-  references?: MDocumentLinkSelection
-  originalContextData?: MDocumentLinkSelection
-  provenance?: boolean
-  notionId?: boolean
-}
-
-export interface MDocumentLinkSelection {
-  id?: boolean
-  name?: boolean
-  docNo?: boolean
-}
-
 export interface MutationSelection {
-  AtlasMultiParent_createDocument?: {
+  addDrive?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { name?: string }
+    __args: { global: DocumentDriveStateInput; preferredEditor?: string }
+  } & DocumentDrive_DocumentDriveStateSelection
+  deleteDrive?: {
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args: { id: ID }
   }
-  AtlasMultiParent_setMultiparentName?: {
+  setDriveIcon?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasMultiParent_SetMultiparentNameInput }
+    __args: { id: string; icon: string }
   }
-  AtlasMultiParent_setDocNumber?: {
+  setDriveName?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasMultiParent_SetDocNumberInput }
-  }
-  AtlasMultiParent_setContent?: {
-    __headers?: { [key: string]: string }
-    __retry?: boolean
-    __alias?: string
-    __args?: { docId?: PHID; input?: AtlasMultiParent_SetContentInput }
-  }
-  AtlasMultiParent_setMasterStatus?: {
-    __headers?: { [key: string]: string }
-    __retry?: boolean
-    __alias?: string
-    __args?: { docId?: PHID; input?: AtlasMultiParent_SetMasterStatusInput }
-  }
-  AtlasMultiParent_addParent?: {
-    __headers?: { [key: string]: string }
-    __retry?: boolean
-    __alias?: string
-    __args?: { docId?: PHID; input?: AtlasMultiParent_AddParentInput }
-  }
-  AtlasMultiParent_setAtlasType?: {
-    __headers?: { [key: string]: string }
-    __retry?: boolean
-    __alias?: string
-    __args?: { docId?: PHID; input?: AtlasMultiParent_SetAtlasTypeInput }
-  }
-  AtlasMultiParent_removeParent?: {
-    __headers?: { [key: string]: string }
-    __retry?: boolean
-    __alias?: string
-    __args?: { docId?: PHID; input?: AtlasMultiParent_RemoveParentInput }
-  }
-  AtlasMultiParent_addTags?: {
-    __headers?: { [key: string]: string }
-    __retry?: boolean
-    __alias?: string
-    __args?: { docId?: PHID; input?: AtlasMultiParent_AddTagsInput }
-  }
-  AtlasMultiParent_removeTags?: {
-    __headers?: { [key: string]: string }
-    __retry?: boolean
-    __alias?: string
-    __args?: { docId?: PHID; input?: AtlasMultiParent_RemoveTagsInput }
-  }
-  AtlasMultiParent_addContextData?: {
-    __headers?: { [key: string]: string }
-    __retry?: boolean
-    __alias?: string
-    __args?: { docId?: PHID; input?: AtlasMultiParent_AddContextDataInput }
-  }
-  AtlasMultiParent_removeContextData?: {
-    __headers?: { [key: string]: string }
-    __retry?: boolean
-    __alias?: string
-    __args?: { docId?: PHID; input?: AtlasMultiParent_RemoveContextDataInput }
-  }
-  AtlasMultiParent_setProvenance?: {
-    __headers?: { [key: string]: string }
-    __retry?: boolean
-    __alias?: string
-    __args?: { docId?: PHID; input?: AtlasMultiParent_SetProvenanceInput }
-  }
-  AtlasMultiParent_setNotionId?: {
-    __headers?: { [key: string]: string }
-    __retry?: boolean
-    __alias?: string
-    __args?: { docId?: PHID; input?: AtlasMultiParent_SetNotionIdInput }
-  }
-  AtlasMultiParent_addReference?: {
-    __headers?: { [key: string]: string }
-    __retry?: boolean
-    __alias?: string
-    __args?: { docId?: PHID; input?: AtlasMultiParent_AddReferenceInput }
-  }
-  AtlasMultiParent_removeReference?: {
-    __headers?: { [key: string]: string }
-    __retry?: boolean
-    __alias?: string
-    __args?: { docId?: PHID; input?: AtlasMultiParent_RemoveReferenceInput }
+    __args: { id: string; name: string }
   }
 }
 
-export interface AtlasMultiParent_SetMultiparentNameInputSelection {
+export interface DocumentDriveStateInputSelection {
   name?: boolean
-}
-
-export interface AtlasMultiParent_SetDocNumberInputSelection {
-  docNo?: boolean
-}
-
-export interface AtlasMultiParent_SetContentInputSelection {
-  content?: boolean
-}
-
-export interface AtlasMultiParent_SetMasterStatusInputSelection {
-  masterStatus?: boolean
-}
-
-export interface AtlasMultiParent_AddParentInputSelection {
   id?: boolean
-  name?: boolean
-  docNo?: boolean
-}
-
-export interface AtlasMultiParent_SetAtlasTypeInputSelection {
-  atlasType?: boolean
-}
-
-export interface AtlasMultiParent_RemoveParentInputSelection {
-  id?: boolean
-}
-
-export interface AtlasMultiParent_AddTagsInputSelection {
-  tags?: boolean
-}
-
-export interface AtlasMultiParent_RemoveTagsInputSelection {
-  tags?: boolean
-}
-
-export interface AtlasMultiParent_AddContextDataInputSelection {
-  id?: boolean
-  name?: boolean
-  docNo?: boolean
-}
-
-export interface AtlasMultiParent_RemoveContextDataInputSelection {
-  id?: boolean
-}
-
-export interface AtlasMultiParent_SetProvenanceInputSelection {
-  provenance?: boolean
-}
-
-export interface AtlasMultiParent_SetNotionIdInputSelection {
-  notionID?: boolean
-}
-
-export interface AtlasMultiParent_AddReferenceInputSelection {
-  id?: boolean
-  name?: boolean
-  docNo?: boolean
-}
-
-export interface AtlasMultiParent_RemoveReferenceInputSelection {
-  id?: boolean
+  slug?: boolean
+  icon?: boolean
 }
 
 export interface _ServiceSelection {
@@ -1453,6 +1072,25 @@ export declare const client: {
     before?: IResponseListener
   }) => void
   queries: {
+    drives: Endpoint<
+      {
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+      },
+      DeepRequired<string[]>,
+      AllEnums
+    >
+    driveIdBySlug: Endpoint<
+      {
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args: DriveIdBySlugArgs
+      },
+      string,
+      AllEnums
+    >
     _service: Endpoint<
       {
         __headers?: { [key: string]: string }
@@ -1464,164 +1102,44 @@ export declare const client: {
     >
   }
   mutations: {
-    AtlasMultiParent_createDocument: Endpoint<
+    addDrive: Endpoint<
       {
         __headers?: { [key: string]: string }
         __retry?: boolean
         __alias?: string
-        __args?: AtlasMultiParentCreateDocumentArgs
-      },
-      string,
+        __args: AddDriveArgs
+      } & DocumentDrive_DocumentDriveStateSelection,
+      DeepRequired<DocumentDrive_DocumentDriveState>,
       AllEnums
     >
-    AtlasMultiParent_setMultiparentName: Endpoint<
+    deleteDrive: Endpoint<
       {
         __headers?: { [key: string]: string }
         __retry?: boolean
         __alias?: string
-        __args?: AtlasMultiParentSetMultiparentNameArgs
+        __args: DeleteDriveArgs
       },
-      number,
+      boolean,
       AllEnums
     >
-    AtlasMultiParent_setDocNumber: Endpoint<
+    setDriveIcon: Endpoint<
       {
         __headers?: { [key: string]: string }
         __retry?: boolean
         __alias?: string
-        __args?: AtlasMultiParentSetDocNumberArgs
+        __args: SetDriveIconArgs
       },
-      number,
+      boolean,
       AllEnums
     >
-    AtlasMultiParent_setContent: Endpoint<
+    setDriveName: Endpoint<
       {
         __headers?: { [key: string]: string }
         __retry?: boolean
         __alias?: string
-        __args?: AtlasMultiParentSetContentArgs
+        __args: SetDriveNameArgs
       },
-      number,
-      AllEnums
-    >
-    AtlasMultiParent_setMasterStatus: Endpoint<
-      {
-        __headers?: { [key: string]: string }
-        __retry?: boolean
-        __alias?: string
-        __args?: AtlasMultiParentSetMasterStatusArgs
-      },
-      number,
-      AllEnums
-    >
-    AtlasMultiParent_addParent: Endpoint<
-      {
-        __headers?: { [key: string]: string }
-        __retry?: boolean
-        __alias?: string
-        __args?: AtlasMultiParentAddParentArgs
-      },
-      number,
-      AllEnums
-    >
-    AtlasMultiParent_setAtlasType: Endpoint<
-      {
-        __headers?: { [key: string]: string }
-        __retry?: boolean
-        __alias?: string
-        __args?: AtlasMultiParentSetAtlasTypeArgs
-      },
-      number,
-      AllEnums
-    >
-    AtlasMultiParent_removeParent: Endpoint<
-      {
-        __headers?: { [key: string]: string }
-        __retry?: boolean
-        __alias?: string
-        __args?: AtlasMultiParentRemoveParentArgs
-      },
-      number,
-      AllEnums
-    >
-    AtlasMultiParent_addTags: Endpoint<
-      {
-        __headers?: { [key: string]: string }
-        __retry?: boolean
-        __alias?: string
-        __args?: AtlasMultiParentAddTagsArgs
-      },
-      number,
-      AllEnums
-    >
-    AtlasMultiParent_removeTags: Endpoint<
-      {
-        __headers?: { [key: string]: string }
-        __retry?: boolean
-        __alias?: string
-        __args?: AtlasMultiParentRemoveTagsArgs
-      },
-      number,
-      AllEnums
-    >
-    AtlasMultiParent_addContextData: Endpoint<
-      {
-        __headers?: { [key: string]: string }
-        __retry?: boolean
-        __alias?: string
-        __args?: AtlasMultiParentAddContextDataArgs
-      },
-      number,
-      AllEnums
-    >
-    AtlasMultiParent_removeContextData: Endpoint<
-      {
-        __headers?: { [key: string]: string }
-        __retry?: boolean
-        __alias?: string
-        __args?: AtlasMultiParentRemoveContextDataArgs
-      },
-      number,
-      AllEnums
-    >
-    AtlasMultiParent_setProvenance: Endpoint<
-      {
-        __headers?: { [key: string]: string }
-        __retry?: boolean
-        __alias?: string
-        __args?: AtlasMultiParentSetProvenanceArgs
-      },
-      number,
-      AllEnums
-    >
-    AtlasMultiParent_setNotionId: Endpoint<
-      {
-        __headers?: { [key: string]: string }
-        __retry?: boolean
-        __alias?: string
-        __args?: AtlasMultiParentSetNotionIdArgs
-      },
-      number,
-      AllEnums
-    >
-    AtlasMultiParent_addReference: Endpoint<
-      {
-        __headers?: { [key: string]: string }
-        __retry?: boolean
-        __alias?: string
-        __args?: AtlasMultiParentAddReferenceArgs
-      },
-      number,
-      AllEnums
-    >
-    AtlasMultiParent_removeReference: Endpoint<
-      {
-        __headers?: { [key: string]: string }
-        __retry?: boolean
-        __alias?: string
-        __args?: AtlasMultiParentRemoveReferenceArgs
-      },
-      number,
+      boolean,
       AllEnums
     >
   }

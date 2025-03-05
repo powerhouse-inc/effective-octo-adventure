@@ -521,10 +521,11 @@ const typesTree = {
     findings: {}
   },
   AtlasMultiParent_AtlasMultiParentState: {
-    parent: {},
+    parents: {},
     globalTags: {},
     references: {},
-    originalContextData: {}
+    originalContextData: {},
+    provenance: {}
   },
   AtlasScope_AtlasScopeState: {
     globalTags: {},

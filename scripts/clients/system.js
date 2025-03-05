@@ -33,9 +33,6 @@ __export(stdin_exports, {
   AtlasScope_Status: () => AtlasScope_Status,
   DocumentDrive_TransmitterType: () => DocumentDrive_TransmitterType,
   DocumentDrive_TriggerType: () => DocumentDrive_TriggerType,
-  MAtlasType: () => MAtlasType,
-  MGlobalTag: () => MGlobalTag,
-  MStatus: () => MStatus,
   client: () => client,
   default: () => stdin_default
 });
@@ -194,33 +191,6 @@ const DocumentDrive_TransmitterType = {
   switchboardPush: "SwitchboardPush"
 };
 const DocumentDrive_TriggerType = { pullResponder: "PullResponder" };
-const MAtlasType = {
-  annotation: "ANNOTATION",
-  neededResearch: "NEEDED_RESEARCH"
-};
-const MStatus = {
-  approved: "APPROVED",
-  archived: "ARCHIVED",
-  deferred: "DEFERRED",
-  placeholder: "PLACEHOLDER",
-  provisional: "PROVISIONAL"
-};
-const MGlobalTag = {
-  avc: "AVC",
-  cais: "CAIS",
-  daoToolkit: "DAO_TOOLKIT",
-  ecosystemIntelligence: "ECOSYSTEM_INTELLIGENCE",
-  externalReference: "EXTERNAL_REFERENCE",
-  legacyTermUseApproved: "LEGACY_TERM_USE_APPROVED",
-  mlDefer: "ML_DEFER",
-  mlLowPriority: "ML_LOW_PRIORITY",
-  mlSupportDocsNeeded: "ML_SUPPORT_DOCS_NEEDED",
-  newchain: "NEWCHAIN",
-  purposeSystem: "PURPOSE_SYSTEM",
-  recursiveImprovement: "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor: "SCOPE_ADVISOR",
-  twoStageBridge: "TWO_STAGE_BRIDGE"
-};
 const typesTree = {
   AtlasGrounding: {
     get operations() {
@@ -359,131 +329,47 @@ const typesTree = {
       };
     }
   },
+  Query: {
+    get driveIdBySlug() {
+      return {
+        __args: {
+          slug: "String!"
+        }
+      };
+    },
+    drives: {},
+    _service: {}
+  },
   Mutation: {
-    get AtlasMultiParent_createDocument() {
+    get addDrive() {
       return {
+        __fields: typesTree.DocumentDrive_DocumentDriveState,
         __args: {
-          name: "String"
+          global: "DocumentDriveStateInput!",
+          preferredEditor: "String"
         }
       };
     },
-    get AtlasMultiParent_setMultiparentName() {
+    get deleteDrive() {
       return {
         __args: {
-          docId: "PHID",
-          input: "AtlasMultiParent_SetMultiparentNameInput"
+          id: "ID!"
         }
       };
     },
-    get AtlasMultiParent_setDocNumber() {
+    get setDriveIcon() {
       return {
         __args: {
-          docId: "PHID",
-          input: "AtlasMultiParent_SetDocNumberInput"
+          id: "String!",
+          icon: "String!"
         }
       };
     },
-    get AtlasMultiParent_setContent() {
+    get setDriveName() {
       return {
         __args: {
-          docId: "PHID",
-          input: "AtlasMultiParent_SetContentInput"
-        }
-      };
-    },
-    get AtlasMultiParent_setMasterStatus() {
-      return {
-        __args: {
-          docId: "PHID",
-          input: "AtlasMultiParent_SetMasterStatusInput"
-        }
-      };
-    },
-    get AtlasMultiParent_addParent() {
-      return {
-        __args: {
-          docId: "PHID",
-          input: "AtlasMultiParent_AddParentInput"
-        }
-      };
-    },
-    get AtlasMultiParent_setAtlasType() {
-      return {
-        __args: {
-          docId: "PHID",
-          input: "AtlasMultiParent_SetAtlasTypeInput"
-        }
-      };
-    },
-    get AtlasMultiParent_removeParent() {
-      return {
-        __args: {
-          docId: "PHID",
-          input: "AtlasMultiParent_RemoveParentInput"
-        }
-      };
-    },
-    get AtlasMultiParent_addTags() {
-      return {
-        __args: {
-          docId: "PHID",
-          input: "AtlasMultiParent_AddTagsInput"
-        }
-      };
-    },
-    get AtlasMultiParent_removeTags() {
-      return {
-        __args: {
-          docId: "PHID",
-          input: "AtlasMultiParent_RemoveTagsInput"
-        }
-      };
-    },
-    get AtlasMultiParent_addContextData() {
-      return {
-        __args: {
-          docId: "PHID",
-          input: "AtlasMultiParent_AddContextDataInput"
-        }
-      };
-    },
-    get AtlasMultiParent_removeContextData() {
-      return {
-        __args: {
-          docId: "PHID",
-          input: "AtlasMultiParent_RemoveContextDataInput"
-        }
-      };
-    },
-    get AtlasMultiParent_setProvenance() {
-      return {
-        __args: {
-          docId: "PHID",
-          input: "AtlasMultiParent_SetProvenanceInput"
-        }
-      };
-    },
-    get AtlasMultiParent_setNotionId() {
-      return {
-        __args: {
-          docId: "PHID",
-          input: "AtlasMultiParent_SetNotionIdInput"
-        }
-      };
-    },
-    get AtlasMultiParent_addReference() {
-      return {
-        __args: {
-          docId: "PHID",
-          input: "AtlasMultiParent_AddReferenceInput"
-        }
-      };
-    },
-    get AtlasMultiParent_removeReference() {
-      return {
-        __args: {
-          docId: "PHID",
-          input: "AtlasMultiParent_RemoveReferenceInput"
+          id: "String!",
+          name: "String!"
         }
       };
     }
@@ -565,21 +451,11 @@ const typesTree = {
       };
     },
     triggers: {}
-  },
-  AtlasMultiParentState: {
-    parents: {},
-    globalTags: {},
-    references: {},
-    originalContextData: {},
-    provenance: {}
-  },
-  Query: {
-    _service: {}
   }
 };
 let verbose = false;
 let headers = {};
-let url = "http://localhost:4001/atlas-multiparent";
+let url = "http://localhost:4001/system";
 let retryConfig = {
   max: 0,
   before: void 0,
@@ -616,25 +492,15 @@ const client = {
   },
   setUrl: (_url) => url = _url,
   queries: {
+    drives: apiEndpoint("query", "drives"),
+    driveIdBySlug: apiEndpoint("query", "driveIdBySlug"),
     _service: apiEndpoint("query", "_service")
   },
   mutations: {
-    AtlasMultiParent_createDocument: apiEndpoint("mutation", "AtlasMultiParent_createDocument"),
-    AtlasMultiParent_setMultiparentName: apiEndpoint("mutation", "AtlasMultiParent_setMultiparentName"),
-    AtlasMultiParent_setDocNumber: apiEndpoint("mutation", "AtlasMultiParent_setDocNumber"),
-    AtlasMultiParent_setContent: apiEndpoint("mutation", "AtlasMultiParent_setContent"),
-    AtlasMultiParent_setMasterStatus: apiEndpoint("mutation", "AtlasMultiParent_setMasterStatus"),
-    AtlasMultiParent_addParent: apiEndpoint("mutation", "AtlasMultiParent_addParent"),
-    AtlasMultiParent_setAtlasType: apiEndpoint("mutation", "AtlasMultiParent_setAtlasType"),
-    AtlasMultiParent_removeParent: apiEndpoint("mutation", "AtlasMultiParent_removeParent"),
-    AtlasMultiParent_addTags: apiEndpoint("mutation", "AtlasMultiParent_addTags"),
-    AtlasMultiParent_removeTags: apiEndpoint("mutation", "AtlasMultiParent_removeTags"),
-    AtlasMultiParent_addContextData: apiEndpoint("mutation", "AtlasMultiParent_addContextData"),
-    AtlasMultiParent_removeContextData: apiEndpoint("mutation", "AtlasMultiParent_removeContextData"),
-    AtlasMultiParent_setProvenance: apiEndpoint("mutation", "AtlasMultiParent_setProvenance"),
-    AtlasMultiParent_setNotionId: apiEndpoint("mutation", "AtlasMultiParent_setNotionId"),
-    AtlasMultiParent_addReference: apiEndpoint("mutation", "AtlasMultiParent_addReference"),
-    AtlasMultiParent_removeReference: apiEndpoint("mutation", "AtlasMultiParent_removeReference")
+    addDrive: apiEndpoint("mutation", "addDrive"),
+    deleteDrive: apiEndpoint("mutation", "deleteDrive"),
+    setDriveIcon: apiEndpoint("mutation", "setDriveIcon"),
+    setDriveName: apiEndpoint("mutation", "setDriveName")
   }
 };
 var stdin_default = client;

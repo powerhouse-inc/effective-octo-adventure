@@ -511,14 +511,14 @@ export interface AtlasExploratory {
 export interface AtlasMultiParent_AtlasMultiParentState {
   name?: string
   docNo?: string
-  parent: PHID[]
+  parents: AtlasMultiParent_MDocumentLink[]
   atlasType: AtlasMultiParent_MAtlasType
   content?: string
   masterStatus: AtlasMultiParent_MStatus
   globalTags: AtlasMultiParent_MGlobalTag[]
-  references: PHID[]
-  originalContextData: AtlasMultiParent_DocumentInfo[]
-  provenance?: URL
+  references: AtlasMultiParent_MDocumentLink[]
+  originalContextData: AtlasMultiParent_MDocumentLink[]
+  provenance: URL[]
   notionId?: string
 }
 
@@ -526,7 +526,7 @@ export interface AtlasMultiParent_AtlasMultiParentState {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasMultiParent_DocumentInfo {
+export interface AtlasMultiParent_MDocumentLink {
   id: PHID
   name?: OLabel
   docNo?: string
@@ -1070,18 +1070,18 @@ export interface AtlasExploratorySelection {
 export interface AtlasMultiParent_AtlasMultiParentStateSelection {
   name?: boolean
   docNo?: boolean
-  parent?: boolean
+  parents?: AtlasMultiParent_MDocumentLinkSelection
   atlasType?: boolean
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  references?: boolean
-  originalContextData?: AtlasMultiParent_DocumentInfoSelection
+  references?: AtlasMultiParent_MDocumentLinkSelection
+  originalContextData?: AtlasMultiParent_MDocumentLinkSelection
   provenance?: boolean
   notionId?: boolean
 }
 
-export interface AtlasMultiParent_DocumentInfoSelection {
+export interface AtlasMultiParent_MDocumentLinkSelection {
   id?: boolean
   name?: boolean
   docNo?: boolean

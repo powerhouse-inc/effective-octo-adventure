@@ -15,12 +15,13 @@ type AtlasStateType = {
   notionId: Maybe<string>;
 };
 
-export const mutationArg = (id: string) => {
+export const mutationArg = (driveId: string, docId: string) => {
   return <InputType>(input: InputType) => {
     return {
       __args: {
-        docId: id,
-        input: input,
+        driveId,
+        docId,
+        input,
       },
     };
   };

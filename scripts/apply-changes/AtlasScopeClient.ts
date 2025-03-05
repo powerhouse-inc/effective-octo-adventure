@@ -27,9 +27,11 @@ const statusStringToEnum = (status: string): Status => {
 };
 
 export class AtlasScopeClient extends AtlasBaseClient<AtlasScopeState, typeof writeClient> {
-  constructor(mutationsSubgraphUrl: string, documentsCache: DocumentsCache, readClient: ReactorClient) {
-    super(DOCUMENT_TYPE, mutationsSubgraphUrl, documentsCache, readClient, writeClient);
+  private readonly driveId: string;
 
+  constructor(mutationsSubgraphUrl: string, documentsCache: DocumentsCache, readClient: ReactorClient, driveId: string) {
+    super(DOCUMENT_TYPE, mutationsSubgraphUrl, documentsCache, readClient, writeClient);
+    this.driveId = driveId;
     this.setDocumentSchema(gql`
       AtlasScope {
         id
@@ -49,7 +51,7 @@ export class AtlasScopeClient extends AtlasBaseClient<AtlasScopeState, typeof wr
 
   protected createDocumentFromInput(notionDoc: ParsedNotionDocument) {
     return this.writeClient.mutations.AtlasScope_createDocument(
-      { __args: { name: getPNDTitle(notionDoc) } }
+      { __args: { driveId: this.driveId, name: getPNDTitle(notionDoc) } }
     );
   }
 
@@ -67,7 +69,7 @@ export class AtlasScopeClient extends AtlasBaseClient<AtlasScopeState, typeof wr
 
   protected async patchField<K extends keyof AtlasScopeState>(id: string, fieldName: K, current: AtlasScopeState[K], target: AtlasScopeState[K]) {
     console.log(` > ${fieldName}: ${current ? current + ' ' : ''}> ${target}`);
-    const patch = this.writeClient.mutations, arg = mutationArg(id);
+    const patch = this.writeClient.mutations, arg = mutationArg(this.driveId, id);
 
     switch (fieldName) {
       case 'docNo':

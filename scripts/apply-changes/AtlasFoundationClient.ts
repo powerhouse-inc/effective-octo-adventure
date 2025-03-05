@@ -11,9 +11,11 @@ import { extractDocNoAndTitle } from './atlas-base/utils';
 const DOCUMENT_TYPE = 'sky/atlas-foundation';
 
 export class AtlasFoundationClient extends AtlasBaseClient<AtlasFoundationState, typeof writeClient> {
-  constructor(mutationsSubgraphUrl: string, documentsCache: DocumentsCache, readClient: ReactorClient) {
-    super(DOCUMENT_TYPE, mutationsSubgraphUrl, documentsCache, readClient, writeClient);
+  private readonly driveId: string; 
 
+  constructor(mutationsSubgraphUrl: string, documentsCache: DocumentsCache, readClient: ReactorClient, driveId: string) {
+    super(DOCUMENT_TYPE, mutationsSubgraphUrl, documentsCache, readClient, writeClient);
+    this.driveId = driveId;
     this.setDocumentSchema(gql`
       AtlasFoundation {
         id
@@ -50,7 +52,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<AtlasFoundationState,
 
   protected createDocumentFromInput(notionDoc: ParsedNotionDocument) {
     return this.writeClient.mutations.AtlasFoundation_createDocument(
-      { __args: { name: getPNDTitle(notionDoc) } }
+      { __args: { driveId: this.driveId, name: getPNDTitle(notionDoc) } }
     );
   }
 
@@ -88,7 +90,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<AtlasFoundationState,
 
   protected async patchField<K extends keyof AtlasFoundationState>(id: string, fieldName: K, current: AtlasFoundationState[K], target: AtlasFoundationState[K]) {
     console.log(` > ${fieldName}: ${current ? current + ' ' : ''}> ${target}`);
-    const patch = this.writeClient.mutations, arg = mutationArg(id);
+    const patch = this.writeClient.mutations, arg = mutationArg(this.driveId, id);
 
     switch (fieldName) {
       case 'docNo':

@@ -9,8 +9,12 @@ export type DriveResultNode = {
 }
 
 export type DriveResult = {
-  drive: DriveNodes
+  drive: DriveNodes,
 };
+
+export type DriveIdsResult = {
+  drives: string[],
+}
 
 export type DriveNodes = {
   id: string,
@@ -23,10 +27,12 @@ export type DriveNodes = {
 export class ReactorClient {
   private endpointUrl: string;
   private driveEndpointUrl: string;
+  private systemEndpointUrl: string;
 
   constructor(endpointUrl:string, driveName:string) {
     this.endpointUrl = endpointUrl;
     this.driveEndpointUrl = new URL('d/' + driveName, endpointUrl).href;
+    this.systemEndpointUrl = new URL('system', endpointUrl).href;
   }
 
   public async queryReactor<ReturnType>(query: string, variables?: Object): Promise<ReturnType> {
@@ -41,6 +47,27 @@ export class ReactorClient {
     }
 
     return result as ReturnType;
+  }
+
+  public async getDriveIds(): Promise<string[]> {
+    const result = await queryGraphQL<DriveIdsResult>(
+      this.systemEndpointUrl,
+      gql`
+        query getDriveIds {
+          drives
+        }
+      `
+    );
+
+    if (!result.drives) {
+      if (result.errors) {
+        throw new Error(`GraphQL error when querying ${this.systemEndpointUrl}`, { cause: result.errors });
+      } else {
+        throw new Error(`Failed to fetch drive ids from ${this.systemEndpointUrl}`);
+      }
+    }
+
+    return result.drives;
   }
 
   public async getDriveNodes(): Promise<DriveNodes> {

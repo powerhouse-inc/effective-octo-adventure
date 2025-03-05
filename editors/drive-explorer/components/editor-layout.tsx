@@ -45,6 +45,14 @@ export function EditorLayout({ children, driveId }: EditorLayoutProps) {
   const state = useDriveDocumentStates({ driveId });
   const nodes = buildSidebarTree(state as Record<string, AtlasArticle>);
 
+  const selectedNode = activeNodeId
+    ? (state[activeNodeId] as AtlasArticle)
+    : null;
+
+  const title = selectedNode
+    ? `${selectedNode.global.docNo} - ${selectedNode.global.name}`
+    : "Atlas Explorer";
+
   return (
     <SidebarProvider>
       <main className="-m-4 flex size-[calc(100%+32px)] overflow-hidden rounded-2xl">
@@ -82,12 +90,17 @@ export function EditorLayout({ children, driveId }: EditorLayoutProps) {
             width: "calc(100% - var(--sidebar-width))",
           }}
         >
-          {activeNodeId ? (
-            <pre>
-              <code>{JSON.stringify(state[activeNodeId], null, 2)}</code>
-            </pre>
-          ) : null}
-          {children}
+          <div>
+            <h1 className="atlas-drive-explorer-header mt-12 text-2xl font-bold text-gray-900 dark:text-gray-50">
+              {title}
+            </h1>
+            {activeNodeId ? (
+              <pre>
+                <code>{JSON.stringify(state[activeNodeId], null, 2)}</code>
+              </pre>
+            ) : null}
+            {children}
+          </div>
         </div>
       </main>
     </SidebarProvider>

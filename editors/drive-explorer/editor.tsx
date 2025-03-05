@@ -43,9 +43,6 @@ export default function Editor(props: IProps) {
               top: 16px;
             }`}
         </style>
-        <h1 className="atlas-drive-explorer-header mt-12 text-2xl font-bold text-gray-900 dark:text-gray-50">
-          Atlas Drive Explorer
-        </h1>
         <GenericDriveEditor {...props} />
       </EditorLayout>
     </div>

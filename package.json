@@ -130,6 +130,7 @@
     "vite-plugin-dts": "^4.5.3",
     "vite-plugin-generate-file": "^0.2.0",
     "vite-plugin-graphql-loader": "^4.0.4",
+    "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^2.1.9",
     "zod": "^3.24.2"
   },

@@ -6,8 +6,7 @@ import dts from "vite-plugin-dts";
 import generateFile from "vite-plugin-generate-file";
 import { getConfig } from "@powerhousedao/config/powerhouse";
 import graphqlLoader from "vite-plugin-graphql-loader";
-import tsconfigPaths from 'vite-tsconfig-paths'
-
+import tsconfigPaths from "vite-tsconfig-paths";
 
 const { documentModelsDir, editorsDir, subgraphsDir } = getConfig();
 

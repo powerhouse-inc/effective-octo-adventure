@@ -22,20 +22,26 @@ import {
   PHIDField,
   UrlField,
 } from "@powerhousedao/design-system/scalars";
-import { AutocompleteOption } from "node_modules/@powerhousedao/design-system/dist/src/scalars/components/fragments/autocomplete-field/types";
+import { PHIDItem } from "node_modules/@powerhousedao/design-system/dist/src/scalars/components/phid-field/types";
+import { EditorProps } from "document-model";
 
 export type IProps = EditorProps<AtlasFoundationDocument>;
 
 export default function Editor(props: IProps) {
+  // generate a random id
+  // const id = documentModelUtils.hashKey();
+
+  const doc = props.document;
+
   const parentTitle = [
-    props.document.state.global.parent?.docNo || null,
-    props.document.state.global.parent?.name || null,
+    doc.state.global.parent?.docNo || null,
+    doc.state.global.parent?.name || null,
   ]
     .filter((el) => el !== null)
     .join(" - ");
 
-  const parentInfo = {
-    value: "phd:" + (props.document.state.global.parent?.id || ""),
+  const parentInfo: PHIDItem = {
+    phid: "phd:" + (doc.state.global.parent?.id || ""),
     title: parentTitle,
     path: "sky/atlas-scope",
     icon: "File" as const,
@@ -43,10 +49,10 @@ export default function Editor(props: IProps) {
   };
 
   // eslint-disable-next-line @typescript-eslint/require-await
-  const cb = async (phid: string): Promise<AutocompleteOption[]> =>
-    (docsIndex as AutocompleteOption[]).filter(
+  const cb = async (phid: string): Promise<PHIDItem[]> =>
+    (docsIndex as PHIDItem[]).filter(
       (entry) =>
-        entry.value.includes(phid) || (entry.title || "").includes(phid),
+        entry.phid.includes(phid) || (entry.title || "").includes(phid),
     );
 
   return (
@@ -97,14 +103,14 @@ export default function Editor(props: IProps) {
             }}
           >
             <PHIDField
-              defaultValue={parentInfo.value}
+              defaultValue={parentInfo.phid}
               fetchOptionsCallback={cb}
               fetchSelectedOptionCallback={(x) => cb(x).then((x) => x[0])}
               initialOptions={[parentInfo]}
               label="Parent Document:"
               name="parentId"
               placeholder="phd:"
-              variant="withValueTitleAndDescription"
+              variant="withIdTitleAndDescription"
             />
           </Form>
         </div>

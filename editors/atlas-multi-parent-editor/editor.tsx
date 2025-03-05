@@ -16,6 +16,7 @@ import { SetMultiParentNameForm } from "./components/SetMultiParentNameForm";
 import { SetMasterStatusForm } from "./components/SetMasterStatusForm";
 import { SetContentForm } from "./components/SetContentForm";
 import { SetTagsForm } from "./components/SetTagsForm";
+import { EditorProps } from "document-model";
 
 export type IProps = EditorProps<AtlasMultiParentDocument>;
 
@@ -64,7 +65,7 @@ export default function Editor(props: IProps) {
         <div className="atlas-cell-tags">
           <SetTagsForm
             defaultValue={{
-              newTags: props.document.state.global.globalTags,
+              tags: props.document.state.global.globalTags,
             }}
             dispatch={(input: AddTagsInput) => {
               props.dispatch(actions.addTags(input));

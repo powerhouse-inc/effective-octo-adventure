@@ -72,9 +72,9 @@ export function EditorLayout({ children, driveId }: EditorLayoutProps) {
           )}
         />
         <Sidebar
-          nodes={nodes}
           activeNodeId={activeNodeId}
           enableMacros={4}
+          nodes={nodes}
           onActiveNodeChange={(node) => setActiveNodeId(node.id)}
           showStatusFilter
           sidebarIcon={
@@ -171,5 +171,20 @@ function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
     (node) => !childrenIds.has(node.id),
   );
 
-  return result;
+  return sortSidebarNodes(result);
+}
+
+function sortSidebarNodes(nodes: SidebarNode[]): SidebarNode[] {
+  const sortedNodes = nodes.map((node) => {
+    if (node.children && node.children.length > 0) {
+      return {
+        ...node,
+        children: sortSidebarNodes(node.children),
+      };
+    }
+
+    return node;
+  });
+
+  return sortedNodes.sort((a, b) => a.title.localeCompare(b.title));
 }

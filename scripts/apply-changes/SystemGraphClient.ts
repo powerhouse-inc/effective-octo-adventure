@@ -14,7 +14,8 @@ export class SystemGraphClient {
   protected readonly writeClient: typeof writeClient;
 
   constructor(mutationsSubgraphUrl: string) {
-    this.writeClient = writeClient;
+    // @ts-expect-error weird commonjs thing
+    this.writeClient = writeClient.client ?? writeClient;
     this.writeClient.setUrl(mutationsSubgraphUrl);
   }
 

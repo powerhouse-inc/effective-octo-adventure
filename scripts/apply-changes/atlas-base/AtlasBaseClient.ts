@@ -41,7 +41,8 @@ export abstract class AtlasBaseClient<
     writeClient: WriteClientType,
   ) {
     super(documentType, documentsCache, readClient);
-    this.writeClient = writeClient;
+    // @ts-expect-error weird commonjs thing
+    this.writeClient = writeClient.client ?? writeClient;
     this.writeClient.setUrl(mutationsSubgraphUrl);
   }
 

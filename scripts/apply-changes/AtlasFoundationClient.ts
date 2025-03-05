@@ -1,5 +1,5 @@
 import { getPNDTitle, pndContentToString } from '../../document-models/utils';
-import { client as writeClient } from '../clients/atlas-foundation';
+import { default as writeClient } from '../clients/atlas-foundation';
 import { ParsedNotionDocument } from './atlas-base/NotionTypes';
 import { DocumentsCache } from './common/DocumentsCache';
 import { ReactorClient } from './common/ReactorClient';

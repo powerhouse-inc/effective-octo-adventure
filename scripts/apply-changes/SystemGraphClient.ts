@@ -1,4 +1,4 @@
-import { client as writeClient } from '../clients/system';
+import { default as writeClient } from '../clients/system';
 
 type AddDriveArgs = {
     global: {

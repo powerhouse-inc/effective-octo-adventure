@@ -10,15 +10,6 @@ import { syncDocuments } from "../../scripts/apply-changes/syncDocuments";
 // Reactor where the documents will be synchronized to
 const GQL_ENDPOINT = "http://localhost:4001/";
 
-// Drive that the documents will be added/updated to. Will be created if it does not yet exist
-const DRIVE_NAME =
-  "atlas_" +
-  new Date()
-    .toISOString()
-    .substring(0, 16)
-    .replaceAll(/[-:]/g, "")
-    .replace("T", "_");
-
 // Preferred editor for the drive when it's created
 const PREFERRED_EDITOR = "AtlasDriveExplorer";
 
@@ -28,6 +19,15 @@ export const getResolvers = (subgraph: Subgraph) => {
   return {
     Mutation: {
       ForkAtlas: async (_: any, args: any) => {
+        // Drive that the documents will be added/updated to. Will be created if it does not yet exist
+        const DRIVE_NAME =
+          "atlas_" +
+          new Date()
+            .toISOString()
+            .substring(0, 16)
+            .replaceAll(/[-:]/g, "")
+            .replace("T", "_");
+
         const driveId: string = args.driveId || DRIVE_NAME;
         const docId = args.docId;
         const config = {

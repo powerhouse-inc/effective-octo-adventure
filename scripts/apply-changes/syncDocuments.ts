@@ -14,7 +14,7 @@ export type DocumentSyncConfig = {
     driveName: string,
     preferredEditor: string,
     processLimit: number,
-    skipNodes: { [id: string]: boolean },
+    skipNodes: { [id: string]: boolean }
 };
 
 export const syncDocuments = async (config: DocumentSyncConfig) => {
@@ -118,7 +118,7 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
       `Processed: ${processed}. Skipped: ${skipped}. Queued: ${queue.length}.`,
     );
   
-    documentsCache.saveToFile("./editors/index.json");
+    documentsCache.saveToFile("./scripts/apply-changes/data/index.json");
     console.log(`Document cache saved to file.`);
   
     const driveUrl = new URL(`/d/${config.driveName}`, config.gqlEndpoint);

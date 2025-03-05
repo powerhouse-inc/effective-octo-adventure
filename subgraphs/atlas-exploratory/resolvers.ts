@@ -6,12 +6,15 @@ import { addFile } from "document-drive";
 import { actions } from "../../document-models/atlas-exploratory";
 import { generateId, hashKey } from "document-model";
 
-export const getResolvers = (subgraph: Subgraph, driveId: string) => {
+const DEFAULT_DRIVE_ID = "powerhouse";
+
+export const getResolvers = (subgraph: Subgraph) => {
   const reactor = subgraph.reactor;
 
   return {
     Mutation: {
       AtlasExploratory_createDocument: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId = generateId();
 
         await reactor.addDriveAction(
@@ -39,6 +42,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasExploratory_setExploratoryName: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -52,6 +56,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasExploratory_setDocNumber: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -65,6 +70,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasExploratory_setContent: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -78,6 +84,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasExploratory_setMasterStatus: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -91,6 +98,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasExploratory_setParent: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -104,6 +112,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasExploratory_removeParent: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -117,6 +126,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasExploratory_setAtlasType: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -130,6 +140,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasExploratory_setFindings: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -143,6 +154,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasExploratory_addTags: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -156,6 +168,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasExploratory_removeTags: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -169,6 +182,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasExploratory_addContextData: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -182,6 +196,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasExploratory_removeContextData: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -195,6 +210,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasExploratory_setProvenance: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -208,6 +224,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasExploratory_setNotionId: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -221,6 +238,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasExploratory_addAdditionalGuidance: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -234,6 +252,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasExploratory_removeAdditionalGuidance: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 

@@ -111,58 +111,75 @@ enum FGlobalTag {
 Mutations: AtlasFoundation
 """
 type Mutation {
-  AtlasFoundation_createDocument(name: String): String
+  AtlasFoundation_createDocument(driveId: String, name: String): String
 
   AtlasFoundation_setFoundationName(
+    driveId: String
     docId: PHID
     input: AtlasFoundation_SetFoundationNameInput
   ): Int
   AtlasFoundation_setDocNumber(
+    driveId: String
     docId: PHID
     input: AtlasFoundation_SetDocNumberInput
   ): Int
   AtlasFoundation_setContent(
+    driveId: String
     docId: PHID
     input: AtlasFoundation_SetContentInput
   ): Int
   AtlasFoundation_setMasterStatus(
+    driveId: String
     docId: PHID
     input: AtlasFoundation_SetMasterStatusInput
   ): Int
   AtlasFoundation_addReference(
+    driveId: String
     docId: PHID
     input: AtlasFoundation_AddReferenceInput
   ): Int
   AtlasFoundation_setAtlasType(
+    driveId: String
     docId: PHID
     input: AtlasFoundation_SetAtlasTypeInput
   ): Int
   AtlasFoundation_removeReference(
+    driveId: String
     docId: PHID
     input: AtlasFoundation_RemoveReferenceInput
   ): Int
   AtlasFoundation_setParent(
+    driveId: String
     docId: PHID
     input: AtlasFoundation_SetParentInput
   ): Int
-  AtlasFoundation_addTags(docId: PHID, input: AtlasFoundation_AddTagsInput): Int
+  AtlasFoundation_addTags(
+    driveId: String
+    docId: PHID
+    input: AtlasFoundation_AddTagsInput
+  ): Int
   AtlasFoundation_removeTags(
+    driveId: String
     docId: PHID
     input: AtlasFoundation_RemoveTagsInput
   ): Int
   AtlasFoundation_addContextData(
+    driveId: String
     docId: PHID
     input: AtlasFoundation_AddContextDataInput
   ): Int
   AtlasFoundation_removeContextData(
+    driveId: String
     docId: PHID
     input: AtlasFoundation_RemoveContextDataInput
   ): Int
   AtlasFoundation_setProvenance(
+    driveId: String
     docId: PHID
     input: AtlasFoundation_SetProvenanceInput
   ): Int
   AtlasFoundation_setNotionId(
+    driveId: String
     docId: PHID
     input: AtlasFoundation_SetNotionIdInput
   ): Int

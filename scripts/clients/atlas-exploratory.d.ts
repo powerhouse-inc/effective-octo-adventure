@@ -246,69 +246,86 @@ type AllEnums =
 // Args
 export interface ServiceArgs {}
 export interface AtlasExploratoryCreateDocumentArgs {
+  driveId?: string
   name?: string
 }
 export interface AtlasExploratorySetExploratoryNameArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_SetExploratoryNameInput
 }
 export interface AtlasExploratorySetDocNumberArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_SetDocNumberInput
 }
 export interface AtlasExploratorySetContentArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_SetContentInput
 }
 export interface AtlasExploratorySetMasterStatusArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_SetMasterStatusInput
 }
 export interface AtlasExploratorySetParentArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_SetParentInput
 }
 export interface AtlasExploratoryRemoveParentArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_RemoveParentInput
 }
 export interface AtlasExploratorySetAtlasTypeArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_SetAtlasTypeInput
 }
 export interface AtlasExploratorySetFindingsArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_SetFindingsInput
 }
 export interface AtlasExploratoryAddTagsArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_AddTagsInput
 }
 export interface AtlasExploratoryRemoveTagsArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_RemoveTagsInput
 }
 export interface AtlasExploratoryAddContextDataArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_AddContextDataInput
 }
 export interface AtlasExploratoryRemoveContextDataArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_RemoveContextDataInput
 }
 export interface AtlasExploratorySetProvenanceArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_SetProvenanceInput
 }
 export interface AtlasExploratorySetNotionIdArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_SetNotionIdInput
 }
 export interface AtlasExploratoryAddAdditionalGuidanceArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_AddAdditionalGuidanceInput
 }
 export interface AtlasExploratoryRemoveAdditionalGuidanceArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_RemoveAdditionalGuidanceInput
 }
@@ -1305,97 +1322,154 @@ export interface MutationSelection {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { name?: string }
+    __args?: { driveId?: string; name?: string }
   }
   AtlasExploratory_setExploratoryName?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_SetExploratoryNameInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_SetExploratoryNameInput
+    }
   }
   AtlasExploratory_setDocNumber?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_SetDocNumberInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_SetDocNumberInput
+    }
   }
   AtlasExploratory_setContent?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_SetContentInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_SetContentInput
+    }
   }
   AtlasExploratory_setMasterStatus?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_SetMasterStatusInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_SetMasterStatusInput
+    }
   }
   AtlasExploratory_setParent?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_SetParentInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_SetParentInput
+    }
   }
   AtlasExploratory_removeParent?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_RemoveParentInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_RemoveParentInput
+    }
   }
   AtlasExploratory_setAtlasType?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_SetAtlasTypeInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_SetAtlasTypeInput
+    }
   }
   AtlasExploratory_setFindings?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_SetFindingsInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_SetFindingsInput
+    }
   }
   AtlasExploratory_addTags?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_AddTagsInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_AddTagsInput
+    }
   }
   AtlasExploratory_removeTags?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_RemoveTagsInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_RemoveTagsInput
+    }
   }
   AtlasExploratory_addContextData?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_AddContextDataInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_AddContextDataInput
+    }
   }
   AtlasExploratory_removeContextData?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_RemoveContextDataInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_RemoveContextDataInput
+    }
   }
   AtlasExploratory_setProvenance?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_SetProvenanceInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_SetProvenanceInput
+    }
   }
   AtlasExploratory_setNotionId?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_SetNotionIdInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_SetNotionIdInput
+    }
   }
   AtlasExploratory_addAdditionalGuidance?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
     __args?: {
+      driveId?: string
       docId?: PHID
       input?: AtlasExploratory_AddAdditionalGuidanceInput
     }
@@ -1405,6 +1479,7 @@ export interface MutationSelection {
     __retry?: boolean
     __alias?: string
     __args?: {
+      driveId?: string
       docId?: PHID
       input?: AtlasExploratory_RemoveAdditionalGuidanceInput
     }

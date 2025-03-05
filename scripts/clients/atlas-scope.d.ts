@@ -249,45 +249,56 @@ type AllEnums =
 // Args
 export interface ServiceArgs {}
 export interface AtlasScopeCreateDocumentArgs {
+  driveId?: string
   name?: string
 }
 export interface AtlasScopeSetScopeNameArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasScope_SetScopeNameInput
 }
 export interface AtlasScopeSetDocNumberArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasScope_SetDocNumberInput
 }
 export interface AtlasScopeSetContentArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasScope_SetContentInput
 }
 export interface AtlasScopeSetMasterStatusArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasScope_SetMasterStatusInput
 }
 export interface AtlasScopeAddTagsArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasScope_AddTagsInput
 }
 export interface AtlasScopeRemoveTagsArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasScope_RemoveTagsInput
 }
 export interface AtlasScopeAddContextDataArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasScope_AddContextDataInput
 }
 export interface AtlasScopeRemoveContextDataArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasScope_RemoveContextDataInput
 }
 export interface AtlasScopeSetProvenanceArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasScope_SetProvenanceInput
 }
 export interface AtlasScopeSetNotionIdArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasScope_SetNotionIdInput
 }
@@ -1206,67 +1217,103 @@ export interface MutationSelection {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { name?: string }
+    __args?: { driveId?: string; name?: string }
   }
   AtlasScope_setScopeName?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasScope_SetScopeNameInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasScope_SetScopeNameInput
+    }
   }
   AtlasScope_setDocNumber?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasScope_SetDocNumberInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasScope_SetDocNumberInput
+    }
   }
   AtlasScope_setContent?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasScope_SetContentInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasScope_SetContentInput
+    }
   }
   AtlasScope_setMasterStatus?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasScope_SetMasterStatusInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasScope_SetMasterStatusInput
+    }
   }
   AtlasScope_addTags?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasScope_AddTagsInput }
+    __args?: { driveId?: string; docId?: PHID; input?: AtlasScope_AddTagsInput }
   }
   AtlasScope_removeTags?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasScope_RemoveTagsInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasScope_RemoveTagsInput
+    }
   }
   AtlasScope_addContextData?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasScope_AddContextDataInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasScope_AddContextDataInput
+    }
   }
   AtlasScope_removeContextData?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasScope_RemoveContextDataInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasScope_RemoveContextDataInput
+    }
   }
   AtlasScope_setProvenance?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasScope_SetProvenanceInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasScope_SetProvenanceInput
+    }
   }
   AtlasScope_setNotionId?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasScope_SetNotionIdInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasScope_SetNotionIdInput
+    }
   }
 }
 

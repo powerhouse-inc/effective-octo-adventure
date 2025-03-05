@@ -367,6 +367,7 @@ const typesTree = {
     get AtlasScope_createDocument() {
       return {
         __args: {
+          driveId: "String",
           name: "String"
         }
       };
@@ -374,6 +375,7 @@ const typesTree = {
     get AtlasScope_setScopeName() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasScope_SetScopeNameInput"
         }
@@ -382,6 +384,7 @@ const typesTree = {
     get AtlasScope_setDocNumber() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasScope_SetDocNumberInput"
         }
@@ -390,6 +393,7 @@ const typesTree = {
     get AtlasScope_setContent() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasScope_SetContentInput"
         }
@@ -398,6 +402,7 @@ const typesTree = {
     get AtlasScope_setMasterStatus() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasScope_SetMasterStatusInput"
         }
@@ -406,6 +411,7 @@ const typesTree = {
     get AtlasScope_addTags() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasScope_AddTagsInput"
         }
@@ -414,6 +420,7 @@ const typesTree = {
     get AtlasScope_removeTags() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasScope_RemoveTagsInput"
         }
@@ -422,6 +429,7 @@ const typesTree = {
     get AtlasScope_addContextData() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasScope_AddContextDataInput"
         }
@@ -430,6 +438,7 @@ const typesTree = {
     get AtlasScope_removeContextData() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasScope_RemoveContextDataInput"
         }
@@ -438,6 +447,7 @@ const typesTree = {
     get AtlasScope_setProvenance() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasScope_SetProvenanceInput"
         }
@@ -446,6 +456,7 @@ const typesTree = {
     get AtlasScope_setNotionId() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasScope_SetNotionIdInput"
         }

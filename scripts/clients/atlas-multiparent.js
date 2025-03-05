@@ -363,6 +363,7 @@ const typesTree = {
     get AtlasMultiParent_createDocument() {
       return {
         __args: {
+          driveId: "String",
           name: "String"
         }
       };
@@ -370,6 +371,7 @@ const typesTree = {
     get AtlasMultiParent_setMultiparentName() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasMultiParent_SetMultiparentNameInput"
         }
@@ -378,6 +380,7 @@ const typesTree = {
     get AtlasMultiParent_setDocNumber() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasMultiParent_SetDocNumberInput"
         }
@@ -386,6 +389,7 @@ const typesTree = {
     get AtlasMultiParent_setContent() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasMultiParent_SetContentInput"
         }
@@ -394,6 +398,7 @@ const typesTree = {
     get AtlasMultiParent_setMasterStatus() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasMultiParent_SetMasterStatusInput"
         }
@@ -402,6 +407,7 @@ const typesTree = {
     get AtlasMultiParent_addParent() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasMultiParent_AddParentInput"
         }
@@ -410,6 +416,7 @@ const typesTree = {
     get AtlasMultiParent_setAtlasType() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasMultiParent_SetAtlasTypeInput"
         }
@@ -418,6 +425,7 @@ const typesTree = {
     get AtlasMultiParent_removeParent() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasMultiParent_RemoveParentInput"
         }
@@ -426,6 +434,7 @@ const typesTree = {
     get AtlasMultiParent_addTags() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasMultiParent_AddTagsInput"
         }
@@ -434,6 +443,7 @@ const typesTree = {
     get AtlasMultiParent_removeTags() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasMultiParent_RemoveTagsInput"
         }
@@ -442,6 +452,7 @@ const typesTree = {
     get AtlasMultiParent_addContextData() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasMultiParent_AddContextDataInput"
         }
@@ -450,6 +461,7 @@ const typesTree = {
     get AtlasMultiParent_removeContextData() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasMultiParent_RemoveContextDataInput"
         }
@@ -458,6 +470,7 @@ const typesTree = {
     get AtlasMultiParent_setProvenance() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasMultiParent_SetProvenanceInput"
         }
@@ -466,6 +479,7 @@ const typesTree = {
     get AtlasMultiParent_setNotionId() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasMultiParent_SetNotionIdInput"
         }
@@ -474,6 +488,7 @@ const typesTree = {
     get AtlasMultiParent_addReference() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasMultiParent_AddReferenceInput"
         }
@@ -482,6 +497,7 @@ const typesTree = {
     get AtlasMultiParent_removeReference() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasMultiParent_RemoveReferenceInput"
         }

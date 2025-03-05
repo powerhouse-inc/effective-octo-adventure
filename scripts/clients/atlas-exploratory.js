@@ -363,6 +363,7 @@ const typesTree = {
     get AtlasExploratory_createDocument() {
       return {
         __args: {
+          driveId: "String",
           name: "String"
         }
       };
@@ -370,6 +371,7 @@ const typesTree = {
     get AtlasExploratory_setExploratoryName() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasExploratory_SetExploratoryNameInput"
         }
@@ -378,6 +380,7 @@ const typesTree = {
     get AtlasExploratory_setDocNumber() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasExploratory_SetDocNumberInput"
         }
@@ -386,6 +389,7 @@ const typesTree = {
     get AtlasExploratory_setContent() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasExploratory_SetContentInput"
         }
@@ -394,6 +398,7 @@ const typesTree = {
     get AtlasExploratory_setMasterStatus() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasExploratory_SetMasterStatusInput"
         }
@@ -402,6 +407,7 @@ const typesTree = {
     get AtlasExploratory_setParent() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasExploratory_SetParentInput"
         }
@@ -410,6 +416,7 @@ const typesTree = {
     get AtlasExploratory_removeParent() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasExploratory_RemoveParentInput"
         }
@@ -418,6 +425,7 @@ const typesTree = {
     get AtlasExploratory_setAtlasType() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasExploratory_SetAtlasTypeInput"
         }
@@ -426,6 +434,7 @@ const typesTree = {
     get AtlasExploratory_setFindings() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasExploratory_SetFindingsInput"
         }
@@ -434,6 +443,7 @@ const typesTree = {
     get AtlasExploratory_addTags() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasExploratory_AddTagsInput"
         }
@@ -442,6 +452,7 @@ const typesTree = {
     get AtlasExploratory_removeTags() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasExploratory_RemoveTagsInput"
         }
@@ -450,6 +461,7 @@ const typesTree = {
     get AtlasExploratory_addContextData() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasExploratory_AddContextDataInput"
         }
@@ -458,6 +470,7 @@ const typesTree = {
     get AtlasExploratory_removeContextData() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasExploratory_RemoveContextDataInput"
         }
@@ -466,6 +479,7 @@ const typesTree = {
     get AtlasExploratory_setProvenance() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasExploratory_SetProvenanceInput"
         }
@@ -474,6 +488,7 @@ const typesTree = {
     get AtlasExploratory_setNotionId() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasExploratory_SetNotionIdInput"
         }
@@ -482,6 +497,7 @@ const typesTree = {
     get AtlasExploratory_addAdditionalGuidance() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasExploratory_AddAdditionalGuidanceInput"
         }
@@ -490,6 +506,7 @@ const typesTree = {
     get AtlasExploratory_removeAdditionalGuidance() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasExploratory_RemoveAdditionalGuidanceInput"
         }

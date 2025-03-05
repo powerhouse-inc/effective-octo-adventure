@@ -365,6 +365,7 @@ const typesTree = {
     get AtlasFoundation_createDocument() {
       return {
         __args: {
+          driveId: "String",
           name: "String"
         }
       };
@@ -372,6 +373,7 @@ const typesTree = {
     get AtlasFoundation_setFoundationName() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasFoundation_SetFoundationNameInput"
         }
@@ -380,6 +382,7 @@ const typesTree = {
     get AtlasFoundation_setDocNumber() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasFoundation_SetDocNumberInput"
         }
@@ -388,6 +391,7 @@ const typesTree = {
     get AtlasFoundation_setContent() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasFoundation_SetContentInput"
         }
@@ -396,6 +400,7 @@ const typesTree = {
     get AtlasFoundation_setMasterStatus() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasFoundation_SetMasterStatusInput"
         }
@@ -404,6 +409,7 @@ const typesTree = {
     get AtlasFoundation_addReference() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasFoundation_AddReferenceInput"
         }
@@ -412,6 +418,7 @@ const typesTree = {
     get AtlasFoundation_setAtlasType() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasFoundation_SetAtlasTypeInput"
         }
@@ -420,6 +427,7 @@ const typesTree = {
     get AtlasFoundation_removeReference() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasFoundation_RemoveReferenceInput"
         }
@@ -428,6 +436,7 @@ const typesTree = {
     get AtlasFoundation_setParent() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasFoundation_SetParentInput"
         }
@@ -436,6 +445,7 @@ const typesTree = {
     get AtlasFoundation_addTags() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasFoundation_AddTagsInput"
         }
@@ -444,6 +454,7 @@ const typesTree = {
     get AtlasFoundation_removeTags() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasFoundation_RemoveTagsInput"
         }
@@ -452,6 +463,7 @@ const typesTree = {
     get AtlasFoundation_addContextData() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasFoundation_AddContextDataInput"
         }
@@ -460,6 +472,7 @@ const typesTree = {
     get AtlasFoundation_removeContextData() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasFoundation_RemoveContextDataInput"
         }
@@ -468,6 +481,7 @@ const typesTree = {
     get AtlasFoundation_setProvenance() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasFoundation_SetProvenanceInput"
         }
@@ -476,6 +490,7 @@ const typesTree = {
     get AtlasFoundation_setNotionId() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasFoundation_SetNotionIdInput"
         }

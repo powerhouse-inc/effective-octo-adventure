@@ -118,69 +118,85 @@ enum EGlobalTag {
 Mutations: AtlasExploratory
 """
 type Mutation {
-  AtlasExploratory_createDocument(name: String): String
+  AtlasExploratory_createDocument(driveId: String, name: String): String
 
   AtlasExploratory_setExploratoryName(
+    driveId: String
     docId: PHID
     input: AtlasExploratory_SetExploratoryNameInput
   ): Int
   AtlasExploratory_setDocNumber(
+    driveId: String
     docId: PHID
     input: AtlasExploratory_SetDocNumberInput
   ): Int
   AtlasExploratory_setContent(
+    driveId: String
     docId: PHID
     input: AtlasExploratory_SetContentInput
   ): Int
   AtlasExploratory_setMasterStatus(
+    driveId: String
     docId: PHID
     input: AtlasExploratory_SetMasterStatusInput
   ): Int
   AtlasExploratory_setParent(
+    driveId: String
     docId: PHID
     input: AtlasExploratory_SetParentInput
   ): Int
   AtlasExploratory_removeParent(
+    driveId: String
     docId: PHID
     input: AtlasExploratory_RemoveParentInput
   ): Int
   AtlasExploratory_setAtlasType(
+    driveId: String
     docId: PHID
     input: AtlasExploratory_SetAtlasTypeInput
   ): Int
   AtlasExploratory_setFindings(
+    driveId: String
     docId: PHID
     input: AtlasExploratory_SetFindingsInput
   ): Int
   AtlasExploratory_addTags(
+    driveId: String
     docId: PHID
     input: AtlasExploratory_AddTagsInput
   ): Int
   AtlasExploratory_removeTags(
+    driveId: String
     docId: PHID
     input: AtlasExploratory_RemoveTagsInput
   ): Int
   AtlasExploratory_addContextData(
+    driveId: String
     docId: PHID
     input: AtlasExploratory_AddContextDataInput
   ): Int
   AtlasExploratory_removeContextData(
+    driveId: String
     docId: PHID
     input: AtlasExploratory_RemoveContextDataInput
   ): Int
   AtlasExploratory_setProvenance(
+    driveId: String
     docId: PHID
     input: AtlasExploratory_SetProvenanceInput
   ): Int
   AtlasExploratory_setNotionId(
+    driveId: String
     docId: PHID
     input: AtlasExploratory_SetNotionIdInput
   ): Int
   AtlasExploratory_addAdditionalGuidance(
+    driveId: String
     docId: PHID
     input: AtlasExploratory_AddAdditionalGuidanceInput
   ): Int
   AtlasExploratory_removeAdditionalGuidance(
+    driveId: String
     docId: PHID
     input: AtlasExploratory_RemoveAdditionalGuidanceInput
   ): Int

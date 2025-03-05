@@ -364,6 +364,7 @@ const typesTree = {
     get AtlasGrounding_createDocument() {
       return {
         __args: {
+          driveId: "String",
           name: "String"
         }
       };
@@ -371,6 +372,7 @@ const typesTree = {
     get AtlasGrounding_setGroundingName() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasGrounding_SetGroundingNameInput"
         }
@@ -379,6 +381,7 @@ const typesTree = {
     get AtlasGrounding_setDocNumber() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasGrounding_SetDocNumberInput"
         }
@@ -387,6 +390,7 @@ const typesTree = {
     get AtlasGrounding_setContent() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasGrounding_SetContentInput"
         }
@@ -395,6 +399,7 @@ const typesTree = {
     get AtlasGrounding_setMasterStatus() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasGrounding_SetMasterStatusInput"
         }
@@ -403,6 +408,7 @@ const typesTree = {
     get AtlasGrounding_setAtlasType() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasGrounding_SetAtlasTypeInput"
         }
@@ -411,6 +417,7 @@ const typesTree = {
     get AtlasGrounding_setParent() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasGrounding_SetParentInput"
         }
@@ -419,6 +426,7 @@ const typesTree = {
     get AtlasGrounding_addTags() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasGrounding_AddTagsInput"
         }
@@ -427,6 +435,7 @@ const typesTree = {
     get AtlasGrounding_removeTags() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasGrounding_RemoveTagsInput"
         }
@@ -435,6 +444,7 @@ const typesTree = {
     get AtlasGrounding_addContextData() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasGrounding_AddContextDataInput"
         }
@@ -443,6 +453,7 @@ const typesTree = {
     get AtlasGrounding_removeContextData() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasGrounding_RemoveContextDataInput"
         }
@@ -451,6 +462,7 @@ const typesTree = {
     get AtlasGrounding_setProvenance() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasGrounding_SetProvenanceInput"
         }
@@ -459,6 +471,7 @@ const typesTree = {
     get AtlasGrounding_setNotionId() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasGrounding_SetNotionIdInput"
         }
@@ -467,6 +480,7 @@ const typesTree = {
     get AtlasGrounding_addReference() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasGrounding_AddReferenceInput"
         }
@@ -475,6 +489,7 @@ const typesTree = {
     get AtlasGrounding_removeReference() {
       return {
         __args: {
+          driveId: "String",
           docId: "PHID",
           input: "AtlasGrounding_RemoveReferenceInput"
         }

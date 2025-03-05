@@ -113,65 +113,80 @@ enum MGlobalTag {
 Mutations: AtlasMultiParent
 """
 type Mutation {
-  AtlasMultiParent_createDocument(name: String): String
+  AtlasMultiParent_createDocument(driveId: String, name: String): String
 
   AtlasMultiParent_setMultiparentName(
+    driveId: String
     docId: PHID
     input: AtlasMultiParent_SetMultiparentNameInput
   ): Int
   AtlasMultiParent_setDocNumber(
+    driveId: String
     docId: PHID
     input: AtlasMultiParent_SetDocNumberInput
   ): Int
   AtlasMultiParent_setContent(
+    driveId: String
     docId: PHID
     input: AtlasMultiParent_SetContentInput
   ): Int
   AtlasMultiParent_setMasterStatus(
+    driveId: String
     docId: PHID
     input: AtlasMultiParent_SetMasterStatusInput
   ): Int
   AtlasMultiParent_addParent(
+    driveId: String
     docId: PHID
     input: AtlasMultiParent_AddParentInput
   ): Int
   AtlasMultiParent_setAtlasType(
+    driveId: String
     docId: PHID
     input: AtlasMultiParent_SetAtlasTypeInput
   ): Int
   AtlasMultiParent_removeParent(
+    driveId: String
     docId: PHID
     input: AtlasMultiParent_RemoveParentInput
   ): Int
   AtlasMultiParent_addTags(
+    driveId: String
     docId: PHID
     input: AtlasMultiParent_AddTagsInput
   ): Int
   AtlasMultiParent_removeTags(
+    driveId: String
     docId: PHID
     input: AtlasMultiParent_RemoveTagsInput
   ): Int
   AtlasMultiParent_addContextData(
+    driveId: String
     docId: PHID
     input: AtlasMultiParent_AddContextDataInput
   ): Int
   AtlasMultiParent_removeContextData(
+    driveId: String
     docId: PHID
     input: AtlasMultiParent_RemoveContextDataInput
   ): Int
   AtlasMultiParent_setProvenance(
+    driveId: String
     docId: PHID
     input: AtlasMultiParent_SetProvenanceInput
   ): Int
   AtlasMultiParent_setNotionId(
+    driveId: String
     docId: PHID
     input: AtlasMultiParent_SetNotionIdInput
   ): Int
   AtlasMultiParent_addReference(
+    driveId: String
     docId: PHID
     input: AtlasMultiParent_AddReferenceInput
   ): Int
   AtlasMultiParent_removeReference(
+    driveId: String
     docId: PHID
     input: AtlasMultiParent_RemoveReferenceInput
   ): Int

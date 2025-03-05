@@ -17,7 +17,7 @@ export default function Editor(props: IProps) {
       className="atlas-drive-explorer"
       style={{ padding: "0.75rem 0.75rem 0 0.75rem", boxSizing: "content-box" }}
     >
-      <EditorLayout>
+      <EditorLayout driveId={props.document.state.global.id}>
         <style>
           {`
             .atlas-drive-explorer-header {

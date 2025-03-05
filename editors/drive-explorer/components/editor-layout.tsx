@@ -5,12 +5,42 @@ import {
   SidebarProvider,
   type SidebarNode,
 } from "@powerhousedao/design-system/scalars";
-import React from "react";
-import mockedTree from "./mocked_tree.json";
+import React, { useState } from "react";
+import { useDriveContext } from "@powerhousedao/reactor-browser";
 
-export function EditorLayout({ children }: React.PropsWithChildren) {
+export interface EditorLayoutProps {
+  readonly driveId: string;
+  readonly children: React.ReactNode;
+}
+
+type AtlasArticle = {
+  global: {
+    name: string;
+    docNo: string;
+    parent: {
+      id: string;
+      name: string | null;
+      docNo: string | null;
+    };
+    atlasType: string;
+    content: string;
+    masterStatus: string;
+    globalTags: string[];
+    references: string[];
+    originalContextData: any[];
+    provenance: string[];
+    notionId: string;
+  };
+};
+
+export function EditorLayout({ children, driveId }: EditorLayoutProps) {
+  const { useDriveDocumentStates } = useDriveContext();
+  const [activeNodeId, setActiveNodeId] = useState<string | undefined>();
+  const state = useDriveDocumentStates({ driveId });
+  const nodes = buildSidebarTree(state as Record<string, AtlasArticle>);
+
   return (
-    <SidebarProvider nodes={mockedTree as SidebarNode[]}>
+    <SidebarProvider>
       <main className="-m-4 flex size-[calc(100%+32px)] overflow-hidden rounded-2xl">
         {/* 
           TODO: remove this div once we fix tailwind css issues
@@ -28,8 +58,11 @@ export function EditorLayout({ children }: React.PropsWithChildren) {
           )}
         />
         <Sidebar
-          activeNodeId="4281ab93-ef4f-4974-988d-7dad149a693d"
+          nodes={nodes}
+          activeNodeId={activeNodeId}
           enableMacros={4}
+          onActiveNodeChange={(node) => setActiveNodeId(node.id)}
+          showStatusFilter
           sidebarIcon={
             <div className="flex items-center justify-center rounded-md bg-gray-900 p-2">
               <Icon className="text-gray-50" name="M" size={16} />
@@ -43,9 +76,49 @@ export function EditorLayout({ children }: React.PropsWithChildren) {
             width: "calc(100% - var(--sidebar-width))",
           }}
         >
+          {activeNodeId ? (
+            <pre>
+              <code>{JSON.stringify(state[activeNodeId], null, 2)}</code>
+            </pre>
+          ) : null}
           {children}
         </div>
       </main>
     </SidebarProvider>
   );
+}
+
+function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
+  const nodesById: Record<string, SidebarNode> = {};
+
+  for (const [key, node] of Object.entries(allNodes)) {
+    nodesById[key] = {
+      id: key,
+      title: `${node.global.docNo} - ${node.global.name}`,
+      children: [],
+    };
+  }
+
+  // Build the tree
+  for (const [key, value] of Object.entries(allNodes)) {
+    if (value.global.parent && !!value.global.parent.id) {
+      nodesById[value.global.parent.id].children?.push(nodesById[key]);
+    }
+  }
+
+  const childrenIds = new Set<string>();
+
+  Object.entries(nodesById).forEach(([id, node]) => {
+    if (node.children) {
+      node.children.forEach((child) => {
+        childrenIds.add(child.id);
+      });
+    }
+  });
+
+  const result = Object.values(nodesById).filter(
+    (node) => !childrenIds.has(node.id),
+  );
+
+  return result;
 }

@@ -1,6 +1,6 @@
 import { Maybe } from "document-model";
 import { DriveNodes } from "../common/ReactorClient";
-import fs from "fs";
+import fs from "node:fs";
 
 export type DocumentCacheEntry = {
   id: string;
@@ -167,7 +167,7 @@ export class DocumentsCache {
       );
     }
 
-    return Object.keys(map).map(key => ({
+    return Object.keys(map).map((key) => ({
       phid: "phd:" + map[key].id,
       path: documentType,
       icon: "File" as const,

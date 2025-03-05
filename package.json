@@ -28,6 +28,11 @@
       "import": "./dist/es/documentModels.js",
       "require": "./dist/cjs/documentModels.js"
     },
+    "./subgraphs": {
+      "types": "./dist/subgraphs.d.ts",
+      "import": "./dist/es/subgraphs.js",
+      "require": "./dist/cjs/subgraphs.js"
+    },
     "./manifest": {
       "types": "./dist/manifest.d.ts",
       "require": "./dist/cjs/manifest.js",
@@ -124,6 +129,7 @@
     "vite": "^6.2.0",
     "vite-plugin-dts": "^4.5.3",
     "vite-plugin-generate-file": "^0.2.0",
+    "vite-plugin-graphql-loader": "^4.0.4",
     "vitest": "^2.1.9",
     "zod": "^3.24.2"
   },

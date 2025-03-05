@@ -204,6 +204,9 @@ importers:
       vite-plugin-generate-file:
         specifier: ^0.2.0
         version: 0.2.0
+      vite-plugin-graphql-loader:
+        specifier: ^4.0.4
+        version: 4.0.4
       vitest:
         specifier: ^2.1.9
         version: 2.1.9(@types/node@22.13.9)(lightningcss@1.29.1)(msw@2.7.3(@types/node@22.13.9)(typescript@5.8.2))
@@ -8667,6 +8670,9 @@ packages:
 
   vite-plugin-generate-file@0.2.0:
     resolution: {integrity: sha512-mAHqvyFWrqbYNmWmSjhfyxShEgVN9ZPSI/cRove86KEYQIJUZ74XajXpPMwIE1xll9piA5Cmhi8kt/ydQSzZ/Q==}
+
+  vite-plugin-graphql-loader@4.0.4:
+    resolution: {integrity: sha512-lYnpQ2luV2fcuXmOJADljuktfMbDW00Y+6QS+Ek8Jz1Vdzlj/51LSGJwZqyjJ24a5YQ+o29Hr6el/5+nlZetvg==}
 
   vite@5.4.14:
     resolution: {integrity: sha512-EK5cY7Q1D8JNhSaPKVK4pwBFvaTmZxEnoKXLG/U9gmdDcihQGNzFlgIvaxezFR4glP1LsuiedwMBqCXH3wZccA==}
@@ -19640,6 +19646,12 @@ snapshots:
       js-yaml: 4.1.0
       mime-types: 2.1.35
       picocolors: 1.1.1
+
+  vite-plugin-graphql-loader@4.0.4:
+    dependencies:
+      graphql: 16.10.0
+      graphql-tag: 2.12.6(graphql@16.10.0)
+      magic-string: 0.30.17
 
   vite@5.4.14(@types/node@22.13.9)(lightningcss@1.29.1):
     dependencies:

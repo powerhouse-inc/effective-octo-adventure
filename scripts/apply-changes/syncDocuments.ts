@@ -17,7 +17,7 @@ export type DocumentSyncConfig = {
     skipNodes: { [id: string]: boolean },
 };
 
-async function syncDocuments(config: DocumentSyncConfig) {
+export const syncDocuments = async (config: DocumentSyncConfig) => {
 
     const readClient = new ReactorClient(config.gqlEndpoint, config.driveName);
     const driveIds = await readClient.getDriveIds();
@@ -104,8 +104,8 @@ async function syncDocuments(config: DocumentSyncConfig) {
           //console.warn(`Cannot find notion document ${childNotionId} (child ref of scope ${notionDoc?.name})`);
         } else {
           const item = { ...notionDocsIndex[childNotionId] };
-          if (!item.parents || item.parents.indexOf(notionDoc.id) < 0) {
-            item.parents = [...(item.parents || []), notionDoc.id];
+          if (!item.parents || item.parents.indexOf(notionDoc!.id) < 0) {
+            item.parents = [...(item.parents || []), notionDoc!.id];
           }
           queue.push(item);
         }
@@ -124,6 +124,4 @@ async function syncDocuments(config: DocumentSyncConfig) {
     const driveUrl = new URL(`/d/${config.driveName}`, config.gqlEndpoint);
     console.log(`Documents loaded in drive: ${driveUrl}`);
 
-}
-
-export default syncDocuments;
+};

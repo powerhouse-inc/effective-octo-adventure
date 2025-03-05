@@ -1,4 +1,4 @@
-import syncDocuments from "./apply-changes/syncDocuments";
+import { syncDocuments } from "./apply-changes/syncDocuments";
 
 // Reactor where the documents will be synchronized to
 const GQL_ENDPOINT = "http://localhost:4001/";
@@ -15,10 +15,10 @@ const PROCESS_LIMIT = 10;
 // Which scope documents to skip or include
 const SKIP_NODES: { [id: string]: boolean } = {
   "422bae2b-2aec-4324-ae40-33c544820db3": false,
-  "eca5e587-79e3-480b-b70d-dd25697c9e1f": false,
-  "cde3202c-9073-43db-8405-4094624c57ea": false,
-  "0ba1b2bd-9513-487d-974c-0d08fb04b341": false,
-  "9e3f76e6-3343-4e70-af0b-c914be2e8d5a": false,
+  "eca5e587-79e3-480b-b70d-dd25697c9e1f": true,
+  "cde3202c-9073-43db-8405-4094624c57ea": true,
+  "0ba1b2bd-9513-487d-974c-0d08fb04b341": true,
+  "9e3f76e6-3343-4e70-af0b-c914be2e8d5a": true,
 };
 
 async function main() {

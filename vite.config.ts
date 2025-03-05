@@ -7,6 +7,7 @@ import generateFile from "vite-plugin-generate-file";
 import { getConfig } from "@powerhousedao/config/powerhouse";
 import graphqlLoader from "vite-plugin-graphql-loader";
 import tsconfigPaths from "vite-tsconfig-paths";
+import commonjs from "vite-plugin-commonjs";
 
 const { documentModelsDir, editorsDir, subgraphsDir } = getConfig();
 
@@ -130,6 +131,7 @@ export default defineConfig(() => {
       },
     },
     plugins: [
+      commonjs(),
       tsconfigPaths(),
       graphqlLoader(),
       dts({ insertTypesEntry: true, exclude: ["**/*.stories.tsx"] }),

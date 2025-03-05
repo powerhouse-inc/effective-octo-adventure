@@ -198,6 +198,9 @@ importers:
       vite:
         specifier: ^6.2.0
         version: 6.2.0(@types/node@22.13.9)(jiti@2.4.2)(lightningcss@1.29.1)(tsx@4.19.3)(yaml@2.7.0)
+      vite-plugin-commonjs:
+        specifier: ^0.10.4
+        version: 0.10.4
       vite-plugin-dts:
         specifier: ^4.5.3
         version: 4.5.3(@types/node@22.13.9)(rollup@4.34.9)(typescript@5.8.2)(vite@6.2.0(@types/node@22.13.9)(jiti@2.4.2)(lightningcss@1.29.1)(tsx@4.19.3)(yaml@2.7.0))
@@ -8675,6 +8678,9 @@ packages:
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
 
+  vite-plugin-commonjs@0.10.4:
+    resolution: {integrity: sha512-eWQuvQKCcx0QYB5e5xfxBNjQKyrjEWZIR9UOkOV6JAgxVhtbZvCOF+FNC2ZijBJ3U3Px04ZMMyyMyFBVWIJ5+g==}
+
   vite-plugin-dts@4.5.3:
     resolution: {integrity: sha512-P64VnD00dR+e8S26ESoFELqc17+w7pKkwlBpgXteOljFyT0zDwD8hH4zXp49M/kciy//7ZbVXIwQCekBJjfWzA==}
     peerDependencies:
@@ -8683,6 +8689,9 @@ packages:
     peerDependenciesMeta:
       vite:
         optional: true
+
+  vite-plugin-dynamic-import@1.6.0:
+    resolution: {integrity: sha512-TM0sz70wfzTIo9YCxVFwS8OA9lNREsh+0vMHGSkWDTZ7bgd1Yjs5RV8EgB634l/91IsXJReg0xtmuQqP0mf+rg==}
 
   vite-plugin-generate-file@0.2.0:
     resolution: {integrity: sha512-mAHqvyFWrqbYNmWmSjhfyxShEgVN9ZPSI/cRove86KEYQIJUZ74XajXpPMwIE1xll9piA5Cmhi8kt/ydQSzZ/Q==}
@@ -19651,6 +19660,12 @@ snapshots:
       - supports-color
       - terser
 
+  vite-plugin-commonjs@0.10.4:
+    dependencies:
+      acorn: 8.14.0
+      magic-string: 0.30.17
+      vite-plugin-dynamic-import: 1.6.0
+
   vite-plugin-dts@4.5.3(@types/node@22.13.9)(rollup@4.34.9)(typescript@5.8.2)(vite@6.2.0(@types/node@22.13.9)(jiti@2.4.2)(lightningcss@1.29.1)(tsx@4.19.3)(yaml@2.7.0)):
     dependencies:
       '@microsoft/api-extractor': 7.51.1(@types/node@22.13.9)
@@ -19669,6 +19684,13 @@ snapshots:
       - '@types/node'
       - rollup
       - supports-color
+
+  vite-plugin-dynamic-import@1.6.0:
+    dependencies:
+      acorn: 8.14.0
+      es-module-lexer: 1.6.0
+      fast-glob: 3.3.3
+      magic-string: 0.30.17
 
   vite-plugin-generate-file@0.2.0:
     dependencies:

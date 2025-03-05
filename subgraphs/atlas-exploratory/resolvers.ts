@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Subgraph } from "@powerhousedao/reactor-api";
+import { addFile } from "document-drive";
 import { actions } from "../../document-models/atlas-exploratory";
-import { actions as driveActions } from "document-model-libs/document-drive";
 import { generateId, hashKey } from "document-model";
 
 export const getResolvers = (subgraph: Subgraph, driveId: string) => {
@@ -16,7 +16,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
 
         await reactor.addDriveAction(
           driveId,
-          driveActions.addFile({
+          addFile({
             id: docId,
             name: args.name,
             documentType: "sky/atlas-exploratory",

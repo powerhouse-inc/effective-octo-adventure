@@ -1,6 +1,7 @@
 import { Icon } from "@powerhousedao/design-system";
 import {
   cn,
+  NodeStatus,
   Sidebar,
   SidebarProvider,
   type SidebarNode,
@@ -14,6 +15,11 @@ export interface EditorLayoutProps {
 }
 
 type AtlasArticle = {
+  documentType: string;
+  revision: {
+    global: number;
+    local: number;
+  };
   global: {
     name: string;
     docNo: string;
@@ -92,10 +98,42 @@ function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
   const nodesById: Record<string, SidebarNode> = {};
 
   for (const [key, node] of Object.entries(allNodes)) {
+    let icons = {};
+    const type = node.global.atlasType?.toLowerCase();
+
+    if (type === "category") {
+      icons = {
+        icon: "FolderClose",
+        expandedIcon: "FolderOpen",
+      };
+    } else if (type === "neededResearch") {
+      icons = {
+        icon: "Tube",
+      };
+    } else if (type === "tenet") {
+      icons = {
+        icon: "Compass",
+      };
+    } else if (type === "annotation") {
+      icons = {
+        icon: "Pencil",
+      };
+    }
+
+    let status = "UNCHANGED";
+
+    if (!node.global.notionId) {
+      status = "CREATED";
+    } else if (node.revision.global > 7) {
+      status = "MODIFIED";
+    }
+
     nodesById[key] = {
       id: key,
       title: `${node.global.docNo} - ${node.global.name}`,
       children: [],
+      status: status as NodeStatus,
+      ...icons,
     };
   }
 

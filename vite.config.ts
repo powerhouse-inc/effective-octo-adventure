@@ -52,6 +52,7 @@ export default defineConfig(() => {
     "react-dom",
     "@powerhousedao/reactor-browser",
     /^@powerhousedao\/reactor-browser\//,
+    "@powerhousedao/reactor-api",
   ];
 
   const test: InlineConfig = {

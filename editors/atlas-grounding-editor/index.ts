@@ -1,17 +1,8 @@
-import { ExtendedEditor, EditorContextProps } from "document-model-libs";
+import { EditorModule } from "document-model";
 import Editor from "./editor";
-import {
-  AtlasGroundingState,
-  AtlasGroundingAction,
-  AtlasGroundingLocalState,
-} from "../../document-models/atlas-grounding";
+import { AtlasGroundingDocument } from "../../document-models/atlas-grounding";
 
-export const module: ExtendedEditor<
-  AtlasGroundingState,
-  AtlasGroundingAction,
-  AtlasGroundingLocalState,
-  EditorContextProps
-> = {
+export const module: EditorModule<AtlasGroundingDocument> = {
   Component: Editor,
   documentTypes: ["sky/atlas-grounding"],
   config: {

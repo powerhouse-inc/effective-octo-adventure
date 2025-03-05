@@ -1,17 +1,8 @@
-import { ExtendedEditor, EditorContextProps } from "document-model-libs";
+import { EditorModule } from "document-model";
 import Editor from "./editor";
-import {
-  AtlasScopeState,
-  AtlasScopeAction,
-  AtlasScopeLocalState,
-} from "../../document-models/atlas-scope";
+import { AtlasScopeDocument } from "../../document-models/atlas-scope";
 
-export const module: ExtendedEditor<
-  AtlasScopeState,
-  AtlasScopeAction,
-  AtlasScopeLocalState,
-  EditorContextProps
-> = {
+export const module: EditorModule<AtlasScopeDocument> = {
   Component: Editor,
   documentTypes: ["sky/atlas-scope"],
   config: {

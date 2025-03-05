@@ -16,7 +16,6 @@ import { SetGroundingNameForm } from "./components/SetGroundingNameForm";
 import { SetMasterStatusForm } from "./components/SetMasterStatusForm";
 import { SetContentForm } from "./components/SetContentForm";
 import { SetTagsForm } from "./components/SetTagsForm";
-import { EditorProps } from "document-model";
 
 export type IProps = EditorProps<AtlasGroundingDocument>;
 

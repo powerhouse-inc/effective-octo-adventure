@@ -38,7 +38,6 @@ export default defineConfig(() => {
     "react",
     "react/jsx-runtime",
     "react-dom",
-    "document-model-libs",
     "@powerhousedao/reactor-browser",
     /^@powerhousedao\/reactor-browser\//,
   ];

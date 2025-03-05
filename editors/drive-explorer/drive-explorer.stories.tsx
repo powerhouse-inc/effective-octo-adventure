@@ -1,5 +1,5 @@
+import { createDriveStory } from "@powerhousedao/common/editors/utils/storybook";
 import Editor from "./editor";
-import { createDriveStory } from "@powerhousedao/common/storybook";
 
 const { meta, CreateDocumentStory: DocumentDrive } = createDriveStory(Editor);
 export { DocumentDrive };

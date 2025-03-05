@@ -1,5 +1,5 @@
 import Editor from "./editor";
-import { createDocumentStory } from "document-model-libs/utils";
+import { createDocumentStory } from "@powerhousedao/builder-tools/editor-utils";
 
 import * as AtlasMultiParentModule from "../../document-models/atlas-multi-parent";
 

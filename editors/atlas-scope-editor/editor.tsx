@@ -21,7 +21,6 @@ import {
   pndContentToString,
 } from "../../document-models/utils";
 import { DiffField } from "./components/DiffField";
-import { EditorProps } from "document-model";
 
 export type IProps = EditorProps<AtlasScopeDocument>;
 

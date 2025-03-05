@@ -23,7 +23,6 @@ import {
   UrlField,
 } from "@powerhousedao/design-system/scalars";
 import { PHIDItem } from "node_modules/@powerhousedao/design-system/dist/src/scalars/components/phid-field/types";
-import { EditorProps } from "document-model";
 
 export type IProps = EditorProps<AtlasFoundationDocument>;
 

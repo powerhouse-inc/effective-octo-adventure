@@ -44,7 +44,7 @@ export default function Editor(props: IProps) {
             }`}
         </style>
         <h1 className="atlas-drive-explorer-header mt-12 text-2xl font-bold text-gray-900 dark:text-gray-50">
-          Altas Drive Explorer
+          Atlas Drive Explorer
         </h1>
         <GenericDriveEditor {...props} />
       </EditorLayout>

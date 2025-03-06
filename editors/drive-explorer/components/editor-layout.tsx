@@ -3,43 +3,27 @@ import {
   cn,
   NodeStatus,
   Sidebar,
+  SidebarProps,
   SidebarProvider,
   type SidebarNode,
 } from "@powerhousedao/design-system/scalars";
 import React, { useState } from "react";
 import { useDriveContext } from "@powerhousedao/reactor-browser";
+import { AtlasArticle } from "./types";
+import { EditorContainer } from "./EditorContainer";
+import { EditorContext } from "document-model";
 
 export interface EditorLayoutProps {
   readonly driveId: string;
   readonly children: React.ReactNode;
+  readonly context: EditorContext;
 }
 
-type AtlasArticle = {
-  documentType: string;
-  revision: {
-    global: number;
-    local: number;
-  };
-  global: {
-    name: string;
-    docNo: string;
-    parent: {
-      id: string;
-      name: string | null;
-      docNo: string | null;
-    };
-    atlasType: string;
-    content: string;
-    masterStatus: string;
-    globalTags: string[];
-    references: string[];
-    originalContextData: any[];
-    provenance: string[];
-    notionId: string;
-  };
-};
-
-export function EditorLayout({ children, driveId }: EditorLayoutProps) {
+export function EditorLayout({
+  children,
+  driveId,
+  context,
+}: EditorLayoutProps) {
   const { useDriveDocumentStates } = useDriveContext();
   const [activeNodeId, setActiveNodeId] = useState<string | undefined>();
   const state = useDriveDocumentStates({ driveId });
@@ -52,6 +36,10 @@ export function EditorLayout({ children, driveId }: EditorLayoutProps) {
   const title = selectedNode
     ? `${selectedNode.global.docNo} - ${selectedNode.global.name}`
     : "Atlas Explorer";
+
+  const onActiveNodeChange: SidebarProps["onActiveNodeChange"] = (node) => {
+    setActiveNodeId(node.id);
+  };
 
   return (
     <SidebarProvider>
@@ -75,7 +63,7 @@ export function EditorLayout({ children, driveId }: EditorLayoutProps) {
           activeNodeId={activeNodeId}
           enableMacros={4}
           nodes={nodes}
-          onActiveNodeChange={(node) => setActiveNodeId(node.id)}
+          onActiveNodeChange={onActiveNodeChange}
           showStatusFilter
           sidebarIcon={
             <div className="flex items-center justify-center rounded-md bg-gray-900 p-2">
@@ -91,13 +79,21 @@ export function EditorLayout({ children, driveId }: EditorLayoutProps) {
           }}
         >
           <div>
-            <h1 className="atlas-drive-explorer-header mt-12 text-2xl font-bold text-gray-900 dark:text-gray-50">
-              {title}
-            </h1>
+            {!activeNodeId && (
+              <h1 className="atlas-drive-explorer-header mt-12 text-2xl font-bold text-gray-900 dark:text-gray-50">
+                {title}
+              </h1>
+            )}
             {activeNodeId ? (
-              <pre>
-                <code>{JSON.stringify(state[activeNodeId], null, 2)}</code>
-              </pre>
+              <EditorContainer
+                context={context}
+                documentId={activeNodeId}
+                documentType={state[activeNodeId].documentType}
+                driveId={driveId}
+                onClose={() => setActiveNodeId(undefined)}
+                onExport={() => {}}
+                title={title}
+              />
             ) : null}
             {children}
           </div>
@@ -112,7 +108,7 @@ function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
 
   for (const [key, node] of Object.entries(allNodes)) {
     let icons = {};
-    const type = node.global.atlasType?.toLowerCase();
+    const type = node.global.atlasType.toLowerCase();
 
     if (type === "category") {
       icons = {

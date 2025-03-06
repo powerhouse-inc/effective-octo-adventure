@@ -54,6 +54,8 @@ export default function Editor(props: IProps) {
         entry.phid.includes(phid) || (entry.title || "").includes(phid),
     );
 
+  const provenance = props.document.state.global.provenance || [];
+
   return (
     <>
       <h1 className="atlas-header">Foundation Document</h1>
@@ -124,7 +126,7 @@ export default function Editor(props: IProps) {
           />
         </div>
         <div className="atlas-cell-provenance">
-          {props.document.state.global.provenance.map((provenanceUrl) => (
+          {provenance.map((provenanceUrl) => (
             <Form
               key={provenanceUrl}
               onSubmit={function (data: any): void | Promise<void> {

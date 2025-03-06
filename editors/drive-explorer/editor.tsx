@@ -1,15 +1,10 @@
-import { EditorProps } from "document-model";
-
-import { EditorLayout } from "./components/editor-layout";
-
 import "../atlas.css";
 
-import { GenericDriveExplorer } from "@powerhousedao/common";
+import { EditorProps } from "document-model";
+import { EditorLayout } from "./components/editor-layout";
 import { DocumentDriveDocument } from "document-drive";
 
 export type IProps = EditorProps<DocumentDriveDocument>;
-
-const GenericDriveEditor = GenericDriveExplorer.Component;
 
 export default function Editor(props: IProps) {
   return (
@@ -17,7 +12,10 @@ export default function Editor(props: IProps) {
       className="atlas-drive-explorer"
       style={{ padding: "0.75rem 0.75rem 0 0.75rem", boxSizing: "content-box" }}
     >
-      <EditorLayout driveId={props.document.state.global.id}>
+      <EditorLayout
+        context={props.context}
+        driveId={props.document.state.global.id}
+      >
         <style>
           {`
             .atlas-drive-explorer-header {
@@ -43,7 +41,6 @@ export default function Editor(props: IProps) {
               top: 16px;
             }`}
         </style>
-        <GenericDriveEditor {...props} />
       </EditorLayout>
     </div>
   );

@@ -108,7 +108,7 @@ function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
 
   for (const [key, node] of Object.entries(allNodes)) {
     let icons = {};
-    const type = node.global.atlasType.toLowerCase();
+    const type = node.global.atlasType?.toLowerCase() || "scope";
 
     if (type === "category") {
       icons = {

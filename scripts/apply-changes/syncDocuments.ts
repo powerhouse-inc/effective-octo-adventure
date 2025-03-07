@@ -53,8 +53,8 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
     for (const client of Object.values(clients)) {
       await client.loadDriveDocumentCache();
     }
+    
     console.log(documentsCache.getDocumentsCount());
-  
     console.log("\nProcessing Notion documents...");
   
     const queue = Object.values(notionDocsIndex)

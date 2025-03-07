@@ -125,12 +125,22 @@ export abstract class DocumentClient<StateType, InputType> {
         this.documentType,
         documentId,
       );
+      
+      const targetState = this.getTargetState(inputDocument, currentState);
+
       await this.patchDocumentState(
         documentId,
         currentState,
-        this.getTargetState(inputDocument, currentState),
+        targetState,
         inputDocument,
       );
+
+      this.documentsCache.updateDocument({
+        id: documentId,
+        documentType: this.documentType,
+        inputId: this.getInputIdFromInput(inputDocument),
+        state: targetState as Object,
+      });
     }
 
     return newDocumentId;

@@ -75,13 +75,14 @@ export default defineConfig(() => {
         external(id, importer) {
           // TODO create separate node build for subgraphs?
           if (["document-model", "document-drive"].includes(id)) {
-            return false;
+            return true;
           }
           if (
-            id.endsWith("document-model/dist/index.js") ||
-            id.endsWith("document-drive/dist/index.js")
+            importer?.includes("subgraphs") &&
+            (id.endsWith("document-model/dist/index.js") ||
+              id.endsWith("document-drive/dist/index.js"))
           ) {
-            return false;
+            return true;
           }
 
           if (

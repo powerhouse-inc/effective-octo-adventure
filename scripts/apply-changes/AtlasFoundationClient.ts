@@ -60,8 +60,8 @@ export class AtlasFoundationClient extends AtlasBaseClient<AtlasFoundationState,
     const [docNo, title] = extractDocNoAndTitle(input.docNo, input.name);
     
     let parent: Maybe<FDocumentLink> = null;
-    if (input.parents?.length > 0) {
-      const parentDocIds = this.documentsCache.resolveInputId(input.parents[0]);
+    for (let i=0; parent === null && i<input.parents?.length || 0; i++) {
+      const parentDocIds = this.documentsCache.resolveInputId(input.parents[i]);
       if (parentDocIds.length) {
         const parentDoc = this.documentsCache.searchDocument(parentDocIds[0]);
         if (parentDoc) {
@@ -72,8 +72,10 @@ export class AtlasFoundationClient extends AtlasBaseClient<AtlasFoundationState,
           };
         }
       }
-    } else {
-      console.log(`No parents: ${JSON.stringify(input, null, 1)}`);
+    }
+
+    if (parent === null) {
+      console.log(`Can't find the parent in document cache: ${input.parents?.join(',')}`);
     }
 
     return {

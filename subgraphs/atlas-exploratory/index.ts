@@ -1,12 +1,12 @@
 import { Subgraph } from "@powerhousedao/reactor-api";
-import { getResolvers } from "./resolvers";
+
 import schema from "./schema.graphql";
+import { getResolvers } from "./resolvers";
 
 export class AtlasExploratorySubgraph extends Subgraph {
   name = "atlas-exploratory";
 
   typeDefs = schema;
-
   resolvers = getResolvers(this);
   additionalContextFields = {};
   async onSetup() {}

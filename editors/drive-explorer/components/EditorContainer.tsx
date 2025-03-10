@@ -1,4 +1,7 @@
-import { useDriveContext } from "@powerhousedao/reactor-browser";
+import {
+  useDriveContext,
+  exportDocument,
+} from "@powerhousedao/reactor-browser";
 import {
   DocumentModelModule,
   EditorContext,
@@ -10,7 +13,7 @@ import {
   RevisionHistory,
   DefaultEditorLoader,
 } from "@powerhousedao/design-system";
-import { useState, Suspense, FC } from "react";
+import { useState, Suspense, FC, useCallback } from "react";
 
 import {
   AtlasExploratory,
@@ -32,7 +35,6 @@ export interface EditorContainerProps {
   documentId: string;
   documentType: string;
   onClose: () => void;
-  onExport: () => void;
   title: string;
   context: EditorContext;
 }
@@ -62,15 +64,7 @@ function getDocumentEditor(documentType: string) {
 }
 
 export const EditorContainer: React.FC<EditorContainerProps> = (props) => {
-  const {
-    driveId,
-    documentId,
-    documentType,
-    onClose,
-    onExport,
-    title,
-    context,
-  } = props;
+  const { driveId, documentId, documentType, onClose, title, context } = props;
 
   const [showRevisionHistory, setShowRevisionHistory] = useState(false);
   const { useDocumentEditorProps } = useDriveContext();
@@ -85,6 +79,13 @@ export const EditorContainer: React.FC<EditorContainerProps> = (props) => {
     driveId,
     documentModelModule,
   });
+
+  const onExport = useCallback(async () => {
+    if (document) {
+      const ext = documentModelModule.documentModel.extension;
+      await exportDocument(document, title, ext);
+    }
+  }, [document?.revision.global, document?.revision.local]);
 
   if (!document) return null;
 

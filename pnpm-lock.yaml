@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@powerhousedao/common':
         specifier: dev
-        version: 1.5.5(engpoikqkvvot27puzaaayb6ne)
+        version: 1.5.5(uhabx5o6dkzvfnkejyvyfbajbi)
       '@types/diff':
         specifier: ^7.0.1
         version: 7.0.1
@@ -65,7 +65,7 @@ importers:
         version: 1.23.3(@libsql/client@0.14.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@prisma/client@5.17.0(prisma@5.22.0))(@types/pg@8.11.11)(@types/react@18.3.18)(encoding@0.1.13)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(prisma@5.22.0)(react@18.3.1)(sqlite3@5.1.7)
       '@powerhousedao/reactor-browser':
         specifier: dev
-        version: 1.16.2(@parcel/watcher@2.5.1)(@types/react@18.3.18)(bufferutil@4.0.9)(encoding@0.1.13)(pg@8.13.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2)(utf-8-validate@5.0.10)
+        version: 1.17.0(@parcel/watcher@2.5.1)(@types/react@18.3.18)(bufferutil@4.0.9)(encoding@0.1.13)(pg@8.13.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2)(utf-8-validate@5.0.10)
       '@powerhousedao/reactor-local':
         specifier: dev
         version: 1.22.3(@parcel/watcher@2.5.1)(@prisma/client@5.17.0(prisma@5.22.0))(@types/pg@8.11.11)(@types/react@18.3.18)(bufferutil@4.0.9)(encoding@0.1.13)(ethers@6.13.5(bufferutil@4.0.9)(utf-8-validate@5.0.10))(pg@8.13.3)(prisma@5.22.0)(react@18.3.1)(sqlite3@5.1.7)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.2)
@@ -2276,8 +2276,8 @@ packages:
   '@powerhousedao/reactor-api@1.23.3':
     resolution: {integrity: sha512-iuRegVYo1pSwGmUZr9HDNg2DD0M/F3DU+1u987brYIEp+wt3DJbSWv2sRJqbpkAl/WTSwaaK7DuihABEcNB7ZQ==}
 
-  '@powerhousedao/reactor-browser@1.16.2':
-    resolution: {integrity: sha512-dNY+JESMtxaMwu6xstFcoanbWSb39MPcPc72mlyk9fqbcPI54/Zy2DiulbDUWCtq2/esTG+i5m/s5oBNaI97+w==}
+  '@powerhousedao/reactor-browser@1.17.0':
+    resolution: {integrity: sha512-AV7jIjL5tWTd0DPhVd4aEDplz95oFTqg/Q5Lx/2S/ID0Lze8P+zizB/9W57OFfbUIg7l+2RiHjnzYo7KPU/htQ==}
     peerDependencies:
       react: ^18.3.1
       react-dom: ^18.3.1
@@ -6217,7 +6217,6 @@ packages:
 
   libsql@0.4.7:
     resolution: {integrity: sha512-T9eIRCs6b0J1SHKYIvD8+KCJMcWZ900iZyxdnSCdqxN12Z1ijzT+jY5nrk72Jw4B0HGzms2NgpryArlJqvc3Lw==}
-    cpu: [x64, arm64, wasm32]
     os: [darwin, linux, win32]
 
   lie@3.1.1:
@@ -8424,9 +8423,6 @@ packages:
 
   uint8arrays@3.1.0:
     resolution: {integrity: sha512-ei5rfKtoRO8OyOIor2Rz5fhzjThwIHJZ3uyDPnDHTXbP0aMQ1RN/6AI5B5d9dBxJOU+BvOAk7ZQ1xphsX8Lrog==}
-
-  uint8arrays@3.1.1:
-    resolution: {integrity: sha512-+QJa8QRnbdXVpHYjLoTpJIdCTiw9Ir62nocClWuXIq2JIh4Uta0cQsTSpFL678p2CN8B+XSApwcU+pQEqVpKWg==}
 
   unbox-primitive@1.1.0:
     resolution: {integrity: sha512-nWJ91DjeOkej/TA8pXQ3myruKpKEYgqvpw9lz4OPHj/NWFNluYrjbz9j01CJ8yKQd2g4jFoOkINCTW2I5LEEyw==}
@@ -11536,11 +11532,11 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@powerhousedao/common@1.5.5(engpoikqkvvot27puzaaayb6ne)':
+  '@powerhousedao/common@1.5.5(uhabx5o6dkzvfnkejyvyfbajbi)':
     dependencies:
       '@powerhousedao/builder-tools': 0.3.4(uwbsjbd6i6gbz3bjrs2rc4efnm)
       '@powerhousedao/design-system': 1.30.4(@tanstack/query-core@5.67.2)(@types/react@18.3.18)(bufferutil@4.0.9)(encoding@0.1.13)(graphql@16.10.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.17)(typescript@5.8.2)(utf-8-validate@5.0.10)
-      '@powerhousedao/reactor-browser': 1.16.2(@parcel/watcher@2.5.1)(@types/react@18.3.18)(bufferutil@4.0.9)(encoding@0.1.13)(pg@8.13.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2)(utf-8-validate@5.0.10)
+      '@powerhousedao/reactor-browser': 1.17.0(@parcel/watcher@2.5.1)(@types/react@18.3.18)(bufferutil@4.0.9)(encoding@0.1.13)(pg@8.13.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2)(utf-8-validate@5.0.10)
       '@tanstack/react-virtual': 3.13.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       document-drive: 1.22.3(@parcel/watcher@2.5.1)(bufferutil@4.0.9)(encoding@0.1.13)(pg@8.13.3)(typescript@5.8.2)(utf-8-validate@5.0.10)
       document-model: 2.22.0
@@ -12034,7 +12030,7 @@ snapshots:
       - supports-color
       - tedious
 
-  '@powerhousedao/reactor-browser@1.16.2(@parcel/watcher@2.5.1)(@types/react@18.3.18)(bufferutil@4.0.9)(encoding@0.1.13)(pg@8.13.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2)(utf-8-validate@5.0.10)':
+  '@powerhousedao/reactor-browser@1.17.0(@parcel/watcher@2.5.1)(@types/react@18.3.18)(bufferutil@4.0.9)(encoding@0.1.13)(pg@8.13.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.2)(utf-8-validate@5.0.10)':
     dependencies:
       did-key-creator: 1.2.0
       document-drive: 1.22.3(@parcel/watcher@2.5.1)(bufferutil@4.0.9)(encoding@0.1.13)(pg@8.13.3)(typescript@5.8.2)(utf-8-validate@5.0.10)
@@ -17501,7 +17497,7 @@ snapshots:
 
   multicodec@3.2.1:
     dependencies:
-      uint8arrays: 3.1.1
+      uint8arrays: 3.1.0
       varint: 6.0.0
 
   multiformats@9.9.0: {}
@@ -19452,10 +19448,6 @@ snapshots:
       multiformats: 9.9.0
 
   uint8arrays@3.1.0:
-    dependencies:
-      multiformats: 9.9.0
-
-  uint8arrays@3.1.1:
     dependencies:
       multiformats: 9.9.0
 

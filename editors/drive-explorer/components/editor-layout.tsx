@@ -91,7 +91,6 @@ export function EditorLayout({
                 documentType={state[activeNodeId].documentType}
                 driveId={driveId}
                 onClose={() => setActiveNodeId(undefined)}
-                onExport={() => {}}
                 title={title}
               />
             ) : null}

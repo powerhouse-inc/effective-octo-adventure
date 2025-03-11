@@ -6,7 +6,7 @@ import { ReactorClient } from './common/ReactorClient';
 import { gql } from 'graphql-request';
 import { AtlasBaseClient, mutationArg } from './atlas-base/AtlasBaseClient';
 import { AtlasFoundationState, SetContentInput, SetDocNumberInput, SetMasterStatusInput, SetNotionIdInput, SetFoundationNameInput, SetAtlasTypeInput, SetParentInput, SetProvenanceInput, FStatus, Maybe, FDocumentLink  } from 'document-models/atlas-foundation';
-import { extractDocNoAndTitle } from './atlas-base/utils';
+import { extractDocNoAndTitle, findAtlasParentInCache } from './atlas-base/utils';
 
 const DOCUMENT_TYPE = 'sky/atlas-foundation';
 
@@ -58,25 +58,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<AtlasFoundationState,
 
   protected getTargetState(input: ParsedNotionDocument, currentState: AtlasFoundationState): AtlasFoundationState {
     const [docNo, title] = extractDocNoAndTitle(input.docNo, input.name);
-    
-    let parent: Maybe<FDocumentLink> = null;
-    for (let i=0; parent === null && i<input.parents?.length || 0; i++) {
-      const parentDocIds = this.documentsCache.resolveInputId(input.parents[i]);
-      if (parentDocIds.length) {
-        const parentDoc = this.documentsCache.searchDocument(parentDocIds[0]);
-        if (parentDoc) {
-          parent = {
-            id: parentDoc.id,
-            name: parentDoc.name || null,
-            docNo: parentDoc.state?.docNo || null
-          };
-        }
-      }
-    }
-
-    if (parent === null) {
-      console.log(`Can't find the parent in document cache: ${input.parents?.join(',')}`);
-    }
+    const parent: Maybe<FDocumentLink> = findAtlasParentInCache(input, this.documentsCache);
 
     return {
       ...currentState,

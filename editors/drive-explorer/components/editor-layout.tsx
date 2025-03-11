@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-max-depth */
 import { Icon } from "@powerhousedao/design-system";
 import {
   cn,
@@ -7,7 +8,7 @@ import {
   SidebarProvider,
   type SidebarNode,
 } from "@powerhousedao/design-system/scalars";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useDriveContext } from "@powerhousedao/reactor-browser";
 import { AtlasArticle } from "./types";
 import { EditorContainer } from "./EditorContainer";
@@ -37,9 +38,13 @@ export function EditorLayout({
     ? `${selectedNode.global.docNo} - ${selectedNode.global.name}`
     : "Atlas Explorer";
 
-  const onActiveNodeChange: SidebarProps["onActiveNodeChange"] = (node) => {
+  const onActiveNodeChange = useCallback((node: SidebarNode) => {
     setActiveNodeId(node.id);
-  };
+  }, []);
+
+  const onEditorClose = useCallback(() => {
+    setActiveNodeId(undefined);
+  }, []);
 
   return (
     <SidebarProvider>
@@ -90,7 +95,8 @@ export function EditorLayout({
                 documentId={activeNodeId}
                 documentType={state[activeNodeId].documentType}
                 driveId={driveId}
-                onClose={() => setActiveNodeId(undefined)}
+                key={activeNodeId}
+                onClose={onEditorClose}
                 title={title}
               />
             ) : null}

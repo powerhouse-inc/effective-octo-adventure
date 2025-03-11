@@ -139,6 +139,7 @@ export abstract class DocumentClient<StateType, InputType> {
         id: documentId,
         documentType: this.documentType,
         inputId: this.getInputIdFromInput(inputDocument),
+        name: this.getNameFromState(targetState) || undefined,
         state: targetState as Object,
       });
     }

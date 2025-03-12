@@ -1,4 +1,4 @@
-import "../atlas.css";
+import "../style.css";
 
 import { EditorProps } from "document-model";
 import { EditorLayout } from "./components/editor-layout";

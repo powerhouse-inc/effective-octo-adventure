@@ -8,7 +8,7 @@ import { getConfig } from "@powerhousedao/config/powerhouse";
 import graphqlLoader from "vite-plugin-graphql-loader";
 import tsconfigPaths from "vite-tsconfig-paths";
 import commonjs from "vite-plugin-commonjs";
-
+import tailwindcss from "@tailwindcss/vite";
 const { documentModelsDir, editorsDir, subgraphsDir } = getConfig();
 
 const entry: Record<string, string> = {
@@ -70,6 +70,7 @@ export default defineConfig(() => {
       lib: {
         entry,
         formats: ["es", "cjs"],
+        cssFileName: "style.css",
       },
       rollupOptions: {
         external(id, importer) {
@@ -132,6 +133,7 @@ export default defineConfig(() => {
       },
     },
     plugins: [
+      tailwindcss(),
       commonjs(),
       tsconfigPaths(),
       graphqlLoader(),

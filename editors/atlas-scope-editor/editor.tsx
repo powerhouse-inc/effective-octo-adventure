@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-max-depth */
 /* eslint-disable react/jsx-no-bind */
-import "../atlas.css";
+import "../style.css";
 import { EditorProps } from "document-model";
 import {
   actions,

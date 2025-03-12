@@ -15,6 +15,7 @@ import { EditorContainer } from "./EditorContainer";
 import { DocumentModelModule, EditorContext } from "document-model";
 import { CreateDocumentModal } from "@powerhousedao/design-system";
 import { CreateDocument } from "./create-document";
+import { Home } from "./home";
 
 export interface EditorLayoutProps {
   readonly driveId: string;
@@ -42,7 +43,7 @@ export function EditorLayout({
 
   const title = selectedNode
     ? `${selectedNode.global.docNo} - ${selectedNode.global.name}`
-    : "Atlas Explorer";
+    : "Welcome to the Atlas Explorer";
 
   const onActiveNodeChange = useCallback((node: SidebarNode) => {
     setActiveNodeId(node.id);
@@ -120,7 +121,7 @@ export function EditorLayout({
         >
           <div>
             {!activeNodeId && (
-              <h1 className="atlas-drive-explorer-header mt-12 text-2xl font-bold text-gray-900 dark:text-gray-50">
+              <h1 className="atlas-drive-explorer-header mt-12 text-base text-gray-900 dark:text-gray-50">
                 {title}
               </h1>
             )}
@@ -135,10 +136,12 @@ export function EditorLayout({
                 title={title}
               />
             ) : (
-              <CreateDocument
-                createDocument={onSelectDocumentModel}
-                documentModels={filteredDocumentModels}
-              />
+              <Home>
+                <CreateDocument
+                  createDocument={onSelectDocumentModel}
+                  documentModels={filteredDocumentModels}
+                />
+              </Home>
             )}
             {children}
             <CreateDocumentModal

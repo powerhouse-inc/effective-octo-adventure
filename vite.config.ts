@@ -70,7 +70,7 @@ export default defineConfig(() => {
       lib: {
         entry,
         formats: ["es", "cjs"],
-        cssFileName: "style.css",
+        cssFileName: "style",
       },
       rollupOptions: {
         external(id, importer) {

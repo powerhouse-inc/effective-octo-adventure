@@ -8,11 +8,13 @@ import {
   SidebarProvider,
   type SidebarNode,
 } from "@powerhousedao/design-system/scalars";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useRef } from "react";
 import { useDriveContext } from "@powerhousedao/reactor-browser";
 import { AtlasArticle } from "./types";
 import { EditorContainer } from "./EditorContainer";
-import { EditorContext } from "document-model";
+import { DocumentModelModule, EditorContext } from "document-model";
+import { CreateDocumentModal } from "@powerhousedao/design-system";
+import { CreateDocument } from "./create-document";
 
 export interface EditorLayoutProps {
   readonly driveId: string;
@@ -25,9 +27,13 @@ export function EditorLayout({
   driveId,
   context,
 }: EditorLayoutProps) {
-  const { useDriveDocumentStates } = useDriveContext();
+  const { useDriveDocumentStates, addDocument, documentModels } =
+    useDriveContext();
   const [activeNodeId, setActiveNodeId] = useState<string | undefined>();
-  const state = useDriveDocumentStates({ driveId });
+  const [openModal, setOpenModal] = useState(false);
+  const selectedDocumentModel = useRef<DocumentModelModule | null>(null);
+
+  const [state, fetchDocuments] = useDriveDocumentStates({ driveId });
   const nodes = buildSidebarTree(state as Record<string, AtlasArticle>);
 
   const selectedNode = activeNodeId
@@ -45,6 +51,35 @@ export function EditorLayout({
   const onEditorClose = useCallback(() => {
     setActiveNodeId(undefined);
   }, []);
+
+  const onCreateDocument = useCallback(
+    async (fileName: string) => {
+      setOpenModal(false);
+
+      const documentModel = selectedDocumentModel.current;
+      if (!documentModel) return;
+
+      const node = await addDocument(
+        driveId,
+        fileName,
+        documentModel.documentModel.id,
+      );
+
+      selectedDocumentModel.current = null;
+      await fetchDocuments(driveId, [node.id]);
+      setActiveNodeId(node.id);
+    },
+    [addDocument, driveId, setActiveNodeId],
+  );
+
+  const onSelectDocumentModel = (documentModel: DocumentModelModule) => {
+    selectedDocumentModel.current = documentModel;
+    setOpenModal(true);
+  };
+
+  const filteredDocumentModels = documentModels.filter(
+    (docModel) => docModel.documentModel.id !== "powerhouse/document-model",
+  );
 
   return (
     <SidebarProvider>
@@ -99,8 +134,18 @@ export function EditorLayout({
                 onClose={onEditorClose}
                 title={title}
               />
-            ) : null}
+            ) : (
+              <CreateDocument
+                createDocument={onSelectDocumentModel}
+                documentModels={filteredDocumentModels}
+              />
+            )}
             {children}
+            <CreateDocumentModal
+              onContinue={onCreateDocument}
+              onOpenChange={(open) => setOpenModal(open)}
+              open={openModal}
+            />
           </div>
         </div>
       </main>

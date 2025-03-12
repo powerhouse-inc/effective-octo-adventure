@@ -26,7 +26,7 @@ import { DiffField } from "../atlas-scope-editor/components/DiffField";
 import {
   getOriginalNotionDocument,
   pndContentToString,
-} from "document-models/utils";
+} from "../../document-models/utils";
 
 export type IProps = EditorProps<AtlasFoundationDocument>;
 

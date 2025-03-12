@@ -21,7 +21,12 @@ import {
   PHIDField,
   UrlField,
 } from "@powerhousedao/design-system/scalars";
-import { PHIDItem } from "node_modules/@powerhousedao/design-system/dist/src/scalars/components/phid-field/types";
+import { IdAutocompleteOption } from "node_modules/@powerhousedao/design-system/dist/src/scalars/components/fragments/id-autocomplete-field/types";
+import { DiffField } from "editors/atlas-scope-editor/components/DiffField";
+import {
+  getOriginalNotionDocument,
+  pndContentToString,
+} from "document-models/utils";
 
 export type IProps = EditorProps<AtlasFoundationDocument>;
 
@@ -38,8 +43,13 @@ export default function Editor(props: IProps) {
     .filter((el) => el !== null)
     .join(" - ");
 
-  const parentInfo: PHIDItem = {
-    phid: "phd:" + (doc.state.global.parent?.id || ""),
+  const originalNode = getOriginalNotionDocument(
+    props.document.state.global.notionId || "notion-id-not-set",
+    "article",
+  );
+
+  const parentInfo = {
+    value: "phd:" + (doc.state.global.parent?.id || ""),
     title: parentTitle,
     path: "sky/atlas-scope",
     icon: "File" as const,
@@ -47,10 +57,10 @@ export default function Editor(props: IProps) {
   };
 
   // eslint-disable-next-line @typescript-eslint/require-await
-  const cb = async (phid: string): Promise<PHIDItem[]> =>
-    (docsIndex as PHIDItem[]).filter(
+  const cb = async (phid: string): Promise<IdAutocompleteOption[]> =>
+    (docsIndex as IdAutocompleteOption[]).filter(
       (entry) =>
-        entry.phid.includes(phid) || (entry.title || "").includes(phid),
+        entry.value.includes(phid) || (entry.title || "").includes(phid),
     );
 
   const provenance = props.document.state.global.provenance || [];
@@ -58,7 +68,13 @@ export default function Editor(props: IProps) {
   return (
     <>
       <h1 className="atlas-header">Foundation Document</h1>
-      <div className="atlas-grid">
+      <div className="atlas-grid-double">
+        <div className="atlas-cell-notionId">
+          <span className="atlas-cell-notionId-label">Notion ID</span>
+          <span className="atlas-cell-notionId-value">
+            {props.document.state.global.notionId}
+          </span>
+        </div>
         <div className="atlas-cell-docNo">
           <SetDocNumberForm
             defaultValue={{ docNo: props.document.state.global.docNo || "" }}
@@ -86,6 +102,25 @@ export default function Editor(props: IProps) {
             }}
           />
         </div>
+        <div className="atlas-cell-docNo-double">
+          <DiffField
+            original={originalNode.docNo}
+            value={props.document.state.global.docNo || ""}
+          />
+        </div>
+        <div className="atlas-cell-name-double">
+          <DiffField
+            original={originalNode.name}
+            value={props.document.state.global.name || ""}
+          />
+        </div>
+        <div className="atlas-cell-masterStatus-double">
+          <DiffField
+            hideAdditions={!!originalNode.masterStatusNames[0]}
+            original={(originalNode.masterStatusNames[0] || "").toUpperCase()}
+            value={props.document.state.global.masterStatus || "PLACEHOLDER"}
+          />
+        </div>
         <div className="atlas-cell-content">
           <SetContentForm
             defaultValue={{
@@ -96,6 +131,14 @@ export default function Editor(props: IProps) {
             }}
           />
         </div>
+        <div className="atlas-cell-content-double">
+          <DiffField
+            original={originalNode.content
+              .map((c) => pndContentToString(c))
+              .join("\n")}
+            value={props.document.state.global.content || ""}
+          />
+        </div>
         <div className="atlas-cell-parent">
           <Form
             onSubmit={function (data: any): void | Promise<void> {
@@ -103,14 +146,14 @@ export default function Editor(props: IProps) {
             }}
           >
             <PHIDField
-              defaultValue={parentInfo.phid}
+              defaultValue={parentInfo.value}
               fetchOptionsCallback={cb}
               fetchSelectedOptionCallback={(x) => cb(x).then((x) => x[0])}
               initialOptions={[parentInfo]}
               label="Parent Document:"
               name="parentId"
               placeholder="phd:"
-              variant="withIdTitleAndDescription"
+              variant="withValueTitleAndDescription"
             />
           </Form>
         </div>
@@ -145,7 +188,7 @@ export default function Editor(props: IProps) {
           ))}
         </div>
       </div>
-      <pre style={{ display: "block", margin: "2em 5%" }}>
+      <pre style={{ display: "none", margin: "2em 5%" }}>
         {JSON.stringify(props.document.state, null, 2)}
       </pre>
     </>

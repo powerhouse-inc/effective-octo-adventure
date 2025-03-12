@@ -168,7 +168,7 @@ export class DocumentsCache {
     }
 
     return Object.keys(map).map((key) => ({
-      phid: "phd:" + map[key].id,
+      value: "phd:" + map[key].id,
       path: documentType,
       icon: "File" as const,
       description: " ",

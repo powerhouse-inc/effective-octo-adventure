@@ -78,7 +78,7 @@
     "@powerhousedao/builder-tools": "dev",
     "@powerhousedao/codegen": "dev",
     "@powerhousedao/config": "dev",
-    "@powerhousedao/design-system": "1.22.5-canary.89",
+    "@powerhousedao/design-system": "1.22.5-canary.94",
     "@powerhousedao/mips-parser": "2.2.2-alpha.0",
     "@powerhousedao/ph-cli": "dev",
     "@powerhousedao/reactor-api": "dev",

@@ -22,7 +22,7 @@ import {
   UrlField,
 } from "@powerhousedao/design-system/scalars";
 import { IdAutocompleteOption } from "node_modules/@powerhousedao/design-system/dist/src/scalars/components/fragments/id-autocomplete-field/types";
-import { DiffField } from "editors/atlas-scope-editor/components/DiffField";
+import { DiffField } from "../atlas-scope-editor/components/DiffField";
 import {
   getOriginalNotionDocument,
   pndContentToString,
@@ -67,7 +67,12 @@ export default function Editor(props: IProps) {
 
   return (
     <>
-      <h1 className="atlas-header">Foundation Document</h1>
+      <h1 className="atlas-header">
+        {props.document.state.global.docNo
+          ? props.document.state.global.docNo + " - "
+          : ""}
+        {props.document.state.global.name || "Foundation Document"}
+      </h1>
       <div className="atlas-grid-double">
         <div className="atlas-cell-notionId">
           <span className="atlas-cell-notionId-label">Notion ID</span>

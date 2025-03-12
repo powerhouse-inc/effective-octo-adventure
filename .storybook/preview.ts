@@ -1,6 +1,5 @@
 import type { Preview } from "@storybook/react";
 import { mockDateDecorator } from "storybook-mock-date-decorator";
-import "@powerhousedao/design-system/style.css";
 
 const preview: Preview = {
   parameters: {

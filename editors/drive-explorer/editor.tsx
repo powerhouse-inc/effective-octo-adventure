@@ -1,5 +1,3 @@
-import "../style.css";
-
 import { EditorProps } from "document-model";
 import { EditorLayout } from "./components/editor-layout";
 import { DocumentDriveDocument } from "document-drive";

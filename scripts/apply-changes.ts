@@ -22,13 +22,18 @@ const SKIP_NODES: { [id: string]: boolean } = {
   "4281ab93-ef4f-4974-988d-7dad149a693d": true,
 };
 
+// Set to true in order to update the index.json file with 
+// auto-complete values of the parent document field.
+const SAVE_CACHE_FILE = false;
+
 async function main() {
   await syncDocuments({
     driveName: DRIVE_NAME,
     gqlEndpoint: GQL_ENDPOINT,
     preferredEditor: PREFERRED_EDITOR,
     processLimit: PROCESS_LIMIT,
-    skipNodes: SKIP_NODES
+    skipNodes: SKIP_NODES,
+    saveToFile: SAVE_CACHE_FILE ? "./scripts/apply-changes/data/index.json" : undefined
   });
 }
 

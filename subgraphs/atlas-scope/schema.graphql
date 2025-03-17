@@ -93,30 +93,58 @@ enum GlobalTag {
 Mutations: AtlasScope
 """
 type Mutation {
-  AtlasScope_createDocument(name: String): String
+  AtlasScope_createDocument(driveId: String, name: String): String
 
-  AtlasScope_setScopeName(docId: PHID, input: AtlasScope_SetScopeNameInput): Int
-  AtlasScope_setDocNumber(docId: PHID, input: AtlasScope_SetDocNumberInput): Int
-  AtlasScope_setContent(docId: PHID, input: AtlasScope_SetContentInput): Int
+  AtlasScope_setScopeName(
+    driveId: String
+    docId: PHID
+    input: AtlasScope_SetScopeNameInput
+  ): Int
+  AtlasScope_setDocNumber(
+    driveId: String
+    docId: PHID
+    input: AtlasScope_SetDocNumberInput
+  ): Int
+  AtlasScope_setContent(
+    driveId: String
+    docId: PHID
+    input: AtlasScope_SetContentInput
+  ): Int
   AtlasScope_setMasterStatus(
+    driveId: String
     docId: PHID
     input: AtlasScope_SetMasterStatusInput
   ): Int
-  AtlasScope_addTags(docId: PHID, input: AtlasScope_AddTagsInput): Int
-  AtlasScope_removeTags(docId: PHID, input: AtlasScope_RemoveTagsInput): Int
+  AtlasScope_addTags(
+    driveId: String
+    docId: PHID
+    input: AtlasScope_AddTagsInput
+  ): Int
+  AtlasScope_removeTags(
+    driveId: String
+    docId: PHID
+    input: AtlasScope_RemoveTagsInput
+  ): Int
   AtlasScope_addContextData(
+    driveId: String
     docId: PHID
     input: AtlasScope_AddContextDataInput
   ): Int
   AtlasScope_removeContextData(
+    driveId: String
     docId: PHID
     input: AtlasScope_RemoveContextDataInput
   ): Int
   AtlasScope_setProvenance(
+    driveId: String
     docId: PHID
     input: AtlasScope_SetProvenanceInput
   ): Int
-  AtlasScope_setNotionId(docId: PHID, input: AtlasScope_SetNotionIdInput): Int
+  AtlasScope_setNotionId(
+    driveId: String
+    docId: PHID
+    input: AtlasScope_SetNotionIdInput
+  ): Int
 }
 
 """

@@ -1,5 +1,5 @@
 import { getPNDTitle, pndContentToString } from 'document-models/utils';
-import { client as writeClient, Status } from '../clients/atlas-scope';
+import { default as writeClient } from '../clients/atlas-scope';
 import { ParsedNotionDocument } from './atlas-base/NotionTypes';
 import { DocumentsCache } from './common/DocumentsCache';
 import { ReactorClient } from './common/ReactorClient';
@@ -9,27 +9,29 @@ import { AtlasBaseClient, mutationArg } from './atlas-base/AtlasBaseClient';
 
 const DOCUMENT_TYPE = 'sky/atlas-scope';
 
-const statusStringToEnum = (status: string): Status => {
+const statusStringToEnum = (status: string): string => {
   switch (status.toUpperCase()) {
     case 'PLACEHOLDER':
-      return Status.placeholder;
+      return "PLACEHOLDER";
     case 'PROVISIONAL':
-      return Status.provisional;
+      return "PROVISIONAL";
     case 'APPROVED':
-      return Status.approved;
+      return "APPROVED";
     case 'DEFERRED':
-      return Status.deferred;
+      return "DEFERRED";
     case 'ARCHIVED':
-      return Status.archived;
+      return "ARCHIVED";
     default:
       throw new Error('Unknown scope status: ' + status);
   }
 };
 
 export class AtlasScopeClient extends AtlasBaseClient<AtlasScopeState, typeof writeClient> {
-  constructor(mutationsSubgraphUrl: string, documentsCache: DocumentsCache, readClient: ReactorClient) {
-    super(DOCUMENT_TYPE, mutationsSubgraphUrl, documentsCache, readClient, writeClient);
+  private readonly driveId: string;
 
+  constructor(mutationsSubgraphUrl: string, documentsCache: DocumentsCache, readClient: ReactorClient, driveId: string) {
+    super(DOCUMENT_TYPE, mutationsSubgraphUrl, documentsCache, readClient, writeClient);
+    this.driveId = driveId;
     this.setDocumentSchema(gql`
       AtlasScope {
         id
@@ -49,7 +51,7 @@ export class AtlasScopeClient extends AtlasBaseClient<AtlasScopeState, typeof wr
 
   protected createDocumentFromInput(notionDoc: ParsedNotionDocument) {
     return this.writeClient.mutations.AtlasScope_createDocument(
-      { __args: { name: getPNDTitle(notionDoc) } }
+      { __args: { driveId: this.driveId, name: getPNDTitle(notionDoc) } }
     );
   }
 
@@ -67,7 +69,7 @@ export class AtlasScopeClient extends AtlasBaseClient<AtlasScopeState, typeof wr
 
   protected async patchField<K extends keyof AtlasScopeState>(id: string, fieldName: K, current: AtlasScopeState[K], target: AtlasScopeState[K]) {
     console.log(` > ${fieldName}: ${current ? current + ' ' : ''}> ${target}`);
-    const patch = this.writeClient.mutations, arg = mutationArg(id);
+    const patch = this.writeClient.mutations, arg = mutationArg(this.driveId, id);
 
     switch (fieldName) {
       case 'docNo':
@@ -77,7 +79,7 @@ export class AtlasScopeClient extends AtlasBaseClient<AtlasScopeState, typeof wr
         await patch.AtlasScope_setScopeName(arg<SetScopeNameInput>({ name: target as string }));
         break;
       case 'masterStatus':
-        await patch.AtlasScope_setMasterStatus(arg<any>({ masterStatus: target as Status }));
+        await patch.AtlasScope_setMasterStatus(arg<any>({ masterStatus: target as string }));
         break;
       case 'content':
         await patch.AtlasScope_setContent(arg<SetContentInput>({ content: target as string }));

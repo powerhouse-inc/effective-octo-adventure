@@ -1,21 +1,12 @@
-import { ExtendedEditor, EditorContextProps } from "document-model-libs";
+import { EditorModule } from "document-model";
 import Editor from "./editor";
-import {
-  AtlasFoundationState,
-  AtlasFoundationAction,
-  AtlasFoundationLocalState,
-} from "../../document-models/atlas-foundation";
+import { AtlasFoundationDocument } from "../../document-models/atlas-foundation";
 
-export const module: ExtendedEditor<
-  AtlasFoundationState,
-  AtlasFoundationAction,
-  AtlasFoundationLocalState,
-  EditorContextProps
-> = {
+export const module: EditorModule<AtlasFoundationDocument> = {
   Component: Editor,
   documentTypes: ["sky/atlas-foundation"],
   config: {
-    id: "editor-id",
+    id: "AtlasFoundation",
     disableExternalControls: true,
     documentToolbarEnabled: true,
     showSwitchboardLink: true,

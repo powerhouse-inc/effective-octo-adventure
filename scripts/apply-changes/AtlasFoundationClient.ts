@@ -1,19 +1,21 @@
 import { getPNDTitle, pndContentToString } from '../../document-models/utils';
-import { client as writeClient } from '../clients/atlas-foundation';
+import { default as writeClient } from '../clients/atlas-foundation';
 import { ParsedNotionDocument } from './atlas-base/NotionTypes';
 import { DocumentsCache } from './common/DocumentsCache';
 import { ReactorClient } from './common/ReactorClient';
 import { gql } from 'graphql-request';
 import { AtlasBaseClient, mutationArg } from './atlas-base/AtlasBaseClient';
 import { AtlasFoundationState, SetContentInput, SetDocNumberInput, SetMasterStatusInput, SetNotionIdInput, SetFoundationNameInput, SetAtlasTypeInput, SetParentInput, SetProvenanceInput, FStatus, Maybe, FDocumentLink  } from 'document-models/atlas-foundation';
-import { extractDocNoAndTitle } from './atlas-base/utils';
+import { extractDocNoAndTitle, findAtlasParentInCache } from './atlas-base/utils';
 
 const DOCUMENT_TYPE = 'sky/atlas-foundation';
 
 export class AtlasFoundationClient extends AtlasBaseClient<AtlasFoundationState, typeof writeClient> {
-  constructor(mutationsSubgraphUrl: string, documentsCache: DocumentsCache, readClient: ReactorClient) {
-    super(DOCUMENT_TYPE, mutationsSubgraphUrl, documentsCache, readClient, writeClient);
+  private readonly driveId: string; 
 
+  constructor(mutationsSubgraphUrl: string, documentsCache: DocumentsCache, readClient: ReactorClient, driveId: string) {
+    super(DOCUMENT_TYPE, mutationsSubgraphUrl, documentsCache, readClient, writeClient);
+    this.driveId = driveId;
     this.setDocumentSchema(gql`
       AtlasFoundation {
         id
@@ -50,29 +52,13 @@ export class AtlasFoundationClient extends AtlasBaseClient<AtlasFoundationState,
 
   protected createDocumentFromInput(notionDoc: ParsedNotionDocument) {
     return this.writeClient.mutations.AtlasFoundation_createDocument(
-      { __args: { name: getPNDTitle(notionDoc) } }
+      { __args: { driveId: this.driveId, name: getPNDTitle(notionDoc) } }
     );
   }
 
   protected getTargetState(input: ParsedNotionDocument, currentState: AtlasFoundationState): AtlasFoundationState {
     const [docNo, title] = extractDocNoAndTitle(input.docNo, input.name);
-    
-    let parent: Maybe<FDocumentLink> = null;
-    if (input.parents?.length > 0) {
-      const parentDocIds = this.documentsCache.resolveInputId(input.parents[0]);
-      if (parentDocIds.length) {
-        const parentDoc = this.documentsCache.searchDocument(parentDocIds[0]);
-        if (parentDoc) {
-          parent = {
-            id: parentDoc.id,
-            name: parentDoc.name || null,
-            docNo: parentDoc.state?.docNo || null
-          };
-        }
-      }
-    } else {
-      console.log(`No parents: ${JSON.stringify(input, null, 1)}`);
-    }
+    const parent: Maybe<FDocumentLink> = findAtlasParentInCache(input, this.documentsCache);
 
     return {
       ...currentState,
@@ -88,7 +74,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<AtlasFoundationState,
 
   protected async patchField<K extends keyof AtlasFoundationState>(id: string, fieldName: K, current: AtlasFoundationState[K], target: AtlasFoundationState[K]) {
     console.log(` > ${fieldName}: ${current ? current + ' ' : ''}> ${target}`);
-    const patch = this.writeClient.mutations, arg = mutationArg(id);
+    const patch = this.writeClient.mutations, arg = mutationArg(this.driveId, id);
 
     switch (fieldName) {
       case 'docNo':

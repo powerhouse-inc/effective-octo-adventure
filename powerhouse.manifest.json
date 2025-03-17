@@ -1,0 +1,65 @@
+{
+  "name": "Atlas",
+  "description": "The Atlas package offers contributors to the sky ecosystem to interact with the Atlas",
+  "category": "Governance",
+  "publisher": {
+    "name": "Powerhouse",
+    "url": "https://www.powerhouse.inc/"
+  },
+  "documentModels": [
+    {
+      "id": "sky/atlas-scope",
+      "name": "Atlas Scope"
+    },
+    {
+      "id": "sky/atlas-exploratory",
+      "name": "Atlas Exploratory"
+    },
+    {
+      "id": "sky/atlas-foundation",
+      "name": "Atlas Foundation"
+    },
+    {
+      "id": "sky/atlas-grounding",
+      "name": "Atlas Grounding"
+    },
+    {
+      "id": "sky/atlas-multi-parent",
+      "name": "Atlas Multi Parent"
+    }
+  ],
+  "editors": [
+    {
+      "id": "AtlasScope",
+      "name": "Atlas Scope",
+      "documentTypes": ["sky/atlas-scope"]
+    },
+    {
+      "id": "AtlasExploratory",
+      "name": "Atlas Exploratory",
+      "documentTypes": ["sky/atlas-exploratory"]
+    },
+    {
+      "id": "AtlasFoundation",
+      "name": "Atlas Foundation",
+      "documentTypes": ["sky/atlas-foundation"]
+    },
+    {
+      "id": "AtlasGrounding",
+      "name": "Atlas Grounding",
+      "documentTypes": ["sky/atlas-grounding"]
+    },
+    {
+      "id": "AtlasMultiParent",
+      "name": "Atlas Multi Parent",
+      "documentTypes": ["sky/atlas-multi-parent"]
+    }
+  ],
+  "apps": [
+    {
+      "id": "powerhouse/sky/atlas",
+      "name": "Atlas App",
+      "driveEditor": "AtlasDriveExplorer"
+    }
+  ]
+}

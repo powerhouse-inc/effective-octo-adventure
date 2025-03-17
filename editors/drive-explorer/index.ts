@@ -1,21 +1,12 @@
-import { ExtendedEditor, EditorContextProps } from "document-model-libs";
+import { EditorModule } from "document-model";
 import Editor from "./editor";
-import {
-  DocumentDriveState,
-  DocumentDriveAction,
-  DocumentDriveLocalState,
-} from "document-model-libs/document-drive";
+import { DocumentDriveDocument } from "document-drive";
 
-export const module: ExtendedEditor<
-  DocumentDriveState,
-  DocumentDriveAction,
-  DocumentDriveLocalState,
-  EditorContextProps
-> = {
+export const module: EditorModule<DocumentDriveDocument> = {
   Component: Editor,
   documentTypes: ["powerhouse/document-drive"],
   config: {
-    id: "editor-id",
+    id: "AtlasDriveExplorer",
     disableExternalControls: true,
     documentToolbarEnabled: true,
     showSwitchboardLink: true,

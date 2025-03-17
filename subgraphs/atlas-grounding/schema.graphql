@@ -114,58 +114,75 @@ enum GGlobalTag {
 Mutations: AtlasGrounding
 """
 type Mutation {
-  AtlasGrounding_createDocument(name: String): String
+  AtlasGrounding_createDocument(driveId: String, name: String): String
 
   AtlasGrounding_setGroundingName(
+    driveId: String
     docId: PHID
     input: AtlasGrounding_SetGroundingNameInput
   ): Int
   AtlasGrounding_setDocNumber(
+    driveId: String
     docId: PHID
     input: AtlasGrounding_SetDocNumberInput
   ): Int
   AtlasGrounding_setContent(
+    driveId: String
     docId: PHID
     input: AtlasGrounding_SetContentInput
   ): Int
   AtlasGrounding_setMasterStatus(
+    driveId: String
     docId: PHID
     input: AtlasGrounding_SetMasterStatusInput
   ): Int
   AtlasGrounding_setAtlasType(
+    driveId: String
     docId: PHID
     input: AtlasGrounding_SetAtlasTypeInput
   ): Int
   AtlasGrounding_setParent(
+    driveId: String
     docId: PHID
     input: AtlasGrounding_SetParentInput
   ): Int
-  AtlasGrounding_addTags(docId: PHID, input: AtlasGrounding_AddTagsInput): Int
+  AtlasGrounding_addTags(
+    driveId: String
+    docId: PHID
+    input: AtlasGrounding_AddTagsInput
+  ): Int
   AtlasGrounding_removeTags(
+    driveId: String
     docId: PHID
     input: AtlasGrounding_RemoveTagsInput
   ): Int
   AtlasGrounding_addContextData(
+    driveId: String
     docId: PHID
     input: AtlasGrounding_AddContextDataInput
   ): Int
   AtlasGrounding_removeContextData(
+    driveId: String
     docId: PHID
     input: AtlasGrounding_RemoveContextDataInput
   ): Int
   AtlasGrounding_setProvenance(
+    driveId: String
     docId: PHID
     input: AtlasGrounding_SetProvenanceInput
   ): Int
   AtlasGrounding_setNotionId(
+    driveId: String
     docId: PHID
     input: AtlasGrounding_SetNotionIdInput
   ): Int
   AtlasGrounding_addReference(
+    driveId: String
     docId: PHID
     input: AtlasGrounding_AddReferenceInput
   ): Int
   AtlasGrounding_removeReference(
+    driveId: String
     docId: PHID
     input: AtlasGrounding_RemoveReferenceInput
   ): Int

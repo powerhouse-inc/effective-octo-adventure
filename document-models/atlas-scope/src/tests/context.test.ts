@@ -4,7 +4,7 @@
  */
 
 import { generateMock } from "@powerhousedao/codegen";
-import { utils as documentModelUtils } from "document-model/document";
+import { hashKey } from "document-model";
 
 import utils from "../../gen/utils";
 import {
@@ -27,7 +27,7 @@ describe("Context Operations", () => {
 
   it("should handle addContextData operation", () => {
     // generate a random id
-    // const id = documentModelUtils.hashKey();
+    // const id = hashKey();
 
     const input: AddContextDataInput = generateMock(
       z.AddContextDataInputSchema(),
@@ -42,7 +42,7 @@ describe("Context Operations", () => {
   });
   it("should handle removeContextData operation", () => {
     // generate a random id
-    // const id = documentModelUtils.hashKey();
+    // const id = hashKey();
 
     const input: RemoveContextDataInput = generateMock(
       z.RemoveContextDataInputSchema(),
@@ -62,7 +62,7 @@ describe("Context Operations", () => {
   });
   it("should handle setProvenance operation", () => {
     // generate a random id
-    // const id = documentModelUtils.hashKey();
+    // const id = hashKey();
 
     const input: SetProvenanceInput = generateMock(
       z.SetProvenanceInputSchema(),
@@ -77,7 +77,7 @@ describe("Context Operations", () => {
   });
   it("should handle setNotionId operation", () => {
     // generate a random id
-    // const id = documentModelUtils.hashKey();
+    // const id = hashKey();
 
     const input: SetNotionIdInput = generateMock(z.SetNotionIdInputSchema());
 

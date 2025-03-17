@@ -1,21 +1,12 @@
-import { ExtendedEditor, EditorContextProps } from "document-model-libs";
+import { EditorModule } from "document-model";
 import Editor from "./editor";
-import {
-  AtlasExploratoryState,
-  AtlasExploratoryAction,
-  AtlasExploratoryLocalState,
-} from "../../document-models/atlas-exploratory";
+import { AtlasExploratoryDocument } from "../../document-models/atlas-exploratory";
 
-export const module: ExtendedEditor<
-  AtlasExploratoryState,
-  AtlasExploratoryAction,
-  AtlasExploratoryLocalState,
-  EditorContextProps
-> = {
+export const module: EditorModule<AtlasExploratoryDocument> = {
   Component: Editor,
   documentTypes: ["sky/atlas-exploratory"],
   config: {
-    id: "editor-id",
+    id: "AtlasExploratory",
     disableExternalControls: true,
     documentToolbarEnabled: true,
     showSwitchboardLink: true,

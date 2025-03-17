@@ -1,21 +1,12 @@
-import { ExtendedEditor, EditorContextProps } from "document-model-libs";
+import { EditorModule } from "document-model";
 import Editor from "./editor";
-import {
-  AtlasMultiParentState,
-  AtlasMultiParentAction,
-  AtlasMultiParentLocalState,
-} from "../../document-models/atlas-multi-parent";
+import { AtlasMultiParentDocument } from "../../document-models/atlas-multi-parent";
 
-export const module: ExtendedEditor<
-  AtlasMultiParentState,
-  AtlasMultiParentAction,
-  AtlasMultiParentLocalState,
-  EditorContextProps
-> = {
+export const module: EditorModule<AtlasMultiParentDocument> = {
   Component: Editor,
   documentTypes: ["sky/atlas-multiparent"],
   config: {
-    id: "editor-id",
+    id: "AtlasMultiParent",
     disableExternalControls: true,
     documentToolbarEnabled: true,
     showSwitchboardLink: true,

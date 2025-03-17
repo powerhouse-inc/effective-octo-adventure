@@ -2,21 +2,24 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Subgraph } from "@powerhousedao/reactor-api";
+import { addFile } from "document-drive";
 import { actions } from "../../document-models/atlas-scope";
-import { actions as driveActions } from "document-model-libs/document-drive";
-import { utils as docUtils } from "document-model/document";
+import { generateId, hashKey } from "document-model";
 
-export const getResolvers = (subgraph: Subgraph, driveId: string) => {
+const DEFAULT_DRIVE_ID = "powerhouse";
+
+export const getResolvers = (subgraph: Subgraph) => {
   const reactor = subgraph.reactor;
 
   return {
     Mutation: {
       AtlasScope_createDocument: async (_: any, args: any) => {
-        const docId = docUtils.generateId();
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
+        const docId = generateId();
 
         await reactor.addDriveAction(
           driveId,
-          driveActions.addFile({
+          addFile({
             id: docId,
             name: args.name,
             documentType: "sky/atlas-scope",
@@ -24,12 +27,12 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
               {
                 branch: "main",
                 scope: "global",
-                syncId: docUtils.hashKey(),
+                syncId: hashKey(),
               },
               {
                 branch: "main",
                 scope: "local",
-                syncId: docUtils.hashKey(),
+                syncId: hashKey(),
               },
             ],
           }),
@@ -39,6 +42,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasScope_setScopeName: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -52,6 +56,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasScope_setDocNumber: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -65,6 +70,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasScope_setContent: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -78,6 +84,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasScope_setMasterStatus: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -91,6 +98,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasScope_addTags: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -104,6 +112,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasScope_removeTags: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -117,6 +126,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasScope_addContextData: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -130,6 +140,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasScope_removeContextData: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -143,6 +154,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasScope_setProvenance: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 
@@ -156,6 +168,7 @@ export const getResolvers = (subgraph: Subgraph, driveId: string) => {
       },
 
       AtlasScope_setNotionId: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
 

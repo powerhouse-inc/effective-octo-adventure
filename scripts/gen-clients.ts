@@ -28,6 +28,7 @@ async function main() {
         'atlas-grounding',
         'atlas-multiparent',
         'atlas-exploratory',
+        'system',
     ];
 
     for(const subgraph of subgraphs) {

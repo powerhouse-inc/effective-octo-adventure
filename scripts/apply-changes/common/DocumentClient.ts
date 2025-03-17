@@ -1,18 +1,18 @@
 import { ReactorClient } from "./ReactorClient";
 import { DocumentsCache, DocumentCacheEntry } from "./DocumentsCache";
 import { gql } from "graphql-request";
-import { Maybe } from "document-model/document";
+import { Maybe } from "document-model";
 
 const DEFAULT_MAX_QUERY_BATCH_SIZE = 5;
 
 export type GqlResult<StateType> = {
   document: {
-    id: string,
-    name: string,
-    revision: number,
-    state: StateType,
-  }
-}
+    id: string;
+    name: string;
+    revision: number;
+    state: StateType;
+  };
+};
 
 export abstract class DocumentClient<StateType, InputType> {
   private documentType: string;
@@ -21,7 +21,11 @@ export abstract class DocumentClient<StateType, InputType> {
   protected documentsCache: DocumentsCache;
   private documentSchema?: string;
 
-  constructor(documentType: string, documentsCache: DocumentsCache, readClient: ReactorClient) {
+  constructor(
+    documentType: string,
+    documentsCache: DocumentsCache,
+    readClient: ReactorClient,
+  ) {
     this.documentType = documentType;
     this.readClient = readClient;
     this.documentsCache = documentsCache;
@@ -33,7 +37,9 @@ export abstract class DocumentClient<StateType, InputType> {
 
   protected async getDocumentData(id: string) {
     if (!this.documentSchema) {
-      throw new Error(`Cannot get document data: document schema for ${this.documentType} not set.`);
+      throw new Error(
+        `Cannot get document data: document schema for ${this.documentType} not set.`,
+      );
     }
 
     return this.readClient.queryReactor<GqlResult<StateType>>(
@@ -44,25 +50,41 @@ export abstract class DocumentClient<StateType, InputType> {
             }
           }
         `,
-      { id }
+      { id },
     );
   }
 
   public async loadDriveDocumentCache() {
-    const driveDocuments = Object.values(this.documentsCache.getDocumentsOfType(this.documentType));
-    console.log(` > Loading cache for ${driveDocuments.length} ${this.documentType} document(s)...`);
+    const driveDocuments = Object.values(
+      this.documentsCache.getDocumentsOfType(this.documentType),
+    );
+    console.log(
+      ` > Loading cache for ${driveDocuments.length} ${this.documentType} document(s)...`,
+    );
 
-    for (let i = 0; i < driveDocuments.length;) {
-      const batchSize = Math.min(this.maxQueryBatchSize, driveDocuments.length - i);
-      const data = await Promise.all(driveDocuments.slice(i, i + batchSize).map(d => this.getDocumentData(d.id)));
+    for (let i = 0; i < driveDocuments.length; ) {
+      const batchSize = Math.min(
+        this.maxQueryBatchSize,
+        driveDocuments.length - i,
+      );
+      const data = await Promise.all(
+        driveDocuments
+          .slice(i, i + batchSize)
+          .map((d) => this.getDocumentData(d.id)),
+      );
 
-      data.forEach(d => this.documentsCache.updateDocument({
-        id: d.document.id,
-        documentType: this.documentType,
-        inputId: this.getInputIdFromState(d.document.state),
-        name: this.getNameFromState(d.document.state) || undefined,
-        state: (typeof d.document.state === 'object' ? d.document.state as Object : undefined)
-      }));
+      data.forEach((d) =>
+        this.documentsCache.updateDocument({
+          id: d.document.id,
+          documentType: this.documentType,
+          inputId: this.getInputIdFromState(d.document.state),
+          name: this.getNameFromState(d.document.state) || undefined,
+          state:
+            typeof d.document.state === "object"
+              ? (d.document.state as Object)
+              : undefined,
+        }),
+      );
 
       i += batchSize;
     }
@@ -71,15 +93,18 @@ export abstract class DocumentClient<StateType, InputType> {
   public async update(inputDocument: InputType) {
     const inputId = this.getInputIdFromInput(inputDocument);
     if (!inputId) {
-      throw new Error(`Cannot update input document without ID: ${JSON.stringify(inputDocument)}`);
+      throw new Error(
+        `Cannot update input document without ID: ${JSON.stringify(inputDocument)}`,
+      );
     }
 
     const documentIds = this.documentsCache.resolveInputId(inputId);
     let newDocumentId: string | null = null;
 
     if (documentIds.length > 0) {
-      console.log(`Updating ${documentIds.length} existing document(s) for "${this.getNameFromInput(inputDocument)}"...`);
-
+      console.log(
+        `Updating ${documentIds.length} existing document(s) for "${this.getNameFromInput(inputDocument)}"...`,
+      );
     } else {
       newDocumentId = await this.createDocumentFromInput(inputDocument);
 
@@ -87,42 +112,71 @@ export abstract class DocumentClient<StateType, InputType> {
       this.documentsCache.createDocument({
         id: newDocumentId,
         documentType: this.documentType,
-        inputId: this.getInputIdFromInput(inputDocument)
+        inputId: this.getInputIdFromInput(inputDocument),
       });
 
-      console.log(`Creating new document for "${this.getNameFromInput(inputDocument)}"...`);
+      console.log(
+        `Creating new document for "${this.getNameFromInput(inputDocument)}"...`,
+      );
     }
 
     for (const documentId of documentIds) {
-      const currentState = await this.loadDocumentState(this.documentType, documentId);
+      const currentState = await this.loadDocumentState(
+        this.documentType,
+        documentId,
+      );
+      
+      const targetState = this.getTargetState(inputDocument, currentState);
+
       await this.patchDocumentState(
         documentId,
         currentState,
-        this.getTargetState(inputDocument, currentState),
-        inputDocument
+        targetState,
+        inputDocument,
       );
+
+      this.documentsCache.updateDocument({
+        id: documentId,
+        documentType: this.documentType,
+        inputId: this.getInputIdFromInput(inputDocument),
+        name: this.getNameFromState(targetState) || undefined,
+        state: targetState as Object,
+      });
     }
 
     return newDocumentId;
   }
 
-  public async loadDocument(documentType:string, id:string, skipCache:boolean = false, requireState:boolean = true) {
-    if (skipCache || !this.documentsCache.hasDocument(documentType, id, requireState)) {
+  public async loadDocument(
+    documentType: string,
+    id: string,
+    skipCache: boolean = false,
+    requireState: boolean = true,
+  ) {
+    if (
+      skipCache ||
+      !this.documentsCache.hasDocument(documentType, id, requireState)
+    ) {
       const data = await this.getDocumentData(id);
-      
+
       if (requireState && this.documentsCache.hasDocument(documentType, id)) {
         this.documentsCache.updateDocument({
           ...this.documentsCache.getDocumentCacheEntry(documentType, id),
-          state: (typeof data.document.state === 'object' ? data.document.state as Object : undefined)
+          state:
+            typeof data.document.state === "object"
+              ? (data.document.state as Object)
+              : undefined,
         });
-
       } else {
         this.documentsCache.createDocument({
           documentType,
           id,
           inputId: this.getInputIdFromState(data.document.state),
           name: this.getNameFromState(data.document.state) || undefined,
-          state: (typeof data.document.state === 'object' ? data.document.state as Object : undefined)
+          state:
+            typeof data.document.state === "object"
+              ? (data.document.state as Object)
+              : undefined,
         });
       }
     }
@@ -130,7 +184,11 @@ export abstract class DocumentClient<StateType, InputType> {
     return this.documentsCache.getDocumentCacheEntry(documentType, id);
   }
 
-  public async loadDocumentState(documentType:string, id:string, skipCache:boolean = false) {
+  public async loadDocumentState(
+    documentType: string,
+    id: string,
+    skipCache: boolean = false,
+  ) {
     const document = await this.loadDocument(documentType, id, skipCache, true);
     return document.state as StateType;
   }
@@ -140,6 +198,14 @@ export abstract class DocumentClient<StateType, InputType> {
   protected abstract getInputIdFromInput(input: InputType): Maybe<string>;
   protected abstract getNameFromInput(input: InputType): Maybe<string>;
   protected abstract createDocumentFromInput(input: InputType): Promise<string>;
-  protected abstract getTargetState(input: InputType, current: StateType): StateType;
-  protected abstract patchDocumentState(id: string, current: StateType, target: StateType, input: InputType): Promise<boolean>;
+  protected abstract getTargetState(
+    input: InputType,
+    current: StateType,
+  ): StateType;
+  protected abstract patchDocumentState(
+    id: string,
+    current: StateType,
+    target: StateType,
+    input: InputType,
+  ): Promise<boolean>;
 }

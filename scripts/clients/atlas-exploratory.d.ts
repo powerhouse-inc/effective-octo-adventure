@@ -22,13 +22,7 @@ export declare type _Any = string
 
 // Enums
 
-export declare enum AtlasGrounding_GAtlasType {
-  activeData = "ACTIVE_DATA",
-  originalContextData = "ORIGINAL_CONTEXT_DATA",
-  tenet = "TENET",
-}
-
-export declare enum AtlasGrounding_GStatus {
+export declare enum AtlasScope_Status {
   approved = "APPROVED",
   archived = "ARCHIVED",
   deferred = "DEFERRED",
@@ -36,7 +30,76 @@ export declare enum AtlasGrounding_GStatus {
   provisional = "PROVISIONAL",
 }
 
-export declare enum AtlasGrounding_GGlobalTag {
+export declare enum AtlasScope_GlobalTag {
+  anonWorkforce = "ANON_WORKFORCE",
+  avc = "AVC",
+  cais = "CAIS",
+  daoToolkit = "DAO_TOOLKIT",
+  ecosystemIntelligence = "ECOSYSTEM_INTELLIGENCE",
+  externalReference = "EXTERNAL_REFERENCE",
+  facilitatordao = "FACILITATORDAO",
+  internalReference = "INTERNAL_REFERENCE",
+  legacyTermUseApproved = "LEGACY_TERM_USE_APPROVED",
+  mlDefer = "ML_DEFER",
+  mlHighPriority = "ML_HIGH_PRIORITY",
+  mlLowPriority = "ML_LOW_PRIORITY",
+  mlMedPriority = "ML_MED_PRIORITY",
+  mlSupportDocsNeeded = "ML_SUPPORT_DOCS_NEEDED",
+  newchain = "NEWCHAIN",
+  p0HubEntryNeeded = "P0_HUB_ENTRY_NEEDED",
+  purposeSystem = "PURPOSE_SYSTEM",
+  recursiveImprovement = "RECURSIVE_IMPROVEMENT",
+  scopeAdvisor = "SCOPE_ADVISOR",
+  subdaoIncubation = "SUBDAO_INCUBATION",
+  subdaoRewards = "SUBDAO_REWARDS",
+  twoStageBridge = "TWO_STAGE_BRIDGE",
+  v1Mip = "V1_MIP",
+}
+
+export declare enum AtlasMultiParent_MAtlasType {
+  annotation = "ANNOTATION",
+  neededResearch = "NEEDED_RESEARCH",
+}
+
+export declare enum AtlasMultiParent_MStatus {
+  approved = "APPROVED",
+  archived = "ARCHIVED",
+  deferred = "DEFERRED",
+  placeholder = "PLACEHOLDER",
+  provisional = "PROVISIONAL",
+}
+
+export declare enum AtlasMultiParent_MGlobalTag {
+  avc = "AVC",
+  cais = "CAIS",
+  daoToolkit = "DAO_TOOLKIT",
+  ecosystemIntelligence = "ECOSYSTEM_INTELLIGENCE",
+  externalReference = "EXTERNAL_REFERENCE",
+  legacyTermUseApproved = "LEGACY_TERM_USE_APPROVED",
+  mlDefer = "ML_DEFER",
+  mlLowPriority = "ML_LOW_PRIORITY",
+  mlSupportDocsNeeded = "ML_SUPPORT_DOCS_NEEDED",
+  newchain = "NEWCHAIN",
+  purposeSystem = "PURPOSE_SYSTEM",
+  recursiveImprovement = "RECURSIVE_IMPROVEMENT",
+  scopeAdvisor = "SCOPE_ADVISOR",
+  twoStageBridge = "TWO_STAGE_BRIDGE",
+}
+
+export declare enum AtlasExploratory_EAtlasType {
+  scenario = "SCENARIO",
+  scenarioVariation = "SCENARIO_VARIATION",
+}
+
+export declare enum AtlasExploratory_EStatus {
+  approved = "APPROVED",
+  archived = "ARCHIVED",
+  deferred = "DEFERRED",
+  placeholder = "PLACEHOLDER",
+  provisional = "PROVISIONAL",
+}
+
+export declare enum AtlasExploratory_EGlobalTag {
   avc = "AVC",
   cais = "CAIS",
   daoToolkit = "DAO_TOOLKIT",
@@ -85,12 +148,13 @@ export declare enum AtlasFoundation_FGlobalTag {
   twoStageBridge = "TWO_STAGE_BRIDGE",
 }
 
-export declare enum AtlasExploratory_EAtlasType {
-  scenario = "SCENARIO",
-  scenarioVariation = "SCENARIO_VARIATION",
+export declare enum AtlasGrounding_GAtlasType {
+  activeData = "ACTIVE_DATA",
+  originalContextData = "ORIGINAL_CONTEXT_DATA",
+  tenet = "TENET",
 }
 
-export declare enum AtlasExploratory_EStatus {
+export declare enum AtlasGrounding_GStatus {
   approved = "APPROVED",
   archived = "ARCHIVED",
   deferred = "DEFERRED",
@@ -98,7 +162,7 @@ export declare enum AtlasExploratory_EStatus {
   provisional = "PROVISIONAL",
 }
 
-export declare enum AtlasExploratory_EGlobalTag {
+export declare enum AtlasGrounding_GGlobalTag {
   avc = "AVC",
   cais = "CAIS",
   daoToolkit = "DAO_TOOLKIT",
@@ -113,70 +177,6 @@ export declare enum AtlasExploratory_EGlobalTag {
   recursiveImprovement = "RECURSIVE_IMPROVEMENT",
   scopeAdvisor = "SCOPE_ADVISOR",
   twoStageBridge = "TWO_STAGE_BRIDGE",
-}
-
-export declare enum AtlasMultiParent_MAtlasType {
-  annotation = "ANNOTATION",
-  neededResearch = "NEEDED_RESEARCH",
-}
-
-export declare enum AtlasMultiParent_MStatus {
-  approved = "APPROVED",
-  archived = "ARCHIVED",
-  deferred = "DEFERRED",
-  placeholder = "PLACEHOLDER",
-  provisional = "PROVISIONAL",
-}
-
-export declare enum AtlasMultiParent_MGlobalTag {
-  avc = "AVC",
-  cais = "CAIS",
-  daoToolkit = "DAO_TOOLKIT",
-  ecosystemIntelligence = "ECOSYSTEM_INTELLIGENCE",
-  externalReference = "EXTERNAL_REFERENCE",
-  legacyTermUseApproved = "LEGACY_TERM_USE_APPROVED",
-  mlDefer = "ML_DEFER",
-  mlLowPriority = "ML_LOW_PRIORITY",
-  mlSupportDocsNeeded = "ML_SUPPORT_DOCS_NEEDED",
-  newchain = "NEWCHAIN",
-  purposeSystem = "PURPOSE_SYSTEM",
-  recursiveImprovement = "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor = "SCOPE_ADVISOR",
-  twoStageBridge = "TWO_STAGE_BRIDGE",
-}
-
-export declare enum AtlasScope_Status {
-  approved = "APPROVED",
-  archived = "ARCHIVED",
-  deferred = "DEFERRED",
-  placeholder = "PLACEHOLDER",
-  provisional = "PROVISIONAL",
-}
-
-export declare enum AtlasScope_GlobalTag {
-  anonWorkforce = "ANON_WORKFORCE",
-  avc = "AVC",
-  cais = "CAIS",
-  daoToolkit = "DAO_TOOLKIT",
-  ecosystemIntelligence = "ECOSYSTEM_INTELLIGENCE",
-  externalReference = "EXTERNAL_REFERENCE",
-  facilitatordao = "FACILITATORDAO",
-  internalReference = "INTERNAL_REFERENCE",
-  legacyTermUseApproved = "LEGACY_TERM_USE_APPROVED",
-  mlDefer = "ML_DEFER",
-  mlHighPriority = "ML_HIGH_PRIORITY",
-  mlLowPriority = "ML_LOW_PRIORITY",
-  mlMedPriority = "ML_MED_PRIORITY",
-  mlSupportDocsNeeded = "ML_SUPPORT_DOCS_NEEDED",
-  newchain = "NEWCHAIN",
-  p0HubEntryNeeded = "P0_HUB_ENTRY_NEEDED",
-  purposeSystem = "PURPOSE_SYSTEM",
-  recursiveImprovement = "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor = "SCOPE_ADVISOR",
-  subdaoIncubation = "SUBDAO_INCUBATION",
-  subdaoRewards = "SUBDAO_REWARDS",
-  twoStageBridge = "TWO_STAGE_BRIDGE",
-  v1Mip = "V1_MIP",
 }
 
 export declare enum DocumentDrive_TransmitterType {
@@ -223,20 +223,20 @@ export declare enum EGlobalTag {
 }
 
 type AllEnums =
-  | AtlasGrounding_GAtlasType
-  | AtlasGrounding_GStatus
-  | AtlasGrounding_GGlobalTag
-  | AtlasFoundation_FAtlasType
-  | AtlasFoundation_FStatus
-  | AtlasFoundation_FGlobalTag
-  | AtlasExploratory_EAtlasType
-  | AtlasExploratory_EStatus
-  | AtlasExploratory_EGlobalTag
+  | AtlasScope_Status
+  | AtlasScope_GlobalTag
   | AtlasMultiParent_MAtlasType
   | AtlasMultiParent_MStatus
   | AtlasMultiParent_MGlobalTag
-  | AtlasScope_Status
-  | AtlasScope_GlobalTag
+  | AtlasExploratory_EAtlasType
+  | AtlasExploratory_EStatus
+  | AtlasExploratory_EGlobalTag
+  | AtlasFoundation_FAtlasType
+  | AtlasFoundation_FStatus
+  | AtlasFoundation_FGlobalTag
+  | AtlasGrounding_GAtlasType
+  | AtlasGrounding_GStatus
+  | AtlasGrounding_GGlobalTag
   | DocumentDrive_TransmitterType
   | DocumentDrive_TriggerType
   | EAtlasType
@@ -246,69 +246,86 @@ type AllEnums =
 // Args
 export interface ServiceArgs {}
 export interface AtlasExploratoryCreateDocumentArgs {
+  driveId?: string
   name?: string
 }
 export interface AtlasExploratorySetExploratoryNameArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_SetExploratoryNameInput
 }
 export interface AtlasExploratorySetDocNumberArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_SetDocNumberInput
 }
 export interface AtlasExploratorySetContentArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_SetContentInput
 }
 export interface AtlasExploratorySetMasterStatusArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_SetMasterStatusInput
 }
 export interface AtlasExploratorySetParentArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_SetParentInput
 }
 export interface AtlasExploratoryRemoveParentArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_RemoveParentInput
 }
 export interface AtlasExploratorySetAtlasTypeArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_SetAtlasTypeInput
 }
 export interface AtlasExploratorySetFindingsArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_SetFindingsInput
 }
 export interface AtlasExploratoryAddTagsArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_AddTagsInput
 }
 export interface AtlasExploratoryRemoveTagsArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_RemoveTagsInput
 }
 export interface AtlasExploratoryAddContextDataArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_AddContextDataInput
 }
 export interface AtlasExploratoryRemoveContextDataArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_RemoveContextDataInput
 }
 export interface AtlasExploratorySetProvenanceArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_SetProvenanceInput
 }
 export interface AtlasExploratorySetNotionIdArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_SetNotionIdInput
 }
 export interface AtlasExploratoryAddAdditionalGuidanceArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_AddAdditionalGuidanceInput
 }
 export interface AtlasExploratoryRemoveAdditionalGuidanceArgs {
+  driveId?: string
   docId?: PHID
   input?: AtlasExploratory_RemoveAdditionalGuidanceInput
 }
@@ -372,17 +389,14 @@ export interface Operation {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasGrounding_AtlasGroundingState {
-  name?: string
+export interface AtlasScope_AtlasScopeState {
+  name?: OLabel
   docNo?: string
-  parent: AtlasGrounding_GDocumentLink
-  atlasType: AtlasGrounding_GAtlasType
   content?: string
-  masterStatus: AtlasGrounding_GStatus
-  globalTags: AtlasGrounding_GGlobalTag[]
-  references: AtlasGrounding_GDocumentLink[]
-  originalContextData: AtlasGrounding_GDocumentLink[]
-  provenance: URL[]
+  masterStatus?: AtlasScope_Status
+  globalTags: AtlasScope_GlobalTag[]
+  originalContextData: AtlasScope_DocumentInfo[]
+  provenance?: URL
   notionId?: string
 }
 
@@ -390,7 +404,7 @@ export interface AtlasGrounding_AtlasGroundingState {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasGrounding_GDocumentLink {
+export interface AtlasScope_DocumentInfo {
   id: PHID
   name?: OLabel
   docNo?: string
@@ -400,7 +414,7 @@ export interface AtlasGrounding_GDocumentLink {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasGrounding {
+export interface AtlasScope {
   id: string
   name: string
   documentType: string
@@ -408,24 +422,24 @@ export interface AtlasGrounding {
   revision: number
   created: DateTime
   lastModified: DateTime
-  initialState: AtlasGrounding_AtlasGroundingState
-  state: AtlasGrounding_AtlasGroundingState
+  initialState: AtlasScope_AtlasScopeState
+  state: AtlasScope_AtlasScopeState
 }
 
 /**
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasFoundation_AtlasFoundationState {
+export interface AtlasMultiParent_AtlasMultiParentState {
   name?: string
   docNo?: string
-  parent?: AtlasFoundation_FDocumentLink
-  atlasType: AtlasFoundation_FAtlasType
+  parents: AtlasMultiParent_MDocumentLink[]
+  atlasType: AtlasMultiParent_MAtlasType
   content?: string
-  masterStatus: AtlasFoundation_FStatus
-  globalTags: AtlasFoundation_FGlobalTag[]
-  references: AtlasFoundation_FDocumentLink[]
-  originalContextData: AtlasFoundation_FDocumentLink[]
+  masterStatus: AtlasMultiParent_MStatus
+  globalTags: AtlasMultiParent_MGlobalTag[]
+  references: AtlasMultiParent_MDocumentLink[]
+  originalContextData: AtlasMultiParent_MDocumentLink[]
   provenance: URL[]
   notionId?: string
 }
@@ -434,7 +448,7 @@ export interface AtlasFoundation_AtlasFoundationState {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasFoundation_FDocumentLink {
+export interface AtlasMultiParent_MDocumentLink {
   id: PHID
   name?: OLabel
   docNo?: string
@@ -444,7 +458,7 @@ export interface AtlasFoundation_FDocumentLink {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasFoundation {
+export interface AtlasMultiParent {
   id: string
   name: string
   documentType: string
@@ -452,8 +466,8 @@ export interface AtlasFoundation {
   revision: number
   created: DateTime
   lastModified: DateTime
-  initialState: AtlasFoundation_AtlasFoundationState
-  state: AtlasFoundation_AtlasFoundationState
+  initialState: AtlasMultiParent_AtlasMultiParentState
+  state: AtlasMultiParent_AtlasMultiParentState
 }
 
 /**
@@ -515,17 +529,17 @@ export interface AtlasExploratory {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasMultiParent_AtlasMultiParentState {
+export interface AtlasFoundation_AtlasFoundationState {
   name?: string
   docNo?: string
-  parent: PHID[]
-  atlasType: AtlasMultiParent_MAtlasType
+  parent?: AtlasFoundation_FDocumentLink
+  atlasType: AtlasFoundation_FAtlasType
   content?: string
-  masterStatus: AtlasMultiParent_MStatus
-  globalTags: AtlasMultiParent_MGlobalTag[]
-  references: PHID[]
-  originalContextData: AtlasMultiParent_DocumentInfo[]
-  provenance?: URL
+  masterStatus: AtlasFoundation_FStatus
+  globalTags: AtlasFoundation_FGlobalTag[]
+  references: AtlasFoundation_FDocumentLink[]
+  originalContextData: AtlasFoundation_FDocumentLink[]
+  provenance: URL[]
   notionId?: string
 }
 
@@ -533,7 +547,7 @@ export interface AtlasMultiParent_AtlasMultiParentState {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasMultiParent_DocumentInfo {
+export interface AtlasFoundation_FDocumentLink {
   id: PHID
   name?: OLabel
   docNo?: string
@@ -543,7 +557,7 @@ export interface AtlasMultiParent_DocumentInfo {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasMultiParent {
+export interface AtlasFoundation {
   id: string
   name: string
   documentType: string
@@ -551,22 +565,25 @@ export interface AtlasMultiParent {
   revision: number
   created: DateTime
   lastModified: DateTime
-  initialState: AtlasMultiParent_AtlasMultiParentState
-  state: AtlasMultiParent_AtlasMultiParentState
+  initialState: AtlasFoundation_AtlasFoundationState
+  state: AtlasFoundation_AtlasFoundationState
 }
 
 /**
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasScope_AtlasScopeState {
-  name?: OLabel
+export interface AtlasGrounding_AtlasGroundingState {
+  name?: string
   docNo?: string
+  parent: AtlasGrounding_GDocumentLink
+  atlasType: AtlasGrounding_GAtlasType
   content?: string
-  masterStatus?: AtlasScope_Status
-  globalTags: AtlasScope_GlobalTag[]
-  originalContextData: AtlasScope_DocumentInfo[]
-  provenance?: URL
+  masterStatus: AtlasGrounding_GStatus
+  globalTags: AtlasGrounding_GGlobalTag[]
+  references: AtlasGrounding_GDocumentLink[]
+  originalContextData: AtlasGrounding_GDocumentLink[]
+  provenance: URL[]
   notionId?: string
 }
 
@@ -574,7 +591,7 @@ export interface AtlasScope_AtlasScopeState {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasScope_DocumentInfo {
+export interface AtlasGrounding_GDocumentLink {
   id: PHID
   name?: OLabel
   docNo?: string
@@ -584,7 +601,7 @@ export interface AtlasScope_DocumentInfo {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasScope {
+export interface AtlasGrounding {
   id: string
   name: string
   documentType: string
@@ -592,8 +609,8 @@ export interface AtlasScope {
   revision: number
   created: DateTime
   lastModified: DateTime
-  initialState: AtlasScope_AtlasScopeState
-  state: AtlasScope_AtlasScopeState
+  initialState: AtlasGrounding_AtlasGroundingState
+  state: AtlasGrounding_AtlasGroundingState
 }
 
 /**
@@ -981,27 +998,24 @@ export interface OperationSelection {
   context?: PHOperationContextSelection
 }
 
-export interface AtlasGrounding_AtlasGroundingStateSelection {
+export interface AtlasScope_AtlasScopeStateSelection {
   name?: boolean
   docNo?: boolean
-  parent?: AtlasGrounding_GDocumentLinkSelection
-  atlasType?: boolean
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  references?: AtlasGrounding_GDocumentLinkSelection
-  originalContextData?: AtlasGrounding_GDocumentLinkSelection
+  originalContextData?: AtlasScope_DocumentInfoSelection
   provenance?: boolean
   notionId?: boolean
 }
 
-export interface AtlasGrounding_GDocumentLinkSelection {
+export interface AtlasScope_DocumentInfoSelection {
   id?: boolean
   name?: boolean
   docNo?: boolean
 }
 
-export interface AtlasGroundingSelection {
+export interface AtlasScopeSelection {
   id?: boolean
   name?: boolean
   documentType?: boolean
@@ -1014,31 +1028,31 @@ export interface AtlasGroundingSelection {
   revision?: boolean
   created?: boolean
   lastModified?: boolean
-  initialState?: AtlasGrounding_AtlasGroundingStateSelection
-  state?: AtlasGrounding_AtlasGroundingStateSelection
+  initialState?: AtlasScope_AtlasScopeStateSelection
+  state?: AtlasScope_AtlasScopeStateSelection
 }
 
-export interface AtlasFoundation_AtlasFoundationStateSelection {
+export interface AtlasMultiParent_AtlasMultiParentStateSelection {
   name?: boolean
   docNo?: boolean
-  parent?: AtlasFoundation_FDocumentLinkSelection
+  parents?: AtlasMultiParent_MDocumentLinkSelection
   atlasType?: boolean
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  references?: AtlasFoundation_FDocumentLinkSelection
-  originalContextData?: AtlasFoundation_FDocumentLinkSelection
+  references?: AtlasMultiParent_MDocumentLinkSelection
+  originalContextData?: AtlasMultiParent_MDocumentLinkSelection
   provenance?: boolean
   notionId?: boolean
 }
 
-export interface AtlasFoundation_FDocumentLinkSelection {
+export interface AtlasMultiParent_MDocumentLinkSelection {
   id?: boolean
   name?: boolean
   docNo?: boolean
 }
 
-export interface AtlasFoundationSelection {
+export interface AtlasMultiParentSelection {
   id?: boolean
   name?: boolean
   documentType?: boolean
@@ -1051,8 +1065,8 @@ export interface AtlasFoundationSelection {
   revision?: boolean
   created?: boolean
   lastModified?: boolean
-  initialState?: AtlasFoundation_AtlasFoundationStateSelection
-  state?: AtlasFoundation_AtlasFoundationStateSelection
+  initialState?: AtlasMultiParent_AtlasMultiParentStateSelection
+  state?: AtlasMultiParent_AtlasMultiParentStateSelection
 }
 
 export interface AtlasExploratory_AtlasExploratoryStateSelection {
@@ -1099,27 +1113,27 @@ export interface AtlasExploratorySelection {
   state?: AtlasExploratory_AtlasExploratoryStateSelection
 }
 
-export interface AtlasMultiParent_AtlasMultiParentStateSelection {
+export interface AtlasFoundation_AtlasFoundationStateSelection {
   name?: boolean
   docNo?: boolean
-  parent?: boolean
+  parent?: AtlasFoundation_FDocumentLinkSelection
   atlasType?: boolean
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  references?: boolean
-  originalContextData?: AtlasMultiParent_DocumentInfoSelection
+  references?: AtlasFoundation_FDocumentLinkSelection
+  originalContextData?: AtlasFoundation_FDocumentLinkSelection
   provenance?: boolean
   notionId?: boolean
 }
 
-export interface AtlasMultiParent_DocumentInfoSelection {
+export interface AtlasFoundation_FDocumentLinkSelection {
   id?: boolean
   name?: boolean
   docNo?: boolean
 }
 
-export interface AtlasMultiParentSelection {
+export interface AtlasFoundationSelection {
   id?: boolean
   name?: boolean
   documentType?: boolean
@@ -1132,28 +1146,31 @@ export interface AtlasMultiParentSelection {
   revision?: boolean
   created?: boolean
   lastModified?: boolean
-  initialState?: AtlasMultiParent_AtlasMultiParentStateSelection
-  state?: AtlasMultiParent_AtlasMultiParentStateSelection
+  initialState?: AtlasFoundation_AtlasFoundationStateSelection
+  state?: AtlasFoundation_AtlasFoundationStateSelection
 }
 
-export interface AtlasScope_AtlasScopeStateSelection {
+export interface AtlasGrounding_AtlasGroundingStateSelection {
   name?: boolean
   docNo?: boolean
+  parent?: AtlasGrounding_GDocumentLinkSelection
+  atlasType?: boolean
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  originalContextData?: AtlasScope_DocumentInfoSelection
+  references?: AtlasGrounding_GDocumentLinkSelection
+  originalContextData?: AtlasGrounding_GDocumentLinkSelection
   provenance?: boolean
   notionId?: boolean
 }
 
-export interface AtlasScope_DocumentInfoSelection {
+export interface AtlasGrounding_GDocumentLinkSelection {
   id?: boolean
   name?: boolean
   docNo?: boolean
 }
 
-export interface AtlasScopeSelection {
+export interface AtlasGroundingSelection {
   id?: boolean
   name?: boolean
   documentType?: boolean
@@ -1166,8 +1183,8 @@ export interface AtlasScopeSelection {
   revision?: boolean
   created?: boolean
   lastModified?: boolean
-  initialState?: AtlasScope_AtlasScopeStateSelection
-  state?: AtlasScope_AtlasScopeStateSelection
+  initialState?: AtlasGrounding_AtlasGroundingStateSelection
+  state?: AtlasGrounding_AtlasGroundingStateSelection
 }
 
 export interface DocumentModelSelection {
@@ -1305,97 +1322,154 @@ export interface MutationSelection {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { name?: string }
+    __args?: { driveId?: string; name?: string }
   }
   AtlasExploratory_setExploratoryName?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_SetExploratoryNameInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_SetExploratoryNameInput
+    }
   }
   AtlasExploratory_setDocNumber?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_SetDocNumberInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_SetDocNumberInput
+    }
   }
   AtlasExploratory_setContent?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_SetContentInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_SetContentInput
+    }
   }
   AtlasExploratory_setMasterStatus?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_SetMasterStatusInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_SetMasterStatusInput
+    }
   }
   AtlasExploratory_setParent?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_SetParentInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_SetParentInput
+    }
   }
   AtlasExploratory_removeParent?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_RemoveParentInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_RemoveParentInput
+    }
   }
   AtlasExploratory_setAtlasType?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_SetAtlasTypeInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_SetAtlasTypeInput
+    }
   }
   AtlasExploratory_setFindings?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_SetFindingsInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_SetFindingsInput
+    }
   }
   AtlasExploratory_addTags?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_AddTagsInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_AddTagsInput
+    }
   }
   AtlasExploratory_removeTags?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_RemoveTagsInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_RemoveTagsInput
+    }
   }
   AtlasExploratory_addContextData?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_AddContextDataInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_AddContextDataInput
+    }
   }
   AtlasExploratory_removeContextData?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_RemoveContextDataInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_RemoveContextDataInput
+    }
   }
   AtlasExploratory_setProvenance?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_SetProvenanceInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_SetProvenanceInput
+    }
   }
   AtlasExploratory_setNotionId?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args?: { docId?: PHID; input?: AtlasExploratory_SetNotionIdInput }
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasExploratory_SetNotionIdInput
+    }
   }
   AtlasExploratory_addAdditionalGuidance?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
     __args?: {
+      driveId?: string
       docId?: PHID
       input?: AtlasExploratory_AddAdditionalGuidanceInput
     }
@@ -1405,6 +1479,7 @@ export interface MutationSelection {
     __retry?: boolean
     __alias?: string
     __args?: {
+      driveId?: string
       docId?: PHID
       input?: AtlasExploratory_RemoveAdditionalGuidanceInput
     }

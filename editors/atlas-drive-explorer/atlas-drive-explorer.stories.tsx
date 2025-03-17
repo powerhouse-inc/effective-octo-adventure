@@ -1,8 +1,7 @@
 import Editor from "./editor";
-import { createDocumentStory } from "document-model-libs/utils";
+import { createDocumentStory } from "@powerhousedao/builder-tools/editor-utils";
 
 import * as AtlasScopeModule from "../../document-models/atlas-scope";
-
 const { meta, CreateDocumentStory: AtlasScope } = createDocumentStory(
   Editor,
   AtlasScopeModule.reducer,

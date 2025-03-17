@@ -1,35 +1,24 @@
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/jsx-max-depth */
-import "../atlas.css";
-import { EditorProps } from "document-model/document";
+import { EditorProps } from "document-model";
 import {
-  AtlasExploratoryState,
-  AtlasExploratoryAction,
-  AtlasExploratoryLocalState,
   actions,
   SetDocNumberInput,
   SetExploratoryNameInput,
   SetMasterStatusInput,
   SetContentInput,
   AddTagsInput,
+  AtlasExploratoryDocument,
 } from "../../document-models/atlas-exploratory";
-import { utils as documentModelUtils } from "document-model/document";
 import { SetDocNumberForm } from "./components/SetDocNumberForm";
 import { SetExploratoryNameForm } from "./components/SetExploratoryNameForm";
 import { SetMasterStatusForm } from "./components/SetMasterStatusForm";
 import { SetContentForm } from "./components/SetContentForm";
 import { SetTagsForm } from "./components/SetTagsForm";
 
-export type IProps = EditorProps<
-  AtlasExploratoryState,
-  AtlasExploratoryAction,
-  AtlasExploratoryLocalState
->;
+export type IProps = EditorProps<AtlasExploratoryDocument>;
 
 export default function Editor(props: IProps) {
-  // generate a random id
-  // const id = documentModelUtils.hashKey();
-
   return (
     <>
       <h1 className="atlas-header">Exploratory Document</h1>

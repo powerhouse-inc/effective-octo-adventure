@@ -1,64 +1,48 @@
-import { EditorProps } from "document-model/document";
-import {
-  DocumentDriveState,
-  DocumentDriveAction,
-  DocumentDriveLocalState,
-  useDriveActions,
-  useDriveContext,
-} from "@powerhousedao/common";
-import { actions } from "@powerhousedao/common/document-drive";
-import { Button } from "@powerhousedao/design-system";
-import { Input } from "@powerhousedao/design-system/scalars";
-import { useState } from "react";
-import { generateId } from "document-model/utils";
+import { EditorProps } from "document-model";
+import { EditorLayout } from "./components/editor-layout";
+import { DocumentDriveDocument } from "document-drive";
+import { WagmiContext } from "@powerhousedao/design-system";
 
-import "../atlas.css";
-
-export type IProps = EditorProps<
-  DocumentDriveState,
-  DocumentDriveAction,
-  DocumentDriveLocalState
->;
+export type IProps = EditorProps<DocumentDriveDocument>;
 
 export default function Editor(props: IProps) {
-  const { document, dispatch } = props;
-
-  // useDriveContext returns state and methods provided by the host app (Connect)
-  // - documentModels, showCreateDocumentModal, etc
-  const context = useDriveContext();
-
-  // useDriveActions provides methods to dispatch drive actions
-  // - `addFolder(...)` is a wrapper around `dispatch(actions.addFolder(...))`
-  const { addFolder } = useDriveActions(document, dispatch, context);
-
-  const [name, setName] = useState("");
-
-  const handleAddFolder = () => {
-    if (!name) return;
-    setName("");
-    return addFolder(name);
-    /* This is the equivalent of:
-      dispatch(
-        actions.addFolder({
-          name,
-          id: generateId(),
-        }),
-      );
-     */
-  };
-
   return (
-    <div>
-      <div
-        className="flex gap-2 items-center mb-2"
-        style={{ maxWidth: "400px" }}
-      >
-        <Input onChange={(e) => setName(e.target.value)} value={name} />
-        <Button onClick={handleAddFolder} style={{ flexShrink: 0 }}>
-          Add Folder
-        </Button>
-      </div>
-      <pre>{JSON.stringify(document.state.global.nodes, null, 2)}</pre>
+    <div
+      className="atlas-drive-explorer"
+      style={{ padding: "0.75rem 0.75rem 0 0.75rem", boxSizing: "content-box" }}
+    >
+      <WagmiContext>
+        <EditorLayout
+          context={props.context}
+          driveId={props.document.state.global.id}
+        >
+          <style>
+            {`
+              .atlas-drive-explorer-header {
+                margin-bottom: 1em;
+              }
+              .atlas-drive-explorer > main {
+                border: 1px solid #EEEEEE;
+              }
+              
+              .atlas-drive-explorer > main > aside {
+                height: calc(100svh - 2.25rem - 18px);
+              }
+              .atlas-drive-explorer > main > div {
+                height: calc(100svh - 2.25rem - 18px);
+                overflow-y: auto;
+              }
+              .d-none {
+                display: none;
+              }
+              #document-editor-context > div.flex:first-child {
+                position: absolute;
+                right: 0;
+                top: 16px;
+              }`}
+          </style>
+        </EditorLayout>
+      </WagmiContext>
     </div>
   );
 }

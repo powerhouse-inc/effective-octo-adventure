@@ -1,6 +1,7 @@
 import {
   useDriveContext,
   exportDocument,
+  type User,
 } from "@powerhousedao/reactor-browser";
 import {
   type DocumentModelModule,
@@ -68,6 +69,7 @@ export const EditorContainer: React.FC<EditorContainerProps> = (props) => {
 
   const [showRevisionHistory, setShowRevisionHistory] = useState(false);
   const { useDocumentEditorProps } = useDriveContext();
+  const user = context.user as User | undefined;
 
   const documentModelModule = getDocumentModel(
     documentType,
@@ -78,6 +80,7 @@ export const EditorContainer: React.FC<EditorContainerProps> = (props) => {
     documentType,
     driveId,
     documentModelModule,
+    user,
   });
 
   const onExport = useCallback(async () => {

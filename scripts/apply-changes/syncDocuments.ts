@@ -10,7 +10,7 @@ import {
   } from "../../document-models/utils";
 
 export type DocumentSyncConfig = {
-    gqlEndpoint: string, 
+    gqlEndpoint?: string, 
     driveName: string,
     preferredEditor: string,
     processLimit: number,

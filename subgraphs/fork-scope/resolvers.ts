@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import dotenv from "dotenv";
+dotenv.config();
 import { Subgraph } from "@powerhousedao/reactor-api";
 import { addFile } from "document-drive";
 import { actions } from "../../document-models/atlas-scope";
@@ -7,7 +9,7 @@ import { generateId, hashKey } from "document-model";
 import { syncDocuments } from "../../scripts/apply-changes/syncDocuments";
 const PORT = process.env.PORT || 4001;
 // Reactor where the documents will be synchronized to
-const GQL_ENDPOINT = `http://localhost:${PORT}/`;
+const GQL_ENDPOINT = undefined;
 
 // Preferred editor for the drive when it's created
 const PREFERRED_EDITOR = "AtlasDriveExplorer";

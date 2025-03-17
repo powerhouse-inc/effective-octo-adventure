@@ -1,4 +1,6 @@
-import { fetchPagesAndWriteTree, TPageName } from "@powerhousedao/mips-parser";
+import {
+  fetchPagesAndWriteTree,
+} from "@powerhousedao/mips-parser";
 
 async function main() {
   if (!process.env.API_KEY) {
@@ -25,7 +27,7 @@ async function main() {
   const shouldPostToImportApi = process.env.POST_TO_IMPORT_API !== "false";
   const fetchOnePage = undefined;
   const overridePageIds = JSON.parse(process.env.OVERRIDE_PAGE_IDS ?? "[]") as {
-    pageName: TPageName;
+    pageName: string;
     pageId: string;
   }[];
 

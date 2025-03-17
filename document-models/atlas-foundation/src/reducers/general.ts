@@ -1,4 +1,4 @@
-import { AtlasFoundationGeneralOperations } from "../../gen/general/operations";
+import { type AtlasFoundationGeneralOperations } from "../../gen/general/operations.js";
 
 export const reducer: AtlasFoundationGeneralOperations = {
   setFoundationNameOperation(state, action, dispatch) {

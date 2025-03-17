@@ -1,7 +1,5 @@
-/* eslint-disable react/jsx-no-bind */
 import { Form, StringField } from "@powerhousedao/design-system/scalars";
-import { SetMultiparentNameInput } from "document-models/atlas-multi-parent";
-import React from "react";
+import { type SetMultiparentNameInput } from "document-models/atlas-multi-parent/index.js";
 
 type Props = {
   readonly defaultValue: SetMultiparentNameInput;
@@ -20,6 +18,7 @@ export function SetMultiParentNameForm(props: Props) {
           defaultValue={props.defaultValue.name}
           label="Name"
           name="name"
+          /* @ts-expect-error */
           onBlur={() => handleSubmit(onSubmit)()}
           placeholder="Enter the document name"
         />

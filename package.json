@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@powerhousedao/common": "dev",
-    "@powerhousedao/design-system": "1.22.5-canary.94",
+    "@powerhousedao/design-system": "1.33.2-canary.2",
     "@powerhousedao/reactor-browser": "dev",
     "diff": "^7.0.0",
     "document-drive": "dev",

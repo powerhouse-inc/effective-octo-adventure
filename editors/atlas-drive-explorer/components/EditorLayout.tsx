@@ -1,5 +1,4 @@
-/* eslint-disable react/jsx-max-depth */
-import React from "react";
+import type React from "react";
 import { Icon } from "@powerhousedao/design-system";
 import {
   cn,
@@ -7,7 +6,7 @@ import {
   SidebarProvider,
   type SidebarNode,
 } from "@powerhousedao/design-system/scalars";
-import mockedTree from "./mocked_tree.json";
+import mockedTree from "./mocked_tree.json" with { type: "json" };
 
 export function EditorLayout({ children }: React.PropsWithChildren) {
   return (

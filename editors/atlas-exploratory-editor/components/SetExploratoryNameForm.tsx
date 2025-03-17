@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
 import { Form, StringField } from "@powerhousedao/design-system/scalars";
-import { SetExploratoryNameInput } from "document-models/atlas-exploratory";
-import React from "react";
+import { type SetExploratoryNameInput } from "document-models/atlas-exploratory/index.js";
 
 type Props = {
   readonly defaultValue: SetExploratoryNameInput;
@@ -20,6 +19,7 @@ export function SetExploratoryNameForm(props: Props) {
           defaultValue={props.defaultValue.name}
           label="Name"
           name="name"
+          /* @ts-expect-error */
           onBlur={() => handleSubmit(onSubmit)()}
           placeholder="Enter the document name"
         />

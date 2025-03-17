@@ -1,6 +1,6 @@
-import { EditorModule } from "document-model";
-import Editor from "./editor";
-import { AtlasExploratoryDocument } from "../../document-models/atlas-exploratory";
+import { type EditorModule } from "document-model";
+import Editor from "./editor.js";
+import { type AtlasExploratoryDocument } from "../../document-models/atlas-exploratory/index.js";
 
 export const module: EditorModule<AtlasExploratoryDocument> = {
   Component: Editor,

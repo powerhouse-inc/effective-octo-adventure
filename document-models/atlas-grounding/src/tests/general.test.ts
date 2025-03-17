@@ -6,18 +6,18 @@
 import { generateMock } from "@powerhousedao/codegen";
 import { hashKey } from "document-model";
 
-import utils from "../../gen/utils";
+import utils from "../../gen/utils.js";
 import {
   z,
-  SetGroundingNameInput,
-  SetDocNumberInput,
-  SetContentInput,
-  SetMasterStatusInput,
-  SetAtlasTypeInput,
-} from "../../gen/schema";
-import { reducer } from "../../gen/reducer";
-import * as creators from "../../gen/general/creators";
-import { AtlasGroundingDocument } from "../../gen/types";
+  type SetGroundingNameInput,
+  type SetDocNumberInput,
+  type SetContentInput,
+  type SetMasterStatusInput,
+  type SetAtlasTypeInput,
+} from "../../gen/schema/index.js";
+import { reducer } from "../../gen/reducer.js";
+import * as creators from "../../gen/general/creators.js";
+import { type AtlasGroundingDocument } from "../../gen/types.js";
 
 describe("General Operations", () => {
   let document: AtlasGroundingDocument;

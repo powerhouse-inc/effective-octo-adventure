@@ -1,6 +1,6 @@
-import { Manifest } from "document-model";
-import * as documentModelsExports from "./document-models";
-import * as editorsExports from "./editors";
+import { type Manifest } from "document-model";
+import * as documentModelsExports from "./document-models/index.js";
+import * as editorsExports from "./editors/index.js";
 
 export const documentModels = Object.values(documentModelsExports);
 export const editors = Object.values(editorsExports);

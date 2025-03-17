@@ -1,4 +1,4 @@
-import { AtlasMultiParentGeneralOperations } from "../../gen/general/operations";
+import { type AtlasMultiParentGeneralOperations } from "../../gen/general/operations.js";
 
 export const reducer: AtlasMultiParentGeneralOperations = {
   setMultiparentNameOperation(state, action, dispatch) {

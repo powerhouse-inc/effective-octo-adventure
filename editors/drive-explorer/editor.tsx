@@ -1,6 +1,6 @@
-import { EditorProps } from "document-model";
-import { EditorLayout } from "./components/editor-layout";
-import { DocumentDriveDocument } from "document-drive";
+import { type EditorProps } from "document-model";
+import { EditorLayout } from "./components/editor-layout.js";
+import { type DocumentDriveDocument } from "document-drive";
 
 export type IProps = EditorProps<DocumentDriveDocument>;
 

@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { Subgraph } from "@powerhousedao/reactor-api";
+import { type Subgraph } from "@powerhousedao/reactor-api";
 import { addFile } from "document-drive";
-import { actions } from "../../document-models/atlas-scope";
+import { actions } from "../../document-models/atlas-scope/index.js";
 import { generateId, hashKey } from "document-model";
-import { syncDocuments } from "../../scripts/apply-changes/syncDocuments";
+import { syncDocuments } from "../../scripts/apply-changes/syncDocuments.js";
 
 // Reactor where the documents will be synchronized to
 const GQL_ENDPOINT = "http://localhost:4001/";

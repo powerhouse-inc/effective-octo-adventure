@@ -6,11 +6,15 @@
 import { generateMock } from "@powerhousedao/codegen";
 import { hashKey } from "document-model";
 
-import utils from "../../gen/utils";
-import { z, AddTagsInput, RemoveTagsInput } from "../../gen/schema";
-import { reducer } from "../../gen/reducer";
-import * as creators from "../../gen/tags/creators";
-import { AtlasScopeDocument } from "../../gen/types";
+import utils from "../../gen/utils.js";
+import {
+  z,
+  type AddTagsInput,
+  type RemoveTagsInput,
+} from "../../gen/schema/index.js";
+import { reducer } from "../../gen/reducer.js";
+import * as creators from "../../gen/tags/creators.js";
+import { type AtlasScopeDocument } from "../../gen/types.js";
 
 describe("Tags Operations", () => {
   let document: AtlasScopeDocument;

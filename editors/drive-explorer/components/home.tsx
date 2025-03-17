@@ -1,6 +1,6 @@
-import React from "react";
-import { Atlas } from "./icons/atlas";
-import { Skeleton } from "./icons/skeleton";
+import type React from "react";
+import { Atlas } from "./icons/atlas.js";
+import { Skeleton } from "./icons/skeleton.js";
 
 export interface HomeProps {
   readonly children?: React.ReactNode;

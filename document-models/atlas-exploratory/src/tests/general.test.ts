@@ -6,21 +6,21 @@
 import { generateMock } from "@powerhousedao/codegen";
 import { hashKey } from "document-model";
 
-import utils from "../../gen/utils";
+import utils from "../../gen/utils.js";
 import {
   z,
-  SetExploratoryNameInput,
-  SetDocNumberInput,
-  SetContentInput,
-  SetMasterStatusInput,
-  SetParentInput,
-  RemoveParentInput,
-  SetAtlasTypeInput,
-  SetFindingsInput,
-} from "../../gen/schema";
-import { reducer } from "../../gen/reducer";
-import * as creators from "../../gen/general/creators";
-import { AtlasExploratoryDocument } from "../../gen/types";
+  type SetExploratoryNameInput,
+  type SetDocNumberInput,
+  type SetContentInput,
+  type SetMasterStatusInput,
+  type SetParentInput,
+  type RemoveParentInput,
+  type SetAtlasTypeInput,
+  type SetFindingsInput,
+} from "../../gen/schema/index.js";
+import { reducer } from "../../gen/reducer.js";
+import * as creators from "../../gen/general/creators.js";
+import { type AtlasExploratoryDocument } from "../../gen/types.js";
 
 describe("General Operations", () => {
   let document: AtlasExploratoryDocument;

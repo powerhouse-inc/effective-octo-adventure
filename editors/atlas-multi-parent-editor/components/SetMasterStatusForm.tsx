@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
 import { EnumField, Form } from "@powerhousedao/design-system/scalars";
-import { SetMasterStatusInput } from "document-models/atlas-multi-parent";
-import React from "react";
+import { type SetMasterStatusInput } from "document-models/atlas-multi-parent/index.js";
 
 type Props = {
   readonly defaultValue: SetMasterStatusInput;
@@ -20,6 +19,7 @@ export function SetMasterStatusForm(props: Props) {
           defaultValue={props.defaultValue.masterStatus}
           label="Status"
           name="masterStatus"
+          /* @ts-expect-error */
           onChange={() => handleSubmit(onSubmit)()}
           options={[
             { value: "PLACEHOLDER", label: "PLACEHOLDER" },

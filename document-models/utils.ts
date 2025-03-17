@@ -1,17 +1,16 @@
+import viewTreeData from "../data/view-node-tree.json" with { type: "json" };
+import documentIndexData from "../data/parsed/all-items.json" with { type: "json" };
 import {
-  ViewTreeContentSegment,
-  ViewTreeContentValue,
-  ParsedNotionDocumentIndex,
-  ParsedNotionDocumentType,
-  ViewTree,
-  ParsedNotionDocument,
-  ParsedNotionDocumentContent,
-} from "scripts/apply-changes/atlas-base/NotionTypes";
+  type ViewTree,
+  type ParsedNotionDocumentIndex,
+  type ParsedNotionDocumentType,
+  type ParsedNotionDocument,
+  type ParsedNotionDocumentContent,
+  type ViewTreeContentValue,
+  type ViewTreeContentSegment,
+} from "../scripts/apply-changes/atlas-base/NotionTypes.js";
 
-import viewTreeData from "../data/view-node-tree.json";
-import documentIndexData from "../data/parsed/all-items.json";
-
-export const viewTree: ViewTree = viewTreeData as ViewTree;
+export const viewTree: ViewTree = viewTreeData as unknown as ViewTree;
 export const documentIndex = documentIndexData as ParsedNotionDocumentIndex;
 
 export const getEmptyNotionDocument = (
@@ -37,7 +36,6 @@ export const getOriginalNotionDocument = (
   type: ParsedNotionDocumentType,
 ) => {
   const notionDoc =
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     documentIndex[notionId] || getEmptyNotionDocument(notionId, type);
 
   return notionDoc;

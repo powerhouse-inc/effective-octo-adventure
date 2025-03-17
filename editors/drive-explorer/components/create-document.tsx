@@ -1,6 +1,6 @@
 import { Button } from "@powerhousedao/design-system";
-import { FileNode } from "document-drive";
-import { DocumentModelModule } from "document-model";
+import { type FileNode } from "document-drive";
+import { type DocumentModelModule } from "document-model";
 
 interface CreateDocumentProps {
   documentModels?: DocumentModelModule[];

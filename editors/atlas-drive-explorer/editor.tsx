@@ -1,21 +1,21 @@
 /* eslint-disable react/jsx-max-depth */
 /* eslint-disable react/jsx-no-bind */
-import { EditorProps } from "document-model";
+import { type EditorProps } from "document-model";
 import {
   actions,
-  SetScopeNameInput,
-  SetDocNumberInput,
-  SetContentInput,
-  SetMasterStatusInput,
-  AddTagsInput,
-  AtlasScopeDocument,
-} from "../../document-models/atlas-scope";
-import { SetScopeNameForm } from "./components/SetScopeNameForm";
-import { SetDocNumberForm } from "./components/SetDocNumberForm";
-import { SetContentForm } from "./components/SetContentForm";
-import { SetMasterStatusForm } from "./components/SetMasterStatusForm";
-import { SetTagsForm } from "./components/SetTagsForm";
-import { EditorLayout } from "./components/EditorLayout";
+  type SetScopeNameInput,
+  type SetDocNumberInput,
+  type SetContentInput,
+  type SetMasterStatusInput,
+  type AddTagsInput,
+  type AtlasScopeDocument,
+} from "../../document-models/atlas-scope/index.js";
+import { SetScopeNameForm } from "./components/SetScopeNameForm.js";
+import { SetDocNumberForm } from "./components/SetDocNumberForm.js";
+import { SetContentForm } from "./components/SetContentForm.js";
+import { SetMasterStatusForm } from "./components/SetMasterStatusForm.js";
+import { SetTagsForm } from "./components/SetTagsForm.js";
+import { EditorLayout } from "./components/EditorLayout.js";
 
 export type IProps = EditorProps<AtlasScopeDocument>;
 

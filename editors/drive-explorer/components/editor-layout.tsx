@@ -2,20 +2,21 @@
 import { Icon } from "@powerhousedao/design-system";
 import {
   cn,
-  NodeStatus,
+  type NodeStatus,
   Sidebar,
   SidebarProps,
   SidebarProvider,
   type SidebarNode,
 } from "@powerhousedao/design-system/scalars";
-import React, { useCallback, useState, useRef } from "react";
+import type React from "react";
+import { useCallback, useState, useRef } from "react";
 import { useDriveContext } from "@powerhousedao/reactor-browser";
-import { AtlasArticle } from "./types";
-import { EditorContainer } from "./EditorContainer";
-import { DocumentModelModule, EditorContext } from "document-model";
+import { type AtlasArticle } from "./types.js";
+import { EditorContainer } from "./EditorContainer.js";
+import { type DocumentModelModule, type EditorContext } from "document-model";
 import { CreateDocumentModal } from "@powerhousedao/design-system";
-import { CreateDocument } from "./create-document";
-import { Home } from "./home";
+import { CreateDocument } from "./create-document.js";
+import { Home } from "./home.js";
 
 export interface EditorLayoutProps {
   readonly driveId: string;
@@ -138,6 +139,7 @@ export function EditorLayout({
             ) : (
               <Home>
                 <CreateDocument
+                  /* @ts-expect-error */
                   createDocument={onSelectDocumentModel}
                   documentModels={filteredDocumentModels}
                 />

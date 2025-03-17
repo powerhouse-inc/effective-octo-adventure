@@ -4,7 +4,7 @@
  * - delete the file and run the code generator again to have it reset
  */
 
-import { AtlasGroundingContextOperations } from "../../gen/context/operations";
+import { type AtlasGroundingContextOperations } from "../../gen/context/operations.js";
 
 export const reducer: AtlasGroundingContextOperations = {
   addContextDataOperation(state, action, dispatch) {

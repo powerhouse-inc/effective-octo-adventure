@@ -1,7 +1,7 @@
-import { ReactorClient } from "./ReactorClient";
-import { DocumentsCache, DocumentCacheEntry } from "./DocumentsCache";
+import { type ReactorClient } from "./ReactorClient.js";
+import { type DocumentsCache, DocumentCacheEntry } from "./DocumentsCache.js";
 import { gql } from "graphql-request";
-import { Maybe } from "document-model";
+import { type Maybe } from "document-model";
 
 const DEFAULT_MAX_QUERY_BATCH_SIZE = 5;
 
@@ -81,7 +81,7 @@ export abstract class DocumentClient<StateType, InputType> {
           name: this.getNameFromState(d.document.state) || undefined,
           state:
             typeof d.document.state === "object"
-              ? (d.document.state as Object)
+              ? (d.document.state as object)
               : undefined,
         }),
       );
@@ -125,7 +125,7 @@ export abstract class DocumentClient<StateType, InputType> {
         this.documentType,
         documentId,
       );
-      
+
       const targetState = this.getTargetState(inputDocument, currentState);
 
       await this.patchDocumentState(
@@ -140,7 +140,7 @@ export abstract class DocumentClient<StateType, InputType> {
         documentType: this.documentType,
         inputId: this.getInputIdFromInput(inputDocument),
         name: this.getNameFromState(targetState) || undefined,
-        state: targetState as Object,
+        state: targetState as object,
       });
     }
 
@@ -150,8 +150,8 @@ export abstract class DocumentClient<StateType, InputType> {
   public async loadDocument(
     documentType: string,
     id: string,
-    skipCache: boolean = false,
-    requireState: boolean = true,
+    skipCache = false,
+    requireState = true,
   ) {
     if (
       skipCache ||
@@ -164,7 +164,7 @@ export abstract class DocumentClient<StateType, InputType> {
           ...this.documentsCache.getDocumentCacheEntry(documentType, id),
           state:
             typeof data.document.state === "object"
-              ? (data.document.state as Object)
+              ? (data.document.state as object)
               : undefined,
         });
       } else {
@@ -175,7 +175,7 @@ export abstract class DocumentClient<StateType, InputType> {
           name: this.getNameFromState(data.document.state) || undefined,
           state:
             typeof data.document.state === "object"
-              ? (data.document.state as Object)
+              ? (data.document.state as object)
               : undefined,
         });
       }
@@ -187,7 +187,7 @@ export abstract class DocumentClient<StateType, InputType> {
   public async loadDocumentState(
     documentType: string,
     id: string,
-    skipCache: boolean = false,
+    skipCache = false,
   ) {
     const document = await this.loadDocument(documentType, id, skipCache, true);
     return document.state as StateType;

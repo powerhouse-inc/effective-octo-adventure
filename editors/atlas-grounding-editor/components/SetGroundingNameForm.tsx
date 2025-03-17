@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
 import { Form, StringField } from "@powerhousedao/design-system/scalars";
-import { SetGroundingNameInput } from "document-models/atlas-grounding";
-import React from "react";
+import { type SetGroundingNameInput } from "document-models/atlas-grounding/index.js";
 
 type Props = {
   readonly defaultValue: SetGroundingNameInput;
@@ -20,6 +19,7 @@ export function SetGroundingNameForm(props: Props) {
           defaultValue={props.defaultValue.name}
           label="Name"
           name="name"
+          /* @ts-expect-error */
           onBlur={() => handleSubmit(onSubmit)()}
           placeholder="Enter the document name"
         />

@@ -1,9 +1,9 @@
-import { Maybe } from "document-model";
-import { DocumentsCache } from "../common/DocumentsCache";
-import { ReactorClient } from "../common/ReactorClient";
-import { DocumentClient } from "../common/DocumentClient";
-import { ParsedNotionDocument } from "./NotionTypes";
-import { getPNDTitle } from "../../../document-models/utils";
+import { type Maybe } from "document-model";
+import { type DocumentsCache } from "../common/DocumentsCache.js";
+import { type ReactorClient } from "../common/ReactorClient.js";
+import { DocumentClient } from "../common/DocumentClient.js";
+import { type ParsedNotionDocument } from "./NotionTypes.js";
+import { getPNDTitle } from "../../../document-models/utils.js";
 import _ from "lodash";
 
 type WriteClientBase = {

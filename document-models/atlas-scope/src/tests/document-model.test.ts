@@ -3,7 +3,10 @@
  * - change it by adding new tests or modifying the existing ones
  */
 
-import utils, { initialGlobalState, initialLocalState } from "../../gen/utils";
+import utils, {
+  initialGlobalState,
+  initialLocalState,
+} from "../../gen/utils.js";
 
 describe("Atlas Scope Document Model", () => {
   it("should create a new Atlas Scope document", () => {

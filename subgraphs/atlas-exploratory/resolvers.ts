@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { Subgraph } from "@powerhousedao/reactor-api";
+import { type Subgraph } from "@powerhousedao/reactor-api";
 import { addFile } from "document-drive";
-import { actions } from "../../document-models/atlas-exploratory";
+import { actions } from "../../document-models/atlas-exploratory/index.js";
 import { generateId, hashKey } from "document-model";
 
 const DEFAULT_DRIVE_ID = "powerhouse";

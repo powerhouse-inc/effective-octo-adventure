@@ -1,4 +1,4 @@
-import { AtlasFoundationTagsOperations } from "../../gen/tags/operations";
+import { type AtlasFoundationTagsOperations } from "../../gen/tags/operations.js";
 
 export const reducer: AtlasFoundationTagsOperations = {
   addTagsOperation(state, action, dispatch) {

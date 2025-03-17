@@ -1,34 +1,40 @@
-/* eslint-disable react/jsx-no-bind */
-/* eslint-disable react/jsx-max-depth */
-import { EditorProps } from "document-model";
+import { type EditorProps } from "document-model";
 import {
   actions,
-  SetDocNumberInput,
-  SetFoundationNameInput,
-  SetMasterStatusInput,
-  SetContentInput,
-  AddTagsInput,
-  AtlasFoundationDocument,
-} from "../../document-models/atlas-foundation";
-import docsIndex from "../../scripts/apply-changes/data/index.json";
-import { SetDocNumberForm } from "./components/SetDocNumberForm";
-import { SetFoundationNameForm } from "./components/SetFoundationNameForm";
-import { SetMasterStatusForm } from "./components/SetMasterStatusForm";
-import { SetContentForm } from "./components/SetContentForm";
-import { SetTagsForm } from "./components/SetTagsForm";
+  type SetDocNumberInput,
+  type SetFoundationNameInput,
+  type SetMasterStatusInput,
+  type SetContentInput,
+  type AddTagsInput,
+  type AtlasFoundationDocument,
+} from "../../document-models/atlas-foundation/index.js";
+import docsIndex from "../../scripts/apply-changes/data/index.json" with { type: "json" };
+import { SetDocNumberForm } from "./components/SetDocNumberForm.js";
+import { SetFoundationNameForm } from "./components/SetFoundationNameForm.js";
+import { SetMasterStatusForm } from "./components/SetMasterStatusForm.js";
+import { SetContentForm } from "./components/SetContentForm.js";
+import { SetTagsForm } from "./components/SetTagsForm.js";
 import {
   Form,
   PHIDField,
   UrlField,
 } from "@powerhousedao/design-system/scalars";
-import { IdAutocompleteOption } from "node_modules/@powerhousedao/design-system/dist/src/scalars/components/fragments/id-autocomplete-field/types";
-import { DiffField } from "../atlas-scope-editor/components/DiffField";
+import { DiffField } from "../atlas-scope-editor/components/DiffField.js";
 import {
   getOriginalNotionDocument,
   pndContentToString,
-} from "../../document-models/utils";
+} from "../../document-models/utils.js";
+import { type IconName } from "@powerhousedao/design-system";
 
 export type IProps = EditorProps<AtlasFoundationDocument>;
+
+type IdAutocompleteOption = {
+  value: string;
+  path: string;
+  icon: IconName;
+  description: string;
+  title: string;
+};
 
 export default function Editor(props: IProps) {
   // generate a random id
@@ -56,7 +62,6 @@ export default function Editor(props: IProps) {
     description: " ",
   };
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   const cb = async (phid: string): Promise<IdAutocompleteOption[]> =>
     (docsIndex as IdAutocompleteOption[]).filter(
       (entry) =>
@@ -152,8 +157,11 @@ export default function Editor(props: IProps) {
           >
             <PHIDField
               defaultValue={parentInfo.value}
+              /* @ts-expect-error */
               fetchOptionsCallback={cb}
+              /* @ts-expect-error */
               fetchSelectedOptionCallback={(x) => cb(x).then((x) => x[0])}
+              /* @ts-expect-error */
               initialOptions={[parentInfo]}
               label="Parent Document:"
               name="parentId"

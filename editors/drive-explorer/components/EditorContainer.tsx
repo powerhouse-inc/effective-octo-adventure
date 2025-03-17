@@ -3,17 +3,17 @@ import {
   exportDocument,
 } from "@powerhousedao/reactor-browser";
 import {
-  DocumentModelModule,
-  EditorContext,
-  EditorProps,
-  PHDocument,
+  type DocumentModelModule,
+  type EditorContext,
+  type EditorProps,
+  type PHDocument,
 } from "document-model";
 import {
   DocumentToolbar,
   RevisionHistory,
   DefaultEditorLoader,
 } from "@powerhousedao/design-system";
-import { useState, Suspense, FC, useCallback } from "react";
+import { useState, Suspense, type FC, useCallback } from "react";
 
 import {
   AtlasExploratory,
@@ -21,14 +21,14 @@ import {
   AtlasGrounding,
   AtlasMultiParent,
   AtlasScope,
-} from "../../../document-models";
+} from "../../../document-models/index.js";
 import {
   AtlasExploratoryEditor,
   AtlasFoundationEditor,
   AtlasGroundingEditor,
   AtlasMultiParentEditor,
   AtlasScopeEditor,
-} from "../../index";
+} from "../../index.js";
 
 export interface EditorContainerProps {
   driveId: string;

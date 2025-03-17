@@ -1,6 +1,6 @@
-import { EditorModule } from "document-model";
-import Editor from "./editor";
-import { DocumentDriveDocument } from "document-drive";
+import { type EditorModule } from "document-model";
+import Editor from "./editor.js";
+import { type DocumentDriveDocument } from "document-drive";
 
 export const module: EditorModule<DocumentDriveDocument> = {
   Component: Editor,

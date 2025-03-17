@@ -1,20 +1,20 @@
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/jsx-max-depth */
-import { EditorProps } from "document-model";
+import { type EditorProps } from "document-model";
 import {
   actions,
-  SetDocNumberInput,
-  SetMultiparentNameInput,
-  SetMasterStatusInput,
-  SetContentInput,
-  AddTagsInput,
-  AtlasMultiParentDocument,
-} from "../../document-models/atlas-multi-parent";
-import { SetDocNumberForm } from "./components/SetDocNumberForm";
-import { SetMultiParentNameForm } from "./components/SetMultiParentNameForm";
-import { SetMasterStatusForm } from "./components/SetMasterStatusForm";
-import { SetContentForm } from "./components/SetContentForm";
-import { SetTagsForm } from "./components/SetTagsForm";
+  type SetDocNumberInput,
+  type SetMultiparentNameInput,
+  type SetMasterStatusInput,
+  type SetContentInput,
+  type AddTagsInput,
+  type AtlasMultiParentDocument,
+} from "../../document-models/atlas-multi-parent/index.js";
+import { SetDocNumberForm } from "./components/SetDocNumberForm.js";
+import { SetMultiParentNameForm } from "./components/SetMultiParentNameForm.js";
+import { SetMasterStatusForm } from "./components/SetMasterStatusForm.js";
+import { SetContentForm } from "./components/SetContentForm.js";
+import { SetTagsForm } from "./components/SetTagsForm.js";
 
 export type IProps = EditorProps<AtlasMultiParentDocument>;
 

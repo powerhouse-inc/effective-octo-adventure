@@ -1,4 +1,4 @@
-import { AtlasGroundingGeneralOperations } from "../../gen/general/operations";
+import { type AtlasGroundingGeneralOperations } from "../../gen/general/operations.js";
 
 export const reducer: AtlasGroundingGeneralOperations = {
   setGroundingNameOperation(state, action, dispatch) {

@@ -1,4 +1,4 @@
-import { AtlasFoundationContextOperations } from "../../gen/context/operations";
+import { type AtlasFoundationContextOperations } from "../../gen/context/operations.js";
 
 export const reducer: AtlasFoundationContextOperations = {
   addContextDataOperation(state, action, dispatch) {

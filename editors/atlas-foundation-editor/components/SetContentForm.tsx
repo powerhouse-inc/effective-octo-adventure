@@ -1,6 +1,5 @@
-/* eslint-disable react/jsx-no-bind */
 import { Form, StringField } from "@powerhousedao/design-system/scalars";
-import { SetContentInput } from "document-models/atlas-foundation";
+import { type SetContentInput } from "document-models/atlas-foundation/index.js";
 
 type Props = {
   readonly defaultValue: SetContentInput;
@@ -20,6 +19,7 @@ export function SetContentForm(props: Props) {
           defaultValue={props.defaultValue.content}
           multiline
           name="content"
+          /* @ts-expect-error */
           onBlur={() => handleSubmit(onSubmit)()}
         />
       )}

@@ -1,5 +1,5 @@
-import { Maybe } from "document-model";
-import { DriveNodes } from "../common/ReactorClient";
+import { type Maybe } from "document-model";
+import { type DriveNodes } from "../common/ReactorClient.js";
 import fs from "node:fs";
 
 export type DocumentCacheEntry = {
@@ -8,7 +8,7 @@ export type DocumentCacheEntry = {
   inputId: string | null;
   parentFolder?: string;
   name?: string;
-  state?: Object;
+  state?: object;
 };
 
 export class DocumentsCache {
@@ -17,7 +17,7 @@ export class DocumentsCache {
     {};
   private inputDocumentsLookup: Record<string, Record<string, string>> = {};
 
-  constructor(nodes: DriveNodes, inputTypeDebugName: string = "Input") {
+  constructor(nodes: DriveNodes, inputTypeDebugName = "Input") {
     this.initializeNodesByType(nodes);
     this.inputTypeDebugName = inputTypeDebugName;
   }
@@ -117,7 +117,7 @@ export class DocumentsCache {
   public hasDocument(
     documentType: string,
     id: string,
-    requireObject: boolean = false,
+    requireObject = false,
   ): boolean {
     const hasDocumentEntry = !!this.documentsByType[documentType][id];
     return (
@@ -172,7 +172,7 @@ export class DocumentsCache {
       path: documentType,
       icon: "File" as const,
       description: " ",
-      title: [map[key].state?.docNo || null, map[key].name || "Untitled"]
+      title: [(map[key].state as any)?.docNo || null, map[key].name || "Untitled"]
         .filter((s) => s !== null)
         .join(" - "),
     }));

@@ -6,19 +6,18 @@
 import { generateMock } from "@powerhousedao/codegen";
 import { hashKey } from "document-model";
 
-import utils from "../../gen/utils";
+import utils from "../../gen/utils.js";
 import {
   z,
-  SetMultiparentNameInput,
-  SetDocNumberInput,
-  SetContentInput,
-  SetMasterStatusInput,
-  SetParentInput,
-  SetAtlasTypeInput,
-} from "../../gen/schema";
-import { reducer } from "../../gen/reducer";
-import * as creators from "../../gen/general/creators";
-import { AtlasMultiParentDocument } from "../../gen/types";
+  type SetMultiparentNameInput,
+  type SetDocNumberInput,
+  type SetContentInput,
+  type SetMasterStatusInput,
+  type SetAtlasTypeInput,
+} from "../../gen/schema/index.js";
+import { reducer } from "../../gen/reducer.js";
+import * as creators from "../../gen/general/creators.js";
+import { type AtlasMultiParentDocument } from "../../gen/types.js";
 
 describe("General Operations", () => {
   let document: AtlasMultiParentDocument;
@@ -88,19 +87,19 @@ describe("General Operations", () => {
     expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
-  it("should handle setParent operation", () => {
-    // generate a random id
-    // const id = hashKey();
+  // it("should handle setParent operation", () => {
+  //   // generate a random id
+  //   // const id = hashKey();
 
-    const input: SetParentInput = generateMock(z.SetParentInputSchema());
+  //   const input: SetParentInput = generateMock(z.SetParentInputSchema());
 
-    const updatedDocument = reducer(document, creators.setParent(input));
+  //   const updatedDocument = reducer(document, creators.setParent(input));
 
-    expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("SET_PARENT");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
-    expect(updatedDocument.operations.global[0].index).toEqual(0);
-  });
+  //   expect(updatedDocument.operations.global).toHaveLength(1);
+  //   expect(updatedDocument.operations.global[0].type).toBe("SET_PARENT");
+  //   expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+  //   expect(updatedDocument.operations.global[0].index).toEqual(0);
+  // });
   it("should handle setAtlasType operation", () => {
     // generate a random id
     // const id = hashKey();

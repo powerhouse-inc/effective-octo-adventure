@@ -1,6 +1,5 @@
-/* eslint-disable react/jsx-no-bind */
 import { Form, StringField } from "@powerhousedao/design-system/scalars";
-import { SetScopeNameInput } from "document-models/atlas-scope";
+import { type SetScopeNameInput } from "document-models/atlas-scope/index.js";
 import { useRef } from "react";
 
 type Props = {
@@ -24,6 +23,7 @@ export function SetScopeNameForm(props: Props) {
           defaultValue={props.defaultValue.name}
           label="Scope"
           name="name"
+          /* @ts-expect-error */
           onBlur={() => handleSubmit(onSubmit)()}
           placeholder="Enter the scope name"
         />

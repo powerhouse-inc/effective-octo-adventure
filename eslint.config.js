@@ -9,9 +9,12 @@ import { globalIgnores } from "eslint/config";
 
 export default tseslint.config(
   globalIgnores([
+    "node_modules/",
     "dist/",
-    "build/",
-    "coverage/",
+    ".ph/",
+    "data/",
+    "**/data/",
+    "scripts/",
     "eslint.config.js",
   ]),
   eslint.configs.recommended,
@@ -42,6 +45,7 @@ export default tseslint.config(
       "@typescript-eslint/consistent-type-imports": [
         "error",
         {
+          disallowTypeAnnotations: false,
           prefer: "type-imports",
           fixStyle: "inline-type-imports",
         },
@@ -62,6 +66,7 @@ export default tseslint.config(
       "@typescript-eslint/no-empty-object-type": "off",
       "@typescript-eslint/no-unnecessary-type-assertion": "off",
       "@typescript-eslint/no-unnecessary-type-parameters": "off",
+      "@typescript-eslint/no-deprecated": "off",
       "@typescript-eslint/no-non-null-assertion": "warn",
       "@typescript-eslint/prefer-find": "warn",
       "@typescript-eslint/no-floating-promises": "warn",
@@ -105,7 +110,7 @@ export default tseslint.config(
       "react/jsx-props-no-spreading": "off",
       "react/no-unused-prop-types": "warn",
       "react/no-array-index-key": "warn",
-      "react/jsx-no-bind": "warn",
+      "react/jsx-no-bind": "off",
       "react/hook-use-state": "warn",
       "react/jsx-no-useless-fragment": "warn",
     },

@@ -1,20 +1,20 @@
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/jsx-max-depth */
-import { EditorProps } from "document-model";
+import { type EditorProps } from "document-model";
 import {
   actions,
-  SetDocNumberInput,
-  SetExploratoryNameInput,
-  SetMasterStatusInput,
-  SetContentInput,
-  AddTagsInput,
-  AtlasExploratoryDocument,
-} from "../../document-models/atlas-exploratory";
-import { SetDocNumberForm } from "./components/SetDocNumberForm";
-import { SetExploratoryNameForm } from "./components/SetExploratoryNameForm";
-import { SetMasterStatusForm } from "./components/SetMasterStatusForm";
-import { SetContentForm } from "./components/SetContentForm";
-import { SetTagsForm } from "./components/SetTagsForm";
+  type SetDocNumberInput,
+  type SetExploratoryNameInput,
+  type SetMasterStatusInput,
+  type SetContentInput,
+  type AddTagsInput,
+  type AtlasExploratoryDocument,
+} from "../../document-models/atlas-exploratory/index.js";
+import { SetDocNumberForm } from "./components/SetDocNumberForm.js";
+import { SetExploratoryNameForm } from "./components/SetExploratoryNameForm.js";
+import { SetMasterStatusForm } from "./components/SetMasterStatusForm.js";
+import { SetContentForm } from "./components/SetContentForm.js";
+import { SetTagsForm } from "./components/SetTagsForm.js";
 
 export type IProps = EditorProps<AtlasExploratoryDocument>;
 

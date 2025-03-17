@@ -6,17 +6,17 @@
 import { generateMock } from "@powerhousedao/codegen";
 import { hashKey } from "document-model";
 
-import utils from "../../gen/utils";
+import utils from "../../gen/utils.js";
 import {
   z,
-  AddContextDataInput,
-  RemoveContextDataInput,
-  SetProvenanceInput,
-  SetNotionIdInput,
-} from "../../gen/schema";
-import { reducer } from "../../gen/reducer";
-import * as creators from "../../gen/context/creators";
-import { AtlasFoundationDocument } from "../../gen/types";
+  type AddContextDataInput,
+  type RemoveContextDataInput,
+  type SetProvenanceInput,
+  type SetNotionIdInput,
+} from "../../gen/schema/index.js";
+import { reducer } from "../../gen/reducer.js";
+import * as creators from "../../gen/context/creators.js";
+import { type AtlasFoundationDocument } from "../../gen/types.js";
 
 describe("Context Operations", () => {
   let document: AtlasFoundationDocument;

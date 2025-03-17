@@ -1,49 +1,54 @@
-import { queryGraphQL } from "./gql-utils";
+import { queryGraphQL } from "./gql-utils.js";
 import { gql } from "graphql-request";
 
 export type DriveResultNode = {
-  id: string,
-  parentFolder: string,
-  name: string,
-  documentType?: string,
-}
+  id: string;
+  parentFolder: string;
+  name: string;
+  documentType?: string;
+};
 
 export type DriveResult = {
-  drive: DriveNodes,
+  drive: DriveNodes;
 };
 
 export type DriveIdsResult = {
-  drives: string[],
-}
+  drives: string[];
+};
 
 export type DriveNodes = {
-  id: string,
-  slug: string,
-  name: string,
-  icon: string,
-  nodes: DriveResultNode[],
-}
+  id: string;
+  slug: string;
+  name: string;
+  icon: string;
+  nodes: DriveResultNode[];
+};
 
 export class ReactorClient {
   private endpointUrl: string;
   private driveEndpointUrl: string;
   private systemEndpointUrl: string;
 
-  constructor(endpointUrl:string, driveName:string) {
+  constructor(endpointUrl: string, driveName: string) {
     this.endpointUrl = endpointUrl;
-    this.driveEndpointUrl = new URL('d/' + driveName, endpointUrl).href;
-    this.systemEndpointUrl = new URL('system', endpointUrl).href;
+    this.driveEndpointUrl = new URL("d/" + driveName, endpointUrl).href;
+    this.systemEndpointUrl = new URL("system", endpointUrl).href;
   }
 
-  public async queryReactor<ReturnType>(query: string, variables?: Object): Promise<ReturnType> {
+  public async queryReactor<ReturnType>(
+    query: string,
+    variables?: object,
+  ): Promise<ReturnType> {
     const result = await queryGraphQL<ReturnType>(
       this.driveEndpointUrl,
-      query, 
-      variables
+      query,
+      variables,
     );
 
     if (result.errors) {
-      throw new Error(`GraphQL error when querying ${this.endpointUrl}`, { cause: result.errors });
+      throw new Error(`GraphQL error when querying ${this.endpointUrl}`, {
+        cause: result.errors,
+      });
     }
 
     return result as ReturnType;
@@ -56,14 +61,19 @@ export class ReactorClient {
         query getDriveIds {
           drives
         }
-      `
+      `,
     );
 
     if (!result.drives) {
       if (result.errors) {
-        throw new Error(`GraphQL error when querying ${this.systemEndpointUrl}`, { cause: result.errors });
+        throw new Error(
+          `GraphQL error when querying ${this.systemEndpointUrl}`,
+          { cause: result.errors },
+        );
       } else {
-        throw new Error(`Failed to fetch drive ids from ${this.systemEndpointUrl}`);
+        throw new Error(
+          `Failed to fetch drive ids from ${this.systemEndpointUrl}`,
+        );
       }
     }
 
@@ -92,7 +102,7 @@ export class ReactorClient {
                 parentFolder
                 name
               }
-            } 
+            }
           }
         }
       `,
@@ -100,7 +110,9 @@ export class ReactorClient {
 
     if (!result.drive) {
       if (result.errors) {
-        throw new Error(`GraphQL error when querying ${this.endpointUrl}`, { cause: result.errors });
+        throw new Error(`GraphQL error when querying ${this.endpointUrl}`, {
+          cause: result.errors,
+        });
       } else {
         throw new Error(`Failed to fetch drive info from ${this.endpointUrl}`);
       }

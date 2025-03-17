@@ -4,7 +4,7 @@
  * - delete the file and run the code generator again to have it reset
  */
 
-import { AtlasScopeTagsOperations } from "../../gen/tags/operations";
+import { type AtlasScopeTagsOperations } from "../../gen/tags/operations.js";
 
 export const reducer: AtlasScopeTagsOperations = {
   addTagsOperation(state, action, dispatch) {

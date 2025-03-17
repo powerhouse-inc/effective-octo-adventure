@@ -1,10 +1,16 @@
-import { syncDocuments } from "./apply-changes/syncDocuments";
+import { syncDocuments } from "./apply-changes/syncDocuments.js";
 
 // Reactor where the documents will be synchronized to
 const GQL_ENDPOINT = "http://localhost:4001/";
 
 // Drive that the documents will be added/updated to. Will be created if it does not yet exist
-const DRIVE_NAME = "atlas_" + new Date().toISOString().substring(0, 16).replaceAll(/[\-:]/g, '').replace('T', '_');
+const DRIVE_NAME =
+  "atlas_" +
+  new Date()
+    .toISOString()
+    .substring(0, 16)
+    .replaceAll(/[\-:]/g, "")
+    .replace("T", "_");
 
 // Preferred editor for the drive when it's created
 const PREFERRED_EDITOR = "AtlasDriveExplorer";
@@ -22,7 +28,7 @@ const SKIP_NODES: { [id: string]: boolean } = {
   "4281ab93-ef4f-4974-988d-7dad149a693d": true,
 };
 
-// Set to true in order to update the index.json file with 
+// Set to true in order to update the index.json file with
 // auto-complete values of the parent document field.
 const SAVE_CACHE_FILE = false;
 
@@ -33,7 +39,9 @@ async function main() {
     preferredEditor: PREFERRED_EDITOR,
     processLimit: PROCESS_LIMIT,
     skipNodes: SKIP_NODES,
-    saveToFile: SAVE_CACHE_FILE ? "./scripts/apply-changes/data/index.json" : undefined
+    saveToFile: SAVE_CACHE_FILE
+      ? "./scripts/apply-changes/data/index.json"
+      : undefined,
   });
 }
 

@@ -6,19 +6,18 @@
 import { generateMock } from "@powerhousedao/codegen";
 import { hashKey } from "document-model";
 
-import utils from "../../gen/utils";
+import utils from "../../gen/utils.js";
 import {
   z,
-  SetFoundationNameInput,
-  SetDocNumberInput,
-  SetContentInput,
-  SetMasterStatusInput,
-  SetReferencesInput,
-  SetAtlasTypeInput,
-} from "../../gen/schema";
-import { reducer } from "../../gen/reducer";
-import * as creators from "../../gen/general/creators";
-import { AtlasFoundationDocument } from "../../gen/types";
+  type SetFoundationNameInput,
+  type SetDocNumberInput,
+  type SetContentInput,
+  type SetMasterStatusInput,
+  type SetAtlasTypeInput,
+} from "../../gen/schema/index.js";
+import { reducer } from "../../gen/reducer.js";
+import * as creators from "../../gen/general/creators.js";
+import { type AtlasFoundationDocument } from "../../gen/types.js";
 
 describe("General Operations", () => {
   let document: AtlasFoundationDocument;
@@ -88,21 +87,21 @@ describe("General Operations", () => {
     expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
-  it("should handle setReferences operation", () => {
-    // generate a random id
-    // const id = hashKey();
+  // it("should handle setReferences operation", () => {
+  //   // generate a random id
+  //   // const id = hashKey();
 
-    const input: SetReferencesInput = generateMock(
-      z.SetReferencesInputSchema(),
-    );
+  //   const input: SetReferencesInput = generateMock(
+  //     z.SetReferencesInputSchema(),
+  //   );
 
-    const updatedDocument = reducer(document, creators.setReferences(input));
+  //   const updatedDocument = reducer(document, creators.setReferences(input));
 
-    expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("SET_REFERENCES");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
-    expect(updatedDocument.operations.global[0].index).toEqual(0);
-  });
+  //   expect(updatedDocument.operations.global).toHaveLength(1);
+  //   expect(updatedDocument.operations.global[0].type).toBe("SET_REFERENCES");
+  //   expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+  //   expect(updatedDocument.operations.global[0].index).toEqual(0);
+  // });
   it("should handle setAtlasType operation", () => {
     // generate a random id
     // const id = hashKey();

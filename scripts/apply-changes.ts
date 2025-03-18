@@ -1,7 +1,8 @@
 import { syncDocuments } from "./apply-changes/syncDocuments.js";
 
+const PORT = process.env.PORT || 4001;
 // Reactor where the documents will be synchronized to
-const GQL_ENDPOINT = "http://localhost:4001/";
+const GQL_ENDPOINT = `http://localhost:${PORT}`;
 
 // Drive that the documents will be added/updated to. Will be created if it does not yet exist
 const DRIVE_NAME =

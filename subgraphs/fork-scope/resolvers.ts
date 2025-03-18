@@ -1,9 +1,17 @@
-import dotenv from "dotenv";
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type Subgraph } from "@powerhousedao/reactor-api";
 import { syncDocuments } from "../../scripts/apply-changes/syncDocuments.js";
-dotenv.config();
+
+if (process.env.NODE_ENV === "development") {
+  const dotenv = await import("dotenv");
+  dotenv.config();
+}
+
 const PORT = process.env.PORT || 4001;
-const herokuOrLocal = process.env.HEROKU_APP_NAME ? `https://${process.env.HEROKU_APP_NAME}.herokuapp.com` : `http://localhost:${PORT}`;
+const herokuOrLocal = process.env.HEROKU_APP_NAME
+  ? `https://${process.env.HEROKU_APP_NAME}.herokuapp.com`
+  : `http://localhost:${PORT}`;
 // Reactor where the documents will be synchronized to
 const GQL_ENDPOINT = herokuOrLocal;
 
@@ -45,7 +53,7 @@ export const getResolvers = (subgraph: Subgraph) => {
           },
         };
 
-        syncDocuments(config);
+        syncDocuments(config).catch(console.error);
 
         /*
         await reactor.addDriveAction(

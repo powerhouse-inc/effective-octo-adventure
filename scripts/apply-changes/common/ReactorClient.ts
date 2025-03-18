@@ -29,7 +29,7 @@ export class ReactorClient {
   private driveEndpointUrl: string;
   private systemEndpointUrl: string;
 
-  constructor(endpointUrl:string | undefined, driveName:string) {
+  constructor(endpointUrl: string | undefined, driveName: string) {
     this.endpointUrl = endpointUrl;
     this.driveEndpointUrl = new URL("d/" + driveName, endpointUrl).href;
     this.systemEndpointUrl = new URL("system", endpointUrl).href;

@@ -10,12 +10,12 @@ import {
 } from "../../document-models/utils.js";
 
 export type DocumentSyncConfig = {
-    gqlEndpoint?: string, 
-    driveName: string,
-    preferredEditor: string,
-    processLimit: number,
-    skipNodes: { [id: string]: boolean },
-    saveToFile?: string,
+  gqlEndpoint?: string;
+  driveName: string;
+  preferredEditor: string;
+  processLimit: number;
+  skipNodes: { [id: string]: boolean };
+  saveToFile?: string;
 };
 
 export const syncDocuments = async (config: DocumentSyncConfig) => {

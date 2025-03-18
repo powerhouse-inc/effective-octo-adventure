@@ -1,14 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import dotenv from "dotenv";
 import { type Subgraph } from "@powerhousedao/reactor-api";
-import { addFile } from "document-drive";
-import { actions } from "../../document-models/atlas-scope/index.js";
-import { generateId, hashKey } from "document-model";
 import { syncDocuments } from "../../scripts/apply-changes/syncDocuments.js";
-
+dotenv.config();
+const PORT = process.env.PORT || 4001;
 // Reactor where the documents will be synchronized to
-const GQL_ENDPOINT = "http://localhost:4001/";
+const GQL_ENDPOINT = undefined;
 
 // Preferred editor for the drive when it's created
 const PREFERRED_EDITOR = "AtlasDriveExplorer";
@@ -28,7 +24,9 @@ export const getResolvers = (subgraph: Subgraph) => {
             .replaceAll(/[-:]/g, "")
             .replace("T", "_");
 
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         const driveId: string = args.driveId || DRIVE_NAME;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         const docId = args.docId;
         const config = {
           driveName: driveId,

@@ -1,6 +1,6 @@
 {
     "name": "@sky-ph/atlas",
-    "version": "1.2.8",
+    "version": "1.2.8-alpha.1",
     "license": "AGPL-3.0-only",
     "type": "module",
     "publishConfig": {
@@ -30,14 +30,14 @@
             "types": "./dist/manifest.d.ts",
             "default": "./dist/manifest.js"
         },
-        "./style.css": "./dist/editors/style.css"
+        "./style.css": "./dist/style.css"
     },
     "scripts": {
         "lint": "eslint .",
         "build:tsc": "tsc",
         "build:tsc:watch": "tsc --watch",
-        "build:css": "npx @tailwindcss/cli -i ./editors/style.css -o ./dist/editors/style.css",
-        "build:css:watch": "npx @tailwindcss/cli -i ./editors/style.css -o ./dist/editors/style.css --watch",
+        "build:css": "npx @tailwindcss/cli -i ./style.css -o ./dist/style.css",
+        "build:css:watch": "npx @tailwindcss/cli -i ./style.css -o ./dist/style.css --watch",
         "build": "npm run build:tsc && npm run build:css",
         "test": "vitest run",
         "test:watch": "vitest",

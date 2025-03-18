@@ -1,4 +1,4 @@
-/* eslint-disable react/jsx-no-bind */
+ 
 import { EnumField, Form } from "@powerhousedao/design-system/scalars";
 import { type SetMasterStatusInput } from "document-models/atlas-foundation/index.js";
 

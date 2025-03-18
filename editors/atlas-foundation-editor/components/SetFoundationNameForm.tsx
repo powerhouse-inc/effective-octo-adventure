@@ -1,4 +1,4 @@
-/* eslint-disable react/jsx-no-bind */
+ 
 import { Form, StringField } from "@powerhousedao/design-system/scalars";
 import { type SetFoundationNameInput } from "document-models/atlas-foundation/index.js";
 

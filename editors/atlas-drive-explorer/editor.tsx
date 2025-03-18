@@ -1,5 +1,5 @@
-/* eslint-disable react/jsx-max-depth */
-/* eslint-disable react/jsx-no-bind */
+ 
+ 
 import { type EditorProps } from "document-model";
 import {
   actions,

@@ -16,10 +16,11 @@
     "resolveJsonModule": true,
     "types": ["vitest/globals"],
     "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
     "paths": {
       "document-models/*": ["./document-models/*"],
     }
   },
   "include": ["**/*"],
-  "exclude": ["dist", "node_modules", "data", "**/data", "scripts"]
+  "exclude": ["dist", "node_modules", "data", "**/data", "eslint.config.js", "scripts/fetch-data.ts"]
 }

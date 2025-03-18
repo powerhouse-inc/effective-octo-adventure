@@ -1,4 +1,4 @@
-/* eslint-disable react/jsx-no-bind */
+ 
 import { EnumField, Form } from "@powerhousedao/design-system/scalars";
 import { type AddTagsInput } from "document-models/atlas-exploratory/index.js";
 

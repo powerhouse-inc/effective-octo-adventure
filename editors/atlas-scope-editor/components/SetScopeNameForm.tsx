@@ -1,4 +1,4 @@
-/* eslint-disable react/jsx-no-bind */
+ 
 import { Form, StringField } from "@powerhousedao/design-system/scalars";
 import { type SetScopeNameInput } from "document-models/atlas-scope/index.js";
 import { useRef } from "react";

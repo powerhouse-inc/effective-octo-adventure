@@ -1,4 +1,4 @@
-/* eslint-disable react/jsx-max-depth */
+ 
 import { Form } from "@powerhousedao/design-system/scalars";
 
 type Props = {};

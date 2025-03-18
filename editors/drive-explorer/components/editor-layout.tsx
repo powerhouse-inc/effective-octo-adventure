@@ -1,4 +1,4 @@
-/* eslint-disable react/jsx-max-depth */
+ 
 import { Icon } from "@powerhousedao/design-system";
 import {
   cn,

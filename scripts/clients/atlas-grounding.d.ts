@@ -1,24 +1,24 @@
 // noinspection TypeScriptUnresolvedVariable, ES6UnusedImports, JSUnusedLocalSymbols, TypeScriptCheckImport
-import { type DeepRequired } from "ts-essentials";
-import { type IResponseListener, type Endpoint } from "graphql-ts-client/dist";
+import { DeepRequired } from "ts-essentials"
+import { Maybe, IResponseListener, Endpoint } from "graphql-ts-client/dist"
 
 // Scalars
-export type IDate = string | globalThis.Date;
-export declare type Amount_Tokens = string;
-export declare type EthereumAddress = string;
-export declare type Amount_Percentage = string;
-export declare type EmailAddress = string;
-export declare type Date = IDate;
-export declare type DateTime = IDate;
-export declare type URL = string;
-export declare type Amount_Money = string;
-export declare type OLabel = string;
-export declare type Currency = string;
-export declare type PHID = string;
-export declare type OID = string;
-export declare type ID = string;
-export declare type _FieldSet = string;
-export declare type _Any = string;
+export type IDate = string | Date
+export declare type Amount_Tokens = string
+export declare type EthereumAddress = string
+export declare type Amount_Percentage = string
+export declare type EmailAddress = string
+export declare type Date = IDate
+export declare type DateTime = IDate
+export declare type URL = string
+export declare type Amount_Money = string
+export declare type OLabel = string
+export declare type Currency = string
+export declare type PHID = string
+export declare type OID = string
+export declare type ID = string
+export declare type _FieldSet = string
+export declare type _Any = string
 
 // Enums
 
@@ -242,83 +242,83 @@ type AllEnums =
   | DocumentDrive_TriggerType
   | GAtlasType
   | GStatus
-  | GGlobalTag;
+  | GGlobalTag
 
 // Args
 export interface ServiceArgs {}
 export interface AtlasGroundingCreateDocumentArgs {
-  driveId?: string;
-  name?: string;
+  driveId?: string
+  name?: string
 }
 export interface AtlasGroundingSetGroundingNameArgs {
-  driveId?: string;
-  docId?: PHID;
-  input?: AtlasGrounding_SetGroundingNameInput;
+  driveId?: string
+  docId?: PHID
+  input?: AtlasGrounding_SetGroundingNameInput
 }
 export interface AtlasGroundingSetDocNumberArgs {
-  driveId?: string;
-  docId?: PHID;
-  input?: AtlasGrounding_SetDocNumberInput;
+  driveId?: string
+  docId?: PHID
+  input?: AtlasGrounding_SetDocNumberInput
 }
 export interface AtlasGroundingSetContentArgs {
-  driveId?: string;
-  docId?: PHID;
-  input?: AtlasGrounding_SetContentInput;
+  driveId?: string
+  docId?: PHID
+  input?: AtlasGrounding_SetContentInput
 }
 export interface AtlasGroundingSetMasterStatusArgs {
-  driveId?: string;
-  docId?: PHID;
-  input?: AtlasGrounding_SetMasterStatusInput;
+  driveId?: string
+  docId?: PHID
+  input?: AtlasGrounding_SetMasterStatusInput
 }
 export interface AtlasGroundingSetAtlasTypeArgs {
-  driveId?: string;
-  docId?: PHID;
-  input?: AtlasGrounding_SetAtlasTypeInput;
+  driveId?: string
+  docId?: PHID
+  input?: AtlasGrounding_SetAtlasTypeInput
 }
 export interface AtlasGroundingSetParentArgs {
-  driveId?: string;
-  docId?: PHID;
-  input?: AtlasGrounding_SetParentInput;
+  driveId?: string
+  docId?: PHID
+  input?: AtlasGrounding_SetParentInput
 }
 export interface AtlasGroundingAddTagsArgs {
-  driveId?: string;
-  docId?: PHID;
-  input?: AtlasGrounding_AddTagsInput;
+  driveId?: string
+  docId?: PHID
+  input?: AtlasGrounding_AddTagsInput
 }
 export interface AtlasGroundingRemoveTagsArgs {
-  driveId?: string;
-  docId?: PHID;
-  input?: AtlasGrounding_RemoveTagsInput;
+  driveId?: string
+  docId?: PHID
+  input?: AtlasGrounding_RemoveTagsInput
 }
 export interface AtlasGroundingAddContextDataArgs {
-  driveId?: string;
-  docId?: PHID;
-  input?: AtlasGrounding_AddContextDataInput;
+  driveId?: string
+  docId?: PHID
+  input?: AtlasGrounding_AddContextDataInput
 }
 export interface AtlasGroundingRemoveContextDataArgs {
-  driveId?: string;
-  docId?: PHID;
-  input?: AtlasGrounding_RemoveContextDataInput;
+  driveId?: string
+  docId?: PHID
+  input?: AtlasGrounding_RemoveContextDataInput
 }
 export interface AtlasGroundingSetProvenanceArgs {
-  driveId?: string;
-  docId?: PHID;
-  input?: AtlasGrounding_SetProvenanceInput;
+  driveId?: string
+  docId?: PHID
+  input?: AtlasGrounding_SetProvenanceInput
 }
 export interface AtlasGroundingSetNotionIdArgs {
-  driveId?: string;
-  docId?: PHID;
-  input?: AtlasGrounding_SetNotionIdInput;
+  driveId?: string
+  docId?: PHID
+  input?: AtlasGrounding_SetNotionIdInput
 }
 export interface AtlasGroundingAddReferenceArgs {
-  driveId?: string;
-  docId?: PHID;
-  input?: AtlasGrounding_AddReferenceInput;
+  driveId?: string
+  docId?: PHID
+  input?: AtlasGrounding_AddReferenceInput
 }
 export interface AtlasGroundingRemoveReferenceArgs {
-  driveId?: string;
-  docId?: PHID;
-  input?: AtlasGrounding_RemoveReferenceInput;
+  driveId?: string
+  docId?: PHID
+  input?: AtlasGrounding_RemoveReferenceInput
 }
 
 // Input/Output Types
@@ -328,7 +328,7 @@ export interface AtlasGroundingRemoveReferenceArgs {
  */
 
 export interface PHOperationContext {
-  signer?: Signer;
+  signer?: Signer
 }
 
 /**
@@ -336,9 +336,9 @@ export interface PHOperationContext {
  */
 
 export interface Signer {
-  user?: SignerUser;
-  app?: SignerApp;
-  signatures: string[];
+  user?: SignerUser
+  app?: SignerApp
+  signatures: string[]
 }
 
 /**
@@ -346,9 +346,9 @@ export interface Signer {
  */
 
 export interface SignerUser {
-  address: string;
-  networkId: string;
-  chainId: number;
+  address: string
+  networkId: string
+  chainId: number
 }
 
 /**
@@ -356,8 +356,8 @@ export interface SignerUser {
  */
 
 export interface SignerApp {
-  name: string;
-  key: string;
+  name: string
+  key: string
 }
 
 /**
@@ -365,15 +365,15 @@ export interface SignerApp {
  */
 
 export interface Operation {
-  id: string;
-  type: string;
-  index: number;
-  timestamp: DateTime;
-  hash: string;
-  skip?: number;
-  inputText?: string;
-  error?: string;
-  context?: PHOperationContext;
+  id: string
+  type: string
+  index: number
+  timestamp: DateTime
+  hash: string
+  skip?: number
+  inputText?: string
+  error?: string
+  context?: PHOperationContext
 }
 
 /**
@@ -381,14 +381,14 @@ export interface Operation {
  */
 
 export interface AtlasScope_AtlasScopeState {
-  name?: OLabel;
-  docNo?: string;
-  content?: string;
-  masterStatus?: AtlasScope_Status;
-  globalTags: AtlasScope_GlobalTag[];
-  originalContextData: AtlasScope_DocumentInfo[];
-  provenance?: URL;
-  notionId?: string;
+  name?: OLabel
+  docNo?: string
+  content?: string
+  masterStatus?: AtlasScope_Status
+  globalTags: AtlasScope_GlobalTag[]
+  originalContextData: AtlasScope_DocumentInfo[]
+  provenance?: URL
+  notionId?: string
 }
 
 /**
@@ -396,9 +396,9 @@ export interface AtlasScope_AtlasScopeState {
  */
 
 export interface AtlasScope_DocumentInfo {
-  id: PHID;
-  name?: OLabel;
-  docNo?: string;
+  id: PHID
+  name?: OLabel
+  docNo?: string
 }
 
 /**
@@ -406,15 +406,15 @@ export interface AtlasScope_DocumentInfo {
  */
 
 export interface AtlasScope {
-  id: string;
-  name: string;
-  documentType: string;
-  operations: Operation[];
-  revision: number;
-  created: DateTime;
-  lastModified: DateTime;
-  initialState: AtlasScope_AtlasScopeState;
-  state: AtlasScope_AtlasScopeState;
+  id: string
+  name: string
+  documentType: string
+  operations: Operation[]
+  revision: number
+  created: DateTime
+  lastModified: DateTime
+  initialState: AtlasScope_AtlasScopeState
+  state: AtlasScope_AtlasScopeState
 }
 
 /**
@@ -422,17 +422,17 @@ export interface AtlasScope {
  */
 
 export interface AtlasMultiParent_AtlasMultiParentState {
-  name?: string;
-  docNo?: string;
-  parents: AtlasMultiParent_MDocumentLink[];
-  atlasType: AtlasMultiParent_MAtlasType;
-  content?: string;
-  masterStatus: AtlasMultiParent_MStatus;
-  globalTags: AtlasMultiParent_MGlobalTag[];
-  references: AtlasMultiParent_MDocumentLink[];
-  originalContextData: AtlasMultiParent_MDocumentLink[];
-  provenance: URL[];
-  notionId?: string;
+  name?: string
+  docNo?: string
+  parents: AtlasMultiParent_MDocumentLink[]
+  atlasType: AtlasMultiParent_MAtlasType
+  content?: string
+  masterStatus: AtlasMultiParent_MStatus
+  globalTags: AtlasMultiParent_MGlobalTag[]
+  references: AtlasMultiParent_MDocumentLink[]
+  originalContextData: AtlasMultiParent_MDocumentLink[]
+  provenance: URL[]
+  notionId?: string
 }
 
 /**
@@ -440,9 +440,9 @@ export interface AtlasMultiParent_AtlasMultiParentState {
  */
 
 export interface AtlasMultiParent_MDocumentLink {
-  id: PHID;
-  name?: OLabel;
-  docNo?: string;
+  id: PHID
+  name?: OLabel
+  docNo?: string
 }
 
 /**
@@ -450,15 +450,15 @@ export interface AtlasMultiParent_MDocumentLink {
  */
 
 export interface AtlasMultiParent {
-  id: string;
-  name: string;
-  documentType: string;
-  operations: Operation[];
-  revision: number;
-  created: DateTime;
-  lastModified: DateTime;
-  initialState: AtlasMultiParent_AtlasMultiParentState;
-  state: AtlasMultiParent_AtlasMultiParentState;
+  id: string
+  name: string
+  documentType: string
+  operations: Operation[]
+  revision: number
+  created: DateTime
+  lastModified: DateTime
+  initialState: AtlasMultiParent_AtlasMultiParentState
+  state: AtlasMultiParent_AtlasMultiParentState
 }
 
 /**
@@ -466,19 +466,19 @@ export interface AtlasMultiParent {
  */
 
 export interface AtlasExploratory_AtlasExploratoryState {
-  name?: string;
-  docNo?: string;
-  parent: PHID;
-  atlasType: AtlasExploratory_EAtlasType;
-  content?: string;
-  masterStatus: AtlasExploratory_EStatus;
-  globalTags: AtlasExploratory_EGlobalTag[];
-  references: PHID[];
-  originalContextData: AtlasExploratory_DocumentInfo[];
-  provenance?: URL;
-  notionId?: string;
-  findings: AtlasExploratory_Finding;
-  additionalGuidance: string;
+  name?: string
+  docNo?: string
+  parent: PHID
+  atlasType: AtlasExploratory_EAtlasType
+  content?: string
+  masterStatus: AtlasExploratory_EStatus
+  globalTags: AtlasExploratory_EGlobalTag[]
+  references: PHID[]
+  originalContextData: AtlasExploratory_DocumentInfo[]
+  provenance?: URL
+  notionId?: string
+  findings: AtlasExploratory_Finding
+  additionalGuidance: string
 }
 
 /**
@@ -486,8 +486,8 @@ export interface AtlasExploratory_AtlasExploratoryState {
  */
 
 export interface AtlasExploratory_Finding {
-  isAligned: boolean;
-  comment?: string;
+  isAligned: boolean
+  comment?: string
 }
 
 /**
@@ -495,9 +495,9 @@ export interface AtlasExploratory_Finding {
  */
 
 export interface AtlasExploratory_DocumentInfo {
-  id: PHID;
-  name?: OLabel;
-  docNo?: string;
+  id: PHID
+  name?: OLabel
+  docNo?: string
 }
 
 /**
@@ -505,15 +505,15 @@ export interface AtlasExploratory_DocumentInfo {
  */
 
 export interface AtlasExploratory {
-  id: string;
-  name: string;
-  documentType: string;
-  operations: Operation[];
-  revision: number;
-  created: DateTime;
-  lastModified: DateTime;
-  initialState: AtlasExploratory_AtlasExploratoryState;
-  state: AtlasExploratory_AtlasExploratoryState;
+  id: string
+  name: string
+  documentType: string
+  operations: Operation[]
+  revision: number
+  created: DateTime
+  lastModified: DateTime
+  initialState: AtlasExploratory_AtlasExploratoryState
+  state: AtlasExploratory_AtlasExploratoryState
 }
 
 /**
@@ -521,17 +521,17 @@ export interface AtlasExploratory {
  */
 
 export interface AtlasFoundation_AtlasFoundationState {
-  name?: string;
-  docNo?: string;
-  parent?: AtlasFoundation_FDocumentLink;
-  atlasType: AtlasFoundation_FAtlasType;
-  content?: string;
-  masterStatus: AtlasFoundation_FStatus;
-  globalTags: AtlasFoundation_FGlobalTag[];
-  references: AtlasFoundation_FDocumentLink[];
-  originalContextData: AtlasFoundation_FDocumentLink[];
-  provenance: URL[];
-  notionId?: string;
+  name?: string
+  docNo?: string
+  parent?: AtlasFoundation_FDocumentLink
+  atlasType: AtlasFoundation_FAtlasType
+  content?: string
+  masterStatus: AtlasFoundation_FStatus
+  globalTags: AtlasFoundation_FGlobalTag[]
+  references: AtlasFoundation_FDocumentLink[]
+  originalContextData: AtlasFoundation_FDocumentLink[]
+  provenance: URL[]
+  notionId?: string
 }
 
 /**
@@ -539,9 +539,9 @@ export interface AtlasFoundation_AtlasFoundationState {
  */
 
 export interface AtlasFoundation_FDocumentLink {
-  id: PHID;
-  name?: OLabel;
-  docNo?: string;
+  id: PHID
+  name?: OLabel
+  docNo?: string
 }
 
 /**
@@ -549,15 +549,15 @@ export interface AtlasFoundation_FDocumentLink {
  */
 
 export interface AtlasFoundation {
-  id: string;
-  name: string;
-  documentType: string;
-  operations: Operation[];
-  revision: number;
-  created: DateTime;
-  lastModified: DateTime;
-  initialState: AtlasFoundation_AtlasFoundationState;
-  state: AtlasFoundation_AtlasFoundationState;
+  id: string
+  name: string
+  documentType: string
+  operations: Operation[]
+  revision: number
+  created: DateTime
+  lastModified: DateTime
+  initialState: AtlasFoundation_AtlasFoundationState
+  state: AtlasFoundation_AtlasFoundationState
 }
 
 /**
@@ -565,17 +565,17 @@ export interface AtlasFoundation {
  */
 
 export interface AtlasGrounding_AtlasGroundingState {
-  name?: string;
-  docNo?: string;
-  parent: AtlasGrounding_GDocumentLink;
-  atlasType: AtlasGrounding_GAtlasType;
-  content?: string;
-  masterStatus: AtlasGrounding_GStatus;
-  globalTags: AtlasGrounding_GGlobalTag[];
-  references: AtlasGrounding_GDocumentLink[];
-  originalContextData: AtlasGrounding_GDocumentLink[];
-  provenance: URL[];
-  notionId?: string;
+  name?: string
+  docNo?: string
+  parent: AtlasGrounding_GDocumentLink
+  atlasType: AtlasGrounding_GAtlasType
+  content?: string
+  masterStatus: AtlasGrounding_GStatus
+  globalTags: AtlasGrounding_GGlobalTag[]
+  references: AtlasGrounding_GDocumentLink[]
+  originalContextData: AtlasGrounding_GDocumentLink[]
+  provenance: URL[]
+  notionId?: string
 }
 
 /**
@@ -583,9 +583,9 @@ export interface AtlasGrounding_AtlasGroundingState {
  */
 
 export interface AtlasGrounding_GDocumentLink {
-  id: PHID;
-  name?: OLabel;
-  docNo?: string;
+  id: PHID
+  name?: OLabel
+  docNo?: string
 }
 
 /**
@@ -593,15 +593,15 @@ export interface AtlasGrounding_GDocumentLink {
  */
 
 export interface AtlasGrounding {
-  id: string;
-  name: string;
-  documentType: string;
-  operations: Operation[];
-  revision: number;
-  created: DateTime;
-  lastModified: DateTime;
-  initialState: AtlasGrounding_AtlasGroundingState;
-  state: AtlasGrounding_AtlasGroundingState;
+  id: string
+  name: string
+  documentType: string
+  operations: Operation[]
+  revision: number
+  created: DateTime
+  lastModified: DateTime
+  initialState: AtlasGrounding_AtlasGroundingState
+  state: AtlasGrounding_AtlasGroundingState
 }
 
 /**
@@ -609,13 +609,13 @@ export interface AtlasGrounding {
  */
 
 export interface DocumentModel {
-  id: string;
-  name: string;
-  documentType: string;
-  operations: Operation[];
-  revision: number;
-  created: DateTime;
-  lastModified: DateTime;
+  id: string
+  name: string
+  documentType: string
+  operations: Operation[]
+  revision: number
+  created: DateTime
+  lastModified: DateTime
 }
 
 /**
@@ -623,10 +623,10 @@ export interface DocumentModel {
  */
 
 export interface DocumentDrive_FolderNode {
-  id: string;
-  name: string;
-  kind: string;
-  parentFolder?: string;
+  id: string
+  name: string
+  kind: string
+  parentFolder?: string
 }
 
 /**
@@ -634,9 +634,9 @@ export interface DocumentDrive_FolderNode {
  */
 
 export interface DocumentDrive_SynchronizationUnit {
-  syncId: ID;
-  scope: string;
-  branch: string;
+  syncId: ID
+  scope: string
+  branch: string
 }
 
 /**
@@ -644,12 +644,12 @@ export interface DocumentDrive_SynchronizationUnit {
  */
 
 export interface DocumentDrive_FileNode {
-  id: string;
-  name: string;
-  kind: string;
-  documentType: string;
-  parentFolder?: string;
-  synchronizationUnits: DocumentDrive_SynchronizationUnit[];
+  id: string
+  name: string
+  kind: string
+  documentType: string
+  parentFolder?: string
+  synchronizationUnits: DocumentDrive_SynchronizationUnit[]
 }
 
 /**
@@ -657,11 +657,11 @@ export interface DocumentDrive_FileNode {
  */
 
 export interface DocumentDrive_DocumentDriveState {
-  id: ID;
-  name: string;
-  nodes: [];
-  icon?: string;
-  slug?: string;
+  id: ID
+  name: string
+  nodes: []
+  icon?: string
+  slug?: string
 }
 
 /**
@@ -669,10 +669,10 @@ export interface DocumentDrive_DocumentDriveState {
  */
 
 export interface DocumentDrive_ListenerFilter {
-  documentType: string[];
-  documentId?: ID[];
-  scope?: string[];
-  branch?: string[];
+  documentType: string[]
+  documentId?: ID[]
+  scope?: string[]
+  branch?: string[]
 }
 
 /**
@@ -680,9 +680,9 @@ export interface DocumentDrive_ListenerFilter {
  */
 
 export interface DocumentDrive_ListenerCallInfo {
-  transmitterType?: DocumentDrive_TransmitterType;
-  name?: string;
-  data?: string;
+  transmitterType?: DocumentDrive_TransmitterType
+  name?: string
+  data?: string
 }
 
 /**
@@ -690,12 +690,12 @@ export interface DocumentDrive_ListenerCallInfo {
  */
 
 export interface DocumentDrive_Listener {
-  listenerId: ID;
-  label?: string;
-  block: boolean;
-  system: boolean;
-  filter: DocumentDrive_ListenerFilter;
-  callInfo?: DocumentDrive_ListenerCallInfo;
+  listenerId: ID
+  label?: string
+  block: boolean
+  system: boolean
+  filter: DocumentDrive_ListenerFilter
+  callInfo?: DocumentDrive_ListenerCallInfo
 }
 
 /**
@@ -703,9 +703,9 @@ export interface DocumentDrive_Listener {
  */
 
 export interface DocumentDrive_PullResponderTriggerData {
-  listenerId: ID;
-  url: string;
-  interval: string;
+  listenerId: ID
+  url: string
+  interval: string
 }
 
 /**
@@ -713,9 +713,9 @@ export interface DocumentDrive_PullResponderTriggerData {
  */
 
 export interface DocumentDrive_Trigger {
-  id: ID;
-  type: DocumentDrive_TriggerType;
-  data: false;
+  id: ID
+  type: DocumentDrive_TriggerType
+  data: false
 }
 
 /**
@@ -723,10 +723,10 @@ export interface DocumentDrive_Trigger {
  */
 
 export interface DocumentDriveLocalState {
-  sharingType?: string;
-  listeners: DocumentDrive_Listener[];
-  triggers: DocumentDrive_Trigger[];
-  availableOffline: boolean;
+  sharingType?: string
+  listeners: DocumentDrive_Listener[]
+  triggers: DocumentDrive_Trigger[]
+  availableOffline: boolean
 }
 
 /**
@@ -734,15 +734,15 @@ export interface DocumentDriveLocalState {
  */
 
 export interface DocumentDrive {
-  id: string;
-  name: string;
-  documentType: string;
-  operations: Operation[];
-  revision: number;
-  created: DateTime;
-  lastModified: DateTime;
-  initialState: DocumentDrive_DocumentDriveState;
-  state: DocumentDrive_DocumentDriveState;
+  id: string
+  name: string
+  documentType: string
+  operations: Operation[]
+  revision: number
+  created: DateTime
+  lastModified: DateTime
+  initialState: DocumentDrive_DocumentDriveState
+  state: DocumentDrive_DocumentDriveState
 }
 
 /**
@@ -750,17 +750,17 @@ export interface DocumentDrive {
  */
 
 export interface AtlasGroundingState {
-  name?: string;
-  docNo?: string;
-  parent: GDocumentLink;
-  atlasType: GAtlasType;
-  content?: string;
-  masterStatus: GStatus;
-  globalTags: GGlobalTag[];
-  references: GDocumentLink[];
-  originalContextData: GDocumentLink[];
-  provenance: URL[];
-  notionId?: string;
+  name?: string
+  docNo?: string
+  parent: GDocumentLink
+  atlasType: GAtlasType
+  content?: string
+  masterStatus: GStatus
+  globalTags: GGlobalTag[]
+  references: GDocumentLink[]
+  originalContextData: GDocumentLink[]
+  provenance: URL[]
+  notionId?: string
 }
 
 /**
@@ -768,9 +768,9 @@ export interface AtlasGroundingState {
  */
 
 export interface GDocumentLink {
-  id: PHID;
-  name?: OLabel;
-  docNo?: string;
+  id: PHID
+  name?: OLabel
+  docNo?: string
 }
 
 /**
@@ -778,21 +778,21 @@ export interface GDocumentLink {
  */
 
 export interface Mutation {
-  AtlasGrounding_createDocument?: string;
-  AtlasGrounding_setGroundingName?: number;
-  AtlasGrounding_setDocNumber?: number;
-  AtlasGrounding_setContent?: number;
-  AtlasGrounding_setMasterStatus?: number;
-  AtlasGrounding_setAtlasType?: number;
-  AtlasGrounding_setParent?: number;
-  AtlasGrounding_addTags?: number;
-  AtlasGrounding_removeTags?: number;
-  AtlasGrounding_addContextData?: number;
-  AtlasGrounding_removeContextData?: number;
-  AtlasGrounding_setProvenance?: number;
-  AtlasGrounding_setNotionId?: number;
-  AtlasGrounding_addReference?: number;
-  AtlasGrounding_removeReference?: number;
+  AtlasGrounding_createDocument?: string
+  AtlasGrounding_setGroundingName?: number
+  AtlasGrounding_setDocNumber?: number
+  AtlasGrounding_setContent?: number
+  AtlasGrounding_setMasterStatus?: number
+  AtlasGrounding_setAtlasType?: number
+  AtlasGrounding_setParent?: number
+  AtlasGrounding_addTags?: number
+  AtlasGrounding_removeTags?: number
+  AtlasGrounding_addContextData?: number
+  AtlasGrounding_removeContextData?: number
+  AtlasGrounding_setProvenance?: number
+  AtlasGrounding_setNotionId?: number
+  AtlasGrounding_addReference?: number
+  AtlasGrounding_removeReference?: number
 }
 
 /**
@@ -800,7 +800,7 @@ export interface Mutation {
  */
 
 export interface AtlasGrounding_SetGroundingNameInput {
-  name: string;
+  name: string
 }
 
 /**
@@ -808,7 +808,7 @@ export interface AtlasGrounding_SetGroundingNameInput {
  */
 
 export interface AtlasGrounding_SetDocNumberInput {
-  docNo: string;
+  docNo: string
 }
 
 /**
@@ -816,7 +816,7 @@ export interface AtlasGrounding_SetDocNumberInput {
  */
 
 export interface AtlasGrounding_SetContentInput {
-  content: string;
+  content: string
 }
 
 /**
@@ -824,7 +824,7 @@ export interface AtlasGrounding_SetContentInput {
  */
 
 export interface AtlasGrounding_SetMasterStatusInput {
-  masterStatus: GStatus;
+  masterStatus: GStatus
 }
 
 /**
@@ -832,7 +832,7 @@ export interface AtlasGrounding_SetMasterStatusInput {
  */
 
 export interface AtlasGrounding_SetAtlasTypeInput {
-  atlasType: GAtlasType;
+  atlasType: GAtlasType
 }
 
 /**
@@ -840,9 +840,9 @@ export interface AtlasGrounding_SetAtlasTypeInput {
  */
 
 export interface AtlasGrounding_SetParentInput {
-  id: PHID;
-  name?: OLabel;
-  docNo?: string;
+  id: PHID
+  name?: OLabel
+  docNo?: string
 }
 
 /**
@@ -850,7 +850,7 @@ export interface AtlasGrounding_SetParentInput {
  */
 
 export interface AtlasGrounding_AddTagsInput {
-  tags: GGlobalTag[];
+  tags: GGlobalTag[]
 }
 
 /**
@@ -858,7 +858,7 @@ export interface AtlasGrounding_AddTagsInput {
  */
 
 export interface AtlasGrounding_RemoveTagsInput {
-  tags: GGlobalTag[];
+  tags: GGlobalTag[]
 }
 
 /**
@@ -866,9 +866,9 @@ export interface AtlasGrounding_RemoveTagsInput {
  */
 
 export interface AtlasGrounding_AddContextDataInput {
-  id: PHID;
-  name?: string;
-  docNo?: string;
+  id: PHID
+  name?: string
+  docNo?: string
 }
 
 /**
@@ -876,7 +876,7 @@ export interface AtlasGrounding_AddContextDataInput {
  */
 
 export interface AtlasGrounding_RemoveContextDataInput {
-  id: PHID;
+  id: PHID
 }
 
 /**
@@ -884,7 +884,7 @@ export interface AtlasGrounding_RemoveContextDataInput {
  */
 
 export interface AtlasGrounding_SetProvenanceInput {
-  provenance: URL[];
+  provenance: URL[]
 }
 
 /**
@@ -892,7 +892,7 @@ export interface AtlasGrounding_SetProvenanceInput {
  */
 
 export interface AtlasGrounding_SetNotionIdInput {
-  notionID: string;
+  notionID: string
 }
 
 /**
@@ -900,9 +900,9 @@ export interface AtlasGrounding_SetNotionIdInput {
  */
 
 export interface AtlasGrounding_AddReferenceInput {
-  id: PHID;
-  name?: string;
-  docNo?: string;
+  id: PHID
+  name?: string
+  docNo?: string
 }
 
 /**
@@ -910,7 +910,7 @@ export interface AtlasGrounding_AddReferenceInput {
  */
 
 export interface AtlasGrounding_RemoveReferenceInput {
-  id: PHID;
+  id: PHID
 }
 
 /**
@@ -918,7 +918,7 @@ export interface AtlasGrounding_RemoveReferenceInput {
  */
 
 export interface _Service {
-  sdl?: string;
+  sdl?: string
 }
 
 /**
@@ -926,744 +926,744 @@ export interface _Service {
  */
 
 export interface Query {
-  _service: _Service;
+  _service: _Service
 }
 
 // Selection Types
 
 export interface PHOperationContextSelection {
-  signer?: SignerSelection;
+  signer?: SignerSelection
 }
 
 export interface SignerSelection {
-  user?: SignerUserSelection;
-  app?: SignerAppSelection;
-  signatures?: boolean;
+  user?: SignerUserSelection
+  app?: SignerAppSelection
+  signatures?: boolean
 }
 
 export interface SignerUserSelection {
-  address?: boolean;
-  networkId?: boolean;
-  chainId?: boolean;
+  address?: boolean
+  networkId?: boolean
+  chainId?: boolean
 }
 
 export interface SignerAppSelection {
-  name?: boolean;
-  key?: boolean;
+  name?: boolean
+  key?: boolean
 }
 
 export interface OperationSelection {
-  id?: boolean;
-  type?: boolean;
-  index?: boolean;
-  timestamp?: boolean;
-  hash?: boolean;
-  skip?: boolean;
-  inputText?: boolean;
-  error?: boolean;
-  context?: PHOperationContextSelection;
+  id?: boolean
+  type?: boolean
+  index?: boolean
+  timestamp?: boolean
+  hash?: boolean
+  skip?: boolean
+  inputText?: boolean
+  error?: boolean
+  context?: PHOperationContextSelection
 }
 
 export interface AtlasScope_AtlasScopeStateSelection {
-  name?: boolean;
-  docNo?: boolean;
-  content?: boolean;
-  masterStatus?: boolean;
-  globalTags?: boolean;
-  originalContextData?: AtlasScope_DocumentInfoSelection;
-  provenance?: boolean;
-  notionId?: boolean;
+  name?: boolean
+  docNo?: boolean
+  content?: boolean
+  masterStatus?: boolean
+  globalTags?: boolean
+  originalContextData?: AtlasScope_DocumentInfoSelection
+  provenance?: boolean
+  notionId?: boolean
 }
 
 export interface AtlasScope_DocumentInfoSelection {
-  id?: boolean;
-  name?: boolean;
-  docNo?: boolean;
+  id?: boolean
+  name?: boolean
+  docNo?: boolean
 }
 
 export interface AtlasScopeSelection {
-  id?: boolean;
-  name?: boolean;
-  documentType?: boolean;
+  id?: boolean
+  name?: boolean
+  documentType?: boolean
   operations?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
-    __args?: { skip?: number; first?: number };
-  } & OperationSelection;
-  revision?: boolean;
-  created?: boolean;
-  lastModified?: boolean;
-  initialState?: AtlasScope_AtlasScopeStateSelection;
-  state?: AtlasScope_AtlasScopeStateSelection;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: { skip?: number; first?: number }
+  } & OperationSelection
+  revision?: boolean
+  created?: boolean
+  lastModified?: boolean
+  initialState?: AtlasScope_AtlasScopeStateSelection
+  state?: AtlasScope_AtlasScopeStateSelection
 }
 
 export interface AtlasMultiParent_AtlasMultiParentStateSelection {
-  name?: boolean;
-  docNo?: boolean;
-  parents?: AtlasMultiParent_MDocumentLinkSelection;
-  atlasType?: boolean;
-  content?: boolean;
-  masterStatus?: boolean;
-  globalTags?: boolean;
-  references?: AtlasMultiParent_MDocumentLinkSelection;
-  originalContextData?: AtlasMultiParent_MDocumentLinkSelection;
-  provenance?: boolean;
-  notionId?: boolean;
+  name?: boolean
+  docNo?: boolean
+  parents?: AtlasMultiParent_MDocumentLinkSelection
+  atlasType?: boolean
+  content?: boolean
+  masterStatus?: boolean
+  globalTags?: boolean
+  references?: AtlasMultiParent_MDocumentLinkSelection
+  originalContextData?: AtlasMultiParent_MDocumentLinkSelection
+  provenance?: boolean
+  notionId?: boolean
 }
 
 export interface AtlasMultiParent_MDocumentLinkSelection {
-  id?: boolean;
-  name?: boolean;
-  docNo?: boolean;
+  id?: boolean
+  name?: boolean
+  docNo?: boolean
 }
 
 export interface AtlasMultiParentSelection {
-  id?: boolean;
-  name?: boolean;
-  documentType?: boolean;
+  id?: boolean
+  name?: boolean
+  documentType?: boolean
   operations?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
-    __args?: { skip?: number; first?: number };
-  } & OperationSelection;
-  revision?: boolean;
-  created?: boolean;
-  lastModified?: boolean;
-  initialState?: AtlasMultiParent_AtlasMultiParentStateSelection;
-  state?: AtlasMultiParent_AtlasMultiParentStateSelection;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: { skip?: number; first?: number }
+  } & OperationSelection
+  revision?: boolean
+  created?: boolean
+  lastModified?: boolean
+  initialState?: AtlasMultiParent_AtlasMultiParentStateSelection
+  state?: AtlasMultiParent_AtlasMultiParentStateSelection
 }
 
 export interface AtlasExploratory_AtlasExploratoryStateSelection {
-  name?: boolean;
-  docNo?: boolean;
-  parent?: boolean;
-  atlasType?: boolean;
-  content?: boolean;
-  masterStatus?: boolean;
-  globalTags?: boolean;
-  references?: boolean;
-  originalContextData?: AtlasExploratory_DocumentInfoSelection;
-  provenance?: boolean;
-  notionId?: boolean;
-  findings?: AtlasExploratory_FindingSelection;
-  additionalGuidance?: boolean;
+  name?: boolean
+  docNo?: boolean
+  parent?: boolean
+  atlasType?: boolean
+  content?: boolean
+  masterStatus?: boolean
+  globalTags?: boolean
+  references?: boolean
+  originalContextData?: AtlasExploratory_DocumentInfoSelection
+  provenance?: boolean
+  notionId?: boolean
+  findings?: AtlasExploratory_FindingSelection
+  additionalGuidance?: boolean
 }
 
 export interface AtlasExploratory_FindingSelection {
-  isAligned?: boolean;
-  comment?: boolean;
+  isAligned?: boolean
+  comment?: boolean
 }
 
 export interface AtlasExploratory_DocumentInfoSelection {
-  id?: boolean;
-  name?: boolean;
-  docNo?: boolean;
+  id?: boolean
+  name?: boolean
+  docNo?: boolean
 }
 
 export interface AtlasExploratorySelection {
-  id?: boolean;
-  name?: boolean;
-  documentType?: boolean;
+  id?: boolean
+  name?: boolean
+  documentType?: boolean
   operations?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
-    __args?: { skip?: number; first?: number };
-  } & OperationSelection;
-  revision?: boolean;
-  created?: boolean;
-  lastModified?: boolean;
-  initialState?: AtlasExploratory_AtlasExploratoryStateSelection;
-  state?: AtlasExploratory_AtlasExploratoryStateSelection;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: { skip?: number; first?: number }
+  } & OperationSelection
+  revision?: boolean
+  created?: boolean
+  lastModified?: boolean
+  initialState?: AtlasExploratory_AtlasExploratoryStateSelection
+  state?: AtlasExploratory_AtlasExploratoryStateSelection
 }
 
 export interface AtlasFoundation_AtlasFoundationStateSelection {
-  name?: boolean;
-  docNo?: boolean;
-  parent?: AtlasFoundation_FDocumentLinkSelection;
-  atlasType?: boolean;
-  content?: boolean;
-  masterStatus?: boolean;
-  globalTags?: boolean;
-  references?: AtlasFoundation_FDocumentLinkSelection;
-  originalContextData?: AtlasFoundation_FDocumentLinkSelection;
-  provenance?: boolean;
-  notionId?: boolean;
+  name?: boolean
+  docNo?: boolean
+  parent?: AtlasFoundation_FDocumentLinkSelection
+  atlasType?: boolean
+  content?: boolean
+  masterStatus?: boolean
+  globalTags?: boolean
+  references?: AtlasFoundation_FDocumentLinkSelection
+  originalContextData?: AtlasFoundation_FDocumentLinkSelection
+  provenance?: boolean
+  notionId?: boolean
 }
 
 export interface AtlasFoundation_FDocumentLinkSelection {
-  id?: boolean;
-  name?: boolean;
-  docNo?: boolean;
+  id?: boolean
+  name?: boolean
+  docNo?: boolean
 }
 
 export interface AtlasFoundationSelection {
-  id?: boolean;
-  name?: boolean;
-  documentType?: boolean;
+  id?: boolean
+  name?: boolean
+  documentType?: boolean
   operations?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
-    __args?: { skip?: number; first?: number };
-  } & OperationSelection;
-  revision?: boolean;
-  created?: boolean;
-  lastModified?: boolean;
-  initialState?: AtlasFoundation_AtlasFoundationStateSelection;
-  state?: AtlasFoundation_AtlasFoundationStateSelection;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: { skip?: number; first?: number }
+  } & OperationSelection
+  revision?: boolean
+  created?: boolean
+  lastModified?: boolean
+  initialState?: AtlasFoundation_AtlasFoundationStateSelection
+  state?: AtlasFoundation_AtlasFoundationStateSelection
 }
 
 export interface AtlasGrounding_AtlasGroundingStateSelection {
-  name?: boolean;
-  docNo?: boolean;
-  parent?: AtlasGrounding_GDocumentLinkSelection;
-  atlasType?: boolean;
-  content?: boolean;
-  masterStatus?: boolean;
-  globalTags?: boolean;
-  references?: AtlasGrounding_GDocumentLinkSelection;
-  originalContextData?: AtlasGrounding_GDocumentLinkSelection;
-  provenance?: boolean;
-  notionId?: boolean;
+  name?: boolean
+  docNo?: boolean
+  parent?: AtlasGrounding_GDocumentLinkSelection
+  atlasType?: boolean
+  content?: boolean
+  masterStatus?: boolean
+  globalTags?: boolean
+  references?: AtlasGrounding_GDocumentLinkSelection
+  originalContextData?: AtlasGrounding_GDocumentLinkSelection
+  provenance?: boolean
+  notionId?: boolean
 }
 
 export interface AtlasGrounding_GDocumentLinkSelection {
-  id?: boolean;
-  name?: boolean;
-  docNo?: boolean;
+  id?: boolean
+  name?: boolean
+  docNo?: boolean
 }
 
 export interface AtlasGroundingSelection {
-  id?: boolean;
-  name?: boolean;
-  documentType?: boolean;
+  id?: boolean
+  name?: boolean
+  documentType?: boolean
   operations?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
-    __args?: { skip?: number; first?: number };
-  } & OperationSelection;
-  revision?: boolean;
-  created?: boolean;
-  lastModified?: boolean;
-  initialState?: AtlasGrounding_AtlasGroundingStateSelection;
-  state?: AtlasGrounding_AtlasGroundingStateSelection;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: { skip?: number; first?: number }
+  } & OperationSelection
+  revision?: boolean
+  created?: boolean
+  lastModified?: boolean
+  initialState?: AtlasGrounding_AtlasGroundingStateSelection
+  state?: AtlasGrounding_AtlasGroundingStateSelection
 }
 
 export interface DocumentModelSelection {
-  id?: boolean;
-  name?: boolean;
-  documentType?: boolean;
+  id?: boolean
+  name?: boolean
+  documentType?: boolean
   operations?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
-    __args?: { skip?: number; first?: number };
-  } & OperationSelection;
-  revision?: boolean;
-  created?: boolean;
-  lastModified?: boolean;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: { skip?: number; first?: number }
+  } & OperationSelection
+  revision?: boolean
+  created?: boolean
+  lastModified?: boolean
 }
 
 export interface DocumentDrive_FolderNodeSelection {
-  id?: boolean;
-  name?: boolean;
-  kind?: boolean;
-  parentFolder?: boolean;
+  id?: boolean
+  name?: boolean
+  kind?: boolean
+  parentFolder?: boolean
 }
 
 export interface DocumentDrive_SynchronizationUnitSelection {
-  syncId?: boolean;
-  scope?: boolean;
-  branch?: boolean;
+  syncId?: boolean
+  scope?: boolean
+  branch?: boolean
 }
 
 export interface DocumentDrive_FileNodeSelection {
-  id?: boolean;
-  name?: boolean;
-  kind?: boolean;
-  documentType?: boolean;
-  parentFolder?: boolean;
-  synchronizationUnits?: DocumentDrive_SynchronizationUnitSelection;
+  id?: boolean
+  name?: boolean
+  kind?: boolean
+  documentType?: boolean
+  parentFolder?: boolean
+  synchronizationUnits?: DocumentDrive_SynchronizationUnitSelection
 }
 
 export interface DocumentDrive_DocumentDriveStateSelection {
-  id?: boolean;
-  name?: boolean;
-  nodes?: boolean;
-  icon?: boolean;
-  slug?: boolean;
+  id?: boolean
+  name?: boolean
+  nodes?: boolean
+  icon?: boolean
+  slug?: boolean
 }
 
 export interface DocumentDrive_ListenerFilterSelection {
-  documentType?: boolean;
-  documentId?: boolean;
-  scope?: boolean;
-  branch?: boolean;
+  documentType?: boolean
+  documentId?: boolean
+  scope?: boolean
+  branch?: boolean
 }
 
 export interface DocumentDrive_ListenerCallInfoSelection {
-  transmitterType?: boolean;
-  name?: boolean;
-  data?: boolean;
+  transmitterType?: boolean
+  name?: boolean
+  data?: boolean
 }
 
 export interface DocumentDrive_ListenerSelection {
-  listenerId?: boolean;
-  label?: boolean;
-  block?: boolean;
-  system?: boolean;
-  filter?: DocumentDrive_ListenerFilterSelection;
-  callInfo?: DocumentDrive_ListenerCallInfoSelection;
+  listenerId?: boolean
+  label?: boolean
+  block?: boolean
+  system?: boolean
+  filter?: DocumentDrive_ListenerFilterSelection
+  callInfo?: DocumentDrive_ListenerCallInfoSelection
 }
 
 export interface DocumentDrive_PullResponderTriggerDataSelection {
-  listenerId?: boolean;
-  url?: boolean;
-  interval?: boolean;
+  listenerId?: boolean
+  url?: boolean
+  interval?: boolean
 }
 
 export interface DocumentDrive_TriggerSelection {
-  id?: boolean;
-  type?: boolean;
-  data?: boolean;
+  id?: boolean
+  type?: boolean
+  data?: boolean
 }
 
 export interface DocumentDriveLocalStateSelection {
-  sharingType?: boolean;
-  listeners?: DocumentDrive_ListenerSelection;
-  triggers?: DocumentDrive_TriggerSelection;
-  availableOffline?: boolean;
+  sharingType?: boolean
+  listeners?: DocumentDrive_ListenerSelection
+  triggers?: DocumentDrive_TriggerSelection
+  availableOffline?: boolean
 }
 
 export interface DocumentDriveSelection {
-  id?: boolean;
-  name?: boolean;
-  documentType?: boolean;
+  id?: boolean
+  name?: boolean
+  documentType?: boolean
   operations?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
-    __args?: { skip?: number; first?: number };
-  } & OperationSelection;
-  revision?: boolean;
-  created?: boolean;
-  lastModified?: boolean;
-  initialState?: DocumentDrive_DocumentDriveStateSelection;
-  state?: DocumentDrive_DocumentDriveStateSelection;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: { skip?: number; first?: number }
+  } & OperationSelection
+  revision?: boolean
+  created?: boolean
+  lastModified?: boolean
+  initialState?: DocumentDrive_DocumentDriveStateSelection
+  state?: DocumentDrive_DocumentDriveStateSelection
 }
 
 export interface AtlasGroundingStateSelection {
-  name?: boolean;
-  docNo?: boolean;
-  parent?: GDocumentLinkSelection;
-  atlasType?: boolean;
-  content?: boolean;
-  masterStatus?: boolean;
-  globalTags?: boolean;
-  references?: GDocumentLinkSelection;
-  originalContextData?: GDocumentLinkSelection;
-  provenance?: boolean;
-  notionId?: boolean;
+  name?: boolean
+  docNo?: boolean
+  parent?: GDocumentLinkSelection
+  atlasType?: boolean
+  content?: boolean
+  masterStatus?: boolean
+  globalTags?: boolean
+  references?: GDocumentLinkSelection
+  originalContextData?: GDocumentLinkSelection
+  provenance?: boolean
+  notionId?: boolean
 }
 
 export interface GDocumentLinkSelection {
-  id?: boolean;
-  name?: boolean;
-  docNo?: boolean;
+  id?: boolean
+  name?: boolean
+  docNo?: boolean
 }
 
 export interface MutationSelection {
   AtlasGrounding_createDocument?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
-    __args?: { driveId?: string; name?: string };
-  };
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: { driveId?: string; name?: string }
+  }
   AtlasGrounding_setGroundingName?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
     __args?: {
-      driveId?: string;
-      docId?: PHID;
-      input?: AtlasGrounding_SetGroundingNameInput;
-    };
-  };
+      driveId?: string
+      docId?: PHID
+      input?: AtlasGrounding_SetGroundingNameInput
+    }
+  }
   AtlasGrounding_setDocNumber?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
     __args?: {
-      driveId?: string;
-      docId?: PHID;
-      input?: AtlasGrounding_SetDocNumberInput;
-    };
-  };
+      driveId?: string
+      docId?: PHID
+      input?: AtlasGrounding_SetDocNumberInput
+    }
+  }
   AtlasGrounding_setContent?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
     __args?: {
-      driveId?: string;
-      docId?: PHID;
-      input?: AtlasGrounding_SetContentInput;
-    };
-  };
+      driveId?: string
+      docId?: PHID
+      input?: AtlasGrounding_SetContentInput
+    }
+  }
   AtlasGrounding_setMasterStatus?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
     __args?: {
-      driveId?: string;
-      docId?: PHID;
-      input?: AtlasGrounding_SetMasterStatusInput;
-    };
-  };
+      driveId?: string
+      docId?: PHID
+      input?: AtlasGrounding_SetMasterStatusInput
+    }
+  }
   AtlasGrounding_setAtlasType?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
     __args?: {
-      driveId?: string;
-      docId?: PHID;
-      input?: AtlasGrounding_SetAtlasTypeInput;
-    };
-  };
+      driveId?: string
+      docId?: PHID
+      input?: AtlasGrounding_SetAtlasTypeInput
+    }
+  }
   AtlasGrounding_setParent?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
     __args?: {
-      driveId?: string;
-      docId?: PHID;
-      input?: AtlasGrounding_SetParentInput;
-    };
-  };
+      driveId?: string
+      docId?: PHID
+      input?: AtlasGrounding_SetParentInput
+    }
+  }
   AtlasGrounding_addTags?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
     __args?: {
-      driveId?: string;
-      docId?: PHID;
-      input?: AtlasGrounding_AddTagsInput;
-    };
-  };
+      driveId?: string
+      docId?: PHID
+      input?: AtlasGrounding_AddTagsInput
+    }
+  }
   AtlasGrounding_removeTags?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
     __args?: {
-      driveId?: string;
-      docId?: PHID;
-      input?: AtlasGrounding_RemoveTagsInput;
-    };
-  };
+      driveId?: string
+      docId?: PHID
+      input?: AtlasGrounding_RemoveTagsInput
+    }
+  }
   AtlasGrounding_addContextData?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
     __args?: {
-      driveId?: string;
-      docId?: PHID;
-      input?: AtlasGrounding_AddContextDataInput;
-    };
-  };
+      driveId?: string
+      docId?: PHID
+      input?: AtlasGrounding_AddContextDataInput
+    }
+  }
   AtlasGrounding_removeContextData?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
     __args?: {
-      driveId?: string;
-      docId?: PHID;
-      input?: AtlasGrounding_RemoveContextDataInput;
-    };
-  };
+      driveId?: string
+      docId?: PHID
+      input?: AtlasGrounding_RemoveContextDataInput
+    }
+  }
   AtlasGrounding_setProvenance?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
     __args?: {
-      driveId?: string;
-      docId?: PHID;
-      input?: AtlasGrounding_SetProvenanceInput;
-    };
-  };
+      driveId?: string
+      docId?: PHID
+      input?: AtlasGrounding_SetProvenanceInput
+    }
+  }
   AtlasGrounding_setNotionId?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
     __args?: {
-      driveId?: string;
-      docId?: PHID;
-      input?: AtlasGrounding_SetNotionIdInput;
-    };
-  };
+      driveId?: string
+      docId?: PHID
+      input?: AtlasGrounding_SetNotionIdInput
+    }
+  }
   AtlasGrounding_addReference?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
     __args?: {
-      driveId?: string;
-      docId?: PHID;
-      input?: AtlasGrounding_AddReferenceInput;
-    };
-  };
+      driveId?: string
+      docId?: PHID
+      input?: AtlasGrounding_AddReferenceInput
+    }
+  }
   AtlasGrounding_removeReference?: {
-    __headers?: { [key: string]: string };
-    __retry?: boolean;
-    __alias?: string;
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
     __args?: {
-      driveId?: string;
-      docId?: PHID;
-      input?: AtlasGrounding_RemoveReferenceInput;
-    };
-  };
+      driveId?: string
+      docId?: PHID
+      input?: AtlasGrounding_RemoveReferenceInput
+    }
+  }
 }
 
 export interface AtlasGrounding_SetGroundingNameInputSelection {
-  name?: boolean;
+  name?: boolean
 }
 
 export interface AtlasGrounding_SetDocNumberInputSelection {
-  docNo?: boolean;
+  docNo?: boolean
 }
 
 export interface AtlasGrounding_SetContentInputSelection {
-  content?: boolean;
+  content?: boolean
 }
 
 export interface AtlasGrounding_SetMasterStatusInputSelection {
-  masterStatus?: boolean;
+  masterStatus?: boolean
 }
 
 export interface AtlasGrounding_SetAtlasTypeInputSelection {
-  atlasType?: boolean;
+  atlasType?: boolean
 }
 
 export interface AtlasGrounding_SetParentInputSelection {
-  id?: boolean;
-  name?: boolean;
-  docNo?: boolean;
+  id?: boolean
+  name?: boolean
+  docNo?: boolean
 }
 
 export interface AtlasGrounding_AddTagsInputSelection {
-  tags?: boolean;
+  tags?: boolean
 }
 
 export interface AtlasGrounding_RemoveTagsInputSelection {
-  tags?: boolean;
+  tags?: boolean
 }
 
 export interface AtlasGrounding_AddContextDataInputSelection {
-  id?: boolean;
-  name?: boolean;
-  docNo?: boolean;
+  id?: boolean
+  name?: boolean
+  docNo?: boolean
 }
 
 export interface AtlasGrounding_RemoveContextDataInputSelection {
-  id?: boolean;
+  id?: boolean
 }
 
 export interface AtlasGrounding_SetProvenanceInputSelection {
-  provenance?: boolean;
+  provenance?: boolean
 }
 
 export interface AtlasGrounding_SetNotionIdInputSelection {
-  notionID?: boolean;
+  notionID?: boolean
 }
 
 export interface AtlasGrounding_AddReferenceInputSelection {
-  id?: boolean;
-  name?: boolean;
-  docNo?: boolean;
+  id?: boolean
+  name?: boolean
+  docNo?: boolean
 }
 
 export interface AtlasGrounding_RemoveReferenceInputSelection {
-  id?: boolean;
+  id?: boolean
 }
 
 export interface _ServiceSelection {
-  sdl?: boolean;
+  sdl?: boolean
 }
 
 export declare const client: {
-  addResponseListener: (listener: IResponseListener) => void;
-  setHeader: (key: string, value: string) => void;
-  setHeaders: (newHeaders: { [k: string]: string }) => void;
-  setUrl: (url: string) => void;
+  addResponseListener: (listener: IResponseListener) => void
+  setHeader: (key: string, value: string) => void
+  setHeaders: (newHeaders: { [k: string]: string }) => void
+  setUrl: (url: string) => void
   setRetryConfig: (options: {
-    max: number;
-    waitBeforeRetry?: number;
-    before?: IResponseListener;
-  }) => void;
+    max: number
+    waitBeforeRetry?: number
+    before?: IResponseListener
+  }) => void
   queries: {
     _service: Endpoint<
       {
-        __headers?: { [key: string]: string };
-        __retry?: boolean;
-        __alias?: string;
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
       } & _ServiceSelection,
       DeepRequired<_Service>,
       AllEnums
-    >;
-  };
+    >
+  }
   mutations: {
     AtlasGrounding_createDocument: Endpoint<
       {
-        __headers?: { [key: string]: string };
-        __retry?: boolean;
-        __alias?: string;
-        __args?: AtlasGroundingCreateDocumentArgs;
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasGroundingCreateDocumentArgs
       },
       string,
       AllEnums
-    >;
+    >
     AtlasGrounding_setGroundingName: Endpoint<
       {
-        __headers?: { [key: string]: string };
-        __retry?: boolean;
-        __alias?: string;
-        __args?: AtlasGroundingSetGroundingNameArgs;
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasGroundingSetGroundingNameArgs
       },
       number,
       AllEnums
-    >;
+    >
     AtlasGrounding_setDocNumber: Endpoint<
       {
-        __headers?: { [key: string]: string };
-        __retry?: boolean;
-        __alias?: string;
-        __args?: AtlasGroundingSetDocNumberArgs;
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasGroundingSetDocNumberArgs
       },
       number,
       AllEnums
-    >;
+    >
     AtlasGrounding_setContent: Endpoint<
       {
-        __headers?: { [key: string]: string };
-        __retry?: boolean;
-        __alias?: string;
-        __args?: AtlasGroundingSetContentArgs;
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasGroundingSetContentArgs
       },
       number,
       AllEnums
-    >;
+    >
     AtlasGrounding_setMasterStatus: Endpoint<
       {
-        __headers?: { [key: string]: string };
-        __retry?: boolean;
-        __alias?: string;
-        __args?: AtlasGroundingSetMasterStatusArgs;
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasGroundingSetMasterStatusArgs
       },
       number,
       AllEnums
-    >;
+    >
     AtlasGrounding_setAtlasType: Endpoint<
       {
-        __headers?: { [key: string]: string };
-        __retry?: boolean;
-        __alias?: string;
-        __args?: AtlasGroundingSetAtlasTypeArgs;
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasGroundingSetAtlasTypeArgs
       },
       number,
       AllEnums
-    >;
+    >
     AtlasGrounding_setParent: Endpoint<
       {
-        __headers?: { [key: string]: string };
-        __retry?: boolean;
-        __alias?: string;
-        __args?: AtlasGroundingSetParentArgs;
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasGroundingSetParentArgs
       },
       number,
       AllEnums
-    >;
+    >
     AtlasGrounding_addTags: Endpoint<
       {
-        __headers?: { [key: string]: string };
-        __retry?: boolean;
-        __alias?: string;
-        __args?: AtlasGroundingAddTagsArgs;
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasGroundingAddTagsArgs
       },
       number,
       AllEnums
-    >;
+    >
     AtlasGrounding_removeTags: Endpoint<
       {
-        __headers?: { [key: string]: string };
-        __retry?: boolean;
-        __alias?: string;
-        __args?: AtlasGroundingRemoveTagsArgs;
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasGroundingRemoveTagsArgs
       },
       number,
       AllEnums
-    >;
+    >
     AtlasGrounding_addContextData: Endpoint<
       {
-        __headers?: { [key: string]: string };
-        __retry?: boolean;
-        __alias?: string;
-        __args?: AtlasGroundingAddContextDataArgs;
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasGroundingAddContextDataArgs
       },
       number,
       AllEnums
-    >;
+    >
     AtlasGrounding_removeContextData: Endpoint<
       {
-        __headers?: { [key: string]: string };
-        __retry?: boolean;
-        __alias?: string;
-        __args?: AtlasGroundingRemoveContextDataArgs;
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasGroundingRemoveContextDataArgs
       },
       number,
       AllEnums
-    >;
+    >
     AtlasGrounding_setProvenance: Endpoint<
       {
-        __headers?: { [key: string]: string };
-        __retry?: boolean;
-        __alias?: string;
-        __args?: AtlasGroundingSetProvenanceArgs;
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasGroundingSetProvenanceArgs
       },
       number,
       AllEnums
-    >;
+    >
     AtlasGrounding_setNotionId: Endpoint<
       {
-        __headers?: { [key: string]: string };
-        __retry?: boolean;
-        __alias?: string;
-        __args?: AtlasGroundingSetNotionIdArgs;
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasGroundingSetNotionIdArgs
       },
       number,
       AllEnums
-    >;
+    >
     AtlasGrounding_addReference: Endpoint<
       {
-        __headers?: { [key: string]: string };
-        __retry?: boolean;
-        __alias?: string;
-        __args?: AtlasGroundingAddReferenceArgs;
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasGroundingAddReferenceArgs
       },
       number,
       AllEnums
-    >;
+    >
     AtlasGrounding_removeReference: Endpoint<
       {
-        __headers?: { [key: string]: string };
-        __retry?: boolean;
-        __alias?: string;
-        __args?: AtlasGroundingRemoveReferenceArgs;
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasGroundingRemoveReferenceArgs
       },
       number,
       AllEnums
-    >;
-  };
-};
+    >
+  }
+}
 
-export default client;
+export default client

@@ -53,7 +53,7 @@ export default tseslint.config(
       "@typescript-eslint/ban-ts-comment": "off",
       "@typescript-eslint/no-empty-object-type": "off",
       "@typescript-eslint/no-duplicate-type-constituents": "off",
-      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-unused-vars": "off",
     },
   },
   {

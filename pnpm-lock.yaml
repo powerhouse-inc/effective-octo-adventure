@@ -35,6 +35,9 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      ts-essentials:
+        specifier: ^10.0.4
+        version: 10.0.4(typescript@5.8.2)
       zod:
         specifier: ^3.24.2
         version: 3.24.2
@@ -7315,6 +7318,14 @@ packages:
     engines: {node: '>=18.12'}
     peerDependencies:
       typescript: '>=4.8.4'
+
+  ts-essentials@10.0.4:
+    resolution: {integrity: sha512-lwYdz28+S4nicm+jFi6V58LaAIpxzhg9rLdgNC1VsdP/xiFBseGhF1M/shwCk6zMmwahBZdXcl34LVHrEang3A==}
+    peerDependencies:
+      typescript: '>=4.5.0'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   ts-essentials@8.1.0:
     resolution: {integrity: sha512-34xALeQADWRYq9kbtprP4KdpTQ3v3BBIs/U4SpaP+C4++B8ijXY5NnILRJLchQVMzw7YBzKuGMUMrI9uT+ALVw==}
@@ -17514,6 +17525,10 @@ snapshots:
 
   ts-api-utils@2.0.1(typescript@5.8.2):
     dependencies:
+      typescript: 5.8.2
+
+  ts-essentials@10.0.4(typescript@5.8.2):
+    optionalDependencies:
       typescript: 5.8.2
 
   ts-essentials@8.1.0(typescript@5.8.2):

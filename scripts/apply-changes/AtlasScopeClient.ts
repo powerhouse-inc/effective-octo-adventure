@@ -1,7 +1,4 @@
-import {
-  type AtlasScopeState,
-} from "../clients/atlas-scope.js";
-import writeClient from "../clients/atlas-scope.js";
+import { atlasScopeClient as writeClient } from "../clients/index.js";
 import { type ParsedNotionDocument } from "./atlas-base/NotionTypes.js";
 import { type DocumentsCache } from "./common/DocumentsCache.js";
 import { type ReactorClient } from "./common/ReactorClient.js";
@@ -17,6 +14,7 @@ import {
   type SetScopeNameInput,
   type SetContentInput,
 } from "../../document-models/atlas-scope/index.js";
+import { type AtlasScopeState } from "../clients/atlas-scope.js";
 
 const DOCUMENT_TYPE = "sky/atlas-scope";
 

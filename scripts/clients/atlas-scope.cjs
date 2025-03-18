@@ -33,6 +33,8 @@ __export(stdin_exports, {
   AtlasScope_Status: () => AtlasScope_Status,
   DocumentDrive_TransmitterType: () => DocumentDrive_TransmitterType,
   DocumentDrive_TriggerType: () => DocumentDrive_TriggerType,
+  GlobalTag: () => GlobalTag,
+  Status: () => Status,
   client: () => client,
   default: () => stdin_default
 });
@@ -191,6 +193,38 @@ const DocumentDrive_TransmitterType = {
   switchboardPush: "SwitchboardPush"
 };
 const DocumentDrive_TriggerType = { pullResponder: "PullResponder" };
+const Status = {
+  approved: "APPROVED",
+  archived: "ARCHIVED",
+  deferred: "DEFERRED",
+  placeholder: "PLACEHOLDER",
+  provisional: "PROVISIONAL"
+};
+const GlobalTag = {
+  anonWorkforce: "ANON_WORKFORCE",
+  avc: "AVC",
+  cais: "CAIS",
+  daoToolkit: "DAO_TOOLKIT",
+  ecosystemIntelligence: "ECOSYSTEM_INTELLIGENCE",
+  externalReference: "EXTERNAL_REFERENCE",
+  facilitatordao: "FACILITATORDAO",
+  internalReference: "INTERNAL_REFERENCE",
+  legacyTermUseApproved: "LEGACY_TERM_USE_APPROVED",
+  mlDefer: "ML_DEFER",
+  mlHighPriority: "ML_HIGH_PRIORITY",
+  mlLowPriority: "ML_LOW_PRIORITY",
+  mlMedPriority: "ML_MED_PRIORITY",
+  mlSupportDocsNeeded: "ML_SUPPORT_DOCS_NEEDED",
+  newchain: "NEWCHAIN",
+  p0HubEntryNeeded: "P0_HUB_ENTRY_NEEDED",
+  purposeSystem: "PURPOSE_SYSTEM",
+  recursiveImprovement: "RECURSIVE_IMPROVEMENT",
+  scopeAdvisor: "SCOPE_ADVISOR",
+  subdaoIncubation: "SUBDAO_INCUBATION",
+  subdaoRewards: "SUBDAO_REWARDS",
+  twoStageBridge: "TWO_STAGE_BRIDGE",
+  v1Mip: "V1_MIP"
+};
 const typesTree = {
   AtlasScope: {
     get operations() {
@@ -329,47 +363,102 @@ const typesTree = {
       };
     }
   },
-  Query: {
-    get driveIdBySlug() {
-      return {
-        __args: {
-          slug: "String!"
-        }
-      };
-    },
-    drives: {},
-    _service: {}
-  },
   Mutation: {
-    get addDrive() {
+    get AtlasScope_createDocument() {
       return {
-        __fields: typesTree.DocumentDrive_DocumentDriveState,
         __args: {
-          global: "DocumentDriveStateInput!",
-          preferredEditor: "String"
+          driveId: "String",
+          name: "String"
         }
       };
     },
-    get deleteDrive() {
+    get AtlasScope_setScopeName() {
       return {
         __args: {
-          id: "ID!"
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasScope_SetScopeNameInput"
         }
       };
     },
-    get setDriveIcon() {
+    get AtlasScope_setDocNumber() {
       return {
         __args: {
-          id: "String!",
-          icon: "String!"
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasScope_SetDocNumberInput"
         }
       };
     },
-    get setDriveName() {
+    get AtlasScope_setContent() {
       return {
         __args: {
-          id: "String!",
-          name: "String!"
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasScope_SetContentInput"
+        }
+      };
+    },
+    get AtlasScope_setMasterStatus() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasScope_SetMasterStatusInput"
+        }
+      };
+    },
+    get AtlasScope_addTags() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasScope_AddTagsInput"
+        }
+      };
+    },
+    get AtlasScope_removeTags() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasScope_RemoveTagsInput"
+        }
+      };
+    },
+    get AtlasScope_addContextData() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasScope_AddContextDataInput"
+        }
+      };
+    },
+    get AtlasScope_removeContextData() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasScope_RemoveContextDataInput"
+        }
+      };
+    },
+    get AtlasScope_setProvenance() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasScope_SetProvenanceInput"
+        }
+      };
+    },
+    get AtlasScope_setNotionId() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasScope_SetNotionIdInput"
         }
       };
     }
@@ -451,11 +540,18 @@ const typesTree = {
       };
     },
     triggers: {}
+  },
+  AtlasScopeState: {
+    globalTags: {},
+    originalContextData: {}
+  },
+  Query: {
+    _service: {}
   }
 };
 let verbose = false;
 let headers = {};
-let url = "http://localhost:4001/system";
+let url = "http://localhost:4001/atlas-scope";
 let retryConfig = {
   max: 0,
   before: void 0,
@@ -492,15 +588,20 @@ const client = {
   },
   setUrl: (_url) => url = _url,
   queries: {
-    drives: apiEndpoint("query", "drives"),
-    driveIdBySlug: apiEndpoint("query", "driveIdBySlug"),
     _service: apiEndpoint("query", "_service")
   },
   mutations: {
-    addDrive: apiEndpoint("mutation", "addDrive"),
-    deleteDrive: apiEndpoint("mutation", "deleteDrive"),
-    setDriveIcon: apiEndpoint("mutation", "setDriveIcon"),
-    setDriveName: apiEndpoint("mutation", "setDriveName")
+    AtlasScope_createDocument: apiEndpoint("mutation", "AtlasScope_createDocument"),
+    AtlasScope_setScopeName: apiEndpoint("mutation", "AtlasScope_setScopeName"),
+    AtlasScope_setDocNumber: apiEndpoint("mutation", "AtlasScope_setDocNumber"),
+    AtlasScope_setContent: apiEndpoint("mutation", "AtlasScope_setContent"),
+    AtlasScope_setMasterStatus: apiEndpoint("mutation", "AtlasScope_setMasterStatus"),
+    AtlasScope_addTags: apiEndpoint("mutation", "AtlasScope_addTags"),
+    AtlasScope_removeTags: apiEndpoint("mutation", "AtlasScope_removeTags"),
+    AtlasScope_addContextData: apiEndpoint("mutation", "AtlasScope_addContextData"),
+    AtlasScope_removeContextData: apiEndpoint("mutation", "AtlasScope_removeContextData"),
+    AtlasScope_setProvenance: apiEndpoint("mutation", "AtlasScope_setProvenance"),
+    AtlasScope_setNotionId: apiEndpoint("mutation", "AtlasScope_setNotionId")
   }
 };
 var stdin_default = client;

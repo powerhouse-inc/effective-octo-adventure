@@ -1,4 +1,4 @@
-import writeClient from "../clients/system.js";
+import { systemClient as writeClient } from "../clients/index.js";
 
 type AddDriveArgs = {
   global: {

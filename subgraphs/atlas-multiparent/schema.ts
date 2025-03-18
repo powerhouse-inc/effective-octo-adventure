@@ -1,6 +1,9 @@
-"""
-Subgraph definition for AtlasMultiParent (sky/atlas-multiparent)
-"""
+import { gql } from "graphql-tag";
+
+export const schema = gql`
+  """
+  Subgraph definition for AtlasMultiParent (sky/atlas-multiparent)
+  """
 type AtlasMultiParentState {
   """
   Full name of the Grounding document entity.
@@ -255,3 +258,4 @@ input AtlasMultiParent_AddReferenceInput {
 input AtlasMultiParent_RemoveReferenceInput {
   id: PHID!
 }
+`;

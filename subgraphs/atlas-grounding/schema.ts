@@ -1,6 +1,9 @@
-"""
-Subgraph definition for AtlasGrounding (sky/atlas-grounding)
-"""
+import { gql } from "graphql-tag";
+
+export const schema = gql`
+  """
+  Subgraph definition for AtlasGrounding (sky/atlas-grounding)
+  """
 type AtlasGroundingState {
   """
   Full name of the Grounding document entity.
@@ -248,3 +251,4 @@ input AtlasGrounding_AddReferenceInput {
 input AtlasGrounding_RemoveReferenceInput {
   id: PHID!
 }
+`;

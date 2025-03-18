@@ -1,6 +1,9 @@
-"""
-Subgraph definition for AtlasExploratory (sky/atlas-exploratory)
-"""
+import { gql } from "graphql-tag";
+
+export const schema = gql`
+  """
+  Subgraph definition for AtlasExploratory (sky/atlas-exploratory)
+  """
 type AtlasExploratoryState {
   """
   Full name of the Grounding document entity.
@@ -279,3 +282,4 @@ input AtlasExploratory_RemoveAdditionalGuidanceInput {
   "Add your inputs here"
   additionalGuidance: String!
 }
+`;

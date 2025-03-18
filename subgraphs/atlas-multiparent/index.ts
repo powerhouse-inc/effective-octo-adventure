@@ -1,6 +1,6 @@
 import { Subgraph } from "@powerhousedao/reactor-api";
 
-import schema from "./schema.graphql";
+import { schema } from "./schema.js";
 import { getResolvers } from "./resolvers.js";
 
 export class AtlasMultiparentSubgraph extends Subgraph {

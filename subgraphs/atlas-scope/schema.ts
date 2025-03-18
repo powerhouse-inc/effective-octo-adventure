@@ -1,7 +1,10 @@
-"""
-Subgraph definition for AtlasScope (sky/atlas-scope)
-"""
-type AtlasScopeState {
+import { gql } from "graphql-tag";
+
+export const schema = gql`
+  """
+  Subgraph definition for AtlasScope (sky/atlas-scope)
+  """
+  type AtlasScopeState {
   """
   Full name of the Scope without the document number.
   For example: "The Support Scope"
@@ -197,3 +200,4 @@ input AtlasScope_SetNotionIdInput {
   "Add your inputs here"
   notionID: String
 }
+`;

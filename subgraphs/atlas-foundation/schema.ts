@@ -1,7 +1,10 @@
-"""
-Subgraph definition for AtlasFoundation (sky/atlas-foundation)
-"""
-type AtlasFoundationState {
+import { gql } from "graphql-tag";
+
+export const schema = gql`
+  """
+  Subgraph definition for AtlasFoundation (sky/atlas-foundation)
+  """
+  type AtlasFoundationState {
   """
   Full name of the Foundation entity.
   """
@@ -244,3 +247,4 @@ input AtlasFoundation_SetProvenanceInput {
 input AtlasFoundation_SetNotionIdInput {
   notionID: String!
 }
+`;

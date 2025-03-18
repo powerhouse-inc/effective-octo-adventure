@@ -3,8 +3,9 @@ import { type Subgraph } from "@powerhousedao/reactor-api";
 import { syncDocuments } from "../../scripts/apply-changes/syncDocuments.js";
 dotenv.config();
 const PORT = process.env.PORT || 4001;
+const herokuOrLocal = process.env.HEROKU_APP_NAME ? `https://${process.env.HEROKU_APP_NAME}.herokuapp.com` : `http://localhost:${PORT}`;
 // Reactor where the documents will be synchronized to
-const GQL_ENDPOINT = undefined;
+const GQL_ENDPOINT = herokuOrLocal;
 
 // Preferred editor for the drive when it's created
 const PREFERRED_EDITOR = "AtlasDriveExplorer";

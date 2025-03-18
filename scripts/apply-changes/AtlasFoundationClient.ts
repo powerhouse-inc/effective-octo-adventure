@@ -2,7 +2,7 @@ import {
     getPNDTitle,
     pndContentToString,
 } from "../../document-models/utils.js";
-import { default as writeClient } from "../clients/atlas-foundation.js";
+import writeClient from "../clients/atlas-foundation.js";
 import { type ParsedNotionDocument } from "./atlas-base/NotionTypes.js";
 import { type DocumentsCache } from "./common/DocumentsCache.js";
 import { type ReactorClient } from "./common/ReactorClient.js";

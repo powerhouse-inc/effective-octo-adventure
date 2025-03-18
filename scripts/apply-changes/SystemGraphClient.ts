@@ -1,4 +1,4 @@
-import { default as writeClient } from "../clients/system.js";
+import writeClient from "../clients/system.js";
 
 type AddDriveArgs = {
   global: {
@@ -14,8 +14,7 @@ export class SystemGraphClient {
   protected readonly writeClient: typeof writeClient;
 
   constructor(mutationsSubgraphUrl: string) {
-    // @ts-expect-error weird commonjs thing
-    this.writeClient = writeClient.client ?? writeClient;
+    this.writeClient = writeClient;
     this.writeClient.setUrl(mutationsSubgraphUrl);
   }
 

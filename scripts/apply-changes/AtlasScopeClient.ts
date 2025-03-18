@@ -1,7 +1,7 @@
 import {
   type AtlasScopeState,
-  default as writeClient,
 } from "../clients/atlas-scope.js";
+import writeClient from "../clients/atlas-scope.js";
 import { type ParsedNotionDocument } from "./atlas-base/NotionTypes.js";
 import { type DocumentsCache } from "./common/DocumentsCache.js";
 import { type ReactorClient } from "./common/ReactorClient.js";

@@ -1,15 +1,12 @@
- 
 import { Icon } from "@powerhousedao/design-system";
 import {
   cn,
   type NodeStatus,
   Sidebar,
-  SidebarProps,
   SidebarProvider,
   type SidebarNode,
 } from "@powerhousedao/design-system/scalars";
-import type React from "react";
-import { useCallback, useState, useRef } from "react";
+import { useCallback, useState, useRef, useMemo } from "react";
 import { useDriveContext } from "@powerhousedao/reactor-browser";
 import { type AtlasArticle } from "./types.js";
 import { EditorContainer } from "./EditorContainer.js";
@@ -36,7 +33,10 @@ export function EditorLayout({
   const selectedDocumentModel = useRef<DocumentModelModule | null>(null);
 
   const [state, fetchDocuments] = useDriveDocumentStates({ driveId });
-  const nodes = buildSidebarTree(state as Record<string, AtlasArticle>);
+
+  const nodes = useMemo(() => {
+    return buildSidebarTree(state as Record<string, AtlasArticle>);
+  }, [state]);
 
   const selectedNode = activeNodeId
     ? (state[activeNodeId] as AtlasArticle)
@@ -203,7 +203,11 @@ function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
 
   // Build the tree
   for (const [key, value] of Object.entries(allNodes)) {
-    if (value.global.parent && !!value.global.parent.id) {
+    if (
+      value.global.parent &&
+      !!value.global.parent.id &&
+      nodesById[value.global.parent.id]
+    ) {
       nodesById[value.global.parent.id].children?.push(nodesById[key]);
     }
   }

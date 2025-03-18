@@ -39,7 +39,6 @@
         "build:css": "npx @tailwindcss/cli -i ./editors/style.css -o ./dist/editors/style.css",
         "build:css:watch": "npx @tailwindcss/cli -i ./editors/style.css -o ./dist/editors/style.css --watch",
         "build": "npm run build:tsc && npm run build:css",
-        "dev": "concurrently \"npm run reactor\" \"npm run connect\"",
         "test": "vitest run",
         "test:watch": "vitest",
         "prepublishOnly": "npm run build",

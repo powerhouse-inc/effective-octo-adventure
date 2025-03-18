@@ -13,7 +13,8 @@ const herokuOrLocal = process.env.HEROKU_APP_NAME
   ? `https://${process.env.HEROKU_APP_NAME}.herokuapp.com`
   : `http://localhost:${PORT}`;
 // Reactor where the documents will be synchronized to
-const GQL_ENDPOINT = herokuOrLocal;
+const endPointWithBasePath = herokuOrLocal + (process.env.BASE_PATH || "");
+const GQL_ENDPOINT = endPointWithBasePath;
 
 // Preferred editor for the drive when it's created
 const PREFERRED_EDITOR = "AtlasDriveExplorer";

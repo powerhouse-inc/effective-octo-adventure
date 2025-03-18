@@ -1,3 +1,4 @@
+import path from "path";
 import { queryGraphQL } from "./gql-utils.js";
 import { gql } from "graphql-request";
 
@@ -31,8 +32,8 @@ export class ReactorClient {
 
   constructor(endpointUrl: string | undefined, driveName: string) {
     this.endpointUrl = endpointUrl;
-    this.driveEndpointUrl = new URL("d/" + driveName, endpointUrl).href;
-    this.systemEndpointUrl = new URL("system", endpointUrl).href;
+    this.driveEndpointUrl = path.join(endpointUrl || "", "d", driveName);
+    this.systemEndpointUrl = path.join(endpointUrl || "", "system");
   }
 
   public async queryReactor<ReturnType>(

@@ -6,6 +6,4 @@ const { client: atlasScopeClient } = AtlasScope;
 const { client: atlasFoundationClient } = AtlasFoundation;
 const { client: systemClient } = SystemClient;
 
-console.log("Atlas Scope Client", SystemClient);
-
 export { atlasScopeClient, atlasFoundationClient, systemClient };

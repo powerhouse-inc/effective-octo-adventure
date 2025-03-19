@@ -48,7 +48,7 @@ export const getResolvers = (subgraph: Subgraph) => {
           driveName: driveId,
           gqlEndpoint: GQL_ENDPOINT,
           preferredEditor: PREFERRED_EDITOR,
-          processLimit: 20,
+          processLimit: 500,
           skipNodes: {
             "422bae2b-2aec-4324-ae40-33c544820db3": true,
             "eca5e587-79e3-480b-b70d-dd25697c9e1f": true,

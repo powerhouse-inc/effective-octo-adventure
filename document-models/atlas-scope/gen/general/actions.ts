@@ -1,9 +1,9 @@
 import { type BaseAction } from "document-model";
-import {
-  type SetScopeNameInput,
-  type SetDocNumberInput,
-  type SetContentInput,
-  type SetMasterStatusInput,
+import type {
+  SetScopeNameInput,
+  SetDocNumberInput,
+  SetContentInput,
+  SetMasterStatusInput,
 } from "../types.js";
 
 export type SetScopeNameAction = BaseAction<

@@ -1,9 +1,9 @@
 import { type BaseAction } from "document-model";
-import {
-  type AddContextDataInput,
-  type RemoveContextDataInput,
-  type SetProvenanceInput,
-  type SetNotionIdInput,
+import type {
+  AddContextDataInput,
+  RemoveContextDataInput,
+  SetProvenanceInput,
+  SetNotionIdInput,
 } from "../types.js";
 
 export type AddContextDataAction = BaseAction<

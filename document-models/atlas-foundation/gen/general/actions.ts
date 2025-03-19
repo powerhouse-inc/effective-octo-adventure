@@ -1,13 +1,13 @@
 import { type BaseAction } from "document-model";
-import {
-  type SetFoundationNameInput,
-  type SetDocNumberInput,
-  type SetContentInput,
-  type SetMasterStatusInput,
-  type AddReferenceInput,
-  type SetAtlasTypeInput,
-  type RemoveReferenceInput,
-  type SetParentInput,
+import type {
+  SetFoundationNameInput,
+  SetDocNumberInput,
+  SetContentInput,
+  SetMasterStatusInput,
+  AddReferenceInput,
+  SetAtlasTypeInput,
+  RemoveReferenceInput,
+  SetParentInput,
 } from "../types.js";
 
 export type SetFoundationNameAction = BaseAction<

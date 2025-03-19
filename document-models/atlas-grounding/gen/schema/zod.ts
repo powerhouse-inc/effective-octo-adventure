@@ -1,24 +1,24 @@
 import { z } from "zod";
-import {
-  type AddContextDataInput,
-  type AddReferenceInput,
-  type AddTagsInput,
-  type AtlasGroundingState,
+import type {
+  AddContextDataInput,
+  AddReferenceInput,
+  AddTagsInput,
+  AtlasGroundingState,
   GAtlasType,
-  type GDocumentLink,
+  GDocumentLink,
   GGlobalTag,
   GStatus,
-  type RemoveContextDataInput,
-  type RemoveReferenceInput,
-  type RemoveTagsInput,
-  type SetAtlasTypeInput,
-  type SetContentInput,
-  type SetDocNumberInput,
-  type SetGroundingNameInput,
-  type SetMasterStatusInput,
-  type SetNotionIdInput,
-  type SetParentInput,
-  type SetProvenanceInput,
+  RemoveContextDataInput,
+  RemoveReferenceInput,
+  RemoveTagsInput,
+  SetAtlasTypeInput,
+  SetContentInput,
+  SetDocNumberInput,
+  SetGroundingNameInput,
+  SetMasterStatusInput,
+  SetNotionIdInput,
+  SetParentInput,
+  SetProvenanceInput,
 } from "./types.js";
 
 type Properties<T> = Required<{
@@ -97,12 +97,12 @@ export function AtlasGroundingStateSchema(): z.ZodObject<
   return z.object({
     __typename: z.literal("AtlasGroundingState").optional(),
     atlasType: GAtlasTypeSchema,
-    content: z.string().nullable(),
-    docNo: z.string().nullable(),
+    content: z.string().nullish(),
+    docNo: z.string().nullish(),
     globalTags: z.array(GGlobalTagSchema),
     masterStatus: GStatusSchema,
-    name: z.string().nullable(),
-    notionId: z.string().nullable(),
+    name: z.string().nullish(),
+    notionId: z.string().nullish(),
     originalContextData: z.array(GDocumentLinkSchema()),
     parent: GDocumentLinkSchema(),
     provenance: z.array(z.string().url()),
@@ -113,9 +113,9 @@ export function AtlasGroundingStateSchema(): z.ZodObject<
 export function GDocumentLinkSchema(): z.ZodObject<Properties<GDocumentLink>> {
   return z.object({
     __typename: z.literal("GDocumentLink").optional(),
-    docNo: z.string().nullable(),
+    docNo: z.string().nullish(),
     id: z.string(),
-    name: z.string().nullable(),
+    name: z.string().nullish(),
   });
 }
 

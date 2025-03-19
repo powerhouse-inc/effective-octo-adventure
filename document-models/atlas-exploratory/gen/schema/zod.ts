@@ -1,27 +1,27 @@
 import { z } from "zod";
-import {
-  type AddAdditionalGuidanceInput,
-  type AddContextDataInput,
-  type AddTagsInput,
-  type AtlasExploratoryState,
-  type DocumentInfo,
+import type {
+  AddAdditionalGuidanceInput,
+  AddContextDataInput,
+  AddTagsInput,
+  AtlasExploratoryState,
+  DocumentInfo,
   EAtlasType,
   EGlobalTag,
   EStatus,
-  type Finding,
-  type RemoveAdditionalGuidanceInput,
-  type RemoveContextDataInput,
-  type RemoveParentInput,
-  type RemoveTagsInput,
-  type SetAtlasTypeInput,
-  type SetContentInput,
-  type SetDocNumberInput,
-  type SetExploratoryNameInput,
-  type SetFindingsInput,
-  type SetMasterStatusInput,
-  type SetNotionIdInput,
-  type SetParentInput,
-  type SetProvenanceInput,
+  Finding,
+  RemoveAdditionalGuidanceInput,
+  RemoveContextDataInput,
+  RemoveParentInput,
+  RemoveTagsInput,
+  SetAtlasTypeInput,
+  SetContentInput,
+  SetDocNumberInput,
+  SetExploratoryNameInput,
+  SetFindingsInput,
+  SetMasterStatusInput,
+  SetNotionIdInput,
+  SetParentInput,
+  SetProvenanceInput,
 } from "./types.js";
 
 type Properties<T> = Required<{
@@ -95,16 +95,16 @@ export function AtlasExploratoryStateSchema(): z.ZodObject<
     __typename: z.literal("AtlasExploratoryState").optional(),
     additionalGuidance: z.string(),
     atlasType: EAtlasTypeSchema,
-    content: z.string().nullable(),
-    docNo: z.string().nullable(),
+    content: z.string().nullish(),
+    docNo: z.string().nullish(),
     findings: FindingSchema(),
     globalTags: z.array(EGlobalTagSchema),
     masterStatus: EStatusSchema,
-    name: z.string().nullable(),
-    notionId: z.string().nullable(),
+    name: z.string().nullish(),
+    notionId: z.string().nullish(),
     originalContextData: z.array(DocumentInfoSchema()),
     parent: z.string(),
-    provenance: z.string().url().nullable(),
+    provenance: z.string().url().nullish(),
     references: z.array(z.string()),
   });
 }
@@ -112,16 +112,16 @@ export function AtlasExploratoryStateSchema(): z.ZodObject<
 export function DocumentInfoSchema(): z.ZodObject<Properties<DocumentInfo>> {
   return z.object({
     __typename: z.literal("DocumentInfo").optional(),
-    docNo: z.string().nullable(),
+    docNo: z.string().nullish(),
     id: z.string(),
-    name: z.string().nullable(),
+    name: z.string().nullish(),
   });
 }
 
 export function FindingSchema(): z.ZodObject<Properties<Finding>> {
   return z.object({
     __typename: z.literal("Finding").optional(),
-    comment: z.string().nullable(),
+    comment: z.string().nullish(),
     isAligned: z.boolean(),
   });
 }

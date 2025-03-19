@@ -1,25 +1,25 @@
 import { z } from "zod";
-import {
-  type AddContextDataInput,
-  type AddParentInput,
-  type AddReferenceInput,
-  type AddTagsInput,
-  type AtlasMultiParentState,
+import type {
+  AddContextDataInput,
+  AddParentInput,
+  AddReferenceInput,
+  AddTagsInput,
+  AtlasMultiParentState,
   MAtlasType,
-  type MDocumentLink,
+  MDocumentLink,
   MGlobalTag,
   MStatus,
-  type RemoveContextDataInput,
-  type RemoveParentInput,
-  type RemoveReferenceInput,
-  type RemoveTagsInput,
-  type SetAtlasTypeInput,
-  type SetContentInput,
-  type SetDocNumberInput,
-  type SetMasterStatusInput,
-  type SetMultiparentNameInput,
-  type SetNotionIdInput,
-  type SetProvenanceInput,
+  RemoveContextDataInput,
+  RemoveParentInput,
+  RemoveReferenceInput,
+  RemoveTagsInput,
+  SetAtlasTypeInput,
+  SetContentInput,
+  SetDocNumberInput,
+  SetMasterStatusInput,
+  SetMultiparentNameInput,
+  SetNotionIdInput,
+  SetProvenanceInput,
 } from "./types.js";
 
 type Properties<T> = Required<{
@@ -104,12 +104,12 @@ export function AtlasMultiParentStateSchema(): z.ZodObject<
   return z.object({
     __typename: z.literal("AtlasMultiParentState").optional(),
     atlasType: MAtlasTypeSchema,
-    content: z.string().nullable(),
-    docNo: z.string().nullable(),
+    content: z.string().nullish(),
+    docNo: z.string().nullish(),
     globalTags: z.array(MGlobalTagSchema),
     masterStatus: MStatusSchema,
-    name: z.string().nullable(),
-    notionId: z.string().nullable(),
+    name: z.string().nullish(),
+    notionId: z.string().nullish(),
     originalContextData: z.array(MDocumentLinkSchema()),
     parents: z.array(MDocumentLinkSchema()),
     provenance: z.array(z.string().url()),
@@ -120,9 +120,9 @@ export function AtlasMultiParentStateSchema(): z.ZodObject<
 export function MDocumentLinkSchema(): z.ZodObject<Properties<MDocumentLink>> {
   return z.object({
     __typename: z.literal("MDocumentLink").optional(),
-    docNo: z.string().nullable(),
+    docNo: z.string().nullish(),
     id: z.string(),
-    name: z.string().nullable(),
+    name: z.string().nullish(),
   });
 }
 

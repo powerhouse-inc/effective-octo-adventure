@@ -1,12 +1,12 @@
 import { type BaseAction } from "document-model";
-import {
-  type SetMultiparentNameInput,
-  type SetDocNumberInput,
-  type SetContentInput,
-  type SetMasterStatusInput,
-  type AddParentInput,
-  type SetAtlasTypeInput,
-  type RemoveParentInput,
+import type {
+  SetMultiparentNameInput,
+  SetDocNumberInput,
+  SetContentInput,
+  SetMasterStatusInput,
+  AddParentInput,
+  SetAtlasTypeInput,
+  RemoveParentInput,
 } from "../types.js";
 
 export type SetMultiparentNameAction = BaseAction<

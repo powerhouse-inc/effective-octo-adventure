@@ -53,7 +53,7 @@ export type AddContextDataInput = {
 
 export type AddTagsInput = {
   /** Add your inputs here */
-  newTags: Array<EGlobalTag | EGlobalTag>;
+  newTags: Array<EGlobalTag | `${EGlobalTag}`>;
 };
 
 export type AtlasExploratoryState = {
@@ -63,7 +63,7 @@ export type AtlasExploratoryState = {
    * The type of the Grounding document within Atlas.
    * Example: Tenet, Original Context Data, Active Data.
    */
-  atlasType: EAtlasType | EAtlasType;
+  atlasType: EAtlasType | `${EAtlasType}`;
   /** Entire content body of the Grounding document within Atlas.   */
   content: Maybe<Scalars["String"]["output"]>;
   /** Unique document number assigned to the Grounding document within Atlas.   */
@@ -71,9 +71,9 @@ export type AtlasExploratoryState = {
   /** Alignmnet boolean findings.  */
   findings: Finding;
   /** Document tags managed by the Atlas Axis facilitator group for classification.   */
-  globalTags: Array<EGlobalTag | EGlobalTag>;
+  globalTags: Array<EGlobalTag | `${EGlobalTag}`>;
   /** Master status of the Grounding document as managed by the Atlas Axis facilitator group.   */
-  masterStatus: EStatus | EStatus;
+  masterStatus: EStatus | `${EStatus}`;
   /** Full name of the Grounding document entity.   */
   name: Maybe<Scalars["String"]["output"]>;
   /**
@@ -151,12 +151,12 @@ export type RemoveParentInput = {
 
 export type RemoveTagsInput = {
   /** Add your inputs here */
-  tags: Array<EGlobalTag | EGlobalTag>;
+  tags: Array<EGlobalTag | `${EGlobalTag}`>;
 };
 
 export type SetAtlasTypeInput = {
   /** Add your inputs here */
-  atlasType: EAtlasType | EAtlasType;
+  atlasType: EAtlasType | `${EAtlasType}`;
 };
 
 export type SetContentInput = {
@@ -181,7 +181,7 @@ export type SetFindingsInput = {
 
 export type SetMasterStatusInput = {
   /** Add your inputs here */
-  masterStatus: EStatus | EStatus;
+  masterStatus: EStatus | `${EStatus}`;
 };
 
 export type SetNotionIdInput = {

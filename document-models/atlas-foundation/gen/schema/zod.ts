@@ -1,24 +1,24 @@
 import { z } from "zod";
-import {
-  type AddContextDataInput,
-  type AddReferenceInput,
-  type AddTagsInput,
-  type AtlasFoundationState,
+import type {
+  AddContextDataInput,
+  AddReferenceInput,
+  AddTagsInput,
+  AtlasFoundationState,
   FAtlasType,
-  type FDocumentLink,
+  FDocumentLink,
   FGlobalTag,
   FStatus,
-  type RemoveContextDataInput,
-  type RemoveReferenceInput,
-  type RemoveTagsInput,
-  type SetAtlasTypeInput,
-  type SetContentInput,
-  type SetDocNumberInput,
-  type SetFoundationNameInput,
-  type SetMasterStatusInput,
-  type SetNotionIdInput,
-  type SetParentInput,
-  type SetProvenanceInput,
+  RemoveContextDataInput,
+  RemoveReferenceInput,
+  RemoveTagsInput,
+  SetAtlasTypeInput,
+  SetContentInput,
+  SetDocNumberInput,
+  SetFoundationNameInput,
+  SetMasterStatusInput,
+  SetNotionIdInput,
+  SetParentInput,
+  SetProvenanceInput,
 } from "./types.js";
 
 type Properties<T> = Required<{
@@ -98,14 +98,14 @@ export function AtlasFoundationStateSchema(): z.ZodObject<
   return z.object({
     __typename: z.literal("AtlasFoundationState").optional(),
     atlasType: FAtlasTypeSchema,
-    content: z.string().nullable(),
-    docNo: z.string().nullable(),
+    content: z.string().nullish(),
+    docNo: z.string().nullish(),
     globalTags: z.array(FGlobalTagSchema),
     masterStatus: FStatusSchema,
-    name: z.string().nullable(),
-    notionId: z.string().nullable(),
+    name: z.string().nullish(),
+    notionId: z.string().nullish(),
     originalContextData: z.array(FDocumentLinkSchema()),
-    parent: FDocumentLinkSchema().nullable(),
+    parent: FDocumentLinkSchema().nullish(),
     provenance: z.array(z.string().url()),
     references: z.array(FDocumentLinkSchema()),
   });
@@ -114,9 +114,9 @@ export function AtlasFoundationStateSchema(): z.ZodObject<
 export function FDocumentLinkSchema(): z.ZodObject<Properties<FDocumentLink>> {
   return z.object({
     __typename: z.literal("FDocumentLink").optional(),
-    docNo: z.string().nullable(),
+    docNo: z.string().nullish(),
     id: z.string(),
-    name: z.string().nullable(),
+    name: z.string().nullish(),
   });
 }
 

@@ -1,18 +1,18 @@
 import { z } from "zod";
-import {
-  type AddContextDataInput,
-  type AddTagsInput,
-  type AtlasScopeState,
-  type DocumentInfo,
+import type {
+  AddContextDataInput,
+  AddTagsInput,
+  AtlasScopeState,
+  DocumentInfo,
   GlobalTag,
-  type RemoveContextDataInput,
-  type RemoveTagsInput,
-  type SetContentInput,
-  type SetDocNumberInput,
-  type SetMasterStatusInput,
-  type SetNotionIdInput,
-  type SetProvenanceInput,
-  type SetScopeNameInput,
+  RemoveContextDataInput,
+  RemoveTagsInput,
+  SetContentInput,
+  SetDocNumberInput,
+  SetMasterStatusInput,
+  SetNotionIdInput,
+  SetProvenanceInput,
+  SetScopeNameInput,
   Status,
 } from "./types.js";
 
@@ -84,23 +84,23 @@ export function AtlasScopeStateSchema(): z.ZodObject<
 > {
   return z.object({
     __typename: z.literal("AtlasScopeState").optional(),
-    content: z.string().nullable(),
-    docNo: z.string().nullable(),
+    content: z.string().nullish(),
+    docNo: z.string().nullish(),
     globalTags: z.array(GlobalTagSchema),
-    masterStatus: StatusSchema.nullable(),
-    name: z.string().nullable(),
-    notionId: z.string().nullable(),
+    masterStatus: StatusSchema.nullish(),
+    name: z.string().nullish(),
+    notionId: z.string().nullish(),
     originalContextData: z.array(DocumentInfoSchema()),
-    provenance: z.string().url().nullable(),
+    provenance: z.string().url().nullish(),
   });
 }
 
 export function DocumentInfoSchema(): z.ZodObject<Properties<DocumentInfo>> {
   return z.object({
     __typename: z.literal("DocumentInfo").optional(),
-    docNo: z.string().nullable(),
+    docNo: z.string().nullish(),
     id: z.string(),
-    name: z.string().nullable(),
+    name: z.string().nullish(),
   });
 }
 

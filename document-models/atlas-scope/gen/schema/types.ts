@@ -47,7 +47,7 @@ export type AddContextDataInput = {
 
 export type AddTagsInput = {
   /** Tags to be added */
-  newTags: Array<GlobalTag | GlobalTag>;
+  newTags: Array<GlobalTag | `${GlobalTag}`>;
 };
 
 export type AtlasScopeState = {
@@ -62,9 +62,9 @@ export type AtlasScopeState = {
    */
   docNo: Maybe<Scalars["String"]["output"]>;
   /** Document tags as managed by the Atlas Axis facilitator group. */
-  globalTags: Array<GlobalTag | GlobalTag>;
+  globalTags: Array<GlobalTag | `${GlobalTag}`>;
   /** Master status as managed by the Atlas Axis facilitator group. */
-  masterStatus: Maybe<Status | Status>;
+  masterStatus: Maybe<Status | `${Status}`>;
   /**
    * Full name of the Scope without the document number.
    * For example: "The Support Scope"
@@ -116,7 +116,7 @@ export type RemoveContextDataInput = {
 
 export type RemoveTagsInput = {
   /** Tags to be removed */
-  tags: Array<GlobalTag | GlobalTag>;
+  tags: Array<GlobalTag | `${GlobalTag}`>;
 };
 
 export type SetContentInput = {
@@ -131,7 +131,7 @@ export type SetDocNumberInput = {
 
 export type SetMasterStatusInput = {
   /** New master status */
-  masterStatus: Status | Status;
+  masterStatus: Status | `${Status}`;
 };
 
 export type SetNotionIdInput = {

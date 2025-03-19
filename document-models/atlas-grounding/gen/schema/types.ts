@@ -52,7 +52,7 @@ export type AddReferenceInput = {
 };
 
 export type AddTagsInput = {
-  tags: Array<GGlobalTag | GGlobalTag>;
+  tags: Array<GGlobalTag | `${GGlobalTag}`>;
 };
 
 export type AtlasGroundingState = {
@@ -60,15 +60,15 @@ export type AtlasGroundingState = {
    * The type of the Grounding document within Atlas.
    * Example: Tenet, Original Context Data, Active Data.
    */
-  atlasType: GAtlasType | GAtlasType;
+  atlasType: GAtlasType | `${GAtlasType}`;
   /** Entire content body of the Grounding document within Atlas.   */
   content: Maybe<Scalars["String"]["output"]>;
   /** Unique document number assigned to the Grounding document within Atlas.   */
   docNo: Maybe<Scalars["String"]["output"]>;
   /** Document tags managed by the Atlas Axis facilitator group for classification.   */
-  globalTags: Array<GGlobalTag | GGlobalTag>;
+  globalTags: Array<GGlobalTag | `${GGlobalTag}`>;
   /** Master status of the Grounding document as managed by the Atlas Axis facilitator group.   */
-  masterStatus: GStatus | GStatus;
+  masterStatus: GStatus | `${GStatus}`;
   /** Full name of the Grounding document entity.   */
   name: Maybe<Scalars["String"]["output"]>;
   /**
@@ -133,11 +133,11 @@ export type RemoveReferenceInput = {
 };
 
 export type RemoveTagsInput = {
-  tags: Array<GGlobalTag | GGlobalTag>;
+  tags: Array<GGlobalTag | `${GGlobalTag}`>;
 };
 
 export type SetAtlasTypeInput = {
-  atlasType: GAtlasType | GAtlasType;
+  atlasType: GAtlasType | `${GAtlasType}`;
 };
 
 export type SetContentInput = {
@@ -154,7 +154,7 @@ export type SetGroundingNameInput = {
 
 export type SetMasterStatusInput = {
   /** Add your inputs here */
-  masterStatus: GStatus | GStatus;
+  masterStatus: GStatus | `${GStatus}`;
 };
 
 export type SetNotionIdInput = {

@@ -1,6 +1,6 @@
-import { type AtlasExploratoryGeneralAction } from "./general/actions.js";
-import { type AtlasExploratoryTagsAction } from "./tags/actions.js";
-import { type AtlasExploratoryContextAction } from "./context/actions.js";
+import type { AtlasExploratoryGeneralAction } from "./general/actions.js";
+import type { AtlasExploratoryTagsAction } from "./tags/actions.js";
+import type { AtlasExploratoryContextAction } from "./context/actions.js";
 
 export * from "./general/actions.js";
 export * from "./tags/actions.js";

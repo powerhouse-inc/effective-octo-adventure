@@ -1,5 +1,5 @@
 import { type BaseAction } from "document-model";
-import { type AddTagsInput, type RemoveTagsInput } from "../types.js";
+import type { AddTagsInput, RemoveTagsInput } from "../types.js";
 
 export type AddTagsAction = BaseAction<"ADD_TAGS", AddTagsInput, "global">;
 export type RemoveTagsAction = BaseAction<

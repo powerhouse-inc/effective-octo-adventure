@@ -52,7 +52,7 @@ export type AddReferenceInput = {
 };
 
 export type AddTagsInput = {
-  tags: Array<FGlobalTag | FGlobalTag>;
+  tags: Array<FGlobalTag | `${FGlobalTag}`>;
 };
 
 export type AtlasFoundationState = {
@@ -60,15 +60,15 @@ export type AtlasFoundationState = {
    * The type of the Foundation entity within Atlas.
    * Example: DAO, Governance Body, Research Hub, etc.
    */
-  atlasType: FAtlasType | FAtlasType;
+  atlasType: FAtlasType | `${FAtlasType}`;
   /** Entire content body of the Foundation document within Atlas.  */
   content: Maybe<Scalars["String"]["output"]>;
   /** Unique document number assigned to the Foundation entity within Atlas. */
   docNo: Maybe<Scalars["String"]["output"]>;
   /** Document tags managed by the Atlas Axis facilitator group for classification. */
-  globalTags: Array<FGlobalTag | FGlobalTag>;
+  globalTags: Array<FGlobalTag | `${FGlobalTag}`>;
   /** Master status of the Foundation entity as managed by the Atlas Axis facilitator group. */
-  masterStatus: FStatus | FStatus;
+  masterStatus: FStatus | `${FStatus}`;
   /** Full name of the Foundation entity. */
   name: Maybe<Scalars["String"]["output"]>;
   /**
@@ -136,11 +136,11 @@ export type RemoveReferenceInput = {
 };
 
 export type RemoveTagsInput = {
-  tags: Array<FGlobalTag | FGlobalTag>;
+  tags: Array<FGlobalTag | `${FGlobalTag}`>;
 };
 
 export type SetAtlasTypeInput = {
-  atlasType: FAtlasType | FAtlasType;
+  atlasType: FAtlasType | `${FAtlasType}`;
 };
 
 export type SetContentInput = {
@@ -156,7 +156,7 @@ export type SetFoundationNameInput = {
 };
 
 export type SetMasterStatusInput = {
-  masterStatus: FStatus | FStatus;
+  masterStatus: FStatus | `${FStatus}`;
 };
 
 export type SetNotionIdInput = {

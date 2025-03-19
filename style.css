@@ -481,16 +481,16 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
+.atlas-drive-explorer h1,
+.atlas-drive-explorer h2,
+.atlas-drive-explorer h3,
+.atlas-drive-explorer h4,
+.atlas-drive-explorer h5,
+.atlas-drive-explorer h6,
+.atlas-drive-explorer p {
   color: var(--color-gray-900);
 }
 
-input[type="url"] {
+.atlas-drive-explorer input[type="url"] {
   padding-left: 32px;
 }

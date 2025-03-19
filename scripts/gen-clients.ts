@@ -1,4 +1,6 @@
 import { generateTypescriptClient } from "graphql-ts-client";
+import { readdir } from "node:fs/promises";
+import { rename } from "node:fs/promises";
 import path from "node:path";
 
 async function generateClient(endpointBase: string, subgraphName: string) {
@@ -39,6 +41,19 @@ async function main() {
 
   for (const subgraph of subgraphs) {
     await generateClient(endpointBase, subgraph);
+  }
+
+  // Rename .js files to .cjs in clients directory
+  const clientsDir = path.join(__dirname, "clients");
+  const files = await readdir(clientsDir);
+  
+  for (const file of files) {
+    if (file.endsWith(".js")) {
+      const oldPath = path.join(clientsDir, file);
+      const newPath = path.join(clientsDir, file.replace(".js", ".cjs"));
+      await  rename(oldPath, newPath);
+      console.log(`Renamed ${file} to ${file.replace(".js", ".cjs")}`);
+    }
   }
 }
 

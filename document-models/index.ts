@@ -3,3 +3,4 @@ export { module as AtlasMultiParent } from "./atlas-multi-parent";
 export { module as AtlasExploratory } from "./atlas-exploratory";
 export { module as AtlasFoundation } from "./atlas-foundation";
 export { module as AtlasGrounding } from "./atlas-grounding";
+export { module as AtlasFeedbackIssues } from "./atlas-feedback-issues";

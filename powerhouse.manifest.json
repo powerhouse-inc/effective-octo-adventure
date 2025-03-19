@@ -26,6 +26,10 @@
     {
       "id": "sky/atlas-multi-parent",
       "name": "Atlas Multi Parent"
+    },
+    {
+      "id": "makerdao/feedback-issues",
+      "name": "Atlas Feedback Issues"
     }
   ],
   "editors": [
@@ -53,6 +57,11 @@
       "id": "AtlasMultiParent",
       "name": "Atlas Multi Parent",
       "documentTypes": ["sky/atlas-multi-parent"]
+    },
+    {
+      "id": "AtlasFeedbackIssues",
+      "name": "Atlas Feedback Issues",
+      "documentTypes": ["makerdao/feedback-issues"]
     }
   ],
   "apps": [

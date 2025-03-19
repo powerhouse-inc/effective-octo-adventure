@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-max-depth */
 import { Icon } from "@powerhousedao/design-system";
 import {
@@ -121,7 +122,7 @@ export function EditorLayout({
             width: "calc(100% - var(--sidebar-width))",
           }}
         >
-          <div>
+          <>
             {!activeNodeId && (
               <h1 className="atlas-drive-explorer-header mt-12 text-base text-gray-900 dark:text-gray-50">
                 {title}
@@ -151,7 +152,7 @@ export function EditorLayout({
               onOpenChange={(open) => setOpenModal(open)}
               open={openModal}
             />
-          </div>
+          </>
         </div>
       </main>
     </SidebarProvider>

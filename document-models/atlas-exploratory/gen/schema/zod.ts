@@ -95,16 +95,16 @@ export function AtlasExploratoryStateSchema(): z.ZodObject<
     __typename: z.literal("AtlasExploratoryState").optional(),
     additionalGuidance: z.string(),
     atlasType: EAtlasTypeSchema,
-    content: z.string().nullish(),
-    docNo: z.string().nullish(),
+    content: z.string().nullable(),
+    docNo: z.string().nullable(),
     findings: FindingSchema(),
     globalTags: z.array(EGlobalTagSchema),
     masterStatus: EStatusSchema,
-    name: z.string().nullish(),
-    notionId: z.string().nullish(),
+    name: z.string().nullable(),
+    notionId: z.string().nullable(),
     originalContextData: z.array(DocumentInfoSchema()),
     parent: z.string(),
-    provenance: z.string().url().nullish(),
+    provenance: z.string().url().nullable(),
     references: z.array(z.string()),
   });
 }
@@ -112,16 +112,16 @@ export function AtlasExploratoryStateSchema(): z.ZodObject<
 export function DocumentInfoSchema(): z.ZodObject<Properties<DocumentInfo>> {
   return z.object({
     __typename: z.literal("DocumentInfo").optional(),
-    docNo: z.string().nullish(),
+    docNo: z.string().nullable(),
     id: z.string(),
-    name: z.string().nullish(),
+    name: z.string().nullable(),
   });
 }
 
 export function FindingSchema(): z.ZodObject<Properties<Finding>> {
   return z.object({
     __typename: z.literal("Finding").optional(),
-    comment: z.string().nullish(),
+    comment: z.string().nullable(),
     isAligned: z.boolean(),
   });
 }

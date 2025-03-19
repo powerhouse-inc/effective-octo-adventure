@@ -98,14 +98,14 @@ export function AtlasFoundationStateSchema(): z.ZodObject<
   return z.object({
     __typename: z.literal("AtlasFoundationState").optional(),
     atlasType: FAtlasTypeSchema,
-    content: z.string().nullish(),
-    docNo: z.string().nullish(),
+    content: z.string().nullable(),
+    docNo: z.string().nullable(),
     globalTags: z.array(FGlobalTagSchema),
     masterStatus: FStatusSchema,
-    name: z.string().nullish(),
-    notionId: z.string().nullish(),
+    name: z.string().nullable(),
+    notionId: z.string().nullable(),
     originalContextData: z.array(FDocumentLinkSchema()),
-    parent: FDocumentLinkSchema().nullish(),
+    parent: FDocumentLinkSchema().nullable(),
     provenance: z.array(z.string().url()),
     references: z.array(FDocumentLinkSchema()),
   });
@@ -114,9 +114,9 @@ export function AtlasFoundationStateSchema(): z.ZodObject<
 export function FDocumentLinkSchema(): z.ZodObject<Properties<FDocumentLink>> {
   return z.object({
     __typename: z.literal("FDocumentLink").optional(),
-    docNo: z.string().nullish(),
+    docNo: z.string().nullable(),
     id: z.string(),
-    name: z.string().nullish(),
+    name: z.string().nullable(),
   });
 }
 

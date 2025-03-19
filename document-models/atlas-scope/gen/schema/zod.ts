@@ -84,23 +84,23 @@ export function AtlasScopeStateSchema(): z.ZodObject<
 > {
   return z.object({
     __typename: z.literal("AtlasScopeState").optional(),
-    content: z.string().nullish(),
-    docNo: z.string().nullish(),
+    content: z.string().nullable(),
+    docNo: z.string().nullable(),
     globalTags: z.array(GlobalTagSchema),
-    masterStatus: StatusSchema.nullish(),
-    name: z.string().nullish(),
-    notionId: z.string().nullish(),
+    masterStatus: StatusSchema.nullable(),
+    name: z.string().nullable(),
+    notionId: z.string().nullable(),
     originalContextData: z.array(DocumentInfoSchema()),
-    provenance: z.string().url().nullish(),
+    provenance: z.string().url().nullable(),
   });
 }
 
 export function DocumentInfoSchema(): z.ZodObject<Properties<DocumentInfo>> {
   return z.object({
     __typename: z.literal("DocumentInfo").optional(),
-    docNo: z.string().nullish(),
+    docNo: z.string().nullable(),
     id: z.string(),
-    name: z.string().nullish(),
+    name: z.string().nullable(),
   });
 }
 

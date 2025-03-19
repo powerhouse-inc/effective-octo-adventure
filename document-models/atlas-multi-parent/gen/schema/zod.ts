@@ -104,12 +104,12 @@ export function AtlasMultiParentStateSchema(): z.ZodObject<
   return z.object({
     __typename: z.literal("AtlasMultiParentState").optional(),
     atlasType: MAtlasTypeSchema,
-    content: z.string().nullish(),
-    docNo: z.string().nullish(),
+    content: z.string().nullable(),
+    docNo: z.string().nullable(),
     globalTags: z.array(MGlobalTagSchema),
     masterStatus: MStatusSchema,
-    name: z.string().nullish(),
-    notionId: z.string().nullish(),
+    name: z.string().nullable(),
+    notionId: z.string().nullable(),
     originalContextData: z.array(MDocumentLinkSchema()),
     parents: z.array(MDocumentLinkSchema()),
     provenance: z.array(z.string().url()),
@@ -120,9 +120,9 @@ export function AtlasMultiParentStateSchema(): z.ZodObject<
 export function MDocumentLinkSchema(): z.ZodObject<Properties<MDocumentLink>> {
   return z.object({
     __typename: z.literal("MDocumentLink").optional(),
-    docNo: z.string().nullish(),
+    docNo: z.string().nullable(),
     id: z.string(),
-    name: z.string().nullish(),
+    name: z.string().nullable(),
   });
 }
 

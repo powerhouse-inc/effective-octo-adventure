@@ -33,7 +33,7 @@ export class ReactorClient {
   constructor(endpointUrl: string | undefined, driveName: string) {
     this.endpointUrl = endpointUrl;
     this.driveEndpointUrl = path.join(endpointUrl || "", "d", driveName);
-    this.systemEndpointUrl = path.join(endpointUrl || "", "system");
+    this.systemEndpointUrl = new URL("./system", endpointUrl || "").href;
   }
 
   public async queryReactor<ReturnType>(

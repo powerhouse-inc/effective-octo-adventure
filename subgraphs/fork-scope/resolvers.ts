@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type Subgraph } from "@powerhousedao/reactor-api";
 import { syncDocuments } from "../../scripts/apply-changes/syncDocuments.js";
-import path from "path";
 
 if (process.env.NODE_ENV === "development") {
   const dotenv = await import("dotenv");
@@ -14,7 +13,10 @@ const herokuOrLocal = process.env.HEROKU_APP_NAME
   ? `https://${process.env.HEROKU_APP_NAME}.herokuapp.com`
   : `http://localhost:${PORT}`;
 // Reactor where the documents will be synchronized to
-const endPointWithBasePath = path.join(herokuOrLocal, process.env.BASE_PATH ?? "")
+const basePath = process.env.BASE_PATH ? 
+  (process.env.BASE_PATH[0] == "/" ? process.env.BASE_PATH.slice(1) : process.env.BASE_PATH)
+  : "";
+const endPointWithBasePath = new URL("./" + basePath, herokuOrLocal).href
 const GQL_ENDPOINT = endPointWithBasePath;
 
 console.log("> GQL_ENDPOINT: ", GQL_ENDPOINT);
@@ -38,8 +40,10 @@ export const getResolvers = (subgraph: Subgraph) => {
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         const driveId: string = args.driveId || DRIVE_NAME;
+
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         const docId = args.docId;
+        
         const config = {
           driveName: driveId,
           gqlEndpoint: GQL_ENDPOINT,

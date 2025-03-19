@@ -8,10 +8,9 @@ import {
   getPNDTitle,
   documentIndex as notionDocsIndex,
 } from "../../document-models/utils.js";
-import path from "path";
 
 export type DocumentSyncConfig = {
-  gqlEndpoint?: string;
+  gqlEndpoint: string;
   driveName: string;
   preferredEditor: string;
   processLimit: number;
@@ -27,7 +26,7 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
     console.log(`Drive ${config.driveName} already exists.`);
   } else {
     const systemClient = new SystemGraphClient(
-      path.join(config.gqlEndpoint || "", "system")
+      new URL("./system", config.gqlEndpoint).href
     );
     console.log(`Creating drive ${config.driveName}...`);
     const newDriveResult = await systemClient.createDrive(
@@ -45,13 +44,13 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
 
   const clients = {
     scopes: new AtlasScopeClient(
-      path.join(config.gqlEndpoint || "", "atlas-scope"),
+      new URL("./atlas-scope", config.gqlEndpoint).href,
       documentsCache,
       readClient,
       config.driveName,
     ),
     foundation: new AtlasFoundationClient(
-      path.join(config.gqlEndpoint || "", "atlas-foundation"),
+      new URL("./atlas-foundation", config.gqlEndpoint).href,
       documentsCache,
       readClient,
       config.driveName,
@@ -131,6 +130,6 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
     console.log(`Document cache saved to file.`);
   }
 
-  const driveUrl = path.join(config.gqlEndpoint || "", `d/${config.driveName}`);
+  const driveUrl = new URL(`./d/${config.driveName}`, config.gqlEndpoint).href;
   console.log(`Documents loaded in drive: ${driveUrl}`);
 };

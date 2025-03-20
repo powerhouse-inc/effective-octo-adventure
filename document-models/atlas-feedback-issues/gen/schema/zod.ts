@@ -95,7 +95,7 @@ export function CreateIssueInputSchema(): z.ZodObject<
 > {
   return z.object({
     createdAt: z.string().datetime(),
-    notionIds: z.array(z.string().nullable()),
+    notionIds: z.array(z.string().nullish()),
     phid: z.string(),
   });
 }

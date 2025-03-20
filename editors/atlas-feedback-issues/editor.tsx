@@ -377,7 +377,7 @@ export default function Editor(props: AtlasFeedbackIssuesEditorProps) {
           </div>
         </section>
       ) : (
-        <Login />
+        <Login forbidden={!!user} />
       )}
     </WagmiContext>
   );

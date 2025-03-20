@@ -1,4 +1,4 @@
-import { Icon } from "@powerhousedao/design-system";
+import { Icon, FileItem, type UiFileNode } from "@powerhousedao/design-system";
 import {
   cn,
   type NodeStatus,
@@ -15,17 +15,20 @@ import { CreateDocumentModal } from "@powerhousedao/design-system";
 import { CreateDocument } from "./create-document.js";
 import { Home } from "./home.js";
 import { documentModel as AtlasFeedbackIssues } from "../../../document-models/atlas-feedback-issues/gen/document-model.js";
+import type { Node } from "document-drive";
 
 export interface EditorLayoutProps {
   readonly driveId: string;
   readonly children: React.ReactNode;
   readonly context: EditorContext;
+  readonly nodes: Node[]
 }
 
 export function EditorLayout({
   children,
   driveId,
   context,
+  nodes: driveNodes,
 }: EditorLayoutProps) {
   const { useDriveDocumentStates, addDocument, documentModels } =
     useDriveContext();
@@ -61,8 +64,7 @@ export function EditorLayout({
     "docNo" in selectedNode.global ? 
     `${selectedNode.global.docNo} - ${selectedNode.global.name}`
     : "Atlas Feedback Issues"
-    
-
+   
   const onActiveNodeChange = useCallback((node: SidebarNode) => {
     setActiveNodeId(node.id);
   }, []);
@@ -140,6 +142,35 @@ export function EditorLayout({
               />
             ) : (
               <Home>
+                {Object.entries(feedbackIssues).length > 0 && (
+                  <div className="my-4 px-6">
+                    <h2 className="mb-3 mt-4 text-sm font-bold text-gray-600">
+                      Feedback Issues
+                    </h2>
+                  <div className="flex flex-wrap gap-4">
+                    {Object.entries(feedbackIssues).map(([id, issue]) => (
+                      <FileItem key={id} uiNode={{
+                        kind: "FILE",
+                        id,
+                        name: driveNodes.find(node => node.id === id)?.name || "",
+                        documentType: issue.documentType,
+                        parentFolder: "",
+                        driveId,
+                        syncStatus: undefined,
+                        synchronizationUnits: [],
+                        sharingType: "LOCAL"
+                      }} onSelectNode={node => setActiveNodeId(node.id)}
+                      onRenameNode={function (name: string, uiNode: UiFileNode): void {
+                        throw new Error("Function not implemented.");
+                      } } onDuplicateNode={function (uiNode: UiFileNode): void {
+                        throw new Error("Function not implemented.");
+                      } } onDeleteNode={function (uiNode: UiFileNode): void {
+                        throw new Error("Function not implemented.");
+                      } } isAllowedToCreateDocuments={false}  />
+                    ))}
+                    </div>
+                  </div>
+                )}
                 <CreateDocument
                   /* @ts-expect-error */
                   createDocument={onSelectDocumentModel}

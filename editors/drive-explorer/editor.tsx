@@ -15,6 +15,7 @@ export default function Editor(props: IProps) {
         <EditorLayout
           context={props.context}
           driveId={props.document.state.global.id}
+          nodes={props.document.state.global.nodes}
         >
           <style>
             {`

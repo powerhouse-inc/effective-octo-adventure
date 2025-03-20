@@ -19,6 +19,8 @@
   }
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 .atlas-header {
   margin: 1em 5%;
   font-size: xx-large;

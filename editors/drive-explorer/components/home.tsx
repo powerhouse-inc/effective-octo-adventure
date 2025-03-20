@@ -1,6 +1,7 @@
 import type React from "react";
 import { Atlas } from "./icons/atlas.js";
 import { Skeleton } from "./icons/skeleton.js";
+import { SidebarArrows } from "./icons/sidebar-arrows.js";
 
 export interface HomeProps {
   readonly children?: React.ReactNode;
@@ -16,8 +17,11 @@ export const Home: React.FC<HomeProps> = ({ children }) => (
             Atlas Explorer
           </div>
         </h2>
-        <div>
+        <div className="relative">
           <Skeleton />
+          <div className="absolute left-full -top-[1px]">
+            <SidebarArrows />
+          </div>
         </div>
       </div>
       <div className="flex justify-center items-center bg-slate-50 flex-1 rounded-xl">

@@ -8,12 +8,13 @@ import {
 } from "@powerhousedao/design-system/scalars";
 import { useCallback, useState, useRef, useMemo } from "react";
 import { useDriveContext } from "@powerhousedao/reactor-browser";
-import { type AtlasArticle } from "./types.js";
+import { type AtlasFeedbackIssue, type AtlasArticle } from "./types.js";
 import { EditorContainer } from "./EditorContainer.js";
 import { type DocumentModelModule, type EditorContext } from "document-model";
 import { CreateDocumentModal } from "@powerhousedao/design-system";
 import { CreateDocument } from "./create-document.js";
 import { Home } from "./home.js";
+import { documentModel as AtlasFeedbackIssues } from "../../../document-models/atlas-feedback-issues/gen/document-model.js";
 
 export interface EditorLayoutProps {
   readonly driveId: string;
@@ -33,18 +34,34 @@ export function EditorLayout({
   const selectedDocumentModel = useRef<DocumentModelModule | null>(null);
 
   const [state, fetchDocuments] = useDriveDocumentStates({ driveId });
-
-  const nodes = useMemo(() => {
-    return buildSidebarTree(state as Record<string, AtlasArticle>);
+  const { atlasNodes, feedbackIssues } = useMemo(() => {
+    return Object.keys(state).reduce(
+      (acc, curr) => {
+        const document = state[curr];
+        if (document.documentType.startsWith("sky/atlas")) {
+          acc.atlasNodes[curr] = document as AtlasArticle;
+        } else if (document.documentType === AtlasFeedbackIssues.id) {
+          acc.feedbackIssues[curr] = document as AtlasFeedbackIssue;
+        }
+        return acc;
+      },
+      { atlasNodes: {} as Record<string, AtlasArticle>, feedbackIssues: {} as Record<string, AtlasFeedbackIssue> }
+    );
   }, [state]);
 
+  const nodes = useMemo(() => {
+    return buildSidebarTree(atlasNodes);
+  }, [atlasNodes]);
+
   const selectedNode = activeNodeId
-    ? (state[activeNodeId] as AtlasArticle)
+    ? (state[activeNodeId] as AtlasArticle | AtlasFeedbackIssue)
     : null;
 
-  const title = selectedNode
-    ? `${selectedNode.global.docNo} - ${selectedNode.global.name}`
-    : "Welcome to the Atlas Explorer";
+  const title = !selectedNode ? "Welcome to the Atlas Explorer" :
+    "docNo" in selectedNode.global ? 
+    `${selectedNode.global.docNo} - ${selectedNode.global.name}`
+    : "Atlas Feedback Issues"
+    
 
   const onActiveNodeChange = useCallback((node: SidebarNode) => {
     setActiveNodeId(node.id);
@@ -86,21 +103,6 @@ export function EditorLayout({
   return (
     <SidebarProvider>
       <main className="-m-4 flex size-[calc(100%+32px)] overflow-hidden rounded-2xl">
-        {/* 
-          TODO: remove this div once we fix tailwind css issues
-          we need to add classes that are not being applied correctly
-          to the sidebar or other `design-system` components
-        */}
-        <div
-          className={cn(
-            "d-none relative h-full w-px translate-x-[5px] transition-colors group-hover/sidebar-resizer:bg-gray-500",
-            "absolute right-0 top-14 size-4 translate-x-1/2 rounded-full bg-gray-500 opacity-0 transition-opacity group-hover/sidebar-resizer:opacity-100",
-            "group/sidebar-resizer absolute right-0 top-0 h-full w-[10px] translate-x-1/2 cursor-ew-resize select-none",
-            "flex h-9 w-full appearance-none rounded-md border border-gray-300 bg-white px-3 py-2 pl-8! font-sans text-sm font-normal leading-5 text-gray-900 placeholder:text-gray-500 focus:bg-gray-50 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-gray-900 focus-visible:ring-offset-0 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:border-gray-300 disabled:bg-white disabled:text-gray-700",
-            "w-[26px] rounded-lg bg-slate-50 p-1 text-center text-xs text-slate-100 hover:bg-slate-100 hover:text-slate-200",
-            "min-h-4 min-w-4",
-          )}
-        />
         <Sidebar
           activeNodeId={activeNodeId}
           enableMacros={4}
@@ -122,7 +124,7 @@ export function EditorLayout({
         >
           <>
             {!activeNodeId && (
-              <h1 className="atlas-drive-explorer-header mt-12 text-base text-gray-900 dark:text-gray-50">
+              <h1 className="mt-4 mb-4 text-lg text-gray-900 font-medium dark:text-gray-50">
                 {title}
               </h1>
             )}

@@ -1,3 +1,5 @@
+import type { AtlasFeedbackIssuesDocument } from "../../../document-models/atlas-feedback-issues/index.js";
+
 export type AtlasArticle = {
   documentType: string;
   revision: {
@@ -22,3 +24,5 @@ export type AtlasArticle = {
     notionId: string;
   };
 };
+
+export type AtlasFeedbackIssue = AtlasFeedbackIssuesDocument["state"] & Pick<AtlasFeedbackIssuesDocument, "documentType" | "revision" | "created" | "lastModified">;

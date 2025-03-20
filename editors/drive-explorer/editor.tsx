@@ -9,7 +9,7 @@ export default function Editor(props: IProps) {
   return (
     <div
       className="atlas-drive-explorer"
-      style={{ padding: "0.75rem 0.75rem 0 0.75rem", boxSizing: "content-box" }}
+      style={{ height: "100%" }}
     >
       <WagmiContext>
         <EditorLayout
@@ -26,13 +26,6 @@ export default function Editor(props: IProps) {
                 border: 1px solid #EEEEEE;
               }
               
-              .atlas-drive-explorer > main > aside {
-                height: calc(100svh - 2.25rem - 18px);
-              }
-              .atlas-drive-explorer > main > div {
-                height: calc(100svh - 2.25rem - 18px);
-                overflow-y: auto;
-              }
               .d-none {
                 display: none;
               }

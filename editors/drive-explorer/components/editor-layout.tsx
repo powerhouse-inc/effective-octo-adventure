@@ -104,8 +104,9 @@ export function EditorLayout({
 
   return (
     <SidebarProvider>
-      <main className="-m-4 flex size-[calc(100%+32px)] overflow-hidden rounded-2xl">
+      <main className="flex overflow-hidden h-full">
         <Sidebar
+          className="flex-0"
           activeNodeId={activeNodeId}
           enableMacros={4}
           nodes={nodes}
@@ -120,13 +121,10 @@ export function EditorLayout({
         />
         <div
           className="flex-1 bg-gray-50 p-4 dark:bg-slate-800"
-          style={{
-            width: "calc(100% - var(--sidebar-width))",
-          }}
         >
           <>
             {!activeNodeId && (
-              <h1 className="mt-4 mb-4 text-lg text-gray-900 font-medium dark:text-gray-50">
+              <h1 className="mt-1 mb-4 text-lg text-gray-900 font-medium dark:text-gray-50">
                 {title}
               </h1>
             )}

@@ -46,6 +46,7 @@
         "connect": "ph-cli connect",
         "reactor": "ph-cli reactor",
         "service": "ph-cli service",
+        "dev": "concurrently --kill-others \"npm run reactor\" \"wait-on tcp:4001 && npm run connect\" \"wait-on tcp:4001 && npm run build:css:watch\" \"wait-on tcp:4001 && npm run build:tsc:watch\"",
         "service-startup": "bash ./node_modules/@powerhousedao/ph-cli/dist/scripts/service-startup.sh",
         "service-unstartup": "bash ./node_modules/@powerhousedao/ph-cli/dist/scripts/service-unstartup.sh",
         "script:apply-changes": "bun run ./scripts/apply-changes.ts",
@@ -71,9 +72,9 @@
         "document-model": "dev",
         "graphql-ts-client": "^10.4.0",
         "lodash": "^4.17.21",
-        "ts-essentials": "^10.0.4",
         "react-hook-form": "^7.54.1",
         "tailwind-merge": "^2.5.5",
+        "ts-essentials": "^10.0.4",
         "usehooks-ts": "^3.1.0",
         "viem": "^2.21.55",
         "wagmi": "^2.14.1",
@@ -116,7 +117,8 @@
         "vite": "^6.2.2",
         "vite-plugin-commonjs": "^0.10.4",
         "vite-plugin-graphql-loader": "^4.0.4",
-        "vitest": "^3.0.9"
+        "vitest": "^3.0.9",
+        "wait-on": "^8.0.3"
     },
     "peerDependencies": {
         "react": "^18.3.1",

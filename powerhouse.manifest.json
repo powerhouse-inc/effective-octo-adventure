@@ -61,5 +61,11 @@
       "name": "Atlas App",
       "driveEditor": "AtlasDriveExplorer"
     }
+  ],
+  "commands": [
+    {
+      "id": "import-example",
+      "name": "Import Example Script"
+    }
   ]
 }

@@ -51,12 +51,15 @@
         "script:apply-changes": "bun run ./scripts/apply-changes.ts",
         "script:fetch-data": "bun run ./scripts/fetch-data.ts",
         "script:generate-gql-clients": "bun run ./scripts/gen-clients.ts",
-        "script:generate-all": "bash ./docmodel-zips/generate-all.sh"
+        "script:generate-all": "bash ./docmodel-zips/generate-all.sh",
+        "cmd": "bun run ./commands/index.ts"
     },
     "dependencies": {
+        "@commander-js/extra-typings": "^13.1.0",
         "@powerhousedao/common": "dev",
         "@powerhousedao/design-system": "dev",
         "@powerhousedao/reactor-browser": "dev",
+        "commander": "^13.1.0",
         "diff": "^7.0.0",
         "document-drive": "dev",
         "document-model": "dev",

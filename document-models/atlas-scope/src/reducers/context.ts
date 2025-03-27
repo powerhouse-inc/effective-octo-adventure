@@ -7,23 +7,28 @@
 import { type AtlasScopeContextOperations } from "../../gen/context/operations.js";
 
 export const reducer: AtlasScopeContextOperations = {
+  // TODO:Disable the save in the history
   addContextDataOperation(state, action, dispatch) {
-    // TODO: Implement "addContextDataOperation" reducer
-    throw new Error('Reducer "addContextDataOperation" not yet implemented');
+    state.originalContextData = state.originalContextData.filter(
+      (ocd) => ocd.id !== action.input.id,
+    );
+
+    state.originalContextData.push({
+      id: action.input.id,
+      name: action.input.name || null,
+      docNo: action.input.docNo || null,
+    });
   },
   removeContextDataOperation(state, action, dispatch) {
-    // TODO: Implement "removeContextDataOperation" reducer
-    throw new Error('Reducer "removeContextDataOperation" not yet implemented');
+    state.originalContextData = state.originalContextData.filter(
+      (ocd) => ocd.id !== action.input.id,
+    );
   },
   setProvenanceOperation(state, action, dispatch) {
-    // TODO: Implement "setProvenanceOperation" reducer
-    throw new Error('Reducer "setProvenanceOperation" not yet implemented');
+    state.provenance = action.input.provenance || null;
   },
+
   setNotionIdOperation(state, action, dispatch) {
-    if (action.input.notionID) {
-      state.notionId = action.input.notionID;
-    } else {
-      throw new Error("Notion ID missing from input.");
-    }
+    state.notionId = action.input.notionID || null;
   },
 };

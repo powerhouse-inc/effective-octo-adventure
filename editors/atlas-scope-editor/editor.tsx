@@ -20,7 +20,6 @@ export default function Editor(props: IProps) {
   const {
     state: { global: state },
   } = document;
-
   // TOOD: Remove this when the data is ready
   const stateGlobal = {
     "name": "Atlas Explorer - The Support Scope",
@@ -42,17 +41,17 @@ export default function Editor(props: IProps) {
   // TODO: Implement this in future iterations
   const handleToggleChange = (option: string, index: number) => { }
 
-  return (
-    <Form onSubmit={() => {
+  
 
-    }}
+  return (
+    <Form submitChangesOnly onSubmit={() => {}}
       defaultValues={{
         docNo: stateGlobal.docNo,
         scope: stateGlobal.name,
         masterStatus: stateGlobal.masterStatus,
-        content: stateGlobal,
+        content: stateGlobal.content,
         provenance: stateGlobal.provenance,
-        originalContextData: stateGlobal,
+        originalContextData: stateGlobal.originalContextData[0],
         globalTags: stateGlobal.globalTags,
       }}
     >
@@ -113,7 +112,7 @@ export default function Editor(props: IProps) {
                 className="w-full"
                 name="docNo"
                 label="Doc No"
-                onChange={(e) => {
+                onBlur={(e) => {
                   props.dispatch(actions.setDocNumber({ docNo: e.target.value }));
                 }}
 
@@ -227,21 +226,16 @@ export default function Editor(props: IProps) {
                   { label: "SUBDAO_REWARDS", value: "SUBDAO_REWARDS" },
                   { label: "TWO_STAGE_BRIDGE", value: "TWO_STAGE_BRIDGE" },
                 ]}
-                onChange={(values) => {
+                onChange={(value: string | string[]) => {
+                  const tags = Array.isArray(value) ? value : [value];
                   props.dispatch(actions.addTags({
-                    newTags: values as GlobalTag[]
+                    newTags: tags as GlobalTag[]
                   }));
-
                 }}
               />
             </div>
             <div className="flex-col gap-2 flex-1 hidden">
               <UrlField
-                onBlur={() => {
-                  props.dispatch(actions.addTags({
-                    newTags: stateGlobal.globalTags as GlobalTag[]
-                  }));
-                }}
                 disabled={!isEditMode}
                 label="Document Information"
                 name="documentInformation"

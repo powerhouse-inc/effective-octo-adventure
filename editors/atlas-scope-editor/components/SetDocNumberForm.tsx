@@ -1,27 +1,42 @@
- 
+
 import { Form, StringField } from "@powerhousedao/design-system/scalars";
-import { type SetDocNumberInput } from "document-models/atlas-scope/index.js";
+import {
+  actions,
+
+  type SetDocNumberInput,
+} from "document-models/atlas-scope/index.js";
+import { useCallback } from "react";
 
 type Props = {
   readonly defaultValue: SetDocNumberInput;
   readonly dispatch: (input: SetDocNumberInput) => void;
+  readonly isEditing: boolean;
+  readonly name: string;
+  readonly label: string;
+  readonly placeholder: string;
 };
 
 export function SetDocNumberForm(props: Props) {
-  function onSubmit(input: SetDocNumberInput) {
-    props.dispatch(input);
-  }
+  const onSubmit = useCallback(
+    (data: SetDocNumberInput) => {
+      if (Object.keys(data).length === 0) return;
+
+      props.dispatch({ docNo: data.docNo });
+    },
+    [props.dispatch],
+  );
 
   return (
-    <Form onSubmit={onSubmit} submitChangesOnly>
-      {({ handleSubmit }) => (
+    <Form onSubmit={onSubmit} submitChangesOnly defaultValues={{ [props.name]: props.defaultValue.docNo }}>
+      {({ triggerSubmit }) => (
         <StringField
-          defaultValue={props.defaultValue.docNo}
-          label="Doc №"
-          name="docNo"
-          // @ts-expect-error
-          onBlur={() => handleSubmit(onSubmit)()}
-          placeholder="A."
+          disabled={!props.isEditing}
+          name={props.name}
+          label={props.label}
+          onBlur={() => {
+            triggerSubmit();
+          }}
+          placeholder={props.placeholder}
         />
       )}
     </Form>

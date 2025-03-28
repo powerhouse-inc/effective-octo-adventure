@@ -1,26 +1,40 @@
 import { EnumField, Form } from "@powerhousedao/design-system/scalars";
 import { type AddTagsInput } from "document-models/atlas-scope/index.js";
+import { useCallback } from "react";
 
 type Props = {
   readonly defaultValue: AddTagsInput;
   readonly dispatch: (input: AddTagsInput) => void;
+  readonly label: string;
+  readonly name: string;
+  readonly placeholder: string;
+  readonly isEditing: boolean;
 };
 
 export function SetTagsForm(props: Props) {
-  function onSubmit(input: AddTagsInput) {
-    props.dispatch(input);
-  }
+  const onSubmit = useCallback(
+    (data: AddTagsInput) => {
+      if (Object.keys(data).length === 0) return;
+      
+      // Check if new tags are equal to previous ones
+      const areTagsEqual = JSON.stringify(data.newTags?.sort()) === JSON.stringify(props.defaultValue.newTags?.sort());
+      if (areTagsEqual) return;
+      props.dispatch(data);
+    },
+    [props.dispatch],
+  );
+
 
   return (
     <Form onSubmit={onSubmit} submitChangesOnly>
-      {({ handleSubmit }) => (
+      {({ triggerSubmit }) => (
         <EnumField
+          disabled={!props.isEditing}
           defaultValue={props.defaultValue.newTags}
-          label="Tags"
+          label={props.label}
           multiple
-          name="newTags"
-          /* @ts-expect-error */
-          onChange={() => handleSubmit(onSubmit)()}
+          name={props.name}
+          onChange={() => triggerSubmit()}
           options={[
             {
               label: "RECURSIVE_IMPROVEMENT",

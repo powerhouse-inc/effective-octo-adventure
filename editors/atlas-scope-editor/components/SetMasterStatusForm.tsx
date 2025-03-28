@@ -1,26 +1,33 @@
- 
 import { EnumField, Form } from "@powerhousedao/design-system/scalars";
 import { type SetMasterStatusInput } from "document-models/atlas-scope/index.js";
+import { useCallback } from "react";
 
 type Props = {
   readonly defaultValue: SetMasterStatusInput;
   readonly dispatch: (input: SetMasterStatusInput) => void;
+  readonly isEditing: boolean;
 };
 
 export function SetMasterStatusForm(props: Props) {
-  function onSubmit(input: SetMasterStatusInput) {
-    props.dispatch(input);
-  }
+  const onSubmit = useCallback(
+    (data: SetMasterStatusInput) => {
+      if (Object.keys(data).length === 0) return;
+
+      props.dispatch(data);
+    },
+    [props.dispatch],
+  );
 
   return (
     <Form onSubmit={onSubmit} submitChangesOnly>
-      {({ handleSubmit }) => (
+           {({ triggerSubmit }) =>(
         <EnumField
+        
+          disabled={!props.isEditing} 
           defaultValue={props.defaultValue.masterStatus}
           label="Status"
           name="masterStatus"
-          /* @ts-expect-error */
-          onChange={() => handleSubmit(onSubmit)()}
+          onChange={() => triggerSubmit()}
           options={[
             { value: "PLACEHOLDER", label: "PLACEHOLDER" },
             { value: "PROVISIONAL", label: "PROVISIONAL" },

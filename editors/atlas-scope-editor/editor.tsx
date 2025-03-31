@@ -24,6 +24,10 @@ import { SetOriginalContextDataForm } from './components/SetOriginalContextData.
 
 export type IProps = EditorProps<AtlasScopeDocument>;
 export default function Editor(props: IProps) {
+  const [splitMode, setSplitMode] = useState(0);
+  const [editMode, setIsEditMode] = useState(0)
+
+  const isEditMode = editMode === 1
   const { document, dispatch } = props;
   const {
     state: { global: state },
@@ -40,15 +44,12 @@ export default function Editor(props: IProps) {
     "notionId": "693d4371c8424ea44974be425cf89aad",
     "scope": "The Governance Scope"
   }
-  const [isEditMode, setIsEditMode] = useState(false)
 
   // function to get the values
   const originalNode = getOriginalNotionDocument(
     props.document.state.global.notionId || "1b3f2ff0-8d73-80e6-86b0-c28bf9a97896",
     "scope",
   );
-  // TODO: Implement this in future iterations
-  const handleToggleChange = (option: string, index: number) => { }
 
 
 
@@ -88,13 +89,16 @@ export default function Editor(props: IProps) {
 
               </DropdownContent>
             </Dropdown>
-            <div >
-              <ToggleSwitch options={["Split", "Unified"]} defaultSelected={1} onChange={handleToggleChange} />
+            <div>
+              <ToggleSwitch options={["Unified", "Split"]} defaultSelected={0} onChange={(selectedIndex) => {
+
+                setSplitMode(selectedIndex)
+              }} />
             </div>
             <div>
-              <Button style={{ backgroundColor: "white", color: "#0084FF", border: "1px solid #99CEFF", fontSize: "14px", lineHeight: "20x", height: 36, width: 50, borderRadius: "8px" }} onClick={() => setIsEditMode(!isEditMode)}>
-                {isEditMode ? "Done" : "Edit"}
-              </Button>
+              <ToggleSwitch options={["Read Only", "Edit"]} defaultSelected={0} onChange={(option) => {
+                setIsEditMode(option);
+              }} />
             </div>
           </div>
         </div>
@@ -154,18 +158,18 @@ export default function Editor(props: IProps) {
           </div>
           <div className="flex flex-col gap-2 flex-1">
             {/* TODO: Add the original context data form when the original context data is ready */}
-            <SetOriginalContextDataForm 
-            defaultValue={stateGlobal.originalContextData[0]}
-            dispatch={(input) => props.dispatch(actions.addContextData({
-              id: input,
-              name: "Original Context Data"
-            }))}
-            isEditing={isEditMode}
-            name="originalContextData"
-            label="Original Context Data"
-            placeholder="Enter original context data"
+            <SetOriginalContextDataForm
+              defaultValue={stateGlobal.originalContextData[0]}
+              dispatch={(input) => props.dispatch(actions.addContextData({
+                id: input,
+                name: "Original Context Data"
+              }))}
+              isEditing={isEditMode}
+              name="originalContextData"
+              label="Original Context Data"
+              placeholder="Enter original context data"
             />
-            </div>
+          </div>
           <div className="flex flex-col gap-2 flex-1">
             <SetTagsForm defaultValue={{ newTags: stateGlobal.newTags as GlobalTag[] }}
               dispatch={(input) => props.dispatch(actions.addTags(input))}

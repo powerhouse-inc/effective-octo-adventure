@@ -23,5 +23,12 @@
     }
   },
   "include": ["**/*"],
-  "exclude": ["dist", "node_modules", "data", "**/data", "eslint.config.js", "scripts/fetch-data.ts"]
+  "exclude": [
+    "dist",
+    "node_modules",
+    "data",
+    "**/data",
+    "eslint.config.js",
+    "scripts/fetch-data.ts"
+  ]
 }

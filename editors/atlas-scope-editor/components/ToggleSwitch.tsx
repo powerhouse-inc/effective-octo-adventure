@@ -1,59 +1,46 @@
 "use client"
-
 import { useState } from "react"
-
 interface ToggleProps {
   options: string[]
   defaultSelected?: number
-  onChange?: (selectedOption: string, selectedIndex: number) => void
+  onChange?: (selectedIndex: number) => void
+
 }
 
-export default function ToggleSwitch({ options = ["Split", "Unified"], defaultSelected = 1, onChange }: ToggleProps) {
+export default function ToggleSwitch({ options = [], defaultSelected = 1, onChange }: ToggleProps) {
+  if (options.length === 0) {
+    return null
+  }
   const [selectedIndex, setSelectedIndex] = useState(defaultSelected)
 
   const handleOptionClick = (index: number) => {
     setSelectedIndex(index)
     if (onChange) {
-      onChange(options[index], index)
+      onChange(index)
     }
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        borderRadius: "8px",
-        backgroundColor: "#f0f0f0",
-        padding: "3px",
-        width: "fit-content",
-        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)",
-      }}
+    <div className="flex items-center p-0.5 bg-slate-50 w-fit h-9 rounded-[6px] border-[1px] border-slate-200 box-border"
     >
       {options.map((option, index) => (
+
         <button
           key={index}
           onClick={() => handleOptionClick(index)}
-          style={{
-            padding: "6px 16px",
-            border: "none",
-            borderRadius: "6px",
-            backgroundColor: selectedIndex === index ? "white" : "transparent",
-            color: selectedIndex === index ? "#000000" : "#9ca3af",
-            fontWeight: selectedIndex === index ? "500" : "400",
-            cursor: "pointer",
-            transition: "all 0.2s ease",
-            fontSize: "14px",
-            boxShadow: selectedIndex === index ? "0 1px 2px rgba(0, 0, 0, 0.05)" : "none",
-            outline: "none",
-            height: "30px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+          className={`
+            flex items-center justify-center h-8 px-3 rounded-md whitespace-nowrap min-w-fit
+            font-medium text-sm cursor-pointer transition-all duration-200 outline-none
+            ${selectedIndex === index 
+              ? 'bg-white text-gray-900 shadow-sm' 
+              : 'bg-transparent text-gray-400'
+            }
+          `}
         >
           {option}
         </button>
-      ))}
+      )
+      )}
     </div>
   )
 }

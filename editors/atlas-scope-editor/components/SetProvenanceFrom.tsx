@@ -26,7 +26,7 @@ export function SetProvenanceFrom(props: Props) {
                 <UrlField
                     defaultValue={props.defaultValue.provenance ?? undefined}
                     name={props.name}
-                    onBlur={() => triggerSubmit()}
+                    onBlur={triggerSubmit}
                     label={props.label}
                     disabled={!props.isEditing}
                     placeholder={props.placeholder}

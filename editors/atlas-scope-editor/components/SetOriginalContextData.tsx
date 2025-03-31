@@ -27,9 +27,7 @@ export function SetOriginalContextDataForm(props: Props) {
           label={props.label}
           disabled={!props.isEditing}
           name={props.name}
-          onBlur={() => {
-            triggerSubmit();
-          }}
+          onBlur={triggerSubmit}
           allowUris={true}
           placeholder={props.placeholder}
         />

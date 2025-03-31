@@ -34,7 +34,7 @@ export function SetTagsForm(props: Props) {
           label={props.label}
           multiple
           name={props.name}
-          onChange={() => triggerSubmit()}
+          onBlur={triggerSubmit}
           options={[
             {
               label: "RECURSIVE_IMPROVEMENT",

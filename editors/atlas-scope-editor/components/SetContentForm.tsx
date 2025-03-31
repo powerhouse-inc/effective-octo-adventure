@@ -29,7 +29,7 @@ export function SetContentForm(props: Props) {
           rows={4}
           multiline
           name={props.name}
-          onBlur={() => triggerSubmit()}
+          onBlur={triggerSubmit}
           label={props.label}
           disabled={!props.isEditing}
           placeholder={props.placeholder}

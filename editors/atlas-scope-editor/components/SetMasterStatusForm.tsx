@@ -27,7 +27,7 @@ export function SetMasterStatusForm(props: Props) {
           defaultValue={props.defaultValue.masterStatus}
           label="Status"
           name="masterStatus"
-          onChange={() => triggerSubmit()}
+          onBlur={triggerSubmit}
           options={[
             { value: "PLACEHOLDER", label: "PLACEHOLDER" },
             { value: "PROVISIONAL", label: "PROVISIONAL" },

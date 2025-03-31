@@ -1,36 +1,36 @@
-import { Form, StringField } from "@powerhousedao/design-system/scalars";
-import { type SetScopeNameInput } from "document-models/atlas-scope/index.js";
+import { Form, PHIDField } from "@powerhousedao/design-system/scalars";
 import { useCallback } from "react";
 
 type Props = {
-  readonly defaultValue: SetScopeNameInput;
-  readonly dispatch: (input: SetScopeNameInput) => void;
+  readonly defaultValue: string;
+  readonly dispatch: (input: string) => void;
   readonly isEditing: boolean;
   readonly name: string;
   readonly placeholder: string;
   readonly label: string;
 };
 
-export function SetScopeNameForm(props: Props) {
+export function SetOriginalContextDataForm(props: Props) {
   const onSubmit = useCallback(
-    (data: SetScopeNameInput) => {
+    (data: string) => {
       if (Object.keys(data).length === 0) return;
-
-      props.dispatch({ name: data.name });
+      
+      props.dispatch(data);
     },
     [props.dispatch],
   );
 
   return (
-    <Form onSubmit={onSubmit} submitChangesOnly defaultValues={{ [props.name]: props.defaultValue.name }}>
+    <Form onSubmit={onSubmit} submitChangesOnly defaultValues={{ [props.name]: props.defaultValue }}>
       {({ triggerSubmit }) => (
-        <StringField
+        <PHIDField
           label={props.label}
           disabled={!props.isEditing}
           name={props.name}
           onBlur={() => {
             triggerSubmit();
           }}
+          allowUris={true}
           placeholder={props.placeholder}
         />
       )}

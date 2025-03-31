@@ -33,9 +33,7 @@ export function SetDocNumberForm(props: Props) {
           disabled={!props.isEditing}
           name={props.name}
           label={props.label}
-          onBlur={() => {
-            triggerSubmit();
-          }}
+          onBlur={triggerSubmit}
           placeholder={props.placeholder}
         />
       )}

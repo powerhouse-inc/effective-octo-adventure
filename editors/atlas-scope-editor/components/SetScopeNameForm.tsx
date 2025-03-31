@@ -28,9 +28,7 @@ export function SetScopeNameForm(props: Props) {
           label={props.label}
           disabled={!props.isEditing}
           name={props.name}
-          onBlur={() => {
-            triggerSubmit();
-          }}
+          onBlur={triggerSubmit}
           placeholder={props.placeholder}
         />
       )}

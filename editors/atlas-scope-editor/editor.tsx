@@ -8,9 +8,8 @@ import {
   Status,
   type AtlasScopeDocument,
 } from "../../document-models/atlas-scope/index.js";
-import { Button, Icon } from '@powerhousedao/design-system';
-import ToggleSwitch from './components/ToggleSwitch.js';
-import TagsStatus from './components/TagsStatus.js';
+import {  Icon } from '@powerhousedao/design-system';
+import ToggleSwitch from '../share/components/toggle-switch.js';
 import { getOriginalNotionDocument } from "../../document-models/utils.js";
 import { SetDocNumberForm } from './components/SetDocNumberForm.js';
 import { SetMasterStatusForm } from './components/SetMasterStatusForm.js';
@@ -19,6 +18,7 @@ import { SetTagsForm } from './components/SetTagsForm.js';
 import { SetContentForm } from './components/SetContentForm.js';
 import { SetProvenanceFrom } from './components/SetProvenanceFrom.js';
 import { SetOriginalContextDataForm } from './components/SetOriginalContextData.js';
+import ContentCard from '../share/components/content-card.js';
 
 
 
@@ -103,10 +103,8 @@ export default function Editor(props: IProps) {
           </div>
         </div>
       </div>
-      <div className="relative overflow-visible flex flex-col gap-4 w-full border border-gray-200 pt-6 pl-4 pr-4 pb-4 rounded-[6px]">
-        <div className="absolute left-4" style={{ top: "-12px" }}>
-          <TagsStatus />
-        </div>
+
+      <ContentCard tagText="Official Atlas" variant="gray" className='mt-4'>
         <div className="flex flex-row justify-between gap-2">
           <div className="flex-1">
             <SetDocNumberForm defaultValue={{ docNo: stateGlobal.docNo }}
@@ -117,7 +115,7 @@ export default function Editor(props: IProps) {
               label="Doc no"
             />
           </div>
-          {/* TODO: Add the scope name form when the scope name is ready */}
+          
           <div className="flex-1">
             <SetScopeNameForm defaultValue={{ name: stateGlobal.name }}
               dispatch={(input) => props.dispatch(actions.setScopeName(input))}
@@ -156,8 +154,8 @@ export default function Editor(props: IProps) {
               placeholder="Enter provenance"
             />
           </div>
-          <div className="flex flex-col gap-2 flex-1">
-            {/* TODO: Add the original context data form when the original context data is ready */}
+           <div className="flex flex-col gap-2 flex-1"> 
+       
             <SetOriginalContextDataForm
               defaultValue={stateGlobal.originalContextData[0]}
               dispatch={(input) => props.dispatch(actions.addContextData({
@@ -169,7 +167,7 @@ export default function Editor(props: IProps) {
               label="Original Context Data"
               placeholder="Enter original context data"
             />
-          </div>
+          </div> 
           <div className="flex flex-col gap-2 flex-1">
             <SetTagsForm defaultValue={{ newTags: stateGlobal.newTags as GlobalTag[] }}
               dispatch={(input) => props.dispatch(actions.addTags(input))}
@@ -181,9 +179,7 @@ export default function Editor(props: IProps) {
 
           </div>
         </div>
-
+     </ContentCard>
       </div>
-    </div>
-
   );
 }

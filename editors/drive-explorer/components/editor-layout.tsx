@@ -1,4 +1,8 @@
-import { Icon, FileItem, type UiFileNode } from "@powerhousedao/design-system";
+import {
+  Icon,
+  FileItem,
+  type BaseUiFileNode,
+} from "@powerhousedao/design-system";
 import {
   cn,
   type NodeStatus,
@@ -21,7 +25,7 @@ export interface EditorLayoutProps {
   readonly driveId: string;
   readonly children: React.ReactNode;
   readonly context: EditorContext;
-  readonly nodes: Node[]
+  readonly nodes: Node[];
 }
 
 export function EditorLayout({
@@ -48,7 +52,10 @@ export function EditorLayout({
         }
         return acc;
       },
-      { atlasNodes: {} as Record<string, AtlasArticle>, feedbackIssues: {} as Record<string, AtlasFeedbackIssue> }
+      {
+        atlasNodes: {} as Record<string, AtlasArticle>,
+        feedbackIssues: {} as Record<string, AtlasFeedbackIssue>,
+      },
     );
   }, [state]);
 
@@ -60,11 +67,12 @@ export function EditorLayout({
     ? (state[activeNodeId] as AtlasArticle | AtlasFeedbackIssue)
     : null;
 
-  const title = !selectedNode ? "Welcome to the Atlas Explorer" :
-    "docNo" in selectedNode.global ? 
-    `${selectedNode.global.docNo} - ${selectedNode.global.name}`
-    : "Atlas Feedback Issues"
-   
+  const title = !selectedNode
+    ? "Welcome to the Atlas Explorer"
+    : "docNo" in selectedNode.global
+      ? `${selectedNode.global.docNo} - ${selectedNode.global.name}`
+      : "Atlas Feedback Issues";
+
   const onActiveNodeChange = useCallback((node: SidebarNode) => {
     setActiveNodeId(node.id);
   }, []);
@@ -119,9 +127,7 @@ export function EditorLayout({
           }
           sidebarTitle="Atlas"
         />
-        <div
-          className="flex-1 bg-gray-50 p-4 dark:bg-slate-800"
-        >
+        <div className="flex-1 bg-gray-50 p-4 dark:bg-slate-800">
           <>
             {!activeNodeId && (
               <h1 className="mt-1 mb-4 text-lg text-gray-900 font-medium dark:text-gray-50">
@@ -145,27 +151,41 @@ export function EditorLayout({
                     <h2 className="mb-3 mt-4 text-sm font-bold text-gray-600">
                       Feedback Issues
                     </h2>
-                  <div className="flex flex-wrap gap-4">
-                    {Object.entries(feedbackIssues).map(([id, issue]) => (
-                      <FileItem key={id} uiNode={{
-                        kind: "FILE",
-                        id,
-                        name: driveNodes.find(node => node.id === id)?.name || "",
-                        documentType: issue.documentType,
-                        parentFolder: "",
-                        driveId,
-                        syncStatus: undefined,
-                        synchronizationUnits: [],
-                        sharingType: "LOCAL"
-                      }} onSelectNode={node => setActiveNodeId(node.id)}
-                      onRenameNode={function (name: string, uiNode: UiFileNode): void {
-                        throw new Error("Function not implemented.");
-                      } } onDuplicateNode={function (uiNode: UiFileNode): void {
-                        throw new Error("Function not implemented.");
-                      } } onDeleteNode={function (uiNode: UiFileNode): void {
-                        throw new Error("Function not implemented.");
-                      } } isAllowedToCreateDocuments={false}  />
-                    ))}
+                    <div className="flex flex-wrap gap-4">
+                      {Object.entries(feedbackIssues).map(([id, issue]) => (
+                        <FileItem
+                          key={id}
+                          uiNode={{
+                            kind: "FILE",
+                            id,
+                            name:
+                              driveNodes.find((node) => node.id === id)?.name ||
+                              "",
+                            documentType: issue.documentType,
+                            parentFolder: "",
+                            driveId,
+                            syncStatus: undefined,
+                          }}
+                          onSelectNode={(node) => setActiveNodeId(node.id)}
+                          isAllowedToCreateDocuments={false}
+                          onRenameNode={function (
+                            name: string,
+                            uiNode: BaseUiFileNode,
+                          ): void {
+                            throw new Error("Function not implemented.");
+                          }}
+                          onDuplicateNode={function (
+                            uiNode: BaseUiFileNode,
+                          ): void {
+                            throw new Error("Function not implemented.");
+                          }}
+                          onDeleteNode={function (
+                            uiNode: BaseUiFileNode,
+                          ): void {
+                            throw new Error("Function not implemented.");
+                          }}
+                        />
+                      ))}
                     </div>
                   </div>
                 )}

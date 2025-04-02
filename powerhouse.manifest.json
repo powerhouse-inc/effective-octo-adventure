@@ -70,5 +70,7 @@
       "name": "Atlas App",
       "driveEditor": "AtlasDriveExplorer"
     }
-  ]
+  ],
+  "subgraphs": [],
+  "importScripts": []
 }

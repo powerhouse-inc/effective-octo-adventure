@@ -13,6 +13,10 @@ export function SetMasterStatusForm(props: Props) {
     (data: SetMasterStatusInput) => {
       if (Object.keys(data).length === 0) return;
 
+    
+      // Check if new masterStatus are equal to previous ones
+      const masterStatusEqual = JSON.stringify(data.masterStatus) === JSON.stringify(props.defaultValue.masterStatus);
+      if (masterStatusEqual) return;
       props.dispatch(data);
     },
     [props.dispatch],

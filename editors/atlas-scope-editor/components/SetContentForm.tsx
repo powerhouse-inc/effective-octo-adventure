@@ -14,7 +14,10 @@ type Props = {
 export function SetContentForm(props: Props) {
   const onSubmit = useCallback(
     (data: SetContentInput) => {
-      if (Object.keys(data).length === 0) return;
+      if (data.content === props.defaultValue.content)
+
+        return;
+
 
       props.dispatch(data);
     },

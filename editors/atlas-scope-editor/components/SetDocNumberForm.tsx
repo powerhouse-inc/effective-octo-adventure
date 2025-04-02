@@ -19,6 +19,7 @@ type Props = {
 export function SetDocNumberForm(props: Props) {
   const onSubmit = useCallback(
     (data: SetDocNumberInput) => {
+     
       if (Object.keys(data).length === 0) return;
 
       props.dispatch({ docNo: data.docNo });

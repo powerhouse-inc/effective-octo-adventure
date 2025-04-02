@@ -14,21 +14,21 @@ type Props = {
 export function SetProvenanceFrom(props: Props) {
     const onSubmit = useCallback(
         (data: SetProvenanceInput) => {
-            if (Object.keys(data).length === 0) return;
-
+            // Solo despachar si hay cambios reales
+            if (data.provenance === props.defaultValue.provenance) return;
+            
             props.dispatch(data);
         },
-        [props.dispatch],
+        [props.dispatch, props.defaultValue.provenance],
     );
     return (
-        <Form onSubmit={onSubmit} submitChangesOnly>
+        <Form onSubmit={onSubmit} submitChangesOnly defaultValues={{ [props.name]: props.defaultValue.provenance }}>
             {({ triggerSubmit }) => (
                 <UrlField
-                    defaultValue={props.defaultValue.provenance ?? undefined}
                     name={props.name}
                     onBlur={triggerSubmit}
                     label={props.label}
-                    disabled={!props.isEditing}
+                    readOnly={!props.isEditing}
                     placeholder={props.placeholder}
                 />
             )}

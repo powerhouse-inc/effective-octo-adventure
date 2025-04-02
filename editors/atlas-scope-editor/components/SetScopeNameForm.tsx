@@ -25,8 +25,8 @@ export function SetScopeNameForm(props: Props) {
     <Form onSubmit={onSubmit} submitChangesOnly defaultValues={{ [props.name]: props.defaultValue.name }}>
       {({ triggerSubmit }) => (
         <StringField
+          readOnly={!props.isEditing}
           label={props.label}
-          disabled={!props.isEditing}
           name={props.name}
           onBlur={triggerSubmit}
           placeholder={props.placeholder}

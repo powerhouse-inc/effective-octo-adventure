@@ -15,23 +15,22 @@ export function SetContentForm(props: Props) {
   const onSubmit = useCallback(
     (data: SetContentInput) => {
       if (Object.keys(data).length === 0) return;
-
-      props.dispatch(data);
+      props.dispatch({ content: data.content });
     },
-    [props.dispatch],
+    [props.dispatch, props.defaultValue.content],
   );
+
   return (
-    <Form onSubmit={onSubmit} submitChangesOnly>
+    <Form onSubmit={onSubmit} submitChangesOnly defaultValues={{ [props.name]: props.defaultValue.content }}>
       {({ triggerSubmit }) => (
         <StringField
           autoExpand
-          defaultValue={props.defaultValue.content}
           rows={4}
           multiline
           name={props.name}
           onBlur={triggerSubmit}
           label={props.label}
-          disabled={!props.isEditing}
+          readOnly={!props.isEditing}
           placeholder={props.placeholder}
         />
       )}

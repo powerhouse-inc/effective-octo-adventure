@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger, EnumField, Form, PHIDField, SelectField, UrlField, StringField } from "@powerhousedao/design-system/scalars"
-
+import { EnumField, Form, PHIDField, SelectField, UrlField, StringField } from "@powerhousedao/design-system/scalars"
+import docsIndex from "../../scripts/apply-changes/data/index.json" with { type: "json" };
 import { type EditorProps } from "document-model";
 import {
   actions,
@@ -8,31 +8,21 @@ import {
   Status,
   type AtlasScopeDocument,
 } from "../../document-models/atlas-scope/index.js";
-import { Icon } from '@powerhousedao/design-system';
 import ToggleSwitch from '../share/components/toggle-switch.js';
-import { getOriginalNotionDocument } from "../../document-models/utils.js";
 import { SetDocNumberForm } from './components/SetDocNumberForm.js';
 import { SetMasterStatusForm } from './components/SetMasterStatusForm.js';
 import { SetScopeNameForm } from './components/SetScopeNameForm.js';
 import { SetTagsForm } from './components/SetTagsForm.js';
 import { SetContentForm } from './components/SetContentForm.js';
 import { SetProvenanceFrom } from './components/SetProvenanceFrom.js';
-import { SetOriginalContextDataForm } from './components/SetOriginalContextData.js';
 import ContentCard from '../share/components/content-card.js';
-
+import { IdAutocompleteOption, SetPHIDForm } from './components/SetPHIDForm.js';
 
 
 export type IProps = EditorProps<AtlasScopeDocument>;
 export default function Editor(props: IProps) {
   const [splitMode, setSplitMode] = useState(0);
-  const [editMode, setIsEditMode] = useState(0)
-
-  const isEditMode = editMode === 1
-  const { document, dispatch } = props;
-  const {
-    state: { global: state },
-  } = document;
-  // TOOD: Remove this when the data is ready
+  const [editMode, setIsEditMode] = useState(1);
   const stateGlobal = {
     "name": "Atlas Explorer - The Support Scope",
     "docNo": "A.4",
@@ -44,16 +34,30 @@ export default function Editor(props: IProps) {
     "notionId": "693d4371c8424ea44974be425cf89aad",
     "scope": "The Governance Scope"
   }
+  const [changedValues, setChangedValues] = useState<Record<string, any>>(stateGlobal);
 
-  // function to get the values
-  const originalNode = getOriginalNotionDocument(
-    props.document.state.global.notionId || "1b3f2ff0-8d73-80e6-86b0-c28bf9a97896",
-    "scope",
-  );
+  const isEditMode = editMode === 1
+  const { document, dispatch } = props;
+  const {
+    state: { global: state },
+  } = document;
 
+  const parentInfo = {
+    value: "phd:" + (document.state.global.notionId || ""),
+    title: "Original Context Data",
+    path: "sky/atlas-scope",
+    icon: "File" as const,
+    description: " ",
+  };
+  const cb = async (phid: string): Promise<IdAutocompleteOption[]> =>
+    (docsIndex as IdAutocompleteOption[]).filter(
+      (entry) =>
+        entry.value.includes(phid) || (entry.title || "").includes(phid),
+    );
 
 
   return (
+
     <div className="min-h-screen bg-white flex flex-col  rounded-2xl p-6 gap-4">
       <header>
         <div className="flex justify-between w-full">
@@ -77,40 +81,43 @@ export default function Editor(props: IProps) {
           <h2 className="text-gray-700">A.2 / A.2.1 - Governance Process Support</h2>
           <div className="flex items-center gap-4">
 
-            
-              <button
-                className={`
+
+            <button
+              className={`
                 flex items-center justify-center h-8 px-3 rounded-md whitespace-nowrap min-w-fit
             font-medium text-sm cursor-pointer transition-all duration-200 outline-none
             bg-white text-gray-900 shadow-sm
           `}
-              >
-                Unified
-              </button>
-              <button
-                className={`
+            >
+              Unified
+            </button>
+            <button
+              onClick={() => {
+                setIsEditMode(1)
+              }}
+              className={`
             flex items-center justify-center h-8 px-3 rounded-md whitespace-nowrap min-w-fit
             font-medium text-sm cursor-pointer transition-all duration-200 outline-none
             bg-white text-gray-900 shadow-sm
           `}
-              >
-                Edit
-              </button>
-              <ToggleSwitch
-                className='hidden'
+            >
+              Edit
+            </button>
+            <ToggleSwitch
+              className='hidden'
 
-                options={["Unified", "Split"]} defaultSelected={0} onChange={(selectedIndex) => {
+              options={["Unified", "Split"]} defaultSelected={0} onChange={(selectedIndex) => {
 
-                  setSplitMode(selectedIndex)
-                }} />
-      
-            
-              <ToggleSwitch
-                className='hidden'
-                options={["Read Only", "Edit"]} defaultSelected={0} onChange={(option) => {
-                  setIsEditMode(option);
-                }} />
-            
+                setSplitMode(selectedIndex)
+              }} />
+
+
+            <ToggleSwitch
+              className='hidden'
+              options={["Read Only", "Edit"]} defaultSelected={0} onChange={(option) => {
+                setIsEditMode(option);
+              }} />
+
           </div>
         </div>
       </div>
@@ -146,18 +153,23 @@ export default function Editor(props: IProps) {
         </div>
         <div className="flex-1">
           <SetContentForm
-            defaultValue={{ content: stateGlobal.content }}
-            dispatch={(input) => props.dispatch(actions.setContent(input))}
+            defaultValue={{ content: stateGlobal.content}}
+            dispatch={(input) => {
+              return props.dispatch(actions.setContent(input))
+            }}
             isEditing={isEditMode}
             name="content"
             label="Content"
             placeholder="Enter content"
           />
 
+
         </div>
         <div className="flex flex-col gap-4 w-1/2">
           <div className="flex flex-col gap-2 flex-1">
-            <SetProvenanceFrom defaultValue={{ provenance: stateGlobal.provenance }}
+            <SetProvenanceFrom
+              defaultValue={{ provenance: stateGlobal.provenance }}
+
               dispatch={(input) => props.dispatch(actions.setProvenance(input))}
               isEditing={isEditMode}
               name="provenance"
@@ -167,17 +179,26 @@ export default function Editor(props: IProps) {
           </div>
           <div className="flex flex-col gap-2 flex-1">
 
-            <SetOriginalContextDataForm
-              defaultValue={stateGlobal.originalContextData[0]}
-              dispatch={(input) => props.dispatch(actions.addContextData({
-                id: input,
-                name: "Original Context Data"
-              }))}
-              isEditing={isEditMode}
+            <SetPHIDForm
               name="originalContextData"
+              fetchOptionsCallback={cb}
+              fetchSelectedOptionCallback={(x) => cb(x).then((x) => x[5])}
+              initialOptions={[parentInfo]}
+              defaultValue={{ id: stateGlobal.originalContextData[0] }}
               label="Original Context Data"
-              placeholder="Enter original context data"
+
+              placeholder="phd:"
+              dispatch={(input) => {
+                return props.dispatch(actions.addContextData({
+                  id: input.id,
+                }))}
+              }
+              isEditing={true}
             />
+
+
+
+
           </div>
           <div className="flex flex-col gap-2 flex-1">
             <SetTagsForm defaultValue={{ newTags: stateGlobal.newTags as GlobalTag[] }}
@@ -194,3 +215,4 @@ export default function Editor(props: IProps) {
     </div>
   );
 }
+

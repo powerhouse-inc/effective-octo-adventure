@@ -19,6 +19,7 @@ type Props = {
 export function SetDocNumberForm(props: Props) {
   const onSubmit = useCallback(
     (data: SetDocNumberInput) => {
+     
       if (Object.keys(data).length === 0) return;
 
       props.dispatch({ docNo: data.docNo });
@@ -30,11 +31,11 @@ export function SetDocNumberForm(props: Props) {
     <Form onSubmit={onSubmit} submitChangesOnly defaultValues={{ [props.name]: props.defaultValue.docNo }}>
       {({ triggerSubmit }) => (
         <StringField
-          disabled={!props.isEditing}
           name={props.name}
           label={props.label}
           onBlur={triggerSubmit}
           placeholder={props.placeholder}
+          readOnly={!props.isEditing}
         />
       )}
     </Form>

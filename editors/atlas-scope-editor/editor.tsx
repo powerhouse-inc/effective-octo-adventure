@@ -8,7 +8,7 @@ import {
   Status,
   type AtlasScopeDocument,
 } from "../../document-models/atlas-scope/index.js";
-import {  Icon } from '@powerhousedao/design-system';
+import { Icon } from '@powerhousedao/design-system';
 import ToggleSwitch from '../share/components/toggle-switch.js';
 import { getOriginalNotionDocument } from "../../document-models/utils.js";
 import { SetDocNumberForm } from './components/SetDocNumberForm.js';
@@ -76,30 +76,41 @@ export default function Editor(props: IProps) {
         <div className="flex items-center justify-between flex-wrap">
           <h2 className="text-gray-700">A.2 / A.2.1 - Governance Process Support</h2>
           <div className="flex items-center gap-4">
-            <Dropdown>
-              <DropdownTrigger>
-                Dowload
-              </DropdownTrigger>
-              <DropdownContent>
 
-                <DropdownItem>
-                  <Icon name="DownloadFile" />
-                  Download html
-                </DropdownItem>
+            
+              <button
+                className={`
+                flex items-center justify-center h-8 px-3 rounded-md whitespace-nowrap min-w-fit
+            font-medium text-sm cursor-pointer transition-all duration-200 outline-none
+            bg-white text-gray-900 shadow-sm
+          `}
+              >
+                Unified
+              </button>
+              <button
+                className={`
+            flex items-center justify-center h-8 px-3 rounded-md whitespace-nowrap min-w-fit
+            font-medium text-sm cursor-pointer transition-all duration-200 outline-none
+            bg-white text-gray-900 shadow-sm
+          `}
+              >
+                Edit
+              </button>
+              <ToggleSwitch
+                className='hidden'
 
-              </DropdownContent>
-            </Dropdown>
-            <div>
-              <ToggleSwitch options={["Unified", "Split"]} defaultSelected={0} onChange={(selectedIndex) => {
+                options={["Unified", "Split"]} defaultSelected={0} onChange={(selectedIndex) => {
 
-                setSplitMode(selectedIndex)
-              }} />
-            </div>
-            <div>
-              <ToggleSwitch options={["Read Only", "Edit"]} defaultSelected={0} onChange={(option) => {
-                setIsEditMode(option);
-              }} />
-            </div>
+                  setSplitMode(selectedIndex)
+                }} />
+      
+            
+              <ToggleSwitch
+                className='hidden'
+                options={["Read Only", "Edit"]} defaultSelected={0} onChange={(option) => {
+                  setIsEditMode(option);
+                }} />
+            
           </div>
         </div>
       </div>
@@ -115,7 +126,7 @@ export default function Editor(props: IProps) {
               label="Doc no"
             />
           </div>
-          
+
           <div className="flex-1">
             <SetScopeNameForm defaultValue={{ name: stateGlobal.name }}
               dispatch={(input) => props.dispatch(actions.setScopeName(input))}
@@ -154,8 +165,8 @@ export default function Editor(props: IProps) {
               placeholder="Enter provenance"
             />
           </div>
-           <div className="flex flex-col gap-2 flex-1"> 
-       
+          <div className="flex flex-col gap-2 flex-1">
+
             <SetOriginalContextDataForm
               defaultValue={stateGlobal.originalContextData[0]}
               dispatch={(input) => props.dispatch(actions.addContextData({
@@ -167,7 +178,7 @@ export default function Editor(props: IProps) {
               label="Original Context Data"
               placeholder="Enter original context data"
             />
-          </div> 
+          </div>
           <div className="flex flex-col gap-2 flex-1">
             <SetTagsForm defaultValue={{ newTags: stateGlobal.newTags as GlobalTag[] }}
               dispatch={(input) => props.dispatch(actions.addTags(input))}
@@ -179,7 +190,7 @@ export default function Editor(props: IProps) {
 
           </div>
         </div>
-     </ContentCard>
-      </div>
+      </ContentCard>
+    </div>
   );
 }

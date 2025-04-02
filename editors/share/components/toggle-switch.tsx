@@ -1,13 +1,15 @@
 "use client"
+import { cn } from "@powerhousedao/design-system/scalars"
 import { useState } from "react"
 interface ToggleProps {
   options: string[]
   defaultSelected?: number
   onChange?: (selectedIndex: number) => void
+  className?: string
 
 }
 
-export default function ToggleSwitch({ options = [], defaultSelected = 1, onChange }: ToggleProps) {
+export default function ToggleSwitch({ options = [], defaultSelected = 1, onChange, className }: ToggleProps) {
   if (options.length === 0) {
     return null
   }
@@ -21,7 +23,7 @@ export default function ToggleSwitch({ options = [], defaultSelected = 1, onChan
   }
 
   return (
-    <div className="flex items-center p-0.5 bg-slate-50 w-fit h-9 rounded-[6px] border-[1px] border-slate-200 box-border"
+    <div className={cn("flex items-center p-0.5 bg-slate-50 w-fit h-9 rounded-[6px] border-[1px] border-slate-200 box-border", className)}
     >
       {options.map((option, index) => (
 

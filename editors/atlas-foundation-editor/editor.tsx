@@ -157,11 +157,8 @@ export default function Editor(props: IProps) {
           >
             <PHIDField
               defaultValue={parentInfo.value}
-              /* @ts-expect-error */
               fetchOptionsCallback={cb}
-              /* @ts-expect-error */
               fetchSelectedOptionCallback={(x) => cb(x).then((x) => x[0])}
-              /* @ts-expect-error */
               initialOptions={[parentInfo]}
               label="Parent Document:"
               name="parentId"

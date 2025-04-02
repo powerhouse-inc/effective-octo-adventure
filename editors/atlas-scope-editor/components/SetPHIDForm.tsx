@@ -40,6 +40,7 @@ export function SetPHIDForm(props: Props) {
         <Form onSubmit={onSubmit} submitChangesOnly>
             {({ triggerSubmit }) => (
                 <PHIDField
+                    readOnly={!props.isEditing}
                     fetchOptionsCallback={props.fetchOptionsCallback}
                     fetchSelectedOptionCallback={props.fetchSelectedOptionCallback}
                     initialOptions={props.initialOptions}

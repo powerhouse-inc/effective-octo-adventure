@@ -22,14 +22,13 @@ export function SetProvenanceFrom(props: Props) {
         [props.dispatch, props.defaultValue.provenance],
     );
     return (
-        <Form onSubmit={onSubmit} submitChangesOnly>
+        <Form onSubmit={onSubmit} submitChangesOnly defaultValues={{ [props.name]: props.defaultValue.provenance }}>
             {({ triggerSubmit }) => (
                 <UrlField
-                    defaultValue={props.defaultValue.provenance ?? ""}
                     name={props.name}
                     onBlur={triggerSubmit}
                     label={props.label}
-                    disabled={!props.isEditing}
+                    readOnly={!props.isEditing}
                     placeholder={props.placeholder}
                 />
             )}

@@ -4,14 +4,11 @@ import docsIndex from "../../scripts/apply-changes/data/index.json" with { type:
 import { type EditorProps } from "document-model";
 import {
   actions,
-  AddContextDataInput,
   GlobalTag,
   Status,
   type AtlasScopeDocument,
 } from "../../document-models/atlas-scope/index.js";
-import { IconName } from '@powerhousedao/design-system';
 import ToggleSwitch from '../share/components/toggle-switch.js';
-import { getOriginalNotionDocument } from "../../document-models/utils.js";
 import { SetDocNumberForm } from './components/SetDocNumberForm.js';
 import { SetMasterStatusForm } from './components/SetMasterStatusForm.js';
 import { SetScopeNameForm } from './components/SetScopeNameForm.js';
@@ -156,8 +153,10 @@ export default function Editor(props: IProps) {
         </div>
         <div className="flex-1">
           <SetContentForm
-            defaultValue={{ content: stateGlobal.content }}
-            dispatch={(input) => props.dispatch(actions.setContent(input))}
+            defaultValue={{ content: stateGlobal.content}}
+            dispatch={(input) => {
+              return props.dispatch(actions.setContent(input))
+            }}
             isEditing={isEditMode}
             name="content"
             label="Content"

@@ -31,11 +31,11 @@ export function SetDocNumberForm(props: Props) {
     <Form onSubmit={onSubmit} submitChangesOnly defaultValues={{ [props.name]: props.defaultValue.docNo }}>
       {({ triggerSubmit }) => (
         <StringField
-          disabled={!props.isEditing}
           name={props.name}
           label={props.label}
           onBlur={triggerSubmit}
           placeholder={props.placeholder}
+          readOnly={!props.isEditing}
         />
       )}
     </Form>

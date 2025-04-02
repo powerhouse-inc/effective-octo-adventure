@@ -26,8 +26,6 @@ export function SetMasterStatusForm(props: Props) {
     <Form onSubmit={onSubmit} submitChangesOnly>
            {({ triggerSubmit }) =>(
         <EnumField
-        
-          disabled={!props.isEditing} 
           defaultValue={props.defaultValue.masterStatus}
           label="Status"
           name="masterStatus"

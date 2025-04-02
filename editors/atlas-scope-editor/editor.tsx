@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { EnumField, Form, PHIDField, SelectField, UrlField, StringField } from "@powerhousedao/design-system/scalars"
-import docsIndex from "../../scripts/apply-changes/data/index.json" with { type: "json" };
 import { type EditorProps } from "document-model";
 import {
   actions,
@@ -17,6 +16,7 @@ import { SetContentForm } from './components/SetContentForm.js';
 import { SetProvenanceFrom } from './components/SetProvenanceFrom.js';
 import { IdAutocompleteOption, SetPHIDForm } from './components/SetPHIDForm.js';
 import Layout, { LayoutHeader, LayoutContent, LayoutMain } from '../share/components/Layout.js';
+import { cb } from '../share/components/utils/utils.js';
 
 export type IProps = EditorProps<AtlasScopeDocument>;
 export default function Editor(props: IProps) {
@@ -47,11 +47,6 @@ export default function Editor(props: IProps) {
     icon: "File" as const,
     description: " ",
   };
-  const cb = async (phid: string): Promise<IdAutocompleteOption[]> =>
-    (docsIndex as IdAutocompleteOption[]).filter(
-      (entry) =>
-        entry.value.includes(phid) || (entry.title || "").includes(phid),
-    );
 
   const headerActions = (
     <>

@@ -51,7 +51,7 @@ export function LayoutMain({ children, tagText, variant }: LayoutMainProps) {
 // Main Layout component
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-white flex flex-col rounded-2xl p-6 gap-4">
+    <div className="min-h-screen h-full bg-white flex flex-col rounded-2xl p-6 gap-4">
       {children}
     </div>
   );

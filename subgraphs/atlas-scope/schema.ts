@@ -1,6 +1,7 @@
 import { gql } from "graphql-tag";
+import type { DocumentNode } from "graphql";
 
-export const schema = gql`
+export const schema: DocumentNode = gql`
   """
   Subgraph definition for AtlasScope (sky/atlas-scope)
   """
@@ -199,5 +200,9 @@ export const schema = gql`
   input AtlasScope_SetNotionIdInput {
     "Add your inputs here"
     notionID: String
+  }
+
+  type Query {
+    AtlasScope(driveId: String, docId: PHID): AtlasScopeState
   }
 `;

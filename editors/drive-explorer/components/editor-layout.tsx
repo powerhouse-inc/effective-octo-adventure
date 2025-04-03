@@ -4,12 +4,11 @@ import {
   type BaseUiFileNode,
 } from "@powerhousedao/design-system";
 import {
-  cn,
-  type NodeStatus,
   Sidebar,
   SidebarProvider,
+  type NodeStatus,
   type SidebarNode,
-} from "@powerhousedao/design-system/scalars";
+} from "@powerhousedao/design-system/ui";
 import { useCallback, useState, useRef, useMemo } from "react";
 import { useDriveContext } from "@powerhousedao/reactor-browser";
 import { type AtlasFeedbackIssue, type AtlasArticle } from "./types.js";

@@ -295,8 +295,4 @@ export const schema: DocumentNode = gql`
     "Add your inputs here"
     additionalGuidance: String!
   }
-
-  type Query {
-    AtlasExploratory(driveId: String, docId: PHID): AtlasExploratoryState
-  }
 `;

@@ -264,8 +264,4 @@ export const schema: DocumentNode = gql`
   input AtlasGrounding_RemoveReferenceInput {
     id: PHID!
   }
-
-  type Query {
-    AtlasGrounding(driveId: String, docId: PHID): AtlasGroundingState
-  }
 `;

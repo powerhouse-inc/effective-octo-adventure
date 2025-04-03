@@ -271,8 +271,4 @@ export const schema: DocumentNode = gql`
   input AtlasMultiParent_RemoveReferenceInput {
     id: PHID!
   }
-
-  type Query {
-    AtlasMultiParent(driveId: String, docId: PHID): AtlasMultiParentState
-  }
 `;

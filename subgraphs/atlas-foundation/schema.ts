@@ -261,7 +261,4 @@ export const schema: DocumentNode = gql`
     notionID: String!
   }
 
-  type Query {
-    AtlasFoundation(driveId: String, docId: PHID): AtlasFoundationState
-  }
 `;

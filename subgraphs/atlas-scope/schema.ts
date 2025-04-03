@@ -214,7 +214,4 @@ export const schema: DocumentNode = gql`
     notionID: String
   }
 
-  type Query {
-    AtlasScope(driveId: String, docId: PHID): AtlasScopeState
-  }
 `;

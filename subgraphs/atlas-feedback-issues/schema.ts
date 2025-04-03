@@ -1,6 +1,7 @@
 import { gql } from "graphql-tag";
+import type { DocumentNode } from "graphql";
 
-export const schema = gql`
+export const schema: DocumentNode = gql`
   """
   Subgraph definition for AtlasFeedbackIssues (makerdao/feedback-issues)
   """
@@ -42,6 +43,18 @@ export const schema = gql`
     content: String!
     createdAt: DateTime!
     lastEditedAt: DateTime!
+  }
+
+  """
+  Queries: AtlasFeedbackIssues
+  """
+  type AtlasFeedbackIssuesQueries {
+    getDocument(driveId: String, docId: PHID): AtlasFeedbackIssues
+    getDocuments: [AtlasFeedbackIssues!]
+  }
+
+  type Query {
+    AtlasFeedbackIssues: AtlasFeedbackIssuesQueries
   }
 
   """

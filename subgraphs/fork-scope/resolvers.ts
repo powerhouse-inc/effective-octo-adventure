@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === "development") {
 const PORT = process.env.PORT || 4001;
 const herokuOrLocal = process.env.HEROKU_APP_NAME
   ? `https://${process.env.HEROKU_APP_NAME}.herokuapp.com`
-  : `http://localhost:${PORT}`;
+  : `http://localhost:${PORT}/graphql/`;
 // Reactor where the documents will be synchronized to
 const basePath = process.env.BASE_PATH ? 
   (process.env.BASE_PATH[0] == "/" ? process.env.BASE_PATH.slice(1) : process.env.BASE_PATH)
@@ -38,10 +38,10 @@ export const getResolvers = (subgraph: Subgraph) => {
             .replaceAll(/[-:]/g, "")
             .replace("T", "_");
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+         
         const driveId: string = args.driveId || DRIVE_NAME;
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+         
         const docId = args.docId;
         
         const config = {

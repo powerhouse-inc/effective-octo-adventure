@@ -114,6 +114,18 @@ export const schema: DocumentNode = gql`
   }
 
   """
+  Queries: AtlasMultiParent
+  """
+  type AtlasMultiParentQueries {
+    getDocument(driveId: String, docId: PHID): AtlasMultiParent
+    getDocuments: [AtlasMultiParent!]
+  }
+
+  type Query {
+    AtlasMultiParent: AtlasMultiParentQueries
+  }
+
+  """
   Mutations: AtlasMultiParent
   """
   type Mutation {

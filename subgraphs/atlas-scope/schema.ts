@@ -94,6 +94,18 @@ export const schema: DocumentNode = gql`
   }
 
   """
+  Queries: AtlasScope
+  """
+  type AtlasScopeQueries {
+    getDocument(driveId: String, docId: PHID): AtlasScope
+    getDocuments: [AtlasScope!]
+  }
+
+  type Query {
+    AtlasScope: AtlasScopeQueries
+  }
+
+  """
   Mutations: AtlasScope
   """
   type Mutation {

@@ -112,6 +112,18 @@ export const schema: DocumentNode = gql`
   }
 
   """
+  Queries: AtlasFoundation
+  """
+  type AtlasFoundationQueries {
+    getDocument(driveId: String, docId: PHID): AtlasFoundation
+    getDocuments: [AtlasFoundation!]
+  }
+
+  type Query {
+    AtlasFoundation: AtlasFoundationQueries
+  }
+
+  """
   Mutations: AtlasFoundation
   """
   type Mutation {

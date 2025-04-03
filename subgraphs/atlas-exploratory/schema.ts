@@ -119,6 +119,18 @@ export const schema: DocumentNode = gql`
   }
 
   """
+  Queries: AtlasExploratory
+  """
+  type AtlasExploratoryQueries {
+    getDocument(driveId: String, docId: PHID): AtlasExploratory
+    getDocuments: [AtlasExploratory!]
+  }
+
+  type Query {
+    AtlasExploratory: AtlasExploratoryQueries
+  }
+
+  """
   Mutations: AtlasExploratory
   """
   type Mutation {

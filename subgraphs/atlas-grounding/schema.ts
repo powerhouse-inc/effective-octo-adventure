@@ -115,6 +115,18 @@ export const schema: DocumentNode = gql`
   }
 
   """
+  Queries: AtlasGrounding
+  """
+  type AtlasGroundingQueries {
+    getDocument(driveId: String, docId: PHID): AtlasGrounding
+    getDocuments: [AtlasGrounding!]
+  }
+
+  type Query {
+    AtlasGrounding: AtlasGroundingQueries
+  }
+
+  """
   Mutations: AtlasGrounding
   """
   type Mutation {

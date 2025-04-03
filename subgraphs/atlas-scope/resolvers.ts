@@ -12,6 +12,36 @@ export const getResolvers = (subgraph: Subgraph) => {
   const reactor = subgraph.reactor;
 
   return {
+    Query: {
+      AtlasScope: async (_: any, args: any) => {
+        return {
+          getDocument: async (_: any, args: any) => {
+            const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
+            const docId: string = args.docId || "";
+            const doc = await reactor.getDocument(driveId, docId);
+            return doc;
+          },
+          getDocuments: async (_: any, args: any) => {
+            const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
+            const docsIds = await reactor.getDocuments(driveId);
+            const docs = await Promise.all(
+              docsIds.map(async (docId) => {
+                const doc = await reactor.getDocument(driveId, docId);
+                return {
+                  id: docId,
+                  driveId: driveId,
+                  ...doc,
+                  state: doc.state.global,
+                  revision: doc.revision.global,
+                };
+              }),
+            );
+
+            return docs.filter((doc) => doc.documentType === "sky/atlas-scope");
+          },
+        };
+      },
+    },
     Mutation: {
       AtlasScope_createDocument: async (_: any, args: any) => {
         const driveId: string = args.driveId || DEFAULT_DRIVE_ID;

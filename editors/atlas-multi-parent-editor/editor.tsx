@@ -3,7 +3,7 @@ import Layout, { LayoutContent, LayoutHeader, LayoutMain } from "../shared/compo
 import ToggleSwitch from "../shared/components/toggle-switch.js";
 import { useState } from "react";
 import { EnumField, Form, PHIDField, SelectField, StringField, UrlField } from "@powerhousedao/design-system/scalars";
-import { cb } from "../shared/components/utils/utils.js";
+import { cb } from "../shared/utils/utils.js";
 import { AtlasMultiParentDocument } from "document-models/atlas-multi-parent/index.js";
 
 export type IProps = EditorProps<AtlasMultiParentDocument>;

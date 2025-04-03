@@ -16,7 +16,7 @@ import { SetContentForm } from './components/SetContentForm.js';
 import { SetProvenanceFrom } from './components/SetProvenanceFrom.js';
 import { IdAutocompleteOption, SetPHIDForm } from './components/SetPHIDForm.js';
 import Layout, { LayoutHeader, LayoutContent, LayoutMain } from '../shared/components/Layout.js';
-import { cb } from '../shared/components/utils/utils.js';
+import { cb } from '../shared/utils/utils.js';
 
 export type IProps = EditorProps<AtlasScopeDocument>;
 export default function Editor(props: IProps) {

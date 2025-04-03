@@ -1,9 +1,9 @@
 import { type EditorProps } from "document-model";
-import Layout, { LayoutContent, LayoutHeader, LayoutMain } from "../share/components/Layout.js";
-import ToggleSwitch from "../share/components/toggle-switch.js";
+import Layout, { LayoutContent, LayoutHeader, LayoutMain } from "../shared/components/Layout.js";
+import ToggleSwitch from "../shared/components/toggle-switch.js";
 import { useState } from "react";
 import { EnumField, Form, PHIDField, SelectField, StringField, UrlField } from "@powerhousedao/design-system/scalars";
-import { cb } from "../share/components/utils/utils.js";
+import { cb } from "../shared/components/utils/utils.js";
 import { AtlasMultiParentDocument } from "document-models/atlas-multi-parent/index.js";
 
 export type IProps = EditorProps<AtlasMultiParentDocument>;

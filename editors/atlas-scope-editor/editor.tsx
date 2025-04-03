@@ -3,11 +3,9 @@ import { EnumField, Form, PHIDField, SelectField, UrlField, StringField } from "
 import { type EditorProps } from "document-model";
 import {
   actions,
-  GlobalTag,
-  Status,
   type AtlasScopeDocument,
 } from "../../document-models/atlas-scope/index.js";
-import ToggleSwitch from '../share/components/toggle-switch.js';
+import ToggleSwitch from '../shared/components/toggle-switch.js';
 import { SetDocNumberForm } from './components/SetDocNumberForm.js';
 import { SetMasterStatusForm } from './components/SetMasterStatusForm.js';
 import { SetScopeNameForm } from './components/SetScopeNameForm.js';
@@ -15,8 +13,8 @@ import { SetTagsForm } from './components/SetTagsForm.js';
 import { SetContentForm } from './components/SetContentForm.js';
 import { SetProvenanceFrom } from './components/SetProvenanceFrom.js';
 import { IdAutocompleteOption, SetPHIDForm } from './components/SetPHIDForm.js';
-import Layout, { LayoutHeader, LayoutContent, LayoutMain } from '../share/components/Layout.js';
-import { cb } from '../share/components/utils/utils.js';
+import Layout, { LayoutHeader, LayoutContent, LayoutMain } from '../shared/components/Layout.js';
+import { cb } from '../shared/components/utils/utils.js';
 
 export type IProps = EditorProps<AtlasScopeDocument>;
 export default function Editor(props: IProps) {

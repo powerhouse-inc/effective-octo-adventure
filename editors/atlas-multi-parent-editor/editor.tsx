@@ -3,14 +3,21 @@ import Layout, { LayoutContent, LayoutHeader, LayoutMain } from "../shared/compo
 import ToggleSwitch from "../shared/components/toggle-switch.js";
 import { useState } from "react";
 import { EnumField, Form, PHIDField, SelectField, StringField, UrlField } from "@powerhousedao/design-system/scalars";
-import { cb } from "../shared/utils/utils.js";
-import { actions, type AtlasMultiParentDocument, type MGlobalTag, type MStatus, type MAtlasType } from "../../document-models/atlas-multi-parent/index.js";
-import { EStatus } from "document-models/atlas-exploratory/index.js";
+import { fetchPHIDOptions, fetchSelectedPHIDOption } from "../shared/utils/utils.js";
+
+import {
+  actions,
+  type AtlasMultiParentDocument,
+  type MAtlasType,
+  type MGlobalTag,
+  type MStatus,
+} from "../../document-models/atlas-multi-parent/index.js";
 
 export type IProps = EditorProps<AtlasMultiParentDocument>;
 export default function Editor(props: IProps) {
   const { dispatch } = props;
   const documentState = props.document.state.global;
+
 //TODO: fix this the URL field waiting for a string but it's an array
  const newMomentdocumentState={
   ...documentState,
@@ -18,7 +25,6 @@ export default function Editor(props: IProps) {
   originalContextData: documentState.originalContextData?.[0]?.id || "",
   parents: documentState.parents?.[0]?.id || "",
 }
-
   const [splitMode, setSplitMode] = useState(0);
   const [editMode, setIsEditMode] = useState(1);
   const isEditMode = editMode === 1;
@@ -39,8 +45,8 @@ export default function Editor(props: IProps) {
     if (data['content'] !== undefined) {
       dispatch(actions.setContent({ content: data['content'] as string }));
     }
-    if (data['parent'] !== undefined) {
-      dispatch(actions.addParent({ id: data['parent'] as string }));
+    if (data['parents'] !== undefined) {
+      dispatch(actions.addParent({ id: data['parents'] as string }));
     }
     if (data['originalContextData'] !== undefined) {
       dispatch(actions.addContextData({ id: data['originalContextData'] as string }));
@@ -167,9 +173,10 @@ export default function Editor(props: IProps) {
                     <div className="flex flex-col gap-4 w-1/2">
                       <div className="flex flex-col gap-2 flex-1">
                         <PHIDField
+                          defaultValue={"pepe"}
                           name="parents"
-                          fetchOptionsCallback={cb}
-                          fetchSelectedOptionCallback={(x) => cb(x).then((x) => x[5])}
+                          fetchOptionsCallback={fetchPHIDOptions}
+                          fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                           label="Parent Document"
                           placeholder="phd:"
                           variant="withValueTitleAndDescription"
@@ -188,8 +195,8 @@ export default function Editor(props: IProps) {
                       <div className="flex flex-col gap-2 flex-1">
                         <PHIDField
                           name="originalContextData"
-                          fetchOptionsCallback={cb}
-                          fetchSelectedOptionCallback={(x) => cb(x).then((x) => x[5])}
+                          fetchOptionsCallback={fetchPHIDOptions}
+                          fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                           label="Original Context Data"
                           placeholder="phd:"
                           variant="withValueTitleAndDescription"

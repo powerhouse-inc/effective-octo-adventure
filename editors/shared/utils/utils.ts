@@ -1,5 +1,5 @@
 import type { PHIDOption } from "@powerhousedao/design-system/ui";
-import docsIndex from "../../../../scripts/apply-changes/data/index.json" with { type: "json" };
+import docsIndex from "../../../scripts/apply-changes/data/index.json" with { type: "json" };
 
 /**
  * @deprecated Use fetchPHIDOptions & fetchSelectedPHIDOption instead

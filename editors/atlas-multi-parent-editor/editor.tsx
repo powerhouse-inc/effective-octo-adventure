@@ -3,8 +3,8 @@ import Layout, { LayoutContent, LayoutHeader, LayoutMain } from "../shared/compo
 import ToggleSwitch from "../shared/components/toggle-switch.js";
 import { useState } from "react";
 import { EnumField, Form, PHIDField, SelectField, StringField, UrlField } from "@powerhousedao/design-system/scalars";
-import { cb } from "../shared/components/utils/utils.js";
-import { actions, AtlasMultiParentDocument, MGlobalTag, MStatus, MAtlasType } from "../../document-models/atlas-multi-parent/index.js";
+import { cb } from "../shared/utils/utils.js";
+import { actions, type AtlasMultiParentDocument, type MGlobalTag, type MStatus, type MAtlasType } from "../../document-models/atlas-multi-parent/index.js";
 import { EStatus } from "document-models/atlas-exploratory/index.js";
 
 export type IProps = EditorProps<AtlasMultiParentDocument>;

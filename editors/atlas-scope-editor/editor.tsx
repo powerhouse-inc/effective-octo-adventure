@@ -9,7 +9,7 @@ import {
 } from "../../document-models/atlas-scope/index.js";
 import ToggleSwitch from '../shared/components/toggle-switch.js';
 import Layout, { LayoutHeader, LayoutContent, LayoutMain } from '../shared/components/Layout.js';
-import { cb, fetchPHIDOptions, fetchSelectedPHIDOption } from '../shared/components/utils/utils.js';
+import { cb, fetchPHIDOptions, fetchSelectedPHIDOption } from '../shared/utils/utils.js';
 
 export type IProps = EditorProps<AtlasScopeDocument>;
 export default function Editor(props: IProps) {

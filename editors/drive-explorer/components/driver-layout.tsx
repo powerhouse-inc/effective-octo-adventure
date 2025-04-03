@@ -20,19 +20,19 @@ import { Home } from "./home.js";
 import { documentModel as AtlasFeedbackIssues } from "../../../document-models/atlas-feedback-issues/gen/document-model.js";
 import type { Node } from "document-drive";
 
-export interface EditorLayoutProps {
+export interface DriverLayoutProps {
   readonly driveId: string;
   readonly children: React.ReactNode;
   readonly context: EditorContext;
   readonly nodes: Node[];
 }
 
-export function EditorLayout({
+export function DriverLayout({
   children,
   driveId,
   context,
   nodes: driveNodes,
-}: EditorLayoutProps) {
+}: DriverLayoutProps) {
   const { useDriveDocumentStates, addDocument, documentModels } =
     useDriveContext();
   const [activeNodeId, setActiveNodeId] = useState<string | undefined>();
@@ -54,7 +54,7 @@ export function EditorLayout({
       {
         atlasNodes: {} as Record<string, AtlasArticle>,
         feedbackIssues: {} as Record<string, AtlasFeedbackIssue>,
-      },
+      }
     );
   }, [state]);
 
@@ -90,14 +90,14 @@ export function EditorLayout({
       const node = await addDocument(
         driveId,
         fileName,
-        documentModel.documentModel.id,
+        documentModel.documentModel.id
       );
 
       selectedDocumentModel.current = null;
       await fetchDocuments(driveId, [node.id]);
       setActiveNodeId(node.id);
     },
-    [addDocument, driveId, setActiveNodeId],
+    [addDocument, driveId, setActiveNodeId]
   );
 
   const onSelectDocumentModel = (documentModel: DocumentModelModule) => {
@@ -106,7 +106,7 @@ export function EditorLayout({
   };
 
   const filteredDocumentModels = documentModels.filter(
-    (docModel) => docModel.documentModel.id !== "powerhouse/document-model",
+    (docModel) => docModel.documentModel.id !== "powerhouse/document-model"
   );
 
   return (
@@ -126,7 +126,7 @@ export function EditorLayout({
           }
           sidebarTitle="Atlas"
         />
-        <div className="flex-1 bg-gray-50 p-4 dark:bg-slate-800">
+        <div className="flex-1 bg-gray-50 p-4 dark:bg-slate-800 overflow-y-auto">
           <>
             {!activeNodeId && (
               <h1 className="mt-1 mb-4 text-lg text-gray-900 font-medium dark:text-gray-50">
@@ -169,17 +169,17 @@ export function EditorLayout({
                           isAllowedToCreateDocuments={false}
                           onRenameNode={function (
                             name: string,
-                            uiNode: BaseUiFileNode,
+                            uiNode: BaseUiFileNode
                           ): void {
                             throw new Error("Function not implemented.");
                           }}
                           onDuplicateNode={function (
-                            uiNode: BaseUiFileNode,
+                            uiNode: BaseUiFileNode
                           ): void {
                             throw new Error("Function not implemented.");
                           }}
                           onDeleteNode={function (
-                            uiNode: BaseUiFileNode,
+                            uiNode: BaseUiFileNode
                           ): void {
                             throw new Error("Function not implemented.");
                           }}
@@ -273,7 +273,7 @@ function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
   });
 
   const result = Object.values(nodesById).filter(
-    (node) => !childrenIds.has(node.id),
+    (node) => !childrenIds.has(node.id)
   );
 
   return sortSidebarNodes(result);

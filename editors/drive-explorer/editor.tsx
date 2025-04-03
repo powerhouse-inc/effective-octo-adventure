@@ -1,5 +1,5 @@
 import { type EditorProps } from "document-model";
-import { EditorLayout } from "./components/editor-layout.js";
+import { DriverLayout } from "./components/driver-layout.js";
 import { type DocumentDriveDocument } from "document-drive";
 import { WagmiContext } from "@powerhousedao/design-system";
 
@@ -12,7 +12,7 @@ export default function Editor(props: IProps) {
       style={{ height: "100%" }}
     >
       <WagmiContext>
-        <EditorLayout
+        <DriverLayout
           context={props.context}
           driveId={props.document.state.global.id}
           nodes={props.document.state.global.nodes}
@@ -35,7 +35,7 @@ export default function Editor(props: IProps) {
                 top: 16px;
               }`}
           </style>
-        </EditorLayout>
+        </DriverLayout>
       </WagmiContext>
     </div>
   );

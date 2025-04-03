@@ -3,8 +3,15 @@ import Layout, { LayoutContent, LayoutHeader, LayoutMain } from "../shared/compo
 import ToggleSwitch from "../shared/components/toggle-switch.js";
 import { useState } from "react";
 import { EnumField, Form, PHIDField, SelectField, StringField, UrlField } from "@powerhousedao/design-system/scalars";
-import { fetchPHIDOptions, fetchSelectedPHIDOption } from "../shared/components/utils/utils.js";
-import { actions, AtlasMultiParentDocument, MGlobalTag, MStatus, MAtlasType } from "../../document-models/atlas-multi-parent/index.js";
+import { fetchPHIDOptions, fetchSelectedPHIDOption } from "../shared/utils/utils.js";
+
+import {
+  actions,
+  type AtlasMultiParentDocument,
+  type MAtlasType,
+  type MGlobalTag,
+  type MStatus,
+} from "../../document-models/atlas-multi-parent/index.js";
 
 export type IProps = EditorProps<AtlasMultiParentDocument>;
 export default function Editor(props: IProps) {
@@ -18,7 +25,6 @@ export default function Editor(props: IProps) {
   originalContextData: documentState.originalContextData?.[0]?.id || "",
   parents: documentState.parents?.[0]?.id || "",
 }
-console.log("data", documentState)
   const [splitMode, setSplitMode] = useState(0);
   const [editMode, setIsEditMode] = useState(1);
   const isEditMode = editMode === 1;

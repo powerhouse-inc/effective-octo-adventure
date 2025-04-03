@@ -3,7 +3,7 @@ import Layout, { LayoutContent, LayoutHeader, LayoutMain } from "../shared/compo
 import ToggleSwitch from "../shared/components/toggle-switch.js";
 import { useState } from "react";
 import { cn, EnumField, Form, PHIDField, StringField, UrlField } from "@powerhousedao/design-system/scalars";
-import { fetchPHIDOptions, fetchSelectedPHIDOption } from "../shared/components/utils/utils.js";
+import { fetchPHIDOptions, fetchSelectedPHIDOption } from "../shared/utils/utils.js";
 import { actions, type AtlasGroundingDocument, type GGlobalTag, type GStatus } from "../../document-models/atlas-grounding/index.js";
 
 export type IProps = EditorProps<AtlasGroundingDocument>;

@@ -1,6 +1,7 @@
 import { gql } from "graphql-tag";
+import type { DocumentNode } from "graphql";
 
-export const schema = gql`
+export const schema: DocumentNode = gql`
   """
   Subgraph definition for AtlasExploratory (sky/atlas-exploratory)
   """
@@ -281,5 +282,9 @@ export const schema = gql`
   input AtlasExploratory_RemoveAdditionalGuidanceInput {
     "Add your inputs here"
     additionalGuidance: String!
+  }
+
+  type Query {
+    AtlasExploratory(driveId: String, docId: PHID): AtlasExploratoryState
   }
 `;

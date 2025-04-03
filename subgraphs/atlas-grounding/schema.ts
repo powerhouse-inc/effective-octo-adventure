@@ -1,6 +1,7 @@
 import { gql } from "graphql-tag";
+import type { DocumentNode } from "graphql";
 
-export const schema = gql`
+export const schema: DocumentNode = gql`
   """
   Subgraph definition for AtlasGrounding (sky/atlas-grounding)
   """
@@ -250,5 +251,9 @@ export const schema = gql`
   }
   input AtlasGrounding_RemoveReferenceInput {
     id: PHID!
+  }
+
+  type Query {
+    AtlasGrounding(driveId: String, docId: PHID): AtlasGroundingState
   }
 `;

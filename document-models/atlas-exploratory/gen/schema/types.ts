@@ -25,6 +25,22 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
+  Amount: {
+    input: { unit?: string; value?: number };
+    output: { unit?: string; value?: number };
+  };
+  Amount_Crypto: {
+    input: { unit: string; value: number };
+    output: { unit: string; value: number };
+  };
+  Amount_Currency: {
+    input: { unit: string; value: number };
+    output: { unit: string; value: number };
+  };
+  Amount_Fiat: {
+    input: { unit: string; value: number };
+    output: { unit: string; value: number };
+  };
   Amount_Money: { input: number; output: number };
   Amount_Percentage: { input: number; output: number };
   Amount_Tokens: { input: number; output: number };

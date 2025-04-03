@@ -181,5 +181,13 @@ export const getResolvers = (subgraph: Subgraph) => {
         return doc.revision.global + 1;
       },
     },
+    Query: {
+      AtlasScope: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
+        const docId: string = args.docId || "";
+        const doc = await reactor.getDocument(driveId, docId);
+        return doc.state.global;
+      },
+    },
   };
 };

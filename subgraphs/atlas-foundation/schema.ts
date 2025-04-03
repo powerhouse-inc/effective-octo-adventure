@@ -1,6 +1,7 @@
 import { gql } from "graphql-tag";
+import type { DocumentNode } from "graphql";
 
-export const schema = gql`
+export const schema: DocumentNode = gql`
   """
   Subgraph definition for AtlasFoundation (sky/atlas-foundation)
   """
@@ -246,5 +247,9 @@ export const schema = gql`
   }
   input AtlasFoundation_SetNotionIdInput {
     notionID: String!
+  }
+
+  type Query {
+    AtlasFoundation(driveId: String, docId: PHID): AtlasFoundationState
   }
 `;

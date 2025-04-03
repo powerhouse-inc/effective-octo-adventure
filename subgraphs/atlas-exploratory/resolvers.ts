@@ -8,7 +8,7 @@ import { generateId, hashKey } from "document-model";
 
 const DEFAULT_DRIVE_ID = "powerhouse";
 
-export const getResolvers = (subgraph: Subgraph) => {
+export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
   const reactor = subgraph.reactor;
 
   return {
@@ -295,14 +295,6 @@ export const getResolvers = (subgraph: Subgraph) => {
         );
 
         return doc.revision.global + 1;
-      },
-    },
-    Query: {
-      AtlasExploratory: async (_: any, args: any) => {
-        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
-        const docId: string = args.docId || "";
-        const doc = await reactor.getDocument(driveId, docId);
-        return doc.state.global;
       },
     },
   };

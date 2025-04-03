@@ -3,7 +3,9 @@ import { EnumField, Form, PHIDField, SelectField, UrlField, StringField } from "
 import { type EditorProps } from "document-model";
 import {
   actions,
+  type Status,
   type AtlasScopeDocument,
+  type GlobalTag,
 } from "../../document-models/atlas-scope/index.js";
 import ToggleSwitch from '../shared/components/toggle-switch.js';
 import { SetDocNumberForm } from './components/SetDocNumberForm.js';

@@ -1,11 +1,5 @@
 import { type EditorProps } from "document-model";
-import Layout, { LayoutContent, LayoutHeader, LayoutMain } from "../shared/components/Layout.js";
-import ToggleSwitch from "../shared/components/toggle-switch.js";
-import { useState } from "react";
-import { EnumField, Form, PHIDField, SelectField, StringField, UrlField } from "@powerhousedao/design-system/scalars";
-import { cb } from "../shared/utils/utils.js";
 import { actions, type AtlasMultiParentDocument, type MGlobalTag, type MStatus, type MAtlasType } from "../../document-models/atlas-multi-parent/index.js";
-import { EStatus } from "document-models/atlas-exploratory/index.js";
 import { EditorLayout } from "../shared/components/EditorLayout.js";
 import { SplitView } from "../shared/components/SplitView.js";
 import { MultiParentForm } from "./components/MultiparentForm.js";
@@ -22,9 +16,6 @@ export default function Editor(props: IProps) {
   originalContextData: documentState.originalContextData?.[0]?.id || "",
   parents: documentState.parents?.[0]?.id || "",
 }
-  const [splitMode, setSplitMode] = useState(0);
-  const [editMode, setIsEditMode] = useState(1);
-  const isEditMode = editMode === 1;
   const onSubmit = (data: Record<string, any>) => {
     
     if (data['globalTags'] !== undefined) {
@@ -71,14 +62,14 @@ export default function Editor(props: IProps) {
                 <MultiParentForm
                   onSubmit={onSubmit}
                   documentState={newMomentdocumentState}
-                  mode={"SplitReadonly"}
+                  mode={isEditMode ? "Edition" : "DiffRemoved"}
                 />
               }
               right={
                 <MultiParentForm
                   onSubmit={onSubmit}
                   documentState={newMomentdocumentState}
-                  mode={"SplitEdit"}
+                  mode={isEditMode ? "DiffMixed" : "DiffAdditions"}
                 />
               }
             />
@@ -86,7 +77,7 @@ export default function Editor(props: IProps) {
             <MultiParentForm
               onSubmit={onSubmit}
               documentState={newMomentdocumentState}
-              mode={isEditMode ? "UnifiedEdit" : "UnifiedReadonly"}
+              mode={isEditMode ? "Edition" : "Readonly"}
             />
           )
         }

@@ -55,14 +55,14 @@ export default function Editor(props: IProps) {
               <ExploratoryForm
                 onSubmit={onSubmit}
                 documentState={documentState}
-                mode={"SplitReadonly"}
+                mode={isEditMode ? "DiffMixed" : "DiffRemoved"}
               />
             }
             right={
               <ExploratoryForm
                 onSubmit={onSubmit}
                 documentState={documentState}
-                mode={"SplitEdit"}
+                mode={isEditMode ? "DiffMixed" : "DiffAdditions"}
               />
             }
           />
@@ -70,7 +70,7 @@ export default function Editor(props: IProps) {
           <ExploratoryForm
             onSubmit={onSubmit}
             documentState={documentState}
-            mode={isEditMode ? "UnifiedEdit" : "UnifiedReadonly"}
+            mode={isEditMode ? "Edition" : "Readonly"}
           />
         )
       }

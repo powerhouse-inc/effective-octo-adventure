@@ -31,7 +31,7 @@ export function MultiParentForm({ onSubmit, documentState, mode }: MultiParentFo
                 {({ triggerSubmit }) => (
                     <div className="flex flex-col gap-3">
                         <div className="flex flex-row gap-2">
-                            <div className="flex-0.5">
+                            <div className="flex-1">
                                 <StringField
                                     disabled={isReadOnly}
                                     name="docNo"
@@ -40,7 +40,7 @@ export function MultiParentForm({ onSubmit, documentState, mode }: MultiParentFo
                                     onBlur={triggerSubmit}
                                 />
                             </div>
-                            <div className="flex-2">
+                            <div className="flex-1">
                                 <StringField
                                     disabled={isReadOnly}
                                     name="name"

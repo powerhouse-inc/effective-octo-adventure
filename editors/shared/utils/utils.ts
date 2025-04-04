@@ -58,3 +58,13 @@ export const fetchSelectedPHIDOption = (
 ): PHIDOption | undefined => {
   return (docsIndex as PHIDOption[]).find((option) => option.value === value);
 };
+
+
+
+export const getCardVariant = (mode: string) => {
+  return mode === "UnifiedEdit"  || mode === "UnifiedReadonly" ? "gray" : "green";
+};
+
+export const getTagText = (mode: string) => {
+  return mode === "UnifiedEdit" || mode === "UnifiedReadonly" ? "Official Atlas" : "Atlas Draft";
+};

@@ -23,7 +23,7 @@ export default function ToggleSwitch({ options = [], defaultSelected = 1, onChan
   }
 
   return (
-    <div className={cn("flex items-center p-0.5 bg-slate-50 w-fit h-9 rounded-[6px] border-[1px] border-slate-200 box-border", className)}
+    <div className={cn("flex items-center bg-slate-50 w-fit rounded-[6px] border-[1px] border-slate-200 box-border", className)}
     >
       {options.map((option, index) => (
 

@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import ToggleSwitch from "./toggle-switch.js";
 import type { Maybe } from "document-model";
+import { useSidebar, type SidebarNode } from "@powerhousedao/design-system/ui";
 
 const splitModeEnabled = false;
 const readOnlyModeEnabled = false;
@@ -26,6 +27,42 @@ export const EditorLayout = ({
 }: EditorLayoutProps) => {
   const [isSplitMode, setIsSplitMode] = useState<boolean>(false);
   const [isEditMode, setIsEditMode] = useState<boolean>(true);
+
+  const { nodes, activeNodeId } = useSidebar();
+
+  const nodePath = useMemo(() => {
+    if (!nodes || !activeNodeId) return [];
+    
+    // Helper function to find the path to a node with the given id
+    const findNodePath = (
+      nodeList: SidebarNode[],
+      targetId: string,
+      currentPath: SidebarNode[] = []
+    ): SidebarNode[] | null => {
+      for (const node of nodeList) {
+        // Check if current node is the target
+        if (node.id === targetId) {
+          return [...currentPath, node];
+        }
+        
+        // If node has children, search them
+        if (node.children && node.children.length > 0) {
+          const childPath = findNodePath(node.children, targetId, [...currentPath, node]);
+          if (childPath) {
+            return childPath;
+          }
+        }
+      }
+      
+      // Node not found in this branch
+      return null;
+    };
+    
+    // Start the search from the root nodes
+    return findNodePath(nodes, activeNodeId) || [];
+  }, [nodes, activeNodeId]);
+
+  console.log(">>>>", nodePath);
 
   return (
     <div className="min-h-screen h-screen bg-white flex flex-col rounded-2xl p-6 gap-4">

@@ -17,7 +17,6 @@ interface ExploratoryFormProps {
 
 export function ExploratoryForm({ onSubmit, documentState, mode }: ExploratoryFormProps) {
   const isReadOnly = mode === "UnifiedReadonly";
-
   const cardVariant = mode === "UnifiedEdit" || mode === "SplitEdit" ? "green" : "gray";
   const tagText = cardVariant === "gray" ? "Official Atlas" : "Atlas Draft";
 

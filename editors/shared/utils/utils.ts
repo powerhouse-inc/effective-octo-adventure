@@ -1,5 +1,6 @@
 import type { PHIDOption } from "@powerhousedao/design-system/ui";
 import docsIndex from "../../../scripts/apply-changes/data/index.json" with { type: "json" };
+import { EditorMode } from "../types.js";
 
 /**
  * @deprecated Use fetchPHIDOptions & fetchSelectedPHIDOption instead
@@ -61,10 +62,10 @@ export const fetchSelectedPHIDOption = (
 
 
 
-export const getCardVariant = (mode: string) => {
-  return mode === "UnifiedEdit"  || mode === "UnifiedReadonly" ? "gray" : "green";
+export const getCardVariant = (mode: EditorMode) => {
+  return mode === "Edition"  || mode === "Readonly" ? "gray" : "green";
 };
 
 export const getTagText = (mode: string) => {
-  return mode === "UnifiedEdit" || mode === "UnifiedReadonly" ? "Official Atlas" : "Atlas Draft";
+  return mode === "Edition" || mode === "Readonly" ? "Official Atlas" : "Atlas Draft";
 };

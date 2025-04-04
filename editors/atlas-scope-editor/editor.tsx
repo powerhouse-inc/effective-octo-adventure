@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-import { EnumField, Form, PHIDField, SelectField, UrlField, StringField } from "@powerhousedao/design-system/scalars"
 import { type EditorProps } from "document-model";
 import {
   actions,
@@ -7,9 +5,6 @@ import {
   type AtlasScopeDocument,
   type GlobalTag,
 } from "../../document-models/atlas-scope/index.js";
-import ToggleSwitch from '../shared/components/toggle-switch.js';
-import Layout, { LayoutHeader, LayoutContent, LayoutMain } from '../shared/components/Layout.js';
-import { cb, fetchPHIDOptions, fetchSelectedPHIDOption } from '../shared/utils/utils.js';
 import { EditorLayout } from '../shared/components/EditorLayout.js';
 import { SplitView } from '../shared/components/SplitView.js';
 import { ScopeForm } from './components/ScopeForm.js';
@@ -23,52 +18,6 @@ export default function Editor(props: IProps) {
     originalContextData: documentState.originalContextData?.[0]?.id || "",
     
   }
-  
-  const [splitMode, setSplitMode] = useState(0);
-  const [editMode, setIsEditMode] = useState(1);
-  const isEditMode = editMode === 1
-
-  const headerActions = (
-    <>
-      <button
-        className={`
-          flex items-center justify-center h-8 px-3 rounded-md whitespace-nowrap min-w-fit
-          font-medium text-sm cursor-pointer transition-all duration-200 outline-none
-          bg-white text-gray-900 shadow-sm
-        `}
-      >
-        Unified
-      </button>
-      <button
-        onClick={() => {
-          setIsEditMode(1)
-        }}
-        className={`
-          flex items-center justify-center h-8 px-3 rounded-md whitespace-nowrap min-w-fit
-          font-medium text-sm cursor-pointer transition-all duration-200 outline-none
-          bg-white text-gray-900 shadow-sm
-        `}
-      >
-        Edit
-      </button>
-      <ToggleSwitch
-        className='hidden'
-        options={["Unified", "Split"]}
-        defaultSelected={0}
-        onChange={(selectedIndex) => {
-          setSplitMode(selectedIndex)
-        }}
-      />
-      <ToggleSwitch
-        className='hidden'
-        options={["Read Only", "Edit"]}
-        defaultSelected={0}
-        onChange={(option) => {
-          setIsEditMode(option);
-        }}
-      />
-    </>
-  );
 
   const onSubmit = (data: Record<string, any>) => {
     if (data['docNo'] !== undefined) {
@@ -108,14 +57,14 @@ export default function Editor(props: IProps) {
             <ScopeForm
               onSubmit={onSubmit}
               documentState={newMomentdocumentState}
-              mode={"SplitReadonly"}
+              mode={isEditMode ? "Edition" : "DiffRemoved"}
             />
           }
           right={
             <ScopeForm
               onSubmit={onSubmit}
               documentState={newMomentdocumentState}
-              mode={"SplitEdit"}
+              mode={isEditMode ? "DiffMixed" : "DiffAdditions"}
             />
           }
         />
@@ -123,7 +72,7 @@ export default function Editor(props: IProps) {
         <ScopeForm
           onSubmit={onSubmit}
           documentState={newMomentdocumentState}
-          mode={isEditMode ? "UnifiedEdit" : "UnifiedReadonly"}
+          mode={isEditMode ? "Edition" : "Readonly"}
         />
       )
     }

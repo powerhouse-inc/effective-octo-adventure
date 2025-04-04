@@ -7,21 +7,26 @@ import {
   UrlField,
 } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
-import { cb } from "../../shared/utils/utils.js";
-
+import { cb, getCardVariant, getTagText } from "../../shared/utils/utils.js";
+import type { EditorMode } from "../../shared/types.js";
+import { isFormReadOnly } from "../../shared/utils/form-common.js";
 interface ExploratoryFormProps {
-    onSubmit: (data: Record<string, any>) => void;
-    documentState: Record<string, any>;
-    mode: "UnifiedEdit" | "UnifiedReadonly" | "SplitReadonly" | "SplitEdit";
+  onSubmit: (data: Record<string, any>) => void;
+  documentState: Record<string, any>;
+  mode: EditorMode;
 }
 
-export function ExploratoryForm({ onSubmit, documentState, mode }: ExploratoryFormProps) {
-  const isReadOnly = mode === "UnifiedReadonly";
-  const cardVariant = mode === "UnifiedEdit" || mode === "SplitEdit" ? "green" : "gray";
-  const tagText = cardVariant === "gray" ? "Official Atlas" : "Atlas Draft";
+export function ExploratoryForm({
+  onSubmit,
+  documentState,
+  mode,
+}: ExploratoryFormProps) {
+  const isReadOnly = isFormReadOnly(mode);
+  const cardVariant = getCardVariant(mode);
+  const tagText = getTagText(mode);
 
-    return (
-    <ContentCard tagText={tagText} variant={cardVariant} className='mt-4'>
+  return (
+    <ContentCard tagText={tagText} variant={cardVariant} className="mt-4">
       <Form
         onSubmit={onSubmit}
         submitChangesOnly

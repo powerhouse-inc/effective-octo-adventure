@@ -8,11 +8,12 @@ import {
 } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import { cb, getCardVariant, getTagText } from "../../shared/utils/utils.js";
+import type { EditorMode } from "../../shared/types.js";
 
 interface MultiParentFormProps {
     onSubmit: (data: Record<string, any>) => void;
     documentState: Record<string, any>;
-    mode: "UnifiedEdit" | "UnifiedReadonly" | "SplitReadonly" | "SplitEdit";
+    mode: EditorMode;
 }
 
 export function MultiParentForm({ onSubmit, documentState, mode }: MultiParentFormProps) {

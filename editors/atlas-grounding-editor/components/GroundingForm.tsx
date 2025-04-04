@@ -14,11 +14,13 @@ import {
   getTagText,
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
+import type { EditorMode } from "../../shared/types.js";
+import { isFormReadOnly } from "../../shared/utils/form-common.js";
 
 interface GroundingFormProps {
   onSubmit: (data: Record<string, any>) => void;
   documentState: Record<string, any>;
-  mode: "UnifiedEdit" | "UnifiedReadonly" | "SplitReadonly" | "SplitEdit";
+  mode: EditorMode;
   initialPHIDOption: PHIDOption;
 }
 
@@ -28,7 +30,7 @@ export function GroundingForm({
   mode,
   initialPHIDOption,
 }: GroundingFormProps) {
-  const isReadOnly = mode === "UnifiedReadonly";
+  const isReadOnly = isFormReadOnly(mode);
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
 

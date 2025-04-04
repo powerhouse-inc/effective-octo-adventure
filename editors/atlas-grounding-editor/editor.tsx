@@ -41,14 +41,14 @@ export default function Editor(props: IProps) {
     }
     if (data["atlasType"] !== undefined) {
       dispatch(
-        actions.setAtlasType({ atlasType: data["atlasType"] as GAtlasType }),
+        actions.setAtlasType({ atlasType: data["atlasType"] as GAtlasType })
       );
     }
     if (data["masterStatus"] !== undefined) {
       dispatch(
         actions.setMasterStatus({
           masterStatus: data["masterStatus"] as GStatus,
-        }),
+        })
       );
     }
     if (data["content"] !== undefined) {
@@ -59,12 +59,12 @@ export default function Editor(props: IProps) {
     }
     if (data["originalContextData"] !== undefined) {
       dispatch(
-        actions.addContextData({ id: data["originalContextData"] as string }),
+        actions.addContextData({ id: data["originalContextData"] as string })
       );
     }
     if (data["provenance"] !== undefined) {
       dispatch(
-        actions.setProvenance({ provenance: [data["provenance"] as string] }),
+        actions.setProvenance({ provenance: [data["provenance"] as string] })
       );
     }
     if (data["globalTags"] !== undefined) {
@@ -76,7 +76,12 @@ export default function Editor(props: IProps) {
   };
 
   return (
-    <EditorLayout title="Grounding Document" notionId={documentState.notionId}>
+    <EditorLayout
+      title="Grounding Document"
+      notionId={documentState.notionId}
+      readOnlyModeEnabled={true}
+      splitModeEnabled={true}
+    >
       {({ isSplitMode, isEditMode }) =>
         isSplitMode ? (
           <SplitView
@@ -84,7 +89,7 @@ export default function Editor(props: IProps) {
               <GroundingForm
                 onSubmit={onSubmit}
                 documentState={documentState}
-                mode={"SplitReadonly"}
+                mode={isEditMode ? "Edition" : "DiffRemoved"}
                 initialPHIDOption={initialPHIDOption}
               />
             }
@@ -92,7 +97,7 @@ export default function Editor(props: IProps) {
               <GroundingForm
                 onSubmit={onSubmit}
                 documentState={documentState}
-                mode={"SplitEdit"}
+                mode={isEditMode ? "DiffMixed" : "DiffAdditions"}
                 initialPHIDOption={initialPHIDOption}
               />
             }
@@ -101,7 +106,7 @@ export default function Editor(props: IProps) {
           <GroundingForm
             onSubmit={onSubmit}
             documentState={documentState}
-            mode={isEditMode ? "UnifiedEdit" : "UnifiedReadonly"}
+            mode={isEditMode ? "Edition" : "Readonly"}
             initialPHIDOption={initialPHIDOption}
           />
         )

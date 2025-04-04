@@ -10,6 +10,9 @@ import {
 import ToggleSwitch from '../shared/components/toggle-switch.js';
 import Layout, { LayoutHeader, LayoutContent, LayoutMain } from '../shared/components/Layout.js';
 import { cb, fetchPHIDOptions, fetchSelectedPHIDOption } from '../shared/utils/utils.js';
+import { EditorLayout } from '../shared/components/EditorLayout.js';
+import { SplitView } from '../shared/components/SplitView.js';
+import { ScopeForm } from './components/ScopeForm.js';
 
 export type IProps = EditorProps<AtlasScopeDocument>;
 export default function Editor(props: IProps) {
@@ -68,7 +71,7 @@ export default function Editor(props: IProps) {
   );
 
   const onSubmit = (data: Record<string, any>) => {
-    if (data['docNo'] !== undefined ) {
+    if (data['docNo'] !== undefined) {
       dispatch(actions.setDocNumber({ docNo: data['docNo'] as string }));
     }
     if (data['name'] !== undefined) {
@@ -87,134 +90,43 @@ export default function Editor(props: IProps) {
     if (data['newTags'] !== undefined) {
       dispatch(actions.addTags({ newTags: data['newTags'] as GlobalTag[] }));
     }
+    if (data['originalContextData'] !== undefined) {
+      dispatch(actions.addContextData({ id: data['originalContextData'] as string }));
+    }
 
   }
 
   return (
-    <Layout>
-      <Form onSubmit={onSubmit} submitChangesOnly defaultValues={{ ...newMomentdocumentState }}>
-        {({ triggerSubmit }) => (
-          <>
-            <LayoutHeader>
-              <div>
-                <h1 className="text-xl font-semibold">Atlas Explorer - The Support Scope</h1>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="atlas-cell-notionId">
-                  <span className="atlas-cell-notionId-label">Notion ID</span>
-                  <span className="atlas-cell-notionId-value">
-                    {props.document.state.global.notionId || "4281AB93-EF4F-4974-988D-7DAD19A693D"}
-                  </span>
-                </div>
-              </div>
-            </LayoutHeader>
-            <LayoutContent>
-              <h2 className="text-gray-700">A.2 / A.2.1 - Governance Process Support</h2>
-              <div className="flex items-center gap-4">
-                {headerActions}
-              </div>
-            </LayoutContent>
-            <LayoutMain tagText="Official Atlas" variant="gray">
-              <div className="flex flex-row justify-between gap-2">
-                <div className="flex-1">
-                <StringField name="docNo" label="Doc №" placeholder="A." onBlur={triggerSubmit}/>
-                </div>
-
-                <div className="flex-1">
-                  <StringField name="name" label="Scope" placeholder="The Governance Scope" onBlur={triggerSubmit}/>
-                </div>
-                <div className="flex-1">
-                  <EnumField label="Status" name="masterStatus" onChange={triggerSubmit} options={[
-                      { value: "PLACEHOLDER", label: "PLACEHOLDER" },
-                      { value: "PROVISIONAL", label: "PROVISIONAL" },
-                      { value: "APPROVED", label: "APPROVED " },
-                      { value: "DEFERRED", label: "DEFERRED" },
-                      { value: "ARCHIVED", label: "ARCHIVED" },
-                    ]}
-                    required
-                    variant="Select"
-                  />
-                </div>
-              </div>
-
-              <div className="flex-1">
-                <StringField autoExpand rows={4} multiline name="content" onBlur={triggerSubmit} label="Enter conten" readOnly={!isEditMode} placeholder="Enter content" />                
-              </div>
-
-              <div className="flex flex-col gap-4 w-1/2">
-                <div className="flex flex-col gap-2 flex-1">
-                  <UrlField
-                    name="provenance"
-                    onBlur={triggerSubmit}
-                    label="Provenance"
-                    readOnly={!isEditMode}
-                    placeholder="Enter provenance" />
-                </div>
-                <div className="flex flex-col gap-2 flex-1">
-                  <PHIDField
-                    readOnly={!isEditMode}
-                    fetchOptionsCallback={fetchPHIDOptions}
-                    fetchSelectedOptionCallback={fetchSelectedPHIDOption}
-                    label="Original Context Data"
-                    name="originalContextData"
-                    placeholder="phd:"
-                    variant="withValueTitleAndDescription"
-                    onBlur={triggerSubmit}
-                    allowUris={true}
-                  />
-                </div>
-                <div className="flex flex-col gap-2 flex-1">
-                  <EnumField
-                    disabled={!isEditMode}
-                    label="Tags"
-                    multiple
-                    name="newTags"
-                    onChange={triggerSubmit}
-                    options={[
-                      {
-                        label: "RECURSIVE_IMPROVEMENT",
-                        value: "RECURSIVE_IMPROVEMENT",
-                      },
-                      { label: "SCOPE_ADVISOR", value: "SCOPE_ADVISOR" },
-                      { label: "DAO_TOOLKIT", value: "DAO_TOOLKIT" },
-                      { label: "PURPOSE_SYSTEM", value: "PURPOSE_SYSTEM" },
-                      { label: "ML_LOW_PRIORITY", value: "ML_LOW_PRIORITY" },
-                      { label: "EXTERNAL_REFERENCE", value: "EXTERNAL_REFERENCE" },
-                      { label: "ML_DEFER", value: "ML_DEFER" },
-                      { label: "SUBDAO_INCUBATION", value: "SUBDAO_INCUBATION" },
-                      { label: "V1_MIP", value: "V1_MIP" },
-                      { label: "ML_HIGH_PRIORITY", value: "ML_HIGH_PRIORITY" },
-                      {
-                        label: "ECOSYSTEM_INTELLIGENCE",
-                        value: "ECOSYSTEM_INTELLIGENCE",
-                      },
-                      {
-                        label: "LEGACY_TERM_USE_APPROVED",
-                        value: "LEGACY_TERM_USE_APPROVED",
-                      },
-                      { label: "CAIS", value: "CAIS" },
-                      { label: "INTERNAL_REFERENCE", value: "INTERNAL_REFERENCE" },
-                      { label: "FACILITATORDAO", value: "FACILITATORDAO" },
-                      { label: "ML_MED_PRIORITY", value: "ML_MED_PRIORITY" },
-                      { label: "AVC", value: "AVC" },
-                      { label: "P0_HUB_ENTRY_NEEDED", value: "P0_HUB_ENTRY_NEEDED" },
-                      { label: "ANON_WORKFORCE", value: "ANON_WORKFORCE" },
-                      { label: "NEWCHAIN", value: "NEWCHAIN" },
-                      {
-                        label: "ML_SUPPORT_DOCS_NEEDED",
-                        value: "ML_SUPPORT_DOCS_NEEDED",
-                      },
-                      { label: "SUBDAO_REWARDS", value: "SUBDAO_REWARDS" },
-                      { label: "TWO_STAGE_BRIDGE", value: "TWO_STAGE_BRIDGE" },
-                    ]}
-                  />
-                </div>
-              </div>
-            </LayoutMain></>
-        )}
-      </Form>
-    </Layout>
+    <EditorLayout
+    title="Atlas Explorer - The Support Scope"
+    notionId={props.document.state.global.notionId}
+  >
+    {({ isSplitMode, isEditMode }) =>
+      isSplitMode ? (
+        <SplitView
+          left={
+            <ScopeForm
+              onSubmit={onSubmit}
+              documentState={newMomentdocumentState}
+              mode={"SplitReadonly"}
+            />
+          }
+          right={
+            <ScopeForm
+              onSubmit={onSubmit}
+              documentState={newMomentdocumentState}
+              mode={"SplitEdit"}
+            />
+          }
+        />
+      ) : (
+        <ScopeForm
+          onSubmit={onSubmit}
+          documentState={newMomentdocumentState}
+          mode={isEditMode ? "UnifiedEdit" : "UnifiedReadonly"}
+        />
+      )
+    }
+  </EditorLayout>
   );
 }
-
-

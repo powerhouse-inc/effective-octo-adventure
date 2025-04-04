@@ -9,6 +9,7 @@ import {
 import ContentCard from "../../shared/components/content-card.js";
 import { cb, getCardVariant, getTagText } from "../../shared/utils/utils.js";
 import type { EditorMode } from "../../shared/types.js";
+import { isFormReadOnly } from "../../shared/utils/form-common.js";
 
 interface MultiParentFormProps {
     onSubmit: (data: Record<string, any>) => void;
@@ -18,7 +19,7 @@ interface MultiParentFormProps {
 
 export function MultiParentForm({ onSubmit, documentState, mode }: MultiParentFormProps) {
 
-    const isReadOnly = mode === "UnifiedReadonly";
+    const isReadOnly = isFormReadOnly(mode);
     const cardVariant = getCardVariant(mode);
     const tagText = getTagText(mode);
 
@@ -92,7 +93,7 @@ export function MultiParentForm({ onSubmit, documentState, mode }: MultiParentFo
                         />
                         <PHIDField
                             disabled={isReadOnly}
-                            name="parent"
+                            name="parents"
                             label="Parent Document"
                             placeholder="PHID"
                             onBlur={triggerSubmit}

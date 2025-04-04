@@ -9,6 +9,7 @@ import {
 import ContentCard from "../../shared/components/content-card.js";
 import { fetchPHIDOptions, fetchSelectedPHIDOption, getCardVariant, getTagText } from "../../shared/utils/utils.js";
 import type { EditorMode } from "../../shared/types.js";
+import { isFormReadOnly } from "../../shared/utils/form-common.js";
 
 interface ScopeFormProps {
     onSubmit: (data: Record<string, any>) => void;
@@ -18,7 +19,7 @@ interface ScopeFormProps {
 
 export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
 
-    const isReadOnly = mode === "UnifiedReadonly";
+    const isReadOnly = isFormReadOnly(mode);
     const cardVariant = getCardVariant(mode);
     const tagText = getTagText(mode);
 

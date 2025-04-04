@@ -5,6 +5,7 @@ import reactHooksPlugin from "eslint-plugin-react-hooks";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 import { globalIgnores } from "eslint/config";
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
 export default tseslint.config(
   globalIgnores([
@@ -18,6 +19,7 @@ export default tseslint.config(
   ]),
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
+  eslintPluginPrettierRecommended,
   {
     languageOptions: {
       sourceType: "module",
@@ -34,15 +36,15 @@ export default tseslint.config(
         },
       },
     },
-    rules: {      
+    rules: {
       "@typescript-eslint/consistent-type-imports": [
-      "error",
-      {
-        disallowTypeAnnotations: false,
-        prefer: "type-imports",
-        fixStyle: "inline-type-imports",
-      },
-    ],
+        "error",
+        {
+          disallowTypeAnnotations: false,
+          prefer: "type-imports",
+          fixStyle: "inline-type-imports",
+        },
+      ],
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/prefer-nullish-coalescing": "off",
       "@typescript-eslint/no-floating-promises": "off",

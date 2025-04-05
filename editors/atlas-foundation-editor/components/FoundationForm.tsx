@@ -17,6 +17,10 @@ import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import type { EditorMode } from "../../shared/types.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import { isFormReadOnly } from "../../shared/utils/form-common.js";
+import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
+import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
+import { useEffect, useRef } from "react";
+import { UseFormReturn } from "react-hook-form";
 
 interface FoundationFormProps {
   onSubmit: (data: Record<string, any>) => void;
@@ -38,12 +42,22 @@ export function FoundationForm({
   // baseline document state
   const originalNodeState = getOriginalNotionDocument(
     documentState.notionId || "notion-id-not-set",
-    "article",
+    documentState.atlasType || "article"
   );
+
+  const formRef = useRef<UseFormReturn>(null);
+
+  // keep the form state in sync with the document state
+  useEffect(() => {
+    if (formRef.current) {
+      formRef.current.reset({ ...documentState });
+    }
+  }, [documentState]);
 
   return (
     <ContentCard tagText={tagText} variant={cardVariant} className={cn("mt-4")}>
       <Form
+        ref={formRef}
         defaultValues={{ ...documentState }}
         onSubmit={onSubmit}
         submitChangesOnly
@@ -52,26 +66,27 @@ export function FoundationForm({
           <div className={cn("flex flex-col gap-3")}>
             <div className={cn("flex flex-row gap-2")}>
               <div className={cn("flex-1")}>
-                <StringField
-                  disabled={isReadOnly}
+                <StringDiffField
                   name="docNo"
                   label="Doc №"
                   placeholder="A."
                   onBlur={triggerSubmit}
+                  mode={mode}
+                  baselineValue={originalNodeState.docNo}
                 />
               </div>
               <div className={cn("flex-1")}>
-                <StringField
-                  disabled={isReadOnly}
+                <StringDiffField
                   name="name"
                   label="Name"
                   placeholder="Document name"
                   onBlur={triggerSubmit}
+                  mode={mode}
+                  baselineValue={originalNodeState.name}
                 />
               </div>
               <div className={cn("flex-1")}>
-                <EnumField
-                  disabled={isReadOnly}
+                <EnumDiffField
                   name="atlasType"
                   label="Type"
                   options={[
@@ -89,11 +104,12 @@ export function FoundationForm({
                   required
                   variant="Select"
                   onChange={triggerSubmit}
+                  mode={mode}
+                  baselineValue={originalNodeState.type?.toUpperCase()}
                 />
               </div>
               <div className={cn("flex-1")}>
-                <EnumField
-                  disabled={isReadOnly}
+                <EnumDiffField
                   name="masterStatus"
                   label="Status"
                   options={[
@@ -106,6 +122,8 @@ export function FoundationForm({
                   required
                   variant="Select"
                   onChange={triggerSubmit}
+                  mode={mode}
+                  baselineValue={originalNodeState.masterStatusNames[0]?.toUpperCase()}
                 />
               </div>
             </div>

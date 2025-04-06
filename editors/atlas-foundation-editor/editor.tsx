@@ -41,14 +41,14 @@ export default function Editor(props: IProps) {
     }
     if (data["atlasType"] !== undefined) {
       dispatch(
-        actions.setAtlasType({ atlasType: data["atlasType"] as FAtlasType })
+        actions.setAtlasType({ atlasType: data["atlasType"] as FAtlasType }),
       );
     }
     if (data["masterStatus"] !== undefined) {
       dispatch(
         actions.setMasterStatus({
           masterStatus: data["masterStatus"] as FStatus,
-        })
+        }),
       );
     }
     if (data["content"] !== undefined) {
@@ -59,12 +59,12 @@ export default function Editor(props: IProps) {
     }
     if (data["originalContextData"] !== undefined) {
       dispatch(
-        actions.addContextData({ id: data["originalContextData"] as string })
+        actions.addContextData({ id: data["originalContextData"] as string }),
       );
     }
     if (data["provenance"] !== undefined) {
       dispatch(
-        actions.setProvenance({ provenance: [data["provenance"] as string] })
+        actions.setProvenance({ provenance: [data["provenance"] as string] }),
       );
     }
     if (data["globalTags"] !== undefined) {

@@ -1,40 +1,38 @@
 import {
-  EnumField,
   FormLabel,
-  type EnumFieldProps,
+  UrlField,
+  type UrlFieldProps,
 } from "@powerhousedao/design-system/scalars";
 import { type BaseDiffFieldProps } from "../../types.js";
 import { FakeInput } from "./fake-input.js";
 import { DiffText } from "../diff-text.js";
 import { useFormContext } from "react-hook-form";
 
-type EnumDiffFieldProps = EnumFieldProps & BaseDiffFieldProps;
+type UrlDiffFieldProps = UrlFieldProps & BaseDiffFieldProps;
 
-const EnumDiffField = ({
+const UrlDiffField = ({
   mode,
   baselineValue = "",
   diffMode = "words",
-  ...enumProps
-}: EnumDiffFieldProps) => {
+  ...urlProps
+}: UrlDiffFieldProps) => {
   const { getValues } = useFormContext();
 
   if (mode === "Edition" || mode === "Readonly") {
-    return <EnumField disabled={mode === "Readonly"} {...enumProps} />;
+    return <UrlField disabled={mode === "Readonly"} {...urlProps} />;
   }
-
-  const value = getValues(enumProps.name!) as string;
 
   return (
     <div className="flex flex-col gap-2">
-      {enumProps.label && (
-        <FormLabel disabled={true} required={enumProps.required}>
-          {enumProps.label}
+      {urlProps.label && (
+        <FormLabel disabled={true} required={urlProps.required}>
+          {urlProps.label}
         </FormLabel>
       )}
       <FakeInput>
         <DiffText
           baseline={baselineValue}
-          value={value.toString()}
+          value={(getValues(urlProps.name!) as string) || ""}
           mode={mode}
           diffMode={diffMode}
         />
@@ -43,4 +41,4 @@ const EnumDiffField = ({
   );
 };
 
-export { EnumDiffField };
+export { UrlDiffField };

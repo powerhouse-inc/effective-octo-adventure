@@ -20,7 +20,7 @@ import { isFormReadOnly } from "../../shared/utils/form-common.js";
 import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
 import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
 import { useEffect, useRef } from "react";
-import { UseFormReturn } from "react-hook-form";
+import type { UseFormReturn } from "react-hook-form";
 
 interface FoundationFormProps {
   onSubmit: (data: Record<string, any>) => void;

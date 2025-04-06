@@ -22,6 +22,8 @@ const StringDiffField = ({
     return <StringField disabled={mode === "Readonly"} {...stringProps} />;
   }
 
+  const value = (getValues(stringProps.name!) as string) || "";
+
   return (
     <div className="flex flex-col gap-2">
       {stringProps.label && (
@@ -29,10 +31,13 @@ const StringDiffField = ({
           {stringProps.label}
         </FormLabel>
       )}
-      <FakeInput>
+      <FakeInput
+        multiline={stringProps.multiline || false}
+        rows={stringProps.rows || 3}
+      >
         <DiffText
           baseline={baselineValue}
-          value={getValues(stringProps.name!)}
+          value={value?.toString()}
           mode={mode}
           diffMode={diffMode}
         />

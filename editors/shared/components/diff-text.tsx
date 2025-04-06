@@ -1,6 +1,6 @@
 import { Fragment, useMemo } from "react";
 import { diffSentences, diffWords } from "diff";
-import { EditorMode } from "../types.js";
+import type { EditorMode } from "../types.js";
 
 interface DiffTextProps {
   baseline: string;
@@ -22,7 +22,7 @@ export const DiffText = ({
   }, [baseline, value, diffMode]);
 
   return (
-    <span>
+    <span className="leading-normal">
       {wordsDiff.map((word, index) => {
         return word.added ? (
           mode === "DiffAdditions" || mode === "DiffMixed" ? (

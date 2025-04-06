@@ -10,6 +10,15 @@ import ContentCard from "../../shared/components/content-card.js";
 import { cb, getCardVariant, getTagText } from "../../shared/utils/utils.js";
 import type { EditorMode } from "../../shared/types.js";
 import { isFormReadOnly } from "../../shared/utils/form-common.js";
+import { getOriginalNotionDocument } from "../../../document-models/utils.js";
+import type { UseFormReturn } from "react-hook-form";
+import { useEffect, useRef } from "react";
+import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
+import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
+import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
+import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
+import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
+
 interface ExploratoryFormProps {
   onSubmit: (data: Record<string, any>) => void;
   documentState: Record<string, any>;
@@ -25,6 +34,21 @@ export function ExploratoryForm({
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
 
+  // baseline document state
+  const originalNodeState = getOriginalNotionDocument(
+    (documentState.notionId as string) || "notion-id-not-set",
+    (documentState.atlasType as ParsedNotionDocumentType) || "article",
+  );
+
+  const formRef = useRef<UseFormReturn>(null);
+
+  // keep the form state in sync with the document state
+  useEffect(() => {
+    if (formRef.current) {
+      formRef.current.reset({ ...documentState });
+    }
+  }, [documentState]);
+
   return (
     <ContentCard tagText={tagText} variant={cardVariant} className="mt-4">
       <Form
@@ -36,25 +60,29 @@ export function ExploratoryForm({
           <div className="flex flex-col gap-3">
             <div className="flex flex-row gap-2">
               <div className="flex-0.5">
-                <StringField
+                <StringDiffField
                   disabled={isReadOnly}
                   name="docNo"
                   label="Doc №"
                   placeholder="A."
                   onBlur={triggerSubmit}
+                  mode={mode}
+                  baselineValue={originalNodeState.docNo}
                 />
               </div>
               <div className="flex-2">
-                <StringField
+                <StringDiffField
                   disabled={isReadOnly}
                   name="name"
                   label="Name"
                   placeholder="Exploratory Document"
                   onBlur={triggerSubmit}
+                  mode={mode}
+                  baselineValue={originalNodeState.name}
                 />
               </div>
               <div className="flex-1">
-                <EnumField
+                <EnumDiffField
                   disabled={isReadOnly}
                   label="Status"
                   name="masterStatus"
@@ -68,16 +96,20 @@ export function ExploratoryForm({
                   ]}
                   required
                   variant="Select"
+                  mode={mode}
+                  baselineValue={originalNodeState.masterStatusNames[0]?.toUpperCase()}
                 />
               </div>
             </div>
-            <StringField
+            <StringDiffField
               disabled={isReadOnly}
               name="content"
               multiline={true}
               label="Content"
               placeholder="Content"
               onBlur={triggerSubmit}
+              mode={mode}
+              baselineValue={""} // TODO: add the right baseline value
             />
             <PHIDField
               disabled={isReadOnly}
@@ -97,81 +129,44 @@ export function ExploratoryForm({
               isToggle
               onChange={triggerSubmit}
             />
-            <StringField
+            <StringDiffField
               disabled={isReadOnly}
               name="findings"
               multiline={true}
               label="Findings"
               placeholder="Findings"
               onBlur={triggerSubmit}
+              mode={mode}
+              baselineValue={""} // TODO: add the right baseline value
             />
-            <StringField
+            <StringDiffField
               disabled={isReadOnly}
               name="additionalGuidance"
               multiline={true}
               label="Additional Guidance"
               placeholder="Additional Guidance"
               onBlur={triggerSubmit}
+              mode={mode}
+              baselineValue={""} // TODO: add the right baseline value
             />
-            <UrlField
+            <UrlDiffField
               disabled={isReadOnly}
               name="provenance"
               label="Provenance"
               placeholder="Provenance"
               onBlur={triggerSubmit}
+              mode={mode}
+              baselineValue={""} // TODO: add the right baseline value
             />
-            <EnumField
+            <EnumDiffField
               disabled={isReadOnly}
               label="Tags"
               multiple
               name="globalTags"
-              onBlur={triggerSubmit}
-              options={[
-                {
-                  label: "RECURSIVE_IMPROVEMENT",
-                  value: "RECURSIVE_IMPROVEMENT",
-                },
-                { label: "SCOPE_ADVISOR", value: "SCOPE_ADVISOR" },
-                { label: "DAO_TOOLKIT", value: "DAO_TOOLKIT" },
-                { label: "PURPOSE_SYSTEM", value: "PURPOSE_SYSTEM" },
-                { label: "ML_LOW_PRIORITY", value: "ML_LOW_PRIORITY" },
-                {
-                  label: "EXTERNAL_REFERENCE",
-                  value: "EXTERNAL_REFERENCE",
-                },
-                { label: "ML_DEFER", value: "ML_DEFER" },
-                { label: "SUBDAO_INCUBATION", value: "SUBDAO_INCUBATION" },
-                { label: "V1_MIP", value: "V1_MIP" },
-                { label: "ML_HIGH_PRIORITY", value: "ML_HIGH_PRIORITY" },
-                {
-                  label: "ECOSYSTEM_INTELLIGENCE",
-                  value: "ECOSYSTEM_INTELLIGENCE",
-                },
-                {
-                  label: "LEGACY_TERM_USE_APPROVED",
-                  value: "LEGACY_TERM_USE_APPROVED",
-                },
-                { label: "CAIS", value: "CAIS" },
-                {
-                  label: "INTERNAL_REFERENCE",
-                  value: "INTERNAL_REFERENCE",
-                },
-                { label: "FACILITATORDAO", value: "FACILITATORDAO" },
-                { label: "ML_MED_PRIORITY", value: "ML_MED_PRIORITY" },
-                { label: "AVC", value: "AVC" },
-                {
-                  label: "P0_HUB_ENTRY_NEEDED",
-                  value: "P0_HUB_ENTRY_NEEDED",
-                },
-                { label: "ANON_WORKFORCE", value: "ANON_WORKFORCE" },
-                { label: "NEWCHAIN", value: "NEWCHAIN" },
-                {
-                  label: "ML_SUPPORT_DOCS_NEEDED",
-                  value: "ML_SUPPORT_DOCS_NEEDED",
-                },
-                { label: "SUBDAO_REWARDS", value: "SUBDAO_REWARDS" },
-                { label: "TWO_STAGE_BRIDGE", value: "TWO_STAGE_BRIDGE" },
-              ]}
+              onChange={triggerSubmit}
+              options={globalTagsEnumOptions}
+              mode={mode}
+              baselineValue={""} // TODO: add the right baseline value
             />
           </div>
         )}

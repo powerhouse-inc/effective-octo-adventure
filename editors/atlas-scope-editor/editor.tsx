@@ -36,11 +36,30 @@ export default function Editor(props: IProps) {
       dispatch(actions.setProvenance({ provenance: data['provenance'] as string }));
     }
 
-    if (data['newTags'] !== undefined) {
-      dispatch(actions.addTags({ newTags: data['newTags'] as GlobalTag[] }));
-    }
     if (data['originalContextData'] !== undefined) {
       dispatch(actions.addContextData({ id: data['originalContextData'] as string }));
+    }
+
+    if (data["globalTags"] !== undefined) {
+      const newTags = data["globalTags"] as GlobalTag[];
+      const currentTags = documentState.globalTags;
+
+      if (data["globalTags"] === null) {
+        dispatch(actions.removeTags({ tags: currentTags }));
+        return;
+      }
+
+      // Tags to add (are in newTags but not in currentTags)
+      const tagsToAdd = newTags.filter((tag) => !currentTags.includes(tag));
+      if (tagsToAdd.length > 0) {
+        dispatch(actions.addTags({ newTags: tagsToAdd }));
+      }
+
+      // Tags to remove (are in currentTags but not in newTags)
+      const tagsToRemove = currentTags.filter((tag) => !newTags.includes(tag));
+      if (tagsToRemove.length > 0) {
+        dispatch(actions.removeTags({ tags: tagsToRemove }));
+      }
     }
 
   }

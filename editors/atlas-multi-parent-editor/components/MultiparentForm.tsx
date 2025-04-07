@@ -7,7 +7,7 @@ import {
     UrlField,
 } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
-import { cb, getCardVariant, getTagText } from "../../shared/utils/utils.js";
+import { cb, fetchPHIDOptions, fetchSelectedPHIDOption, getCardVariant, getTagText } from "../../shared/utils/utils.js";
 import type { EditorMode } from "../../shared/types.js";
 import { isFormReadOnly } from "../../shared/utils/form-common.js";
 import { useEffect } from "react";
@@ -132,8 +132,8 @@ export function MultiParentForm({ onSubmit, documentState, mode }: MultiParentFo
                             label="Parent Document"
                             placeholder="PHID"
                             onBlur={triggerSubmit}
-                            fetchOptionsCallback={cb}
-                            fetchSelectedOptionCallback={(x) => cb(x).then((x) => x[5])}
+                            fetchOptionsCallback={fetchPHIDOptions}
+                                    fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                             variant="withValueTitleAndDescription"
                             allowUris={true}
                         />
@@ -153,8 +153,8 @@ export function MultiParentForm({ onSubmit, documentState, mode }: MultiParentFo
 
                         <PHIDField
                             name="originalContextData"
-                            fetchOptionsCallback={cb}
-                            fetchSelectedOptionCallback={(x) => cb(x).then((x) => x[5])}
+                            fetchOptionsCallback={fetchPHIDOptions}
+                                    fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                             label="Original Context Data"
                             placeholder="phd:"
                             variant="withValueTitleAndDescription"

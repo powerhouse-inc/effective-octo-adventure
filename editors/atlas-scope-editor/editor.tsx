@@ -8,6 +8,7 @@ import {
 import { EditorLayout } from '../shared/components/EditorLayout.js';
 import { SplitView } from '../shared/components/SplitView.js';
 import { ScopeForm } from './components/ScopeForm.js';
+import { hasValue } from "../shared/utils/utils.js";
 
 export type IProps = EditorProps<AtlasScopeDocument>;
 export default function Editor(props: IProps) {
@@ -20,31 +21,29 @@ export default function Editor(props: IProps) {
   }
 
   const onSubmit = (data: Record<string, any>) => {
-    if (data['docNo'] !== undefined) {
+    if (hasValue(data['docNo'])) {
       dispatch(actions.setDocNumber({ docNo: data['docNo'] as string }));
     }
-    if (data['name'] !== undefined) {
+    if (hasValue(data['name'])) {
       dispatch(actions.setScopeName({ name: data['name'] as string }));
     }
-    if (data['masterStatus'] !== undefined) {
+    if (hasValue(data['masterStatus'])) {
       dispatch(actions.setMasterStatus({ masterStatus: data['masterStatus'] as Status }));
     }
-    if (data['content'] !== undefined) {
+    if (hasValue(data['content'])) {
       dispatch(actions.setContent({ content: data['content'] as string }));
     }
-    if (data['provenance'] !== undefined) {
+    if (hasValue(data['provenance'])) {
       dispatch(actions.setProvenance({ provenance: data['provenance'] as string }));
     }
-
-    if (data['originalContextData'] !== undefined) {
+    if (hasValue(data['originalContextData'])) {
       dispatch(actions.addContextData({ id: data['originalContextData'] as string }));
     }
-
-    if (data["globalTags"] !== undefined) {
-      const newTags = data["globalTags"] as GlobalTag[];
+    if (data['globalTags'] !== undefined) {
+      const newTags = data['globalTags'] as GlobalTag[];
       const currentTags = documentState.globalTags;
 
-      if (data["globalTags"] === null) {
+      if (data['globalTags'] === null) {
         dispatch(actions.removeTags({ tags: currentTags }));
         return;
       }
@@ -61,7 +60,6 @@ export default function Editor(props: IProps) {
         dispatch(actions.removeTags({ tags: tagsToRemove }));
       }
     }
-
   }
 
   return (

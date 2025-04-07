@@ -22,14 +22,18 @@ interface FoundationFormProps {
   onSubmit: (data: Record<string, any>) => void;
   documentState: Record<string, any>;
   mode: EditorMode;
-  initialPHIDOption: PHIDOption;
+  parentPHIDInitialOption?: PHIDOption;
+  originalContextDataPHIDInitialOption?: PHIDOption;
+  referencesPHIDInitialOption?: PHIDOption;
 }
 
 export function FoundationForm({
   onSubmit,
   documentState,
   mode,
-  initialPHIDOption,
+  parentPHIDInitialOption,
+  originalContextDataPHIDInitialOption,
+  referencesPHIDInitialOption,
 }: FoundationFormProps) {
   const isReadOnly = isFormReadOnly(mode);
   const cardVariant = getCardVariant(mode);
@@ -142,7 +146,11 @@ export function FoundationForm({
                 placeholder="phd:"
                 variant="withValueTitleAndDescription"
                 allowUris
-                initialOptions={[initialPHIDOption]}
+                initialOptions={
+                  parentPHIDInitialOption
+                    ? [parentPHIDInitialOption]
+                    : undefined
+                }
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}
@@ -156,7 +164,11 @@ export function FoundationForm({
                 placeholder="phd:"
                 variant="withValueTitleAndDescription"
                 allowUris
-                initialOptions={[initialPHIDOption]}
+                initialOptions={
+                  originalContextDataPHIDInitialOption
+                    ? [originalContextDataPHIDInitialOption]
+                    : undefined
+                }
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}
@@ -197,7 +209,11 @@ export function FoundationForm({
                 placeholder="phd:"
                 variant="withValueTitleAndDescription"
                 allowUris
-                initialOptions={[initialPHIDOption]}
+                initialOptions={
+                  referencesPHIDInitialOption
+                    ? [referencesPHIDInitialOption]
+                    : undefined
+                }
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}

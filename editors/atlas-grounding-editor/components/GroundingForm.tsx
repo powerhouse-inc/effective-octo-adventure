@@ -22,14 +22,18 @@ interface GroundingFormProps {
   onSubmit: (data: Record<string, any>) => void;
   documentState: Record<string, any>;
   mode: EditorMode;
-  initialPHIDOption: PHIDOption;
+  parentPHIDInitialOption?: PHIDOption;
+  originalContextDataPHIDInitialOption?: PHIDOption;
+  referencesPHIDInitialOption?: PHIDOption;
 }
 
 export function GroundingForm({
   onSubmit,
   documentState,
   mode,
-  initialPHIDOption,
+  parentPHIDInitialOption,
+  originalContextDataPHIDInitialOption,
+  referencesPHIDInitialOption,
 }: GroundingFormProps) {
   const isReadOnly = isFormReadOnly(mode);
   const cardVariant = getCardVariant(mode);
@@ -115,7 +119,11 @@ export function GroundingForm({
                 placeholder="phd:"
                 variant="withValueTitleAndDescription"
                 allowUris
-                initialOptions={[initialPHIDOption]}
+                initialOptions={
+                  parentPHIDInitialOption
+                    ? [parentPHIDInitialOption]
+                    : undefined
+                }
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}
@@ -129,7 +137,11 @@ export function GroundingForm({
                 placeholder="phd:"
                 variant="withValueTitleAndDescription"
                 allowUris
-                initialOptions={[initialPHIDOption]}
+                initialOptions={
+                  originalContextDataPHIDInitialOption
+                    ? [originalContextDataPHIDInitialOption]
+                    : undefined
+                }
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}
@@ -166,7 +178,11 @@ export function GroundingForm({
                 placeholder="phd:"
                 variant="withValueTitleAndDescription"
                 allowUris
-                initialOptions={[initialPHIDOption]}
+                initialOptions={
+                  referencesPHIDInitialOption
+                    ? [referencesPHIDInitialOption]
+                    : undefined
+                }
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}

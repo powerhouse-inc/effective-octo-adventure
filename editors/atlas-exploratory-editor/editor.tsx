@@ -8,12 +8,20 @@ import {
 import { EditorLayout } from "../shared/components/EditorLayout.js";
 import { SplitView } from "../shared/components/SplitView.js";
 import { ExploratoryForm } from "./components/ExploratoryForm.js";
+import { fetchSelectedPHIDOption } from "../shared/utils/utils.js";
 
 export type IProps = EditorProps<AtlasExploratoryDocument>;
 
 export default function Editor(props: IProps) {
   const { dispatch } = props;
-  const documentState = props.document.state.global;
+  const documentState = {
+    ...props.document.state.global,
+    parent:
+      props.document.state.global.parent?.length > 0
+        ? `phd:${props.document.state.global.parent[0]}`
+        : "",
+  };
+  const parentPHIDInitialOption = fetchSelectedPHIDOption(documentState.parent);
 
   const onSubmit = (data: Record<string, any>) => {
     if (data["docNo"] !== undefined) {
@@ -33,7 +41,12 @@ export default function Editor(props: IProps) {
       dispatch(actions.setContent({ content: data["content"] as string }));
     }
     if (data["parent"] !== undefined) {
-      dispatch(actions.setParent({ parent: [data["parent"] as string] }));
+      if (data["parent"] === null) {
+        dispatch(actions.setParent({ parent: [] }));
+      } else {
+        const newParentId = (data["parent"] as string).split(":")[1];
+        dispatch(actions.setParent({ parent: [newParentId] }));
+      }
     }
 
     // TODO: save other fields
@@ -76,6 +89,7 @@ export default function Editor(props: IProps) {
                 onSubmit={onSubmit}
                 documentState={documentState}
                 mode={isEditMode ? "Edition" : "DiffRemoved"}
+                parentPHIDInitialOption={parentPHIDInitialOption}
               />
             }
             right={
@@ -83,6 +97,7 @@ export default function Editor(props: IProps) {
                 onSubmit={onSubmit}
                 documentState={documentState}
                 mode={isEditMode ? "DiffMixed" : "DiffAdditions"}
+                parentPHIDInitialOption={parentPHIDInitialOption}
               />
             }
           />
@@ -91,6 +106,7 @@ export default function Editor(props: IProps) {
             onSubmit={onSubmit}
             documentState={documentState}
             mode={isEditMode ? "Edition" : "Readonly"}
+            parentPHIDInitialOption={parentPHIDInitialOption}
           />
         )
       }

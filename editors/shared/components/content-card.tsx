@@ -2,7 +2,7 @@ import type { PropsWithChildren } from "react";
 import TagStatus from "./tags-status.js";
 interface AtlasCardProps extends PropsWithChildren {
   tagText?: string;
-  variant?: "gray" | "green";
+  variant?: "gray" | "green" | "blue";
   className?: string;
 }
 

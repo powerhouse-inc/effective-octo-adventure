@@ -13,15 +13,15 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
 
   return {
     Query: {
-      AtlasGrounding: async (_: any, args: any) => {
+      AtlasGrounding: async (_: any, args: any, ctx: any) => {
         return {
-          getDocument: async (_: any, args: any) => {
+          getDocument: async (args: any) => {
             const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
             const docId: string = args.docId || "";
             const doc = await reactor.getDocument(driveId, docId);
             return doc;
           },
-          getDocuments: async (_: any, args: any) => {
+          getDocuments: async (args: any) => {
             const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
             const docsIds = await reactor.getDocuments(driveId);
             const docs = await Promise.all(

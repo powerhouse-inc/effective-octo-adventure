@@ -17,9 +17,27 @@ export default function Editor(props: IProps) {
   parents: documentState.parents?.[0]?.id || "",
 }
   const onSubmit = (data: Record<string, any>) => {
-    
-    if (data['globalTags'] !== undefined) {
-      dispatch(actions.addTags({ tags: data['globalTags'] as MGlobalTag[] }));
+
+    if (data["globalTags"] !== undefined) {
+      const newTags = data["globalTags"] as MGlobalTag[];
+      const currentTags = documentState.globalTags;
+
+      if (data["globalTags"] === null) {
+        dispatch(actions.removeTags({ tags: currentTags }));
+        return;
+      }
+
+      // Tags to add (are in newTags but not in currentTags)
+      const tagsToAdd = newTags.filter((tag) => !currentTags.includes(tag));
+      if (tagsToAdd.length > 0) {
+        dispatch(actions.addTags({ tags: tagsToAdd }));
+      }
+
+      // Tags to remove (are in currentTags but not in newTags)
+      const tagsToRemove = currentTags.filter((tag) => !newTags.includes(tag));
+      if (tagsToRemove.length > 0) {
+        dispatch(actions.removeTags({ tags: tagsToRemove }));
+      }
     }
     if (data['docNo'] !== undefined) {
       dispatch(actions.setDocNumber({ docNo: data['docNo'] as string }));
@@ -54,6 +72,8 @@ export default function Editor(props: IProps) {
       <EditorLayout
         title="Multi-Parent Document"
         notionId={props.document.state.global.notionId}
+        splitModeEnabled={true}
+        readOnlyModeEnabled={true}
       >
         {({ isSplitMode, isEditMode }) =>
           isSplitMode ? (

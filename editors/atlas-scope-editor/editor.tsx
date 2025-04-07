@@ -8,7 +8,7 @@ import {
 import { EditorLayout } from '../shared/components/EditorLayout.js';
 import { SplitView } from '../shared/components/SplitView.js';
 import { ScopeForm } from './components/ScopeForm.js';
-import { hasValue } from "../shared/utils/utils.js";
+import { getStringValue } from "../shared/utils/utils.js";
 
 export type IProps = EditorProps<AtlasScopeDocument>;
 export default function Editor(props: IProps) {
@@ -21,22 +21,22 @@ export default function Editor(props: IProps) {
   }
 
   const onSubmit = (data: Record<string, any>) => {
-    if (hasValue(data['docNo'])) {
-      dispatch(actions.setDocNumber({ docNo: data['docNo'] as string }));
+    if (data['docNo']!==undefined) {
+      dispatch(actions.setDocNumber({ docNo: getStringValue(data['docNo']) }));
     }
-    if (hasValue(data['name'])) {
-      dispatch(actions.setScopeName({ name: data['name'] as string }));
+    if (data['name']!==undefined) {
+      dispatch(actions.setScopeName({ name: getStringValue(data['name']) }));
     }
-    if (hasValue(data['masterStatus'])) {
+    if (data['masterStatus']!==undefined) {
       dispatch(actions.setMasterStatus({ masterStatus: data['masterStatus'] as Status }));
     }
-    if (hasValue(data['content'])) {
-      dispatch(actions.setContent({ content: data['content'] as string }));
+    if (data['content']!==undefined) {
+      dispatch(actions.setContent({ content: getStringValue(data['content']) }));
     }
-    if (hasValue(data['provenance'])) {
+    if (data['provenance']!==undefined) {
       dispatch(actions.setProvenance({ provenance: data['provenance'] as string }));
     }
-    if (hasValue(data['originalContextData'])) {
+    if (data['originalContextData']!==undefined) {
       dispatch(actions.addContextData({ id: data['originalContextData'] as string }));
     }
     if (data['globalTags'] !== undefined) {

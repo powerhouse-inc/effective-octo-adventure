@@ -7,7 +7,12 @@ import {
   UrlField,
 } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
-import { cb, getCardVariant, getTagText } from "../../shared/utils/utils.js";
+import {
+  fetchPHIDOptions,
+  fetchSelectedPHIDOption,
+  getCardVariant,
+  getTagText,
+} from "../../shared/utils/utils.js";
 import type { EditorMode } from "../../shared/types.js";
 import { isFormReadOnly } from "../../shared/utils/form-common.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
@@ -18,17 +23,20 @@ import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-fie
 import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
+import { type PHIDOption } from "@powerhousedao/design-system/ui";
 
 interface ExploratoryFormProps {
   onSubmit: (data: Record<string, any>) => void;
   documentState: Record<string, any>;
   mode: EditorMode;
+  parentPHIDInitialOption?: PHIDOption;
 }
 
 export function ExploratoryForm({
   onSubmit,
   documentState,
   mode,
+  parentPHIDInitialOption,
 }: ExploratoryFormProps) {
   const isReadOnly = isFormReadOnly(mode);
   const cardVariant = getCardVariant(mode);
@@ -115,12 +123,15 @@ export function ExploratoryForm({
               disabled={isReadOnly}
               name="parent"
               label="Parent Document"
-              placeholder="PHID"
-              onBlur={triggerSubmit}
-              fetchOptionsCallback={cb}
-              fetchSelectedOptionCallback={(x) => cb(x).then((x) => x[5])}
+              placeholder="phd:"
               variant="withValueTitleAndDescription"
-              allowUris={true}
+              allowUris
+              initialOptions={
+                parentPHIDInitialOption ? [parentPHIDInitialOption] : undefined
+              }
+              fetchOptionsCallback={fetchPHIDOptions}
+              fetchSelectedOptionCallback={fetchSelectedPHIDOption}
+              onBlur={triggerSubmit}
             />
             <BooleanField
               disabled={isReadOnly}

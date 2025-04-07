@@ -2,6 +2,15 @@
 @import "tailwindcss" source(".");
 
 @layer base {
+  .atlas-drive-explorer h1,
+.atlas-drive-explorer h2,
+.atlas-drive-explorer h3,
+.atlas-drive-explorer h4,
+.atlas-drive-explorer h5,
+.atlas-drive-explorer h6,
+.atlas-drive-explorer p {
+  color: var(--color-gray-900);
+} 
   *,
   ::after,
   ::before,
@@ -9,6 +18,7 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
+
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -234,15 +244,6 @@
     0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
-.atlas-drive-explorer h1,
-.atlas-drive-explorer h2,
-.atlas-drive-explorer h3,
-.atlas-drive-explorer h4,
-.atlas-drive-explorer h5,
-.atlas-drive-explorer h6,
-.atlas-drive-explorer p {
-  color: var(--color-gray-900);
-}
 
 .atlas-drive-explorer input[type="url"] {
   padding-left: 32px;

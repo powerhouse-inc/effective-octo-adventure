@@ -17,15 +17,18 @@ export default function Editor(props: IProps) {
 
   // TODO: remove or update this once all the data in global state is in the expected format or the design is updated
   const originalDocumentState = props.document.state.global;
+  const originalParentId = originalDocumentState.parent?.id
+    ? `phd:${originalDocumentState.parent?.id}`
+    : "";
   const documentState = {
     ...originalDocumentState,
-    parent: originalDocumentState.parent?.id || "",
+    parent: originalParentId,
     provenance: originalDocumentState.provenance[0] || "",
     originalContextData: originalDocumentState.originalContextData[0]?.id || "",
     references: originalDocumentState.references[0]?.id || "",
   };
   const initialPHIDOption = {
-    value: originalDocumentState.parent?.id || "",
+    value: originalParentId,
     title: `${originalDocumentState.parent?.docNo || ""} - ${originalDocumentState.parent?.name || ""}`,
     path: "sky/atlas-foundation",
     icon: "File" as const,
@@ -55,7 +58,8 @@ export default function Editor(props: IProps) {
       dispatch(actions.setContent({ content: data["content"] as string }));
     }
     if (data["parent"] !== undefined) {
-      dispatch(actions.setParent({ id: data["parent"] as string }));
+      const parentId = (data["parent"] as string).split(":")[1];
+      dispatch(actions.setParent({ id: parentId }));
     }
     if (data["originalContextData"] !== undefined) {
       dispatch(

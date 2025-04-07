@@ -1,11 +1,4 @@
-import {
-  cn,
-  EnumField,
-  Form,
-  PHIDField,
-  StringField,
-  UrlField,
-} from "@powerhousedao/design-system/scalars";
+import { cn, Form, PHIDField } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchPHIDOptions,
@@ -19,6 +12,9 @@ import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import { isFormReadOnly } from "../../shared/utils/form-common.js";
 import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
 import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
+import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
+import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
+import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { useEffect, useRef } from "react";
 import type { UseFormReturn } from "react-hook-form";
 
@@ -41,8 +37,8 @@ export function FoundationForm({
 
   // baseline document state
   const originalNodeState = getOriginalNotionDocument(
-    documentState.notionId || "notion-id-not-set",
-    documentState.atlasType || "article"
+    (documentState.notionId as string) || "notion-id-not-set",
+    (documentState.atlasType as ParsedNotionDocumentType) || "article",
   );
 
   const formRef = useRef<UseFormReturn>(null);
@@ -79,7 +75,7 @@ export function FoundationForm({
                 <StringDiffField
                   name="name"
                   label="Name"
-                  placeholder="Document name"
+                  placeholder="Foundation Document"
                   onBlur={triggerSubmit}
                   mode={mode}
                   baselineValue={originalNodeState.name}
@@ -127,13 +123,14 @@ export function FoundationForm({
                 />
               </div>
             </div>
-            <StringField
-              disabled={isReadOnly}
+            <StringDiffField
               name="content"
               label="Content"
               placeholder="Content"
-              onBlur={triggerSubmit}
               multiline
+              onBlur={triggerSubmit}
+              mode={mode}
+              baselineValue={""} // TODO: add the right baseline value
             />
             <div className={cn("w-1/2")}>
               <PHIDField
@@ -164,65 +161,29 @@ export function FoundationForm({
               />
             </div>
             <div className={cn("w-1/2")}>
-              <UrlField
-                disabled={isReadOnly}
+              <UrlDiffField
                 name="provenance"
                 label="Provenance"
+                placeholder="Provenance"
                 platformIcons={{
                   "notion.so": "Globe",
                   "www.notion.so": "Globe",
                 }}
                 onBlur={triggerSubmit}
+                mode={mode}
+                baselineValue={""} // TODO: add the right baseline value
               />
             </div>
             <div className={cn("w-1/2")}>
-              <EnumField
-                disabled={isReadOnly}
+              <EnumDiffField
                 name="globalTags"
-                label="Global Tags"
-                options={[
-                  { value: "AVC", label: "AVC" },
-                  { value: "CAIS", label: "CAIS" },
-                  { value: "DAO_TOOLKIT", label: "DAO_TOOLKIT" },
-                  {
-                    value: "ECOSYSTEM_INTELLIGENCE",
-                    label: "ECOSYSTEM_INTELLIGENCE",
-                  },
-                  {
-                    value: "EXTERNAL_REFERENCE",
-                    label: "EXTERNAL_REFERENCE",
-                  },
-                  {
-                    value: "LEGACY_TERM_USE_APPROVED",
-                    label: "LEGACY_TERM_USE_APPROVED",
-                  },
-                  { value: "ML_DEFER", label: "ML_DEFER" },
-                  {
-                    value: "ML_LOW_PRIORITY",
-                    label: "ML_LOW_PRIORITY",
-                  },
-                  {
-                    value: "ML_SUPPORT_DOCS_NEEDED",
-                    label: "ML_SUPPORT_DOCS_NEEDED",
-                  },
-                  { value: "NEWCHAIN", label: "NEWCHAIN" },
-                  {
-                    value: "PURPOSE_SYSTEM",
-                    label: "PURPOSE_SYSTEM",
-                  },
-                  {
-                    value: "RECURSIVE_IMPROVEMENT",
-                    label: "RECURSIVE_IMPROVEMENT",
-                  },
-                  { value: "SCOPE_ADVISOR", label: "SCOPE_ADVISOR" },
-                  {
-                    value: "TWO_STAGE_BRIDGE",
-                    label: "TWO_STAGE_BRIDGE",
-                  },
-                ]}
+                label="Tags"
+                options={globalTagsEnumOptions}
                 variant="Select"
                 multiple
                 onChange={triggerSubmit}
+                mode={mode}
+                baselineValue={""} // TODO: add the right baseline value
               />
             </div>
             <div className={cn("w-1/2")}>

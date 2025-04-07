@@ -35,36 +35,38 @@ export const EditorLayout = ({
   // node path from the root to the active node
   const nodePath = useMemo(() => {
     if (!nodes || !activeNodeId) return [];
-    
+
     // Helper function to find the path to a node with the given id
     const findNodePath = (
       nodeList: SidebarNode[],
       targetId: string,
-      currentPath: SidebarNode[] = []
+      currentPath: SidebarNode[] = [],
     ): SidebarNode[] | null => {
       for (const node of nodeList) {
         // Check if current node is the target
         if (node.id === targetId) {
           return [...currentPath, node];
         }
-        
+
         // If node has children, search them
         if (node.children && node.children.length > 0) {
-          const childPath = findNodePath(node.children, targetId, [...currentPath, node]);
+          const childPath = findNodePath(node.children, targetId, [
+            ...currentPath,
+            node,
+          ]);
           if (childPath) {
             return childPath;
           }
         }
       }
-      
+
       // Node not found in this branch
       return null;
     };
-    
+
     // Start the search from the root nodes
     return findNodePath(nodes, activeNodeId) || [];
   }, [nodes, activeNodeId]);
-
 
   return (
     <div className="min-h-screen h-screen bg-white flex flex-col rounded-2xl p-6 gap-4">
@@ -86,13 +88,13 @@ export const EditorLayout = ({
 
       <div>
         <div className="flex items-center justify-between flex-wrap">
-          <Breadcrumbs 
-            breadcrumbs={nodePath.map(node => ({
+          <Breadcrumbs
+            breadcrumbs={nodePath.map((node) => ({
               id: node.id,
               name: node.title,
             }))}
             onBreadcrumbSelected={(node) => {
-              onActiveNodeChange(nodePath.find(n => n.id === node.id)!);
+              onActiveNodeChange(nodePath.find((n) => n.id === node.id)!);
             }}
             createEnabled={false}
             onCreate={() => {}}

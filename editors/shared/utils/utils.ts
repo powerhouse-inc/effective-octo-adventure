@@ -1,14 +1,13 @@
 import type { PHIDOption } from "@powerhousedao/design-system/ui";
 import docsIndex from "../../../scripts/apply-changes/data/index.json" with { type: "json" };
-import { EditorMode } from "../types.js";
+import { type EditorMode } from "../types.js";
 
 /**
  * @deprecated Use fetchPHIDOptions & fetchSelectedPHIDOption instead
  */
 export const cb = async (phid: string): Promise<PHIDOption[]> =>
   (docsIndex as PHIDOption[]).filter(
-    (entry) =>
-      entry.value.includes(phid) || (entry.title || "").includes(phid),
+    (entry) => entry.value.includes(phid) || (entry.title || "").includes(phid),
   );
 
 const filterPHIDOptions = (
@@ -60,12 +59,12 @@ export const fetchSelectedPHIDOption = (
   return (docsIndex as PHIDOption[]).find((option) => option.value === value);
 };
 
-
-
 export const getCardVariant = (mode: EditorMode) => {
-  return mode === "Edition"  || mode === "Readonly" ? "gray" : "green";
+  return mode === "Edition" || mode === "Readonly" ? "gray" : "green";
 };
 
 export const getTagText = (mode: string) => {
-  return mode === "Edition" || mode === "Readonly" ? "Official Atlas" : "Atlas Draft";
+  return mode === "Edition" || mode === "Readonly"
+    ? "Official Atlas"
+    : "Atlas Draft";
 };

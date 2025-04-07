@@ -2,7 +2,8 @@ import { useMemo, useState } from "react";
 import ToggleSwitch from "./toggle-switch.js";
 import type { Maybe } from "document-model";
 import { useSidebar, type SidebarNode } from "@powerhousedao/design-system/ui";
-import { Breadcrumbs } from "@powerhousedao/design-system";
+import { Breadcrumbs } from "./breadcrumbs.js";
+import { cn } from "@powerhousedao/design-system/scalars";
 
 export type ChildrenFn = ({
   isSplitMode,
@@ -87,19 +88,26 @@ export const EditorLayout = ({
       </header>
 
       <div>
-        <div className="flex items-center justify-between flex-wrap">
-          <Breadcrumbs
-            breadcrumbs={nodePath.map((node) => ({
-              id: node.id,
-              name: node.title,
-            }))}
-            onBreadcrumbSelected={(node) => {
-              onActiveNodeChange(nodePath.find((n) => n.id === node.id)!);
-            }}
-            createEnabled={false}
-            onCreate={() => {}}
-          />
-          <div className="flex items-center gap-4">
+        <div className="flex items-center justify-between flex-wrap gap-3">
+          <div
+            className={cn(
+              "flex w-full ",
+              nodePath.length > 2
+                ? "xl:w-[calc(100%-300px)]"
+                : "lg:w-[calc(100%-300px)]",
+            )}
+          >
+            <Breadcrumbs
+              breadcrumbs={nodePath.map((node) => ({
+                id: node.id,
+                name: node.title,
+              }))}
+              onBreadcrumbSelected={(node) => {
+                onActiveNodeChange(nodePath.find((n) => n.id === node.id)!);
+              }}
+            />
+          </div>
+          <div className="flex items-center gap-4 lg:ml-auto">
             <ToggleSwitch
               options={splitModeEnabled ? ["Unified", "Split"] : ["Unified"]}
               defaultSelected={splitModeEnabled ? (isSplitMode ? 1 : 0) : 0}

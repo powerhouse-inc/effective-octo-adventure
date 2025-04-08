@@ -4,7 +4,7 @@ interface AtlasCardProps extends PropsWithChildren {
   tagText?: string;
   variant?: "gray" | "green" | "blue";
   className?: string;
-  isShowTag?: boolean;
+  showTag?: boolean;
 }
 
 const ContentCard = ({
@@ -12,14 +12,14 @@ const ContentCard = ({
   variant = "gray",
   children,
   className,
-  isShowTag = false,
+  showTag = false,
 }: AtlasCardProps) => {
   return (
     <div
       className={`flex flex-col w-full border border-gray-200 rounded-md  bg-gray-50 ${className}`}
     >
       <div className="relative">
-        {isShowTag && (
+        {showTag && (
           <div className="absolute -top-3 left-4">
             <TagStatus text={tagText} variant={variant} />
           </div>

@@ -104,7 +104,7 @@ export function FoundationForm({
                   ]}
                   required
                   variant="Select"
-                  onChange={triggerSubmit}
+                  onBlur={triggerSubmit}
                   mode={mode}
                   baselineValue={originalNodeState.type?.toUpperCase()}
                 />
@@ -123,7 +123,7 @@ export function FoundationForm({
                   ]}
                   required
                   variant="Select"
-                  onChange={triggerSubmit}
+                  onBlur={triggerSubmit}
                   mode={mode}
                   baselineValue={originalNodeState.masterStatusNames[0]?.toUpperCase()}
                 />
@@ -196,7 +196,7 @@ export function FoundationForm({
                 options={globalTagsEnumOptions}
                 variant="Select"
                 multiple
-                onChange={triggerSubmit}
+                onBlur={triggerSubmit}
                 mode={mode}
                 baselineValue={""} // TODO: add the right baseline value
               />

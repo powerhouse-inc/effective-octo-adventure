@@ -78,7 +78,7 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
                                 <EnumDiffField
                                     label="Status"
                                     name="masterStatus"
-                                    onChange={triggerSubmit}
+                                    onBlur={triggerSubmit}
                                     mode={mode}
                                     options={[
                                         { value: "PLACEHOLDER", label: "PLACEHOLDER" },
@@ -143,7 +143,7 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
                                     options={globalScopeTagsEnumOptions}
                                     variant="Select"
                                     multiple
-                                    onChange={triggerSubmit}
+                                    onBlur={triggerSubmit}
                                     mode={mode}
                                     // TODO: add the right baseline value
                                     baselineValue={""}

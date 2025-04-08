@@ -19,7 +19,7 @@ import type { UseFormReturn } from "react-hook-form";
 import { useEffect, useRef } from "react";
 import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
 import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
-import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
+import { exploratoryTagsEnumOptions, globalTagsEnumOptions } from "../../shared/utils/common-options.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
@@ -216,7 +216,7 @@ export function ExploratoryForm({
                 multiple
                 name="globalTags"
                 onChange={triggerSubmit}
-                options={globalTagsEnumOptions}
+                options={exploratoryTagsEnumOptions}
                 mode={mode}
                 baselineValue={""} // TODO: add the right baseline value
               />

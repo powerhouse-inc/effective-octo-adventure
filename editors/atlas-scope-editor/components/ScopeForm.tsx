@@ -146,7 +146,7 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
                                     onChange={triggerSubmit}
                                     mode={mode}
                                     // TODO: add the right baseline value
-                                    baselineValue={""} // 
+                                    baselineValue={""}
                                 />
                             </div>
                         </div>

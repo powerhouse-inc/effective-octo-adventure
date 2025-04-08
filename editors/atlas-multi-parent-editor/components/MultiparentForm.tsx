@@ -114,6 +114,7 @@ export function MultiParentForm({ onSubmit, documentState, mode }: MultiParentFo
                                 />
                             </div>
                         </div>
+
                         <StringDiffField
                             disabled={isReadOnly}
                             name="content"
@@ -126,6 +127,9 @@ export function MultiParentForm({ onSubmit, documentState, mode }: MultiParentFo
                             baselineValue={""} 
                             
                         />
+                        <div className="w-1/2">
+
+                        
                         <PHIDField
                             disabled={isReadOnly}
                             name="parents"
@@ -137,6 +141,8 @@ export function MultiParentForm({ onSubmit, documentState, mode }: MultiParentFo
                             variant="withValueTitleAndDescription"
                             allowUris={true}
                         />
+                        </div>
+                        <div className="w-1/2">
                         <UrlDiffField
                             name="provenance"
                             label="Provenance"
@@ -150,7 +156,9 @@ export function MultiParentForm({ onSubmit, documentState, mode }: MultiParentFo
                             // TODO: add the right baseline value
                             baselineValue={""}
                         />
+</div>
 
+                        <div className="w-1/2">
                         <PHIDField
                             name="originalContextData"
                             fetchOptionsCallback={fetchPHIDOptions}
@@ -161,7 +169,8 @@ export function MultiParentForm({ onSubmit, documentState, mode }: MultiParentFo
                             allowUris={true}
                             onBlur={triggerSubmit}
                         />
-
+                        </div>
+                        <div className="w-1/2">
                         <EnumDiffField
                             label="Tags"
                             onChange={triggerSubmit}
@@ -172,6 +181,7 @@ export function MultiParentForm({ onSubmit, documentState, mode }: MultiParentFo
                             // TODO: add the right baseline value
                             baselineValue={""}
                         />
+                        </div>
                     </div>
                 )}
             </Form>

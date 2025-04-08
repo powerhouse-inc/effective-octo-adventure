@@ -1,42 +1,51 @@
 import { type EditorProps } from "document-model";
+import {
+  type DriveEditorProps,
+  DriveContextProvider,
+} from "@powerhousedao/reactor-browser";
 import { DriverLayout } from "./components/driver-layout.js";
 import { type DocumentDriveDocument } from "document-drive";
 import { WagmiContext } from "@powerhousedao/design-system";
 
-export type IProps = EditorProps<DocumentDriveDocument>;
+export type IProps = DriveEditorProps<DocumentDriveDocument>;
+
+export function BaseEditor(props: IProps) {
+  return (
+    <div className="atlas-drive-explorer" style={{ height: "100%" }}>
+      <DriverLayout
+        context={props.context}
+        driveId={props.document.state.global.id}
+        nodes={props.document.state.global.nodes}
+      >
+        <style>
+          {`
+            .atlas-drive-explorer-header {
+              margin-bottom: 1em;
+            }
+            .atlas-drive-explorer > main {
+              border: 1px solid #EEEEEE;
+            }
+            
+            .d-none {
+              display: none;
+            }
+            #document-editor-context > div.flex:first-child {
+              position: absolute;
+              right: 0;
+              top: 16px;
+            }`}
+        </style>
+      </DriverLayout>
+    </div>
+  );
+}
 
 export default function Editor(props: IProps) {
   return (
-    <div
-      className="atlas-drive-explorer"
-      style={{ height: "100%" }}
-    >
+    <DriveContextProvider value={props.context}>
       <WagmiContext>
-        <DriverLayout
-          context={props.context}
-          driveId={props.document.state.global.id}
-          nodes={props.document.state.global.nodes}
-        >
-          <style>
-            {`
-              .atlas-drive-explorer-header {
-                margin-bottom: 1em;
-              }
-              .atlas-drive-explorer > main {
-                border: 1px solid #EEEEEE;
-              }
-              
-              .d-none {
-                display: none;
-              }
-              #document-editor-context > div.flex:first-child {
-                position: absolute;
-                right: 0;
-                top: 16px;
-              }`}
-          </style>
-        </DriverLayout>
+        <BaseEditor {...props} />
       </WagmiContext>
-    </div>
+    </DriveContextProvider>
   );
 }

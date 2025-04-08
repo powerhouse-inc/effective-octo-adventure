@@ -98,7 +98,7 @@ export function MultiParentForm({
                                     ]}
                                     required
                                     variant="Select"
-                                    onChange={triggerSubmit}
+                                    onBlur={triggerSubmit}
                                     mode={mode}
                                     baselineValue={originalNodeState.type?.toUpperCase()}
                                 />
@@ -108,7 +108,7 @@ export function MultiParentForm({
                                     disabled={isReadOnly}
                                     label="Status"
                                     name="masterStatus"
-                                    onChange={triggerSubmit}
+                                    onBlur={triggerSubmit}
                                     options={[
                                         { value: "PLACEHOLDER", label: "PLACEHOLDER" },
                                         { value: "PROVISIONAL", label: "PROVISIONAL" },
@@ -210,7 +210,7 @@ export function MultiParentForm({
                         <div className="w-1/2">
                             <EnumDiffField
                                 label="Tags"
-                                onChange={triggerSubmit}
+                                onBlur={triggerSubmit}
                                 multiple
                                 name="globalTags"
                                 options={globalTagsEnumOptions}

@@ -99,7 +99,7 @@ export function ExploratoryForm({
                   disabled={isReadOnly}
                   label="Status"
                   name="masterStatus"
-                  onChange={triggerSubmit}
+                  onBlur={triggerSubmit}
                   options={[
                     { value: "PLACEHOLDER", label: "PLACEHOLDER" },
                     { value: "PROVISIONAL", label: "PROVISIONAL" },
@@ -217,6 +217,7 @@ export function ExploratoryForm({
                 name="globalTags"
                 onChange={triggerSubmit}
                 options={exploratoryTagsEnumOptions}
+                onBlur={triggerSubmit}
                 mode={mode}
                 baselineValue={""} // TODO: add the right baseline value
               />

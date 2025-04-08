@@ -39,11 +39,14 @@ export function FoundationForm({
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
 
-  // baseline document state
-  const originalNodeState = getOriginalNotionDocument(
-    (documentState.notionId as string) || "notion-id-not-set",
-    (documentState.atlasType as ParsedNotionDocumentType) || "article",
+  // baseline document state, use useRef to keep the original value between renders
+  const originalNodeStateRef = useRef(
+    getOriginalNotionDocument(
+      (documentState.notionId as string) || "notion-id-not-set",
+      (documentState.atlasType as ParsedNotionDocumentType) || "article",
+    ),
   );
+  const originalNodeState = originalNodeStateRef.current;
 
   const formRef = useRef<UseFormReturn>(null);
 

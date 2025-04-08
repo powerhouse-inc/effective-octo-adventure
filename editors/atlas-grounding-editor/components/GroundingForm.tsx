@@ -1,11 +1,4 @@
-import {
-  cn,
-  EnumField,
-  Form,
-  PHIDField,
-  StringField,
-  UrlField,
-} from "@powerhousedao/design-system/scalars";
+import { cn, Form, PHIDField } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchPHIDOptions,
@@ -15,7 +8,14 @@ import {
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import type { EditorMode } from "../../shared/types.js";
+import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import { isFormReadOnly } from "../../shared/utils/form-common.js";
+import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
+import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
+import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
+import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
+import { useEffect, useRef } from "react";
+import type { UseFormReturn } from "react-hook-form";
 import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
 
 interface GroundingFormProps {
@@ -39,9 +39,28 @@ export function GroundingForm({
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
 
+  // baseline document state, use useRef to keep the original value between renders
+  const originalNodeStateRef = useRef(
+    getOriginalNotionDocument(
+      (documentState.notionId as string) || "notion-id-not-set",
+      (documentState.atlasType as ParsedNotionDocumentType) || "tenet",
+    ),
+  );
+  const originalNodeState = originalNodeStateRef.current;
+
+  const formRef = useRef<UseFormReturn>(null);
+
+  // keep the form state in sync with the document state
+  useEffect(() => {
+    if (formRef.current) {
+      formRef.current.reset({ ...documentState });
+    }
+  }, [documentState]);
+
   return (
     <ContentCard tagText={tagText} variant={cardVariant} className={cn("mt-4")}>
       <Form
+        ref={formRef}
         defaultValues={{ ...documentState }}
         onSubmit={onSubmit}
         submitChangesOnly
@@ -50,28 +69,30 @@ export function GroundingForm({
           <div className={cn("flex flex-col gap-3")}>
             <div className={cn("flex flex-row gap-2")}>
               <div className={cn("flex-1")}>
-                <StringField
-                  disabled={isReadOnly}
+                <StringDiffField
                   name="docNo"
                   label="Doc №"
                   placeholder="A."
                   onBlur={triggerSubmit}
+                  mode={mode}
+                  baselineValue={originalNodeState.docNo}
                 />
               </div>
               <div className={cn("flex-1")}>
-                <StringField
-                  disabled={isReadOnly}
+                <StringDiffField
                   name="name"
                   label="Name"
-                  placeholder="Document name"
+                  placeholder="Name"
                   onBlur={triggerSubmit}
+                  mode={mode}
+                  baselineValue={originalNodeState.name}
                 />
               </div>
               <div className={cn("flex-1")}>
-                <EnumField
-                  disabled={isReadOnly}
+                <EnumDiffField
                   name="atlasType"
                   label="Type"
+                  placeholder="Select Type"
                   options={[
                     { value: "ACTIVE_DATA", label: "ACTIVE_DATA " },
                     {
@@ -83,13 +104,15 @@ export function GroundingForm({
                   required
                   variant="Select"
                   onBlur={triggerSubmit}
+                  mode={mode}
+                  baselineValue={originalNodeState.type?.toUpperCase()}
                 />
               </div>
               <div className={cn("flex-1")}>
-                <EnumField
-                  disabled={isReadOnly}
+                <EnumDiffField
                   name="masterStatus"
                   label="Status"
+                  placeholder="Select Status"
                   options={[
                     { value: "APPROVED", label: "APPROVED " },
                     { value: "ARCHIVED", label: "ARCHIVED" },
@@ -100,16 +123,19 @@ export function GroundingForm({
                   required
                   variant="Select"
                   onBlur={triggerSubmit}
+                  mode={mode}
+                  baselineValue={originalNodeState.masterStatusNames[0]?.toUpperCase()}
                 />
               </div>
             </div>
-            <StringField
-              disabled={isReadOnly}
+            <StringDiffField
               name="content"
               label="Content"
               placeholder="Content"
-              onBlur={triggerSubmit}
               multiline
+              onBlur={triggerSubmit}
+              mode={mode}
+              baselineValue={""} // TODO: add the right baseline value
             />
             <div className={cn("w-1/2")}>
               <PHIDField
@@ -148,26 +174,30 @@ export function GroundingForm({
               />
             </div>
             <div className={cn("w-1/2")}>
-              <UrlField
-                disabled={isReadOnly}
+              <UrlDiffField
                 name="provenance"
                 label="Provenance"
+                placeholder="Provenance"
                 platformIcons={{
                   "notion.so": "Globe",
                   "www.notion.so": "Globe",
                 }}
                 onBlur={triggerSubmit}
+                mode={mode}
+                baselineValue={""} // TODO: add the right baseline value
               />
             </div>
             <div className={cn("w-1/2")}>
-              <EnumField
-                disabled={isReadOnly}
+              <EnumDiffField
                 name="globalTags"
-                label="Global Tags"
+                label="Tags"
+                placeholder="Select Tags"
                 options={globalTagsEnumOptions}
                 variant="Select"
                 multiple
                 onBlur={triggerSubmit}
+                mode={mode}
+                baselineValue={""} // TODO: add the right baseline value
               />
             </div>
             <div className={cn("w-1/2")}>

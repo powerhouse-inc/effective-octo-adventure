@@ -68,3 +68,11 @@ export const getTagText = (mode: string) => {
     ? "Official Atlas"
     : "Atlas Draft";
 };
+
+// Helper function to handle null and undefined values
+export const getStringValue = (value: any): string => {
+  if (value === null || value === undefined) {
+    return "";
+  }
+  return value;
+};

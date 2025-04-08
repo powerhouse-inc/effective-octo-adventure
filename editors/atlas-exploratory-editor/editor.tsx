@@ -64,7 +64,6 @@ export default function Editor(props: IProps) {
         dispatch(actions.setParent({ parent: [] }));
       } else {
         const newParentId = (data["parent"] as string).split(":")[1];
-        console.log("<<first>>", newParentId)
         
         dispatch(actions.setParent({ parent: [newParentId] }));
       }

@@ -119,66 +119,74 @@ export function ExploratoryForm({
               mode={mode}
               baselineValue={""} // TODO: add the right baseline value
             />
-            <PHIDField
-              disabled={isReadOnly}
-              name="parent"
-              label="Parent Document"
-              placeholder="phd:"
-              variant="withValueTitleAndDescription"
-              allowUris
-              initialOptions={
-                parentPHIDInitialOption ? [parentPHIDInitialOption] : undefined
-              }
-              fetchOptionsCallback={fetchPHIDOptions}
-              fetchSelectedOptionCallback={fetchSelectedPHIDOption}
-              onBlur={triggerSubmit}
-            />
-            <BooleanField
-              disabled={isReadOnly}
-              name="aligned"
-              label="Aligned"
-              isToggle
-              onChange={triggerSubmit}
-            />
-            <StringDiffField
-              disabled={isReadOnly}
-              name="findings"
-              multiline={true}
-              label="Findings"
-              placeholder="Findings"
-              onBlur={triggerSubmit}
-              mode={mode}
-              baselineValue={""} // TODO: add the right baseline value
-            />
-            <StringDiffField
-              disabled={isReadOnly}
-              name="additionalGuidance"
-              multiline={true}
-              label="Additional Guidance"
-              placeholder="Additional Guidance"
-              onBlur={triggerSubmit}
-              mode={mode}
-              baselineValue={""} // TODO: add the right baseline value
-            />
-            <UrlDiffField
-              disabled={isReadOnly}
-              name="provenance"
-              label="Provenance"
-              placeholder="Provenance"
-              onBlur={triggerSubmit}
-              mode={mode}
-              baselineValue={""} // TODO: add the right baseline value
-            />
-            <EnumDiffField
-              disabled={isReadOnly}
-              label="Tags"
-              multiple
-              name="globalTags"
-              onChange={triggerSubmit}
-              options={globalTagsEnumOptions}
-              mode={mode}
-              baselineValue={""} // TODO: add the right baseline value
-            />
+            <div className="flex flex-col gap-3 w-full lg:w-1/2">
+              <PHIDField
+                disabled={isReadOnly}
+                name="parent"
+                label="Parent Document"
+                placeholder="phd:"
+                variant="withValueTitleAndDescription"
+                allowUris
+                initialOptions={
+                  parentPHIDInitialOption
+                    ? [parentPHIDInitialOption]
+                    : undefined
+                }
+                fetchOptionsCallback={fetchPHIDOptions}
+                fetchSelectedOptionCallback={fetchSelectedPHIDOption}
+                onBlur={triggerSubmit}
+              />
+              <BooleanField
+                disabled={isReadOnly}
+                name="aligned"
+                label="Aligned"
+                isToggle
+                onChange={triggerSubmit}
+              />
+              <StringDiffField
+                disabled={isReadOnly}
+                name="findings"
+                multiline={true}
+                label="Findings"
+                placeholder="Findings"
+                onBlur={triggerSubmit}
+                mode={mode}
+                baselineValue={""} // TODO: add the right baseline value
+              />
+              <StringDiffField
+                disabled={isReadOnly}
+                name="additionalGuidance"
+                multiline={true}
+                label="Additional Guidance"
+                placeholder="Additional Guidance"
+                onBlur={triggerSubmit}
+                mode={mode}
+                baselineValue={""} // TODO: add the right baseline value
+              />
+              <UrlDiffField
+                disabled={isReadOnly}
+                name="provenance"
+                label="Provenance"
+                placeholder="Provenance"
+                platformIcons={{
+                  "notion.so": "Globe",
+                  "www.notion.so": "Globe",
+                }}
+                onBlur={triggerSubmit}
+                mode={mode}
+                baselineValue={""} // TODO: add the right baseline value
+              />
+              <EnumDiffField
+                disabled={isReadOnly}
+                label="Tags"
+                multiple
+                name="globalTags"
+                onChange={triggerSubmit}
+                options={globalTagsEnumOptions}
+                mode={mode}
+                baselineValue={""} // TODO: add the right baseline value
+              />
+            </div>
           </div>
         )}
       </Form>

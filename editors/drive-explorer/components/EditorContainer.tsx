@@ -15,6 +15,7 @@ import {
   DefaultEditorLoader,
 } from "@powerhousedao/design-system";
 import { useState, Suspense, type FC, useCallback, lazy } from "react";
+import { DriveProvider } from "../../shared/context/DriveContext.js";
 
 import {
   AtlasExploratory,
@@ -141,19 +142,21 @@ export const EditorContainer: React.FC<EditorContainerProps> = (props) => {
     />
   ) : (
     <Suspense fallback={loadingContent}>
-      <DocumentToolbar
-        onClose={onClose}
-        onExport={onExport}
-        onShowRevisionHistory={() => setShowRevisionHistory(true)}
-        onSwitchboardLinkClick={() => {}}
-        title={title}
-      />
-      <EditorComponent
-        context={context}
-        dispatch={dispatch}
-        document={document}
-        error={error}
-      />
+      <DriveProvider driveId={driveId}>
+        <DocumentToolbar
+          onClose={onClose}
+          onExport={onExport}
+          onShowRevisionHistory={() => setShowRevisionHistory(true)}
+          onSwitchboardLinkClick={() => {}}
+          title={title}
+        />
+        <EditorComponent
+          context={context}
+          dispatch={dispatch}
+          document={document}
+          error={error}
+        />
+      </DriveProvider>
     </Suspense>
   );
 };

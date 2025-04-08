@@ -3,6 +3,8 @@ import ToggleSwitch from "./toggle-switch.js";
 import type { Maybe } from "document-model";
 import { useSidebar, type SidebarNode } from "@powerhousedao/design-system/ui";
 import { Breadcrumbs } from "@powerhousedao/design-system";
+import { Button, Tooltip, TooltipProvider } from "@powerhousedao/design-system";
+import { useDriveContext } from "../context/DriveContext.js";
 
 export type ChildrenFn = ({
   isSplitMode,
@@ -29,6 +31,7 @@ export const EditorLayout = ({
 }: EditorLayoutProps) => {
   const [isSplitMode, setIsSplitMode] = useState<boolean>(false);
   const [isEditMode, setIsEditMode] = useState<boolean>(true);
+  const { driveId } = useDriveContext();
 
   const { nodes, activeNodeId, onActiveNodeChange } = useSidebar();
 
@@ -40,7 +43,7 @@ export const EditorLayout = ({
     const findNodePath = (
       nodeList: SidebarNode[],
       targetId: string,
-      currentPath: SidebarNode[] = [],
+      currentPath: SidebarNode[] = []
     ): SidebarNode[] | null => {
       for (const node of nodeList) {
         // Check if current node is the target
@@ -77,10 +80,54 @@ export const EditorLayout = ({
           </div>
           <div className="flex items-center gap-2">
             <div className="atlas-cell-notionId">
-              <span className="atlas-cell-notionId-label">Notion ID</span>
-              <span className="atlas-cell-notionId-value">
-                {notionId || <span className="px-4">-</span>}
-              </span>
+              <div className="flex items-center gap-4">
+                <TooltipProvider>
+                  <Tooltip content={driveId ? `https://apps.powerhouse.io/sky-atlas/switchboard/d/${driveId}` : "No drive ID available"}>
+                    <Button
+                      size="small"
+                      style={{ cursor: "pointer", position: "relative" }}
+                      onClick={() => {
+                        if (driveId) {
+                          navigator.clipboard.writeText(
+                            `https://apps.powerhouse.io/sky-atlas/switchboard/d/${driveId}`
+                          );
+                          const button =
+                            document.querySelector(".clipboard-button");
+                          if (button) {
+                            const effect = document.createElement("span");
+                            effect.textContent = "Copied!";
+                            effect.style.position = "absolute";
+                            effect.style.top = "-20px";
+                            effect.style.right = "0";
+                            effect.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+                            effect.style.color = "white";
+                            effect.style.padding = "2px 5px";
+                            effect.style.borderRadius = "3px";
+                            effect.style.fontSize = "12px";
+                            effect.style.transition = "opacity 0.5s";
+                            effect.style.opacity = "1";
+                            button.appendChild(effect);
+                            setTimeout(() => {
+                              effect.style.opacity = "0";
+                              setTimeout(() => button.removeChild(effect), 500);
+                            }, 1000);
+                          }
+                        }
+                      }}
+                      className="clipboard-button"
+                      disabled={!driveId}
+                    >
+                      Share Drive
+                    </Button>
+                  </Tooltip>
+                </TooltipProvider>
+                <div>
+                  <span className="atlas-cell-notionId-label">Notion ID</span>
+                  <span className="atlas-cell-notionId-value">
+                    {notionId || <span className="px-4">-</span>}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

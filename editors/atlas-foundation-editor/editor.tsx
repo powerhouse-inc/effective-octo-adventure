@@ -9,7 +9,10 @@ import {
 import { EditorLayout } from "../shared/components/EditorLayout.js";
 import { SplitView } from "../shared/components/SplitView.js";
 import { FoundationForm } from "./components/FoundationForm.js";
-import { fetchSelectedPHIDOption } from "../shared/utils/utils.js";
+import {
+  getStringValue,
+  fetchSelectedPHIDOption,
+} from "../shared/utils/utils.js";
 
 export type IProps = EditorProps<AtlasFoundationDocument>;
 
@@ -43,10 +46,12 @@ export default function Editor(props: IProps) {
 
   const onSubmit = (data: Record<string, any>) => {
     if (data["docNo"] !== undefined) {
-      dispatch(actions.setDocNumber({ docNo: data["docNo"] as string }));
+      dispatch(actions.setDocNumber({ docNo: getStringValue(data["docNo"]) }));
     }
     if (data["name"] !== undefined) {
-      dispatch(actions.setFoundationName({ name: data["name"] as string }));
+      dispatch(
+        actions.setFoundationName({ name: getStringValue(data["name"]) }),
+      );
     }
     if (data["atlasType"] !== undefined) {
       dispatch(
@@ -61,7 +66,9 @@ export default function Editor(props: IProps) {
       );
     }
     if (data["content"] !== undefined) {
-      dispatch(actions.setContent({ content: data["content"] as string }));
+      dispatch(
+        actions.setContent({ content: getStringValue(data["content"]) }),
+      );
     }
     if (data["parent"] !== undefined) {
       if (data["parent"] === null) {

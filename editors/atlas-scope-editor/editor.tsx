@@ -12,7 +12,7 @@ import { getStringValue } from "../shared/utils/utils.js";
 
 export type IProps = EditorProps<AtlasScopeDocument>;
 export default function Editor(props: IProps) {
-  const { document, dispatch } = props
+  const { dispatch } = props
   const documentState = props.document.state.global;
   const newMomentdocumentState = {
     ...documentState,

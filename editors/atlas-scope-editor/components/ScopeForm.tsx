@@ -10,7 +10,7 @@ import ContentCard from "../../shared/components/content-card.js";
 import { fetchPHIDOptions, fetchSelectedPHIDOption, getCardVariant, getTagText } from "../../shared/utils/utils.js";
 import type { EditorMode } from "../../shared/types.js";
 import { isFormReadOnly } from "../../shared/utils/form-common.js";
-import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
+import { globalScopeTagsEnumOptions, globalTagsEnumOptions } from "../../shared/utils/common-options.js";
 import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
 import { useEffect, useRef } from "react";
 import { UseFormReturn } from "react-hook-form";
@@ -140,7 +140,7 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
                                     name="globalTags"
                                     label="Tags"
                                     placeholder="Select Tags"
-                                    options={globalTagsEnumOptions}
+                                    options={globalScopeTagsEnumOptions}
                                     variant="Select"
                                     multiple
                                     onChange={triggerSubmit}

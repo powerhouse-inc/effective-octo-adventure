@@ -8,17 +8,23 @@ import { type AtlasExploratoryContextOperations } from "../../gen/context/operat
 
 export const reducer: AtlasExploratoryContextOperations = {
   addContextDataOperation(state, action, dispatch) {
-    // TODO: Implement "addContextDataOperation" reducer
-    throw new Error('Reducer "addContextDataOperation" not yet implemented');
+  
+    state.originalContextData = state.originalContextData.filter(
+      (ocd) => ocd.id !== action.input.id,
+    );
+
+    state.originalContextData.push({
+      id: action.input.id,
+      name: action.input.name || null,
+      docNo: action.input.docNo || null,
+    });
   },
   removeContextDataOperation(state, action, dispatch) {
-    // TODO: Implement "removeContextDataOperation" reducer
-    throw new Error('Reducer "removeContextDataOperation" not yet implemented');
+    state.originalContextData = state.originalContextData.filter(
+      (ocd) => ocd.id !== action.input.id,
+    );
   },
-  setProvenanceOperation(state, action, dispatch) {
-    // TODO: Implement "setProvenanceOperation" reducer
-    throw new Error('Reducer "setProvenanceOperation" not yet implemented');
-  },
+  
   setNotionIdOperation(state, action, dispatch) {
     if (action.input.notionID) {
       state.notionId = action.input.notionID;
@@ -27,15 +33,19 @@ export const reducer: AtlasExploratoryContextOperations = {
     }
   },
   addAdditionalGuidanceOperation(state, action, dispatch) {
-    // TODO: Implement "addAdditionalGuidanceOperation" reducer
-    throw new Error(
-      'Reducer "addAdditionalGuidanceOperation" not yet implemented',
-    );
+    if (action.input.additionalGuidance) {
+      state.additionalGuidance = action.input.additionalGuidance;
+    } else {
+      throw new Error("Additional guidance missing from input.");
+    }
   },
   removeAdditionalGuidanceOperation(state, action, dispatch) {
     // TODO: Implement "removeAdditionalGuidanceOperation" reducer
     throw new Error(
       'Reducer "removeAdditionalGuidanceOperation" not yet implemented',
     );
+  },
+  setProvenanceOperation(state, action, dispatch) {
+    state.provenance = action.input.provenance || "";
   },
 };

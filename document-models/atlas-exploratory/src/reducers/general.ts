@@ -16,6 +16,8 @@ export const reducer: AtlasExploratoryGeneralOperations = {
   setParentOperation(state, action, dispatch) {
     // TODO: change input to singular
     //state.parent = action.input.parent?
+    state.parent = Array.isArray(action.input.parent) ? action.input.parent[0] || "" : action.input.parent || "";
+
   },
   removeParentOperation(state, action, dispatch) {
     // TODO: Implement "removeParentOperation" reducer
@@ -27,7 +29,7 @@ export const reducer: AtlasExploratoryGeneralOperations = {
   setFindingsOperation(state, action, dispatch) {
     // TODO: add comment param to input
     state.findings = {
-      comment: "",
+      comment:  "",
       isAligned: action.input.isAligned,
     };
   },

@@ -82,7 +82,7 @@ export function GroundingForm({
                   ]}
                   required
                   variant="Select"
-                  onChange={triggerSubmit}
+                  onBlur={triggerSubmit}
                 />
               </div>
               <div className={cn("flex-1")}>
@@ -99,7 +99,7 @@ export function GroundingForm({
                   ]}
                   required
                   variant="Select"
-                  onChange={triggerSubmit}
+                  onBlur={triggerSubmit}
                 />
               </div>
             </div>
@@ -167,7 +167,7 @@ export function GroundingForm({
                 options={globalTagsEnumOptions}
                 variant="Select"
                 multiple
-                onChange={triggerSubmit}
+                onBlur={triggerSubmit}
               />
             </div>
             <div className={cn("w-1/2")}>

@@ -60,11 +60,25 @@ export const fetchSelectedPHIDOption = (
 };
 
 export const getCardVariant = (mode: EditorMode) => {
-  return mode === "Edition" || mode === "Readonly" ? "gray" : "green";
+  return mode === "Edition"
+    ? "blue"
+    : mode === "Readonly" || mode === "DiffRemoved"
+      ? "gray"
+      : "green";
 };
 
 export const getTagText = (mode: string) => {
-  return mode === "Edition" || mode === "Readonly"
-    ? "Official Atlas"
-    : "Atlas Draft";
+  return mode === "Edition"
+    ? "Edition Atlas"
+    : mode === "Readonly" || mode === "DiffRemoved"
+      ? "Official Atlas"
+      : "Atlas Draft";
+};
+
+// Helper function to handle null and undefined values
+export const getStringValue = (value: any): string => {
+  if (value === null || value === undefined) {
+    return "";
+  }
+  return value as string;
 };

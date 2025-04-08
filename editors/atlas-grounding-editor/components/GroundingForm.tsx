@@ -16,19 +16,24 @@ import {
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import type { EditorMode } from "../../shared/types.js";
 import { isFormReadOnly } from "../../shared/utils/form-common.js";
+import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
 
 interface GroundingFormProps {
   onSubmit: (data: Record<string, any>) => void;
   documentState: Record<string, any>;
   mode: EditorMode;
-  initialPHIDOption: PHIDOption;
+  parentPHIDInitialOption?: PHIDOption;
+  originalContextDataPHIDInitialOption?: PHIDOption;
+  referencesPHIDInitialOption?: PHIDOption;
 }
 
 export function GroundingForm({
   onSubmit,
   documentState,
   mode,
-  initialPHIDOption,
+  parentPHIDInitialOption,
+  originalContextDataPHIDInitialOption,
+  referencesPHIDInitialOption,
 }: GroundingFormProps) {
   const isReadOnly = isFormReadOnly(mode);
   const cardVariant = getCardVariant(mode);
@@ -114,7 +119,11 @@ export function GroundingForm({
                 placeholder="phd:"
                 variant="withValueTitleAndDescription"
                 allowUris
-                initialOptions={[initialPHIDOption]}
+                initialOptions={
+                  parentPHIDInitialOption
+                    ? [parentPHIDInitialOption]
+                    : undefined
+                }
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}
@@ -128,7 +137,11 @@ export function GroundingForm({
                 placeholder="phd:"
                 variant="withValueTitleAndDescription"
                 allowUris
-                initialOptions={[initialPHIDOption]}
+                initialOptions={
+                  originalContextDataPHIDInitialOption
+                    ? [originalContextDataPHIDInitialOption]
+                    : undefined
+                }
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}
@@ -151,46 +164,7 @@ export function GroundingForm({
                 disabled={isReadOnly}
                 name="globalTags"
                 label="Global Tags"
-                options={[
-                  { value: "AVC", label: "AVC" },
-                  { value: "CAIS", label: "CAIS" },
-                  { value: "DAO_TOOLKIT", label: "DAO_TOOLKIT" },
-                  {
-                    value: "ECOSYSTEM_INTELLIGENCE",
-                    label: "ECOSYSTEM_INTELLIGENCE",
-                  },
-                  {
-                    value: "EXTERNAL_REFERENCE",
-                    label: "EXTERNAL_REFERENCE",
-                  },
-                  {
-                    value: "LEGACY_TERM_USE_APPROVED",
-                    label: "LEGACY_TERM_USE_APPROVED",
-                  },
-                  { value: "ML_DEFER", label: "ML_DEFER" },
-                  {
-                    value: "ML_LOW_PRIORITY",
-                    label: "ML_LOW_PRIORITY",
-                  },
-                  {
-                    value: "ML_SUPPORT_DOCS_NEEDED",
-                    label: "ML_SUPPORT_DOCS_NEEDED",
-                  },
-                  { value: "NEWCHAIN", label: "NEWCHAIN" },
-                  {
-                    value: "PURPOSE_SYSTEM",
-                    label: "PURPOSE_SYSTEM",
-                  },
-                  {
-                    value: "RECURSIVE_IMPROVEMENT",
-                    label: "RECURSIVE_IMPROVEMENT",
-                  },
-                  { value: "SCOPE_ADVISOR", label: "SCOPE_ADVISOR" },
-                  {
-                    value: "TWO_STAGE_BRIDGE",
-                    label: "TWO_STAGE_BRIDGE",
-                  },
-                ]}
+                options={globalTagsEnumOptions}
                 variant="Select"
                 multiple
                 onChange={triggerSubmit}
@@ -204,7 +178,11 @@ export function GroundingForm({
                 placeholder="phd:"
                 variant="withValueTitleAndDescription"
                 allowUris
-                initialOptions={[initialPHIDOption]}
+                initialOptions={
+                  referencesPHIDInitialOption
+                    ? [referencesPHIDInitialOption]
+                    : undefined
+                }
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}

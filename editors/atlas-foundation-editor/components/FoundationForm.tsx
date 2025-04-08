@@ -13,23 +13,27 @@ import { isFormReadOnly } from "../../shared/utils/form-common.js";
 import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
 import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
 import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
-import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { useEffect, useRef } from "react";
 import type { UseFormReturn } from "react-hook-form";
+import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
 
 interface FoundationFormProps {
   onSubmit: (data: Record<string, any>) => void;
   documentState: Record<string, any>;
   mode: EditorMode;
-  initialPHIDOption: PHIDOption;
+  parentPHIDInitialOption?: PHIDOption;
+  originalContextDataPHIDInitialOption?: PHIDOption;
+  referencesPHIDInitialOption?: PHIDOption;
 }
 
 export function FoundationForm({
   onSubmit,
   documentState,
   mode,
-  initialPHIDOption,
+  parentPHIDInitialOption,
+  originalContextDataPHIDInitialOption,
+  referencesPHIDInitialOption,
 }: FoundationFormProps) {
   const isReadOnly = isFormReadOnly(mode);
   const cardVariant = getCardVariant(mode);
@@ -75,7 +79,7 @@ export function FoundationForm({
                 <StringDiffField
                   name="name"
                   label="Name"
-                  placeholder="Foundation Document"
+                  placeholder="Name"
                   onBlur={triggerSubmit}
                   mode={mode}
                   baselineValue={originalNodeState.name}
@@ -85,6 +89,7 @@ export function FoundationForm({
                 <EnumDiffField
                   name="atlasType"
                   label="Type"
+                  placeholder="Select Type"
                   options={[
                     {
                       value: "ACTIVE_DATA_CONTROLLER",
@@ -108,6 +113,7 @@ export function FoundationForm({
                 <EnumDiffField
                   name="masterStatus"
                   label="Status"
+                  placeholder="Select Status"
                   options={[
                     { value: "APPROVED", label: "APPROVED " },
                     { value: "ARCHIVED", label: "ARCHIVED" },
@@ -140,7 +146,11 @@ export function FoundationForm({
                 placeholder="phd:"
                 variant="withValueTitleAndDescription"
                 allowUris
-                initialOptions={[initialPHIDOption]}
+                initialOptions={
+                  parentPHIDInitialOption
+                    ? [parentPHIDInitialOption]
+                    : undefined
+                }
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}
@@ -154,7 +164,11 @@ export function FoundationForm({
                 placeholder="phd:"
                 variant="withValueTitleAndDescription"
                 allowUris
-                initialOptions={[initialPHIDOption]}
+                initialOptions={
+                  originalContextDataPHIDInitialOption
+                    ? [originalContextDataPHIDInitialOption]
+                    : undefined
+                }
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}
@@ -178,6 +192,7 @@ export function FoundationForm({
               <EnumDiffField
                 name="globalTags"
                 label="Tags"
+                placeholder="Select Tags"
                 options={globalTagsEnumOptions}
                 variant="Select"
                 multiple
@@ -194,7 +209,11 @@ export function FoundationForm({
                 placeholder="phd:"
                 variant="withValueTitleAndDescription"
                 allowUris
-                initialOptions={[initialPHIDOption]}
+                initialOptions={
+                  referencesPHIDInitialOption
+                    ? [referencesPHIDInitialOption]
+                    : undefined
+                }
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}

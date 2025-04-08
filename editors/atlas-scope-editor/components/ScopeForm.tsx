@@ -10,6 +10,14 @@ import ContentCard from "../../shared/components/content-card.js";
 import { fetchPHIDOptions, fetchSelectedPHIDOption, getCardVariant, getTagText } from "../../shared/utils/utils.js";
 import type { EditorMode } from "../../shared/types.js";
 import { isFormReadOnly } from "../../shared/utils/form-common.js";
+import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
+import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
+import { useEffect, useRef } from "react";
+import { UseFormReturn } from "react-hook-form";
+import { ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
+import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
+import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
+import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 
 interface ScopeFormProps {
     onSubmit: (data: Record<string, any>) => void;
@@ -23,6 +31,20 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
     const cardVariant = getCardVariant(mode);
     const tagText = getTagText(mode);
 
+    // baseline document state
+    const originalNodeState = getOriginalNotionDocument(
+        (documentState.notionId as string) || "notion-id-not-set",
+        (documentState.atlasType as ParsedNotionDocumentType) || "article",
+    );
+
+    const formRef = useRef<UseFormReturn>(null);
+    // keep the form state in sync with the document state
+    useEffect(() => {
+        if (formRef.current) {
+            formRef.current.reset({ ...documentState });
+        }
+    }, [documentState]);
+
     return (
         <ContentCard tagText={tagText} variant={cardVariant} className='mt-4'>
             <Form
@@ -34,37 +56,71 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
                     <div className="flex flex-col gap-3">
                         <div className="flex flex-row gap-2">
                             <div className="flex-1">
-                                <StringField name="docNo" label="Doc №" placeholder="A." onBlur={triggerSubmit} />
+                                <StringDiffField
+                                    name="docNo"
+                                    label="Doc №"
+                                    placeholder="A."
+                                    onBlur={triggerSubmit}
+                                    mode={mode}
+                                    baselineValue={originalNodeState.docNo || ""} />
                             </div>
                             <div className="flex-1">
-                                <StringField name="name" label="Scope" placeholder="The Governance Scope" onBlur={triggerSubmit} />
+                                <StringDiffField
+                                    name="name"
+                                    label="Scope"
+                                    placeholder="The Governance Scope"
+                                    onBlur={triggerSubmit}
+                                    mode={mode}
+                                    baselineValue={originalNodeState.name}
+                                />
                             </div>
                             <div className="flex-1">
-                                <EnumField label="Status" name="masterStatus" onChange={triggerSubmit} options={[
-                                    { value: "PLACEHOLDER", label: "PLACEHOLDER" },
-                                    { value: "PROVISIONAL", label: "PROVISIONAL" },
-                                    { value: "APPROVED", label: "APPROVED " },
-                                    { value: "DEFERRED", label: "DEFERRED" },
-                                    { value: "ARCHIVED", label: "ARCHIVED" },
-                                ]}
+                                <EnumDiffField
+                                    label="Status"
+                                    name="masterStatus"
+                                    onChange={triggerSubmit}
+                                    mode={mode}
+                                    options={[
+                                        { value: "PLACEHOLDER", label: "PLACEHOLDER" },
+                                        { value: "PROVISIONAL", label: "PROVISIONAL" },
+                                        { value: "APPROVED", label: "APPROVED " },
+                                        { value: "DEFERRED", label: "DEFERRED" },
+                                        { value: "ARCHIVED", label: "ARCHIVED" },
+                                    ]}
                                     disabled={isReadOnly}
                                     required
                                     variant="Select"
+                                    baselineValue={originalNodeState.masterStatusNames[0]?.toUpperCase()}
                                 />
                             </div>
 
                         </div>
                         <div className="flex-1">
-                            <StringField autoExpand rows={4} multiline name="content" onBlur={triggerSubmit} placeholder="Enter content" />
+                            <StringDiffField
+                                autoExpand rows={4}
+                                multiline
+                                name="content"
+                                onBlur={triggerSubmit}
+                                placeholder="Enter content"
+                                mode={mode}
+                                // TODO: add the right baseline value
+                                baselineValue={""} />
                         </div>
                         <div className="flex flex-col gap-4 w-1/2">
                             <div className="flex flex-col gap-2 flex-1">
-                                <UrlField
+                                <UrlDiffField
                                     name="provenance"
-                                    onBlur={triggerSubmit}
                                     label="Provenance"
-                                    disabled={isReadOnly}
-                                    placeholder="Enter provenance" />
+                                    placeholder="Provenance"
+                                    platformIcons={{
+                                        "notion.so": "Globe",
+                                        "www.notion.so": "Globe",
+                                    }}
+                                    onBlur={triggerSubmit}
+                                    mode={mode}
+                                    // TODO: add the right baseline value
+                                    baselineValue={""}
+                                />
                             </div>
                             <div className="flex flex-col gap-2 flex-1">
                                 <PHIDField
@@ -80,40 +136,17 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
                                 />
                             </div>
                             <div className="flex flex-col gap-2 flex-1">
-                                <EnumField
-                                    disabled={isReadOnly}
+                                <EnumDiffField
+                                    name="globalTags"
                                     label="Tags"
+                                    placeholder="Select Tags"
+                                    options={globalTagsEnumOptions}
+                                    variant="Select"
                                     multiple
-                                    name="newTags"
                                     onChange={triggerSubmit}
-                                    options={[
-                                        {
-                                            label: "RECURSIVE_IMPROVEMENT",
-                                            value: "RECURSIVE_IMPROVEMENT",
-                                        },
-                                        { label: "SCOPE_ADVISOR", value: "SCOPE_ADVISOR" },
-                                        { label: "DAO_TOOLKIT", value: "DAO_TOOLKIT" },
-                                        { label: "PURPOSE_SYSTEM", value: "PURPOSE_SYSTEM" },
-                                        { label: "ML_LOW_PRIORITY", value: "ML_LOW_PRIORITY" },
-                                        { label: "EXTERNAL_REFERENCE", value: "EXTERNAL_REFERENCE" },
-                                        { label: "ML_DEFER", value: "ML_DEFER" },
-                                        { label: "SUBDAO_INCUBATION", value: "SUBDAO_INCUBATION" },
-                                        { label: "V1_MIP", value: "V1_MIP" },
-                                        { label: "ML_HIGH_PRIORITY", value: "ML_HIGH_PRIORITY" },
-                                        { label: "ECOSYSTEM_INTELLIGENCE", value: "ECOSYSTEM_INTELLIGENCE" },
-                                        { label: "LEGACY_TERM_USE_APPROVED", value: "LEGACY_TERM_USE_APPROVED" },
-                                        { label: "CAIS", value: "CAIS" },
-                                        { label: "INTERNAL_REFERENCE", value: "INTERNAL_REFERENCE" },
-                                        { label: "FACILITATORDAO", value: "FACILITATORDAO" },
-                                        { label: "ML_MED_PRIORITY", value: "ML_MED_PRIORITY" },
-                                        { label: "AVC", value: "AVC" },
-                                        { label: "P0_HUB_ENTRY_NEEDED", value: "P0_HUB_ENTRY_NEEDED" },
-                                        { label: "ANON_WORKFORCE", value: "ANON_WORKFORCE" },
-                                        { label: "NEWCHAIN", value: "NEWCHAIN" },
-                                        { label: "ML_SUPPORT_DOCS_NEEDED", value: "ML_SUPPORT_DOCS_NEEDED" },
-                                        { label: "SUBDAO_REWARDS", value: "SUBDAO_REWARDS" },
-                                        { label: "TWO_STAGE_BRIDGE", value: "TWO_STAGE_BRIDGE" },
-                                    ]}
+                                    mode={mode}
+                                    // TODO: add the right baseline value
+                                    baselineValue={""} // 
                                 />
                             </div>
                         </div>

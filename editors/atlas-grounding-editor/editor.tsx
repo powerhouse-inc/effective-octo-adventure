@@ -9,6 +9,10 @@ import {
 import { EditorLayout } from "../shared/components/EditorLayout.js";
 import { SplitView } from "../shared/components/SplitView.js";
 import { GroundingForm } from "./components/GroundingForm.js";
+import {
+  getStringValue,
+  fetchSelectedPHIDOption,
+} from "../shared/utils/utils.js";
 
 export type IProps = EditorProps<AtlasGroundingDocument>;
 
@@ -17,30 +21,37 @@ export default function Editor(props: IProps) {
 
   // TODO: remove or update this once all the data in global state is in the expected format or the design is updated
   const originalDocumentState = props.document.state.global;
-  const originalParentId = originalDocumentState.parent.id
-    ? `phd:${originalDocumentState.parent.id}`
+  const parentId = originalDocumentState.parent?.id
+    ? `phd:${originalDocumentState.parent?.id}`
     : "";
+  const originalContextDataId = originalDocumentState.originalContextData[0]?.id
+    ? `phd:${originalDocumentState.originalContextData[0].id}`
+    : "";
+  const referencesId = originalDocumentState.references[0]?.id
+    ? `phd:${originalDocumentState.references[0].id}`
+    : "";
+
   const documentState = {
     ...originalDocumentState,
-    parent: originalParentId,
+    parent: parentId,
     provenance: originalDocumentState.provenance[0] || "",
-    originalContextData: originalDocumentState.originalContextData[0]?.id || "",
-    references: originalDocumentState.references[0]?.id || "",
+    originalContextData: originalContextDataId,
+    references: referencesId,
   };
-  const initialPHIDOption = {
-    value: originalParentId,
-    title: `${originalDocumentState.parent.docNo || ""} - ${originalDocumentState.parent.name || ""}`,
-    path: "sky/atlas-grounding",
-    icon: "File" as const,
-    description: "",
-  };
+  const parentPHIDInitialOption = fetchSelectedPHIDOption(parentId);
+  const originalContextDataPHIDInitialOption = fetchSelectedPHIDOption(
+    originalContextDataId,
+  );
+  const referencesPHIDInitialOption = fetchSelectedPHIDOption(referencesId);
 
   const onSubmit = (data: Record<string, any>) => {
     if (data["docNo"] !== undefined) {
-      dispatch(actions.setDocNumber({ docNo: data["docNo"] as string }));
+      dispatch(actions.setDocNumber({ docNo: getStringValue(data["docNo"]) }));
     }
     if (data["name"] !== undefined) {
-      dispatch(actions.setGroundingName({ name: data["name"] as string }));
+      dispatch(
+        actions.setGroundingName({ name: getStringValue(data["name"]) }),
+      );
     }
     if (data["atlasType"] !== undefined) {
       dispatch(
@@ -55,16 +66,31 @@ export default function Editor(props: IProps) {
       );
     }
     if (data["content"] !== undefined) {
-      dispatch(actions.setContent({ content: data["content"] as string }));
+      dispatch(
+        actions.setContent({ content: getStringValue(data["content"]) }),
+      );
     }
     if (data["parent"] !== undefined) {
-      const parentId = (data["parent"] as string).split(":")[1];
-      dispatch(actions.setParent({ id: parentId }));
+      if (data["parent"] === null) {
+        dispatch(actions.setParent({ id: "" }));
+      } else {
+        const newParentId = (data["parent"] as string).split(":")[1];
+        dispatch(actions.setParent({ id: newParentId }));
+      }
     }
     if (data["originalContextData"] !== undefined) {
-      dispatch(
-        actions.addContextData({ id: data["originalContextData"] as string }),
-      );
+      if (data["originalContextData"] === null) {
+        dispatch(
+          actions.removeContextData({
+            id: documentState.originalContextData.split(":")[1],
+          }),
+        );
+      } else {
+        const newOriginalContextDataId = (
+          data["originalContextData"] as string
+        ).split(":")[1];
+        dispatch(actions.addContextData({ id: newOriginalContextDataId }));
+      }
     }
     if (data["provenance"] !== undefined) {
       dispatch(
@@ -72,10 +98,37 @@ export default function Editor(props: IProps) {
       );
     }
     if (data["globalTags"] !== undefined) {
-      dispatch(actions.addTags({ tags: data["globalTags"] as GGlobalTag[] }));
+      const newTags = data["globalTags"] as GGlobalTag[];
+      const currentTags = documentState.globalTags;
+
+      if (data["globalTags"] === null) {
+        dispatch(actions.removeTags({ tags: currentTags }));
+        return;
+      }
+
+      // Tags to add (are in newTags but not in currentTags)
+      const tagsToAdd = newTags.filter((tag) => !currentTags.includes(tag));
+      if (tagsToAdd.length > 0) {
+        dispatch(actions.addTags({ tags: tagsToAdd }));
+      }
+
+      // Tags to remove (are in currentTags but not in newTags)
+      const tagsToRemove = currentTags.filter((tag) => !newTags.includes(tag));
+      if (tagsToRemove.length > 0) {
+        dispatch(actions.removeTags({ tags: tagsToRemove }));
+      }
     }
     if (data["references"] !== undefined) {
-      dispatch(actions.addReference({ id: data["references"] as string }));
+      if (data["references"] === null) {
+        dispatch(
+          actions.removeReference({
+            id: documentState.references.split(":")[1],
+          }),
+        );
+      } else {
+        const newReferenceId = (data["references"] as string).split(":")[1];
+        dispatch(actions.addReference({ id: newReferenceId }));
+      }
     }
   };
 
@@ -94,7 +147,11 @@ export default function Editor(props: IProps) {
                 onSubmit={onSubmit}
                 documentState={documentState}
                 mode={isEditMode ? "Edition" : "DiffRemoved"}
-                initialPHIDOption={initialPHIDOption}
+                parentPHIDInitialOption={parentPHIDInitialOption}
+                originalContextDataPHIDInitialOption={
+                  originalContextDataPHIDInitialOption
+                }
+                referencesPHIDInitialOption={referencesPHIDInitialOption}
               />
             }
             right={
@@ -102,7 +159,11 @@ export default function Editor(props: IProps) {
                 onSubmit={onSubmit}
                 documentState={documentState}
                 mode={isEditMode ? "DiffMixed" : "DiffAdditions"}
-                initialPHIDOption={initialPHIDOption}
+                parentPHIDInitialOption={parentPHIDInitialOption}
+                originalContextDataPHIDInitialOption={
+                  originalContextDataPHIDInitialOption
+                }
+                referencesPHIDInitialOption={referencesPHIDInitialOption}
               />
             }
           />
@@ -111,7 +172,11 @@ export default function Editor(props: IProps) {
             onSubmit={onSubmit}
             documentState={documentState}
             mode={isEditMode ? "Edition" : "Readonly"}
-            initialPHIDOption={initialPHIDOption}
+            parentPHIDInitialOption={parentPHIDInitialOption}
+            originalContextDataPHIDInitialOption={
+              originalContextDataPHIDInitialOption
+            }
+            referencesPHIDInitialOption={referencesPHIDInitialOption}
           />
         )
       }

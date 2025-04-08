@@ -7,7 +7,12 @@ import {
   UrlField,
 } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
-import { cb, getCardVariant, getTagText } from "../../shared/utils/utils.js";
+import {
+  fetchPHIDOptions,
+  fetchSelectedPHIDOption,
+  getCardVariant,
+  getTagText,
+} from "../../shared/utils/utils.js";
 import type { EditorMode } from "../../shared/types.js";
 import { isFormReadOnly } from "../../shared/utils/form-common.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
@@ -18,17 +23,20 @@ import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-fie
 import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
+import { type PHIDOption } from "@powerhousedao/design-system/ui";
 
 interface ExploratoryFormProps {
   onSubmit: (data: Record<string, any>) => void;
   documentState: Record<string, any>;
   mode: EditorMode;
+  parentPHIDInitialOption?: PHIDOption;
 }
 
 export function ExploratoryForm({
   onSubmit,
   documentState,
   mode,
+  parentPHIDInitialOption,
 }: ExploratoryFormProps) {
   const isReadOnly = isFormReadOnly(mode);
   const cardVariant = getCardVariant(mode);
@@ -111,63 +119,74 @@ export function ExploratoryForm({
               mode={mode}
               baselineValue={""} // TODO: add the right baseline value
             />
-            <PHIDField
-              disabled={isReadOnly}
-              name="parent"
-              label="Parent Document"
-              placeholder="PHID"
-              onBlur={triggerSubmit}
-              fetchOptionsCallback={cb}
-              fetchSelectedOptionCallback={(x) => cb(x).then((x) => x[5])}
-              variant="withValueTitleAndDescription"
-              allowUris={true}
-            />
-            <BooleanField
-              disabled={isReadOnly}
-              name="aligned"
-              label="Aligned"
-              isToggle
-              onChange={triggerSubmit}
-            />
-            <StringDiffField
-              disabled={isReadOnly}
-              name="findings"
-              multiline={true}
-              label="Findings"
-              placeholder="Findings"
-              onBlur={triggerSubmit}
-              mode={mode}
-              baselineValue={""} // TODO: add the right baseline value
-            />
-            <StringDiffField
-              disabled={isReadOnly}
-              name="additionalGuidance"
-              multiline={true}
-              label="Additional Guidance"
-              placeholder="Additional Guidance"
-              onBlur={triggerSubmit}
-              mode={mode}
-              baselineValue={""} // TODO: add the right baseline value
-            />
-            <UrlDiffField
-              disabled={isReadOnly}
-              name="provenance"
-              label="Provenance"
-              placeholder="Provenance"
-              onBlur={triggerSubmit}
-              mode={mode}
-              baselineValue={""} // TODO: add the right baseline value
-            />
-            <EnumDiffField
-              disabled={isReadOnly}
-              label="Tags"
-              multiple
-              name="globalTags"
-              onChange={triggerSubmit}
-              options={globalTagsEnumOptions}
-              mode={mode}
-              baselineValue={""} // TODO: add the right baseline value
-            />
+            <div className="flex flex-col gap-3 w-full lg:w-1/2">
+              <PHIDField
+                disabled={isReadOnly}
+                name="parent"
+                label="Parent Document"
+                placeholder="phd:"
+                variant="withValueTitleAndDescription"
+                allowUris
+                initialOptions={
+                  parentPHIDInitialOption
+                    ? [parentPHIDInitialOption]
+                    : undefined
+                }
+                fetchOptionsCallback={fetchPHIDOptions}
+                fetchSelectedOptionCallback={fetchSelectedPHIDOption}
+                onBlur={triggerSubmit}
+              />
+              <BooleanField
+                disabled={isReadOnly}
+                name="aligned"
+                label="Aligned"
+                isToggle
+                onChange={triggerSubmit}
+              />
+              <StringDiffField
+                disabled={isReadOnly}
+                name="findings"
+                multiline={true}
+                label="Findings"
+                placeholder="Findings"
+                onBlur={triggerSubmit}
+                mode={mode}
+                baselineValue={""} // TODO: add the right baseline value
+              />
+              <StringDiffField
+                disabled={isReadOnly}
+                name="additionalGuidance"
+                multiline={true}
+                label="Additional Guidance"
+                placeholder="Additional Guidance"
+                onBlur={triggerSubmit}
+                mode={mode}
+                baselineValue={""} // TODO: add the right baseline value
+              />
+              <UrlDiffField
+                disabled={isReadOnly}
+                name="provenance"
+                label="Provenance"
+                placeholder="Provenance"
+                platformIcons={{
+                  "notion.so": "Globe",
+                  "www.notion.so": "Globe",
+                }}
+                onBlur={triggerSubmit}
+                mode={mode}
+                baselineValue={""} // TODO: add the right baseline value
+              />
+              <EnumDiffField
+                disabled={isReadOnly}
+                label="Tags"
+                multiple
+                name="globalTags"
+                onChange={triggerSubmit}
+                options={globalTagsEnumOptions}
+                mode={mode}
+                baselineValue={""} // TODO: add the right baseline value
+              />
+            </div>
           </div>
         )}
       </Form>

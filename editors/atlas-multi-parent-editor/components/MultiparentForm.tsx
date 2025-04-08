@@ -7,9 +7,18 @@ import {
     UrlField,
 } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
-import { cb, getCardVariant, getTagText } from "../../shared/utils/utils.js";
+import { cb, fetchPHIDOptions, fetchSelectedPHIDOption, getCardVariant, getTagText } from "../../shared/utils/utils.js";
 import type { EditorMode } from "../../shared/types.js";
 import { isFormReadOnly } from "../../shared/utils/form-common.js";
+import { useEffect } from "react";
+import { getOriginalNotionDocument } from "../../../document-models/utils.js";
+import { ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
+import { UseFormReturn } from "react-hook-form";
+import { useRef } from "react";
+import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
+import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
+import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
+import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
 
 interface MultiParentFormProps {
     onSubmit: (data: Record<string, any>) => void;
@@ -22,6 +31,20 @@ export function MultiParentForm({ onSubmit, documentState, mode }: MultiParentFo
     const isReadOnly = isFormReadOnly(mode);
     const cardVariant = getCardVariant(mode);
     const tagText = getTagText(mode);
+      // baseline document state
+  const originalNodeState = getOriginalNotionDocument(
+    (documentState.notionId as string) || "notion-id-not-set",
+    (documentState.atlasType as ParsedNotionDocumentType) || "article",
+  );
+
+  const formRef = useRef<UseFormReturn>(null);
+
+  // keep the form state in sync with the document state
+  useEffect(() => {
+    if (formRef.current) {
+      formRef.current.reset({ ...documentState });
+    }
+  }, [documentState]);
 
     return (
         <ContentCard tagText={tagText} variant={cardVariant} className='mt-4'>
@@ -34,25 +57,29 @@ export function MultiParentForm({ onSubmit, documentState, mode }: MultiParentFo
                     <div className="flex flex-col gap-3">
                         <div className="flex flex-row gap-2">
                             <div className="flex-1">
-                                <StringField
+                                <StringDiffField
                                     disabled={isReadOnly}
                                     name="docNo"
                                     label="Doc №"
                                     placeholder="A."
                                     onBlur={triggerSubmit}
+                                    mode={mode}
+                                    baselineValue={originalNodeState.docNo}
                                 />
                             </div>
                             <div className="flex-1">
-                                <StringField
+                                <StringDiffField
                                     disabled={isReadOnly}
                                     name="name"
                                     label="Name"
                                     placeholder="Exploratory Document"
                                     onBlur={triggerSubmit}
+                                    mode={mode}
+                                    baselineValue={originalNodeState.name}
                                 />
                             </div>
                             <div className="flex-1">
-                                <EnumField
+                                <EnumDiffField
                                     name="atlasType"
                                     placeholder="Select Atlas Type"
                                     label="Type"
@@ -63,10 +90,12 @@ export function MultiParentForm({ onSubmit, documentState, mode }: MultiParentFo
                                     required
                                     variant="Select"
                                     onChange={triggerSubmit}
+                                    mode={mode}
+                                    baselineValue={originalNodeState.type?.toUpperCase()}
                                 />
                             </div>
                             <div className="flex-1">
-                                <EnumField
+                                <EnumDiffField
                                     disabled={isReadOnly}
                                     label="Status"
                                     name="masterStatus"
@@ -80,68 +109,79 @@ export function MultiParentForm({ onSubmit, documentState, mode }: MultiParentFo
                                     ]}
                                     required
                                     variant="Select"
+                                    mode={mode}
+                                    baselineValue={originalNodeState.masterStatusNames[0]?.toUpperCase()}
                                 />
                             </div>
                         </div>
-                        <StringField
+
+                        <StringDiffField
                             disabled={isReadOnly}
                             name="content"
                             multiline={true}
                             label="Content"
                             placeholder="Content"
                             onBlur={triggerSubmit}
+                            mode={mode}
+                            // TODO: add the right baseline value
+                            baselineValue={""} 
+                            
                         />
+                        <div className="w-1/2">
+
+                        
                         <PHIDField
                             disabled={isReadOnly}
                             name="parents"
                             label="Parent Document"
                             placeholder="PHID"
                             onBlur={triggerSubmit}
-                            fetchOptionsCallback={cb}
-                            fetchSelectedOptionCallback={(x) => cb(x).then((x) => x[5])}
+                            fetchOptionsCallback={fetchPHIDOptions}
+                                    fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                             variant="withValueTitleAndDescription"
                             allowUris={true}
                         />
-                        <UrlField
+                        </div>
+                        <div className="w-1/2">
+                        <UrlDiffField
                             name="provenance"
                             label="Provenance"
                             placeholder="Provenance"
                             onBlur={triggerSubmit}
+                            mode={mode}
+                            platformIcons={{
+                                "notion.so": "Globe",
+                                "www.notion.so": "Globe",
+                              }}
+                            // TODO: add the right baseline value
+                            baselineValue={""}
                         />
+</div>
 
+                        <div className="w-1/2">
                         <PHIDField
                             name="originalContextData"
-                            fetchOptionsCallback={cb}
-                            fetchSelectedOptionCallback={(x) => cb(x).then((x) => x[5])}
+                            fetchOptionsCallback={fetchPHIDOptions}
+                                    fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                             label="Original Context Data"
                             placeholder="phd:"
                             variant="withValueTitleAndDescription"
                             allowUris={true}
                             onBlur={triggerSubmit}
                         />
-
-                        <EnumField
+                        </div>
+                        <div className="w-1/2">
+                        <EnumDiffField
                             label="Tags"
                             onChange={triggerSubmit}
                             multiple
                             name="globalTags"
-                            options={[
-                                { value: "SCOPE_ADVISOR", label: "SCOPE_ADVISOR" },
-                                { value: "AVC", label: "AVC" },
-                                { value: "CAIS", label: "CAIS" },
-                                { value: "ML_LOW_PRIORITY", label: "ML_LOW_PRIORITY" },
-                                { value: "EXTERNAL_REFERENCE", label: "EXTERNAL_REFERENCE" },
-                                { value: "DAO_TOOLKIT", label: "DAO_TOOLKIT" },
-                                { value: "ML_DEFER", label: "ML_DEFER" },
-                                { value: "PURPOSE_SYSTEM", label: "PURPOSE_SYSTEM" },
-                                { value: "NEWCHAIN", label: "NEWCHAIN" },
-                                { value: "ML_SUPPORT_DOCS_NEEDED", label: "ML_SUPPORT_DOCS_NEEDED" },
-                                { value: "TWO_STAGE_BRIDGE", label: "TWO_STAGE_BRIDGE" },
-                                { value: "ECOSYSTEM_INTELLIGENCE", label: "ECOSYSTEM_INTELLIGENCE" },
-                                { value: "RECURSIVE_IMPROVEMENT", label: "RECURSIVE_IMPROVEMENT" },
-                                { value: "LEGACY_TERM_USE_APPROVED", label: "LEGACY_TERM_USE_APPROVED" },
-                            ]}
+                            options={globalTagsEnumOptions}
+                            mode={mode}
+                            // TODO: add the right baseline value
+                            baselineValue={""}
                         />
+                        </div>
                     </div>
                 )}
             </Form>

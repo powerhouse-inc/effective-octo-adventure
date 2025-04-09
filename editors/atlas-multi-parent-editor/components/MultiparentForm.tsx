@@ -1,10 +1,7 @@
 import {
-    BooleanField,
-    EnumField,
+    cn,
     Form,
     PHIDField,
-    StringField,
-    UrlField,
 } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import { cb, fetchPHIDOptions, fetchSelectedPHIDOption, getCardVariant, getTagText } from "../../shared/utils/utils.js";
@@ -20,6 +17,7 @@ import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-fie
 import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
 import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
 import { PHIDOption } from "@powerhousedao/design-system/ui";
+import { PHIDDiffField } from "../../shared/components/diff-fields/phid-diff-field.js";
 
 interface MultiParentFormProps {
     onSubmit: (data: Record<string, any>) => void;
@@ -28,13 +26,15 @@ interface MultiParentFormProps {
     parentPHIDInitialOption?: PHIDOption;
     originalContextDataPHIDInitialOption?: PHIDOption;
     referencesPHIDInitialOption?: PHIDOption;
+    isSplitMode?: boolean;
 }
 
 export function MultiParentForm({
     onSubmit, documentState, mode,
     parentPHIDInitialOption,
     originalContextDataPHIDInitialOption,
-    referencesPHIDInitialOption
+    referencesPHIDInitialOption,
+    isSplitMode
 }: MultiParentFormProps) {
 
     const isReadOnly = isFormReadOnly(mode);
@@ -63,9 +63,9 @@ export function MultiParentForm({
                 defaultValues={{ ...documentState }}
             >
                 {({ triggerSubmit }) => (
-                    <div className="flex flex-col gap-3">
-                        <div className="flex flex-row gap-2 flex-wrap w-full">
-                            <div className="flex-1 min-w-[200px]">
+                    <div className="flex flex-col gap-4">
+                        <div className={cn("flex flex-row gap-2", isSplitMode ? "flex-col" : "flex-row")}>
+                            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
                                 <StringDiffField
                                     disabled={isReadOnly}
                                     name="docNo"
@@ -76,7 +76,7 @@ export function MultiParentForm({
                                     baselineValue={originalNodeState.docNo}
                                 />
                             </div>
-                            <div className="flex-1 min-w-[200px]">
+                            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
                                 <StringDiffField
                                     disabled={isReadOnly}
                                     name="name"
@@ -88,8 +88,8 @@ export function MultiParentForm({
                                 />
                             </div>
                         </div>
-                        <div className="flex flex-row gap-2 flex-wrap w-full">
-                            <div className="flex-1 min-w-[200px]">
+                        <div className={cn("flex flex-row gap-2", isSplitMode ? "flex-col" : "flex-row")}>
+                            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
                                 <EnumDiffField
                                     name="atlasType"
                                     placeholder="Select Atlas Type"
@@ -105,7 +105,7 @@ export function MultiParentForm({
                                     baselineValue={originalNodeState.type?.toUpperCase()}
                                 />
                             </div>
-                            <div className="flex-1 min-w-[200px]">
+                            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
                                 <EnumDiffField
                                     disabled={isReadOnly}
                                     label="Status"
@@ -138,10 +138,10 @@ export function MultiParentForm({
                             baselineValue={""}
 
                         />
-                        <div className="w-1/2">
+                        <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
 
 
-                            <PHIDField
+                            <PHIDDiffField
                                 disabled={isReadOnly}
                                 name="parents"
                                 label="Parent Document"
@@ -156,9 +156,11 @@ export function MultiParentForm({
                                         ? [parentPHIDInitialOption]
                                         : undefined
                                 }
+                                mode={mode}
+                                baselineValue={""}
                             />
                         </div>
-                        <div className="w-1/2">
+                        <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
                             <UrlDiffField
                                 name="provenance"
                                 label="Provenance"
@@ -174,8 +176,8 @@ export function MultiParentForm({
                             />
                         </div>
 
-                        <div className="w-1/2">
-                            <PHIDField
+                        <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
+                            <PHIDDiffField
                                 name="originalContextData"
                                 fetchOptionsCallback={fetchPHIDOptions}
                                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
@@ -189,9 +191,11 @@ export function MultiParentForm({
                                         ? [originalContextDataPHIDInitialOption]
                                         : undefined
                                 }
+                                mode={mode}
+                                baselineValue={""}
                             />
                         </div>
-                        <div className="w-1/2">
+                        <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
                             <PHIDField
                                 disabled={isReadOnly}
                                 name="references"
@@ -209,7 +213,7 @@ export function MultiParentForm({
                                 onBlur={triggerSubmit}
                             />
                         </div>
-                        <div className="w-1/2">
+                        <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
                             <EnumDiffField
                                 label="Tags"
                                 onBlur={triggerSubmit}

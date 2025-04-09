@@ -26,6 +26,7 @@ interface FoundationFormProps {
   parentPHIDInitialOption?: PHIDOption;
   originalContextDataPHIDInitialOption?: PHIDOption;
   referencesPHIDInitialOption?: PHIDOption;
+  isSplitMode?: boolean;
 }
 
 export function FoundationForm({
@@ -35,6 +36,7 @@ export function FoundationForm({
   parentPHIDInitialOption,
   originalContextDataPHIDInitialOption,
   referencesPHIDInitialOption,
+  isSplitMode,
 }: FoundationFormProps) {
   const isReadOnly = isFormReadOnly(mode);
   const cardVariant = getCardVariant(mode);
@@ -67,9 +69,10 @@ export function FoundationForm({
       >
         {({ triggerSubmit }) => (
           <div className={cn("flex flex-col gap-3")}>
-            <div className={cn("flex flex-row gap-2")}>
+            <div className={cn("flex gap-2", isSplitMode ? "flex-col" : "flex-row")}>
               <div className={cn("flex-1")}>
                 <StringDiffField
+                  disabled={isReadOnly}
                   name="docNo"
                   label="Doc №"
                   placeholder="A."
@@ -88,6 +91,8 @@ export function FoundationForm({
                   baselineValue={originalNodeState.name}
                 />
               </div>
+              </div>
+              <div className={cn("flex gap-2", isSplitMode ? "flex-col" : "flex-row")}>
               <div className={cn("flex-1")}>
                 <EnumDiffField
                   name="atlasType"
@@ -141,7 +146,7 @@ export function FoundationForm({
               mode={mode}
               baselineValue={""} // TODO: add the right baseline value
             />
-            <div className={cn("w-1/2")}>
+            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
               <PHIDDiffField
                 name="parent"
                 label="Parent Document"
@@ -160,7 +165,7 @@ export function FoundationForm({
                 baselineValue={""} // TODO: add the right baseline value
               />
             </div>
-            <div className={cn("w-1/2")}>
+            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
               <PHIDDiffField
                 name="originalContextData"
                 label="Original Context Data"
@@ -179,7 +184,7 @@ export function FoundationForm({
                 baselineValue={""} // TODO: add the right baseline value
               />
             </div>
-            <div className={cn("w-1/2")}>
+            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
               <UrlDiffField
                 name="provenance"
                 label="Provenance"
@@ -193,7 +198,7 @@ export function FoundationForm({
                 baselineValue={""} // TODO: add the right baseline value
               />
             </div>
-            <div className={cn("w-1/2")}>
+            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
               <EnumDiffField
                 name="globalTags"
                 label="Tags"
@@ -206,7 +211,7 @@ export function FoundationForm({
                 baselineValue={""} // TODO: add the right baseline value
               />
             </div>
-            <div className={cn("w-1/2")}>
+            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
               <PHIDDiffField
                 name="references"
                 label="Atlas References"

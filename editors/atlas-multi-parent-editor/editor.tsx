@@ -131,6 +131,7 @@ export default function Editor(props: IProps) {
                 referencesPHIDInitialOption={referencesPHIDInitialOption}
                 parentPHIDInitialOption={parentPHIDInitialOption}
                 originalContextDataPHIDInitialOption={originalContextDataPHIDInitialOption}
+                isSplitMode={isSplitMode}
               />
             }
             right={
@@ -141,6 +142,7 @@ export default function Editor(props: IProps) {
                 referencesPHIDInitialOption={referencesPHIDInitialOption}
                 parentPHIDInitialOption={parentPHIDInitialOption}
                 originalContextDataPHIDInitialOption={originalContextDataPHIDInitialOption}
+                isSplitMode={isSplitMode}
               />
             }
           />

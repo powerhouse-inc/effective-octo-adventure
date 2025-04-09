@@ -54,8 +54,8 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
             >
                 {({ triggerSubmit }) => (
                     <div className="flex flex-col gap-3">
-                        <div className="flex flex-row gap-2">
-                            <div className="flex-1">
+                        <div className="flex flex-row gap-2 flex-wrap w-full">
+                            <div className="flex-1 min-w-[200px]">
                                 <StringDiffField
                                     name="docNo"
                                     label="Doc №"
@@ -64,7 +64,7 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
                                     mode={mode}
                                     baselineValue={originalNodeState.docNo || ""} />
                             </div>
-                            <div className="flex-1">
+                            <div className="flex-1 min-w-[200px]">
                                 <StringDiffField
                                     name="name"
                                     label="Scope"
@@ -74,7 +74,12 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
                                     baselineValue={originalNodeState.name}
                                 />
                             </div>
-                            <div className="flex-1">
+                        
+
+                        </div>
+
+                        <div className="flex flex-row gap-2 flex-wrap">
+                        <div className="w-1/2">
                                 <EnumDiffField
                                     label="Status"
                                     name="masterStatus"
@@ -93,11 +98,9 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
                                     baselineValue={originalNodeState.masterStatusNames[0]?.toUpperCase()}
                                 />
                             </div>
-
-                        </div>
+                            </div>
                         <div className="flex-1">
                             <StringDiffField
-                                autoExpand rows={4}
                                 multiline
                                 name="content"
                                 onBlur={triggerSubmit}

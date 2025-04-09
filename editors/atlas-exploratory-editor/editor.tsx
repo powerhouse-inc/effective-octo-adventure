@@ -8,27 +8,46 @@ import {
 import { EditorLayout } from "../shared/components/EditorLayout.js";
 import { SplitView } from "../shared/components/SplitView.js";
 import { ExploratoryForm } from "./components/ExploratoryForm.js";
-import { fetchSelectedPHIDOption } from "../shared/utils/utils.js";
+import { fetchSelectedPHIDOption, getStringValue } from "../shared/utils/utils.js";
 
 export type IProps = EditorProps<AtlasExploratoryDocument>;
 
 export default function Editor(props: IProps) {
   const { dispatch } = props;
+
+  const originalDocumentState = props.document.state.global;
+
+  const parentId = originalDocumentState.parent
+    ? `phd:${originalDocumentState.parent}`
+    : "";
+  const originalContextDataId = originalDocumentState.originalContextData[0]?.id
+    ? `phd:${originalDocumentState.originalContextData[0].id}`
+    : "";
+  const referencesId = originalDocumentState.references[0]
+    ? `phd:${originalDocumentState.references[0]}`
+    : "";
+
   const documentState = {
-    ...props.document.state.global,
-    parent:
-      props.document.state.global.parent?.length > 0
-        ? `phd:${props.document.state.global.parent[0]}`
-        : "",
+    ...originalDocumentState,
+    provenance: originalDocumentState.provenance || "",
+    originalContextData: originalContextDataId,
+    references: referencesId,
+    parent: parentId,
   };
-  const parentPHIDInitialOption = fetchSelectedPHIDOption(documentState.parent);
+
+  const parentPHIDInitialOption = fetchSelectedPHIDOption(parentId);
+  const originalContextDataPHIDInitialOption = fetchSelectedPHIDOption(
+    originalContextDataId,
+  );
+  const referencesPHIDInitialOption = fetchSelectedPHIDOption(referencesId);
+  const isAligned = documentState.findings.isAligned;
 
   const onSubmit = (data: Record<string, any>) => {
     if (data["docNo"] !== undefined) {
-      dispatch(actions.setDocNumber({ docNo: data["docNo"] as string }));
+      dispatch(actions.setDocNumber({ docNo: getStringValue(data['docNo']) }));
     }
     if (data["name"] !== undefined) {
-      dispatch(actions.setExploratoryName({ name: data["name"] as string }));
+      dispatch(actions.setExploratoryName({ name: getStringValue(data["name"]) }));
     }
     if (data["masterStatus"] !== undefined) {
       dispatch(
@@ -38,18 +57,17 @@ export default function Editor(props: IProps) {
       );
     }
     if (data["content"] !== undefined) {
-      dispatch(actions.setContent({ content: data["content"] as string }));
+      dispatch(actions.setContent({ content: getStringValue(data["content"]) }));
     }
     if (data["parent"] !== undefined) {
       if (data["parent"] === null) {
         dispatch(actions.setParent({ parent: [] }));
       } else {
         const newParentId = (data["parent"] as string).split(":")[1];
+        
         dispatch(actions.setParent({ parent: [newParentId] }));
       }
     }
-
-    // TODO: save other fields
 
     if (data["globalTags"] !== undefined) {
       const newTags = data["globalTags"] as EGlobalTag[];
@@ -72,12 +90,53 @@ export default function Editor(props: IProps) {
         dispatch(actions.removeTags({ tags: tagsToRemove }));
       }
     }
-  };
-
+    if (data["additionalGuidance"] !== undefined) {
+      dispatch(actions.addAdditionalGuidance({ additionalGuidance: getStringValue(data["additionalGuidance"]) }));
+    }
+    if (data["originalContextData"] !== undefined) {
+      if (data["originalContextData"] === null) {
+        dispatch(
+          actions.removeContextData({
+            id: documentState.originalContextData.split(":")[1],
+          }),
+        );
+      } else {
+        const newOriginalContextDataId = (
+          data["originalContextData"] as string
+        ).split(":")[1];
+        dispatch(actions.addContextData({ id: newOriginalContextDataId }));
+      }
+    }
+    if (data["provenance"] !== undefined) {
+      dispatch(
+        actions.setProvenance({ provenance: data["provenance"] as string }),
+      );
+    }
+  // TODO: need the com
+    // if(data["findings"] !== undefined) {
+    //   dispatch(actions.setFindings({ 
+    //     isAligned: data["findings"] as boolean,
+  
+    //    }));
+    // }
+    //  TODO: add references the reference 
+    // if (data["references"] !== undefined) {
+    //   if (data["references"] === null) {
+    //     dispatch(
+    //       actions.r({
+    //         id: documentState.references.split(":")[1],
+    //       }),
+    //     );
+    //   } else {
+    //     const newReferenceId = (data["references"] as string).split(":")[1];
+    //     dispatch(actions.addReference({ id: newReferenceId }));
+    //   }
+    // }
+  }
   return (
     <EditorLayout
       title="Exploratory Document"
-      notionId={props.document.state.global.notionId}
+      notionId={documentState.notionId}
     >
       {({ isSplitMode, isEditMode }) =>
         isSplitMode ? (
@@ -88,6 +147,9 @@ export default function Editor(props: IProps) {
                 documentState={documentState}
                 mode={isEditMode ? "Edition" : "DiffRemoved"}
                 parentPHIDInitialOption={parentPHIDInitialOption}
+                originalContextDataPHIDInitialOption={originalContextDataPHIDInitialOption}
+                referencesPHIDInitialOption={referencesPHIDInitialOption}
+                isAligned={isAligned}
               />
             }
             right={
@@ -96,6 +158,9 @@ export default function Editor(props: IProps) {
                 documentState={documentState}
                 mode={isEditMode ? "DiffMixed" : "DiffAdditions"}
                 parentPHIDInitialOption={parentPHIDInitialOption}
+                originalContextDataPHIDInitialOption={originalContextDataPHIDInitialOption}
+                referencesPHIDInitialOption={referencesPHIDInitialOption}
+                isAligned={isAligned}
               />
             }
           />
@@ -105,6 +170,9 @@ export default function Editor(props: IProps) {
             documentState={documentState}
             mode={isEditMode ? "Edition" : "Readonly"}
             parentPHIDInitialOption={parentPHIDInitialOption}
+            originalContextDataPHIDInitialOption={originalContextDataPHIDInitialOption}
+            referencesPHIDInitialOption={referencesPHIDInitialOption}
+            isAligned={isAligned}
           />
         )
       }

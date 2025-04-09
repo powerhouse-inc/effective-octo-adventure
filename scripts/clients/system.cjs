@@ -39,77 +39,28 @@ __export(stdin_exports, {
 module.exports = __toCommonJS(stdin_exports);
 var import_endpoint = require("graphql-ts-client/dist/endpoint");
 const formatGraphQL = (query) => query;
-const AtlasScope_Status = {
+const DocumentDrive_TransmitterType = {
+  internal: "Internal",
+  matrixConnect: "MatrixConnect",
+  pullResponder: "PullResponder",
+  rESTWebhook: "RESTWebhook",
+  secureConnect: "SecureConnect",
+  switchboardPush: "SwitchboardPush"
+};
+const DocumentDrive_TriggerType = { pullResponder: "PullResponder" };
+const AtlasGrounding_GAtlasType = {
+  activeData: "ACTIVE_DATA",
+  originalContextData: "ORIGINAL_CONTEXT_DATA",
+  tenet: "TENET"
+};
+const AtlasGrounding_GStatus = {
   approved: "APPROVED",
   archived: "ARCHIVED",
   deferred: "DEFERRED",
   placeholder: "PLACEHOLDER",
   provisional: "PROVISIONAL"
 };
-const AtlasScope_GlobalTag = {
-  anonWorkforce: "ANON_WORKFORCE",
-  avc: "AVC",
-  cais: "CAIS",
-  daoToolkit: "DAO_TOOLKIT",
-  ecosystemIntelligence: "ECOSYSTEM_INTELLIGENCE",
-  externalReference: "EXTERNAL_REFERENCE",
-  facilitatordao: "FACILITATORDAO",
-  internalReference: "INTERNAL_REFERENCE",
-  legacyTermUseApproved: "LEGACY_TERM_USE_APPROVED",
-  mlDefer: "ML_DEFER",
-  mlHighPriority: "ML_HIGH_PRIORITY",
-  mlLowPriority: "ML_LOW_PRIORITY",
-  mlMedPriority: "ML_MED_PRIORITY",
-  mlSupportDocsNeeded: "ML_SUPPORT_DOCS_NEEDED",
-  newchain: "NEWCHAIN",
-  p0HubEntryNeeded: "P0_HUB_ENTRY_NEEDED",
-  purposeSystem: "PURPOSE_SYSTEM",
-  recursiveImprovement: "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor: "SCOPE_ADVISOR",
-  subdaoIncubation: "SUBDAO_INCUBATION",
-  subdaoRewards: "SUBDAO_REWARDS",
-  twoStageBridge: "TWO_STAGE_BRIDGE",
-  v1Mip: "V1_MIP"
-};
-const AtlasMultiParent_MAtlasType = {
-  annotation: "ANNOTATION",
-  neededResearch: "NEEDED_RESEARCH"
-};
-const AtlasMultiParent_MStatus = {
-  approved: "APPROVED",
-  archived: "ARCHIVED",
-  deferred: "DEFERRED",
-  placeholder: "PLACEHOLDER",
-  provisional: "PROVISIONAL"
-};
-const AtlasMultiParent_MGlobalTag = {
-  avc: "AVC",
-  cais: "CAIS",
-  daoToolkit: "DAO_TOOLKIT",
-  ecosystemIntelligence: "ECOSYSTEM_INTELLIGENCE",
-  externalReference: "EXTERNAL_REFERENCE",
-  legacyTermUseApproved: "LEGACY_TERM_USE_APPROVED",
-  mlDefer: "ML_DEFER",
-  mlLowPriority: "ML_LOW_PRIORITY",
-  mlSupportDocsNeeded: "ML_SUPPORT_DOCS_NEEDED",
-  newchain: "NEWCHAIN",
-  purposeSystem: "PURPOSE_SYSTEM",
-  recursiveImprovement: "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor: "SCOPE_ADVISOR",
-  twoStageBridge: "TWO_STAGE_BRIDGE"
-};
-const AtlasExploratory_EAtlasType = {
-  scenario: "SCENARIO",
-  scenarioVariation: "SCENARIO_VARIATION"
-};
-const AtlasExploratory_EStatus = {
-  approved: "APPROVED",
-  archived: "ARCHIVED",
-  deferred: "DEFERRED",
-  placeholder: "PLACEHOLDER",
-  provisional: "PROVISIONAL"
-};
-const AtlasExploratory_EGlobalTag = {
+const AtlasGrounding_GGlobalTag = {
   avc: "AVC",
   cais: "CAIS",
   daoToolkit: "DAO_TOOLKIT",
@@ -154,19 +105,18 @@ const AtlasFoundation_FGlobalTag = {
   scopeAdvisor: "SCOPE_ADVISOR",
   twoStageBridge: "TWO_STAGE_BRIDGE"
 };
-const AtlasGrounding_GAtlasType = {
-  activeData: "ACTIVE_DATA",
-  originalContextData: "ORIGINAL_CONTEXT_DATA",
-  tenet: "TENET"
+const AtlasExploratory_EAtlasType = {
+  scenario: "SCENARIO",
+  scenarioVariation: "SCENARIO_VARIATION"
 };
-const AtlasGrounding_GStatus = {
+const AtlasExploratory_EStatus = {
   approved: "APPROVED",
   archived: "ARCHIVED",
   deferred: "DEFERRED",
   placeholder: "PLACEHOLDER",
   provisional: "PROVISIONAL"
 };
-const AtlasGrounding_GGlobalTag = {
+const AtlasExploratory_EGlobalTag = {
   avc: "AVC",
   cais: "CAIS",
   daoToolkit: "DAO_TOOLKIT",
@@ -182,17 +132,67 @@ const AtlasGrounding_GGlobalTag = {
   scopeAdvisor: "SCOPE_ADVISOR",
   twoStageBridge: "TWO_STAGE_BRIDGE"
 };
-const DocumentDrive_TransmitterType = {
-  internal: "Internal",
-  matrixConnect: "MatrixConnect",
-  pullResponder: "PullResponder",
-  rESTWebhook: "RESTWebhook",
-  secureConnect: "SecureConnect",
-  switchboardPush: "SwitchboardPush"
+const AtlasMultiParent_MAtlasType = {
+  annotation: "ANNOTATION",
+  neededResearch: "NEEDED_RESEARCH"
 };
-const DocumentDrive_TriggerType = { pullResponder: "PullResponder" };
+const AtlasMultiParent_MStatus = {
+  approved: "APPROVED",
+  archived: "ARCHIVED",
+  deferred: "DEFERRED",
+  placeholder: "PLACEHOLDER",
+  provisional: "PROVISIONAL"
+};
+const AtlasMultiParent_MGlobalTag = {
+  avc: "AVC",
+  cais: "CAIS",
+  daoToolkit: "DAO_TOOLKIT",
+  ecosystemIntelligence: "ECOSYSTEM_INTELLIGENCE",
+  externalReference: "EXTERNAL_REFERENCE",
+  legacyTermUseApproved: "LEGACY_TERM_USE_APPROVED",
+  mlDefer: "ML_DEFER",
+  mlLowPriority: "ML_LOW_PRIORITY",
+  mlSupportDocsNeeded: "ML_SUPPORT_DOCS_NEEDED",
+  newchain: "NEWCHAIN",
+  purposeSystem: "PURPOSE_SYSTEM",
+  recursiveImprovement: "RECURSIVE_IMPROVEMENT",
+  scopeAdvisor: "SCOPE_ADVISOR",
+  twoStageBridge: "TWO_STAGE_BRIDGE"
+};
+const AtlasScope_Status = {
+  approved: "APPROVED",
+  archived: "ARCHIVED",
+  deferred: "DEFERRED",
+  placeholder: "PLACEHOLDER",
+  provisional: "PROVISIONAL"
+};
+const AtlasScope_GlobalTag = {
+  anonWorkforce: "ANON_WORKFORCE",
+  avc: "AVC",
+  cais: "CAIS",
+  daoToolkit: "DAO_TOOLKIT",
+  ecosystemIntelligence: "ECOSYSTEM_INTELLIGENCE",
+  externalReference: "EXTERNAL_REFERENCE",
+  facilitatordao: "FACILITATORDAO",
+  internalReference: "INTERNAL_REFERENCE",
+  legacyTermUseApproved: "LEGACY_TERM_USE_APPROVED",
+  mlDefer: "ML_DEFER",
+  mlHighPriority: "ML_HIGH_PRIORITY",
+  mlLowPriority: "ML_LOW_PRIORITY",
+  mlMedPriority: "ML_MED_PRIORITY",
+  mlSupportDocsNeeded: "ML_SUPPORT_DOCS_NEEDED",
+  newchain: "NEWCHAIN",
+  p0HubEntryNeeded: "P0_HUB_ENTRY_NEEDED",
+  purposeSystem: "PURPOSE_SYSTEM",
+  recursiveImprovement: "RECURSIVE_IMPROVEMENT",
+  scopeAdvisor: "SCOPE_ADVISOR",
+  subdaoIncubation: "SUBDAO_INCUBATION",
+  subdaoRewards: "SUBDAO_REWARDS",
+  twoStageBridge: "TWO_STAGE_BRIDGE",
+  v1Mip: "V1_MIP"
+};
 const typesTree = {
-  AtlasScope: {
+  DocumentDrive: {
     get operations() {
       return {
         __fields: typesTree.Operation,
@@ -204,16 +204,16 @@ const typesTree = {
     },
     get initialState() {
       return {
-        __fields: typesTree.AtlasScope_AtlasScopeState
+        __fields: typesTree.DocumentDrive_DocumentDriveState
       };
     },
     get state() {
       return {
-        __fields: typesTree.AtlasScope_AtlasScopeState
+        __fields: typesTree.DocumentDrive_DocumentDriveState
       };
     }
   },
-  AtlasMultiParent: {
+  DocumentModel: {
     get operations() {
       return {
         __fields: typesTree.Operation,
@@ -221,20 +221,10 @@ const typesTree = {
           skip: "Int",
           first: "Int"
         }
-      };
-    },
-    get initialState() {
-      return {
-        __fields: typesTree.AtlasMultiParent_AtlasMultiParentState
-      };
-    },
-    get state() {
-      return {
-        __fields: typesTree.AtlasMultiParent_AtlasMultiParentState
       };
     }
   },
-  AtlasExploratory: {
+  AtlasFeedbackIssues: {
     get operations() {
       return {
         __fields: typesTree.Operation,
@@ -246,33 +236,12 @@ const typesTree = {
     },
     get initialState() {
       return {
-        __fields: typesTree.AtlasExploratory_AtlasExploratoryState
+        __fields: typesTree.AtlasFeedbackIssues_AtlasFeedbackIssuesState
       };
     },
     get state() {
       return {
-        __fields: typesTree.AtlasExploratory_AtlasExploratoryState
-      };
-    }
-  },
-  AtlasFoundation: {
-    get operations() {
-      return {
-        __fields: typesTree.Operation,
-        __args: {
-          skip: "Int",
-          first: "Int"
-        }
-      };
-    },
-    get initialState() {
-      return {
-        __fields: typesTree.AtlasFoundation_AtlasFoundationState
-      };
-    },
-    get state() {
-      return {
-        __fields: typesTree.AtlasFoundation_AtlasFoundationState
+        __fields: typesTree.AtlasFeedbackIssues_AtlasFeedbackIssuesState
       };
     }
   },
@@ -297,18 +266,7 @@ const typesTree = {
       };
     }
   },
-  DocumentModel: {
-    get operations() {
-      return {
-        __fields: typesTree.Operation,
-        __args: {
-          skip: "Int",
-          first: "Int"
-        }
-      };
-    }
-  },
-  DocumentDrive: {
+  AtlasFoundation: {
     get operations() {
       return {
         __fields: typesTree.Operation,
@@ -320,12 +278,75 @@ const typesTree = {
     },
     get initialState() {
       return {
-        __fields: typesTree.DocumentDrive_DocumentDriveState
+        __fields: typesTree.AtlasFoundation_AtlasFoundationState
       };
     },
     get state() {
       return {
-        __fields: typesTree.DocumentDrive_DocumentDriveState
+        __fields: typesTree.AtlasFoundation_AtlasFoundationState
+      };
+    }
+  },
+  AtlasExploratory: {
+    get operations() {
+      return {
+        __fields: typesTree.Operation,
+        __args: {
+          skip: "Int",
+          first: "Int"
+        }
+      };
+    },
+    get initialState() {
+      return {
+        __fields: typesTree.AtlasExploratory_AtlasExploratoryState
+      };
+    },
+    get state() {
+      return {
+        __fields: typesTree.AtlasExploratory_AtlasExploratoryState
+      };
+    }
+  },
+  AtlasMultiParent: {
+    get operations() {
+      return {
+        __fields: typesTree.Operation,
+        __args: {
+          skip: "Int",
+          first: "Int"
+        }
+      };
+    },
+    get initialState() {
+      return {
+        __fields: typesTree.AtlasMultiParent_AtlasMultiParentState
+      };
+    },
+    get state() {
+      return {
+        __fields: typesTree.AtlasMultiParent_AtlasMultiParentState
+      };
+    }
+  },
+  AtlasScope: {
+    get operations() {
+      return {
+        __fields: typesTree.Operation,
+        __args: {
+          skip: "Int",
+          first: "Int"
+        }
+      };
+    },
+    get initialState() {
+      return {
+        __fields: typesTree.AtlasScope_AtlasScopeState
+      };
+    },
+    get state() {
+      return {
+        __fields: typesTree.AtlasScope_AtlasScopeState
       };
     }
   },
@@ -347,13 +368,6 @@ const typesTree = {
         __args: {
           global: "DocumentDriveStateInput!",
           preferredEditor: "String"
-        }
-      };
-    },
-    get deleteDrive() {
-      return {
-        __args: {
-          id: "ID!"
         }
       };
     },
@@ -393,37 +407,6 @@ const typesTree = {
       };
     }
   },
-  AtlasScope_AtlasScopeState: {
-    globalTags: {},
-    originalContextData: {}
-  },
-  AtlasMultiParent_AtlasMultiParentState: {
-    parents: {},
-    globalTags: {},
-    references: {},
-    originalContextData: {},
-    provenance: {}
-  },
-  AtlasExploratory_AtlasExploratoryState: {
-    globalTags: {},
-    references: {},
-    originalContextData: {},
-    findings: {}
-  },
-  AtlasFoundation_AtlasFoundationState: {
-    parent: {},
-    globalTags: {},
-    references: {},
-    originalContextData: {},
-    provenance: {}
-  },
-  AtlasGrounding_AtlasGroundingState: {
-    parent: {},
-    globalTags: {},
-    references: {},
-    originalContextData: {},
-    provenance: {}
-  },
   DocumentDrive_FileNode: {
     synchronizationUnits: {}
   },
@@ -451,6 +434,48 @@ const typesTree = {
       };
     },
     triggers: {}
+  },
+  AtlasFeedbackIssues_AtlasFeedbackIssuesState: {
+    get issues() {
+      return {
+        __fields: typesTree.AtlasFeedbackIssues_Issue
+      };
+    }
+  },
+  AtlasFeedbackIssues_Issue: {
+    notionIds: {},
+    comments: {}
+  },
+  AtlasGrounding_AtlasGroundingState: {
+    parent: {},
+    globalTags: {},
+    references: {},
+    originalContextData: {},
+    provenance: {}
+  },
+  AtlasFoundation_AtlasFoundationState: {
+    parent: {},
+    globalTags: {},
+    references: {},
+    originalContextData: {},
+    provenance: {}
+  },
+  AtlasExploratory_AtlasExploratoryState: {
+    globalTags: {},
+    references: {},
+    originalContextData: {},
+    findings: {}
+  },
+  AtlasMultiParent_AtlasMultiParentState: {
+    parents: {},
+    globalTags: {},
+    references: {},
+    originalContextData: {},
+    provenance: {}
+  },
+  AtlasScope_AtlasScopeState: {
+    globalTags: {},
+    originalContextData: {}
   }
 };
 let verbose = false;
@@ -498,7 +523,6 @@ const client = {
   },
   mutations: {
     addDrive: apiEndpoint("mutation", "addDrive"),
-    deleteDrive: apiEndpoint("mutation", "deleteDrive"),
     setDriveIcon: apiEndpoint("mutation", "setDriveIcon"),
     setDriveName: apiEndpoint("mutation", "setDriveName")
   }

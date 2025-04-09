@@ -1,13 +1,13 @@
+import {
+  getPNDTitle,
+  documentIndex as notionDocsIndex,
+} from "../../document-models/utils.js";
+import { type ParsedNotionDocument } from "./atlas-base/NotionTypes.js";
 import { AtlasFoundationClient } from "./AtlasFoundationClient.js";
 import { AtlasScopeClient } from "./AtlasScopeClient.js";
 import { DocumentsCache } from "./common/DocumentsCache.js";
 import { ReactorClient } from "./common/ReactorClient.js";
 import { SystemGraphClient } from "./SystemGraphClient.js";
-import { type ParsedNotionDocument } from "./atlas-base/NotionTypes.js";
-import {
-  getPNDTitle,
-  documentIndex as notionDocsIndex,
-} from "../../document-models/utils.js";
 
 export type DocumentSyncConfig = {
   gqlEndpoint: string;
@@ -44,13 +44,13 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
 
   const clients = {
     scopes: new AtlasScopeClient(
-      new URL("./atlas-scope", config.gqlEndpoint).href,
+      new URL("./graphql", config.gqlEndpoint).href,
       documentsCache,
       readClient,
       config.driveName,
     ),
     foundation: new AtlasFoundationClient(
-      new URL("./atlas-foundation", config.gqlEndpoint).href,
+      new URL("./graphql", config.gqlEndpoint).href,
       documentsCache,
       readClient,
       config.driveName,

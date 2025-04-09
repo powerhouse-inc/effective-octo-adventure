@@ -65,7 +65,7 @@ export function ScopeForm({ onSubmit, documentState, mode, isSplitMode }: ScopeF
                                     mode={mode}
                                     baselineValue={originalNodeState.docNo || ""} />
                             </div>
-                            <div className="flex-1">
+                            <div className="flex-1 min-w-[200px]">
                                 <StringDiffField
                                     name="name"
                                     label="Scope"
@@ -132,7 +132,7 @@ export function ScopeForm({ onSubmit, documentState, mode, isSplitMode }: ScopeF
                                     label="Original Context Data"
                                     name="originalContextData"
                                     placeholder="phd:"
-                                    variant="withValueTitleAndDescription"
+                                    variant="withValueAndTitle"
                                     onBlur={triggerSubmit}
                                     allowUris={true}
                                     mode={mode}

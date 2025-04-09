@@ -80,16 +80,16 @@ const PHIDDiffField = ({
                   >
                     {/* title */}
                     <DiffText
-                      baseline={originalOption?.title ?? ""}
-                      value={currentOption?.title ?? ""}
+                      baseline={originalOption?.title ?? "Title not available"}
+                      value={currentOption?.title ?? "Title not available"}
                       mode={mode}
                       diffMode={diffMode}
                     />
 
                     {/* path */}
                     <DiffText
-                      baseline={originalPathText ?? ""}
-                      value={currentPathText ?? ""}
+                      baseline={originalPathText ?? "Type not available"}
+                      value={currentPathText ?? "Type not available"}
                       mode={mode}
                       diffMode={diffMode}
                     />
@@ -98,19 +98,20 @@ const PHIDDiffField = ({
               ))}
 
             {/* description */}
-            {phidProps.variant === "withValueTitleAndDescription" &&
-              currentOption?.description &&
-              // skip empty spaces
-              currentOption.description.trim() !== "" && (
-                <div className={cn("flex flex-col w-full")}>
-                  <DiffText
-                    baseline={originalOption?.description ?? ""}
-                    value={currentOption.description}
-                    mode={mode}
-                    diffMode={diffMode}
-                  />
-                </div>
-              )}
+            {phidProps.variant === "withValueTitleAndDescription" && (
+              <div className={cn("flex flex-col w-full")}>
+                <DiffText
+                  baseline={
+                    originalOption?.description ?? "Description not available"
+                  }
+                  value={
+                    currentOption?.description ?? "Description not available"
+                  }
+                  mode={mode}
+                  diffMode={diffMode}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

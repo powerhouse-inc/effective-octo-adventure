@@ -2,6 +2,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type Subgraph } from "@powerhousedao/reactor-api";
 import { syncDocuments } from "../../scripts/apply-changes/syncDocuments.js";
+import { GraphQLError } from "graphql";
+import errorMap from "zod/locales/en.js";
 
 if (process.env.NODE_ENV === "development") {
   const dotenv = await import("dotenv");
@@ -11,7 +13,7 @@ if (process.env.NODE_ENV === "development") {
 const PORT = process.env.PORT || 4001;
 const herokuOrLocal = process.env.HEROKU_APP_NAME
   ? `https://${process.env.HEROKU_APP_NAME}.herokuapp.com`
-  : `http://localhost:${PORT}/graphql/`;
+  : `http://localhost:${PORT}/`;
 // Reactor where the documents will be synchronized to
 const basePath = process.env.BASE_PATH ? 
   (process.env.BASE_PATH[0] == "/" ? process.env.BASE_PATH.slice(1) : process.env.BASE_PATH)
@@ -60,7 +62,14 @@ export const getResolvers = (subgraph: Subgraph) => {
           },
         };
 
-        syncDocuments(config).catch(console.error);
+        // waits 200ms to check if an error occurs in the initial sync proccess
+        await Promise.race([
+          syncDocuments(config).catch(error => {
+            console.error("Error in syncDocuments: ", error);
+            throw error;
+          }),
+          new Promise((resolve) => setTimeout(resolve, 200))
+        ]);
 
         /*
         await reactor.addDriveAction(

@@ -26,7 +26,7 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
     console.log(`Drive ${config.driveName} already exists.`);
   } else {
     const systemClient = new SystemGraphClient(
-      new URL("./system", config.gqlEndpoint).href
+      new URL("./graphql/system", config.gqlEndpoint).href
     );
     console.log(`Creating drive ${config.driveName}...`);
     const newDriveResult = await systemClient.createDrive(

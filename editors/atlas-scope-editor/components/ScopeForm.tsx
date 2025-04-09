@@ -1,10 +1,9 @@
 import {
-    BooleanField,
-    EnumField,
+
+    cn,
+
     Form,
     PHIDField,
-    StringField,
-    UrlField,
 } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import { fetchPHIDOptions, fetchSelectedPHIDOption, getCardVariant, getTagText } from "../../shared/utils/utils.js";
@@ -18,14 +17,16 @@ import { ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-b
 import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
 import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
+import { PHIDDiffField } from "../../shared/components/diff-fields/phid-diff-field.js";
 
 interface ScopeFormProps {
     onSubmit: (data: Record<string, any>) => void;
     documentState: Record<string, any>;
     mode: EditorMode;
+    isSplitMode?: boolean;
 }
 
-export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
+export function ScopeForm({ onSubmit, documentState, mode, isSplitMode }: ScopeFormProps) {
 
     const isReadOnly = isFormReadOnly(mode);
     const cardVariant = getCardVariant(mode);
@@ -53,9 +54,9 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
                 defaultValues={{ ...documentState }}
             >
                 {({ triggerSubmit }) => (
-                    <div className="flex flex-col gap-3">
-                        <div className="flex flex-row gap-2 flex-wrap w-full">
-                            <div className="flex-1 min-w-[200px]">
+                    <div className="flex flex-col gap-4">
+                        <div className={cn("flex gap-2", isSplitMode ? "flex-col" : "flex-row")}>
+                            <div className="flex-1">
                                 <StringDiffField
                                     name="docNo"
                                     label="Doc №"
@@ -74,12 +75,9 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
                                     baselineValue={originalNodeState.name}
                                 />
                             </div>
-                        
-
                         </div>
-
-                        <div className="flex flex-row gap-2 flex-wrap">
-                        <div className="w-1/2">
+                        <div className={cn("flex gap-2", isSplitMode ? "flex-col" : "flex-row")}>
+                            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
                                 <EnumDiffField
                                     label="Status"
                                     name="masterStatus"
@@ -98,19 +96,20 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
                                     baselineValue={originalNodeState.masterStatusNames[0]?.toUpperCase()}
                                 />
                             </div>
-                            </div>
-                        <div className="flex-1">
-                            <StringDiffField
-                                multiline
-                                name="content"
-                                onBlur={triggerSubmit}
-                                placeholder="Enter content"
-                                mode={mode}
-                                // TODO: add the right baseline value
-                                baselineValue={""} />
                         </div>
-                        <div className="flex flex-col gap-4 w-1/2">
-                            <div className="flex flex-col gap-2 flex-1">
+
+                        <StringDiffField
+                            autoExpand rows={4}
+                            multiline
+                            name="content"
+                            onBlur={triggerSubmit}
+                            placeholder="Enter content"
+                            mode={mode}
+                            // TODO: add the right baseline value
+                            baselineValue={""} />
+                        {/* </div> */}
+                        <div className="flex flex-col gap-4">
+                            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
                                 <UrlDiffField
                                     name="provenance"
                                     label="Provenance"
@@ -125,8 +124,8 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
                                     baselineValue={""}
                                 />
                             </div>
-                            <div className="flex flex-col gap-2 flex-1">
-                                <PHIDField
+                            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
+                                <PHIDDiffField
                                     disabled={isReadOnly}
                                     fetchOptionsCallback={fetchPHIDOptions}
                                     fetchSelectedOptionCallback={fetchSelectedPHIDOption}
@@ -136,9 +135,12 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
                                     variant="withValueAndTitle"
                                     onBlur={triggerSubmit}
                                     allowUris={true}
+                                    mode={mode}
+                                    // TODO: add the right baseline value
+                                    baselineValue={""}
                                 />
                             </div>
-                            <div className="flex flex-col gap-2 flex-1">
+                            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
                                 <EnumDiffField
                                     name="globalTags"
                                     label="Tags"

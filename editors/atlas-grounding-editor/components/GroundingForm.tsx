@@ -26,6 +26,7 @@ interface GroundingFormProps {
   parentPHIDInitialOption?: PHIDOption;
   originalContextDataPHIDInitialOption?: PHIDOption;
   referencesPHIDInitialOption?: PHIDOption;
+  isSplitMode?: boolean;
 }
 
 export function GroundingForm({
@@ -35,6 +36,7 @@ export function GroundingForm({
   parentPHIDInitialOption,
   originalContextDataPHIDInitialOption,
   referencesPHIDInitialOption,
+  isSplitMode,
 }: GroundingFormProps) {
   const isReadOnly = isFormReadOnly(mode);
   const cardVariant = getCardVariant(mode);
@@ -67,7 +69,7 @@ export function GroundingForm({
       >
         {({ triggerSubmit }) => (
           <div className={cn("flex flex-col gap-3")}>
-            <div className={cn("flex flex-row gap-2")}>
+            <div className={cn("flex gap-2", isSplitMode ? "flex-col" : "flex-row")}>
               <div className={cn("flex-1")}>
                 <StringDiffField
                   name="docNo"
@@ -88,6 +90,8 @@ export function GroundingForm({
                   baselineValue={originalNodeState.name}
                 />
               </div>
+              </div>
+              <div className={cn("flex gap-2", isSplitMode ? "flex-col" : "flex-row")}>
               <div className={cn("flex-1")}>
                 <EnumDiffField
                   name="atlasType"
@@ -127,7 +131,7 @@ export function GroundingForm({
                   baselineValue={originalNodeState.masterStatusNames[0]?.toUpperCase()}
                 />
               </div>
-            </div>
+              </div>
             <StringDiffField
               name="content"
               label="Content"
@@ -137,7 +141,7 @@ export function GroundingForm({
               mode={mode}
               baselineValue={""} // TODO: add the right baseline value
             />
-            <div className={cn("w-1/2")}>
+            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
               <PHIDDiffField
                 name="parent"
                 label="Parent Document"
@@ -156,7 +160,7 @@ export function GroundingForm({
                 baselineValue={""} // TODO: add the right baseline value
               />
             </div>
-            <div className={cn("w-1/2")}>
+            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
               <PHIDDiffField
                 name="originalContextData"
                 label="Original Context Data"
@@ -175,7 +179,7 @@ export function GroundingForm({
                 baselineValue={""} // TODO: add the right baseline value
               />
             </div>
-            <div className={cn("w-1/2")}>
+            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
               <UrlDiffField
                 name="provenance"
                 label="Provenance"
@@ -189,7 +193,7 @@ export function GroundingForm({
                 baselineValue={""} // TODO: add the right baseline value
               />
             </div>
-            <div className={cn("w-1/2")}>
+            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
               <EnumDiffField
                 name="globalTags"
                 label="Tags"
@@ -202,7 +206,7 @@ export function GroundingForm({
                 baselineValue={""} // TODO: add the right baseline value
               />
             </div>
-            <div className={cn("w-1/2")}>
+            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
               <PHIDDiffField
                 name="references"
                 label="Atlas References"

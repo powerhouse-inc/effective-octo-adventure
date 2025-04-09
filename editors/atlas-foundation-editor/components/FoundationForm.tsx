@@ -1,4 +1,4 @@
-import { cn, Form, PHIDField } from "@powerhousedao/design-system/scalars";
+import { cn, Form } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchPHIDOptions,
@@ -12,9 +12,10 @@ import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import { isFormReadOnly } from "../../shared/utils/form-common.js";
 import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
 import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
+import { PHIDDiffField } from "../../shared/components/diff-fields/phid-diff-field.js";
 import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
 
@@ -39,14 +40,13 @@ export function FoundationForm({
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
 
-  // baseline document state, use useRef to keep the original value between renders
-  const originalNodeStateRef = useRef(
+  // baseline node state
+  const [originalNodeState] = useState(() =>
     getOriginalNotionDocument(
       (documentState.notionId as string) || "notion-id-not-set",
       (documentState.atlasType as ParsedNotionDocumentType) || "article",
     ),
   );
-  const originalNodeState = originalNodeStateRef.current;
 
   const formRef = useRef<UseFormReturn>(null);
 
@@ -142,8 +142,7 @@ export function FoundationForm({
               baselineValue={""} // TODO: add the right baseline value
             />
             <div className={cn("w-1/2")}>
-              <PHIDField
-                disabled={isReadOnly}
+              <PHIDDiffField
                 name="parent"
                 label="Parent Document"
                 placeholder="phd:"
@@ -157,11 +156,12 @@ export function FoundationForm({
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}
+                mode={mode}
+                baselineValue={""} // TODO: add the right baseline value
               />
             </div>
             <div className={cn("w-1/2")}>
-              <PHIDField
-                disabled={isReadOnly}
+              <PHIDDiffField
                 name="originalContextData"
                 label="Original Context Data"
                 placeholder="phd:"
@@ -175,6 +175,8 @@ export function FoundationForm({
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}
+                mode={mode}
+                baselineValue={""} // TODO: add the right baseline value
               />
             </div>
             <div className={cn("w-1/2")}>
@@ -205,8 +207,7 @@ export function FoundationForm({
               />
             </div>
             <div className={cn("w-1/2")}>
-              <PHIDField
-                disabled={isReadOnly}
+              <PHIDDiffField
                 name="references"
                 label="Atlas References"
                 placeholder="phd:"
@@ -220,6 +221,8 @@ export function FoundationForm({
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}
+                mode={mode}
+                baselineValue={""} // TODO: add the right baseline value
               />
             </div>
           </div>

@@ -88,7 +88,7 @@
         "@powerhousedao/builder-tools": "dev",
         "@powerhousedao/codegen": "0.49.2-dev.7",
         "@powerhousedao/mips-parser": "2.2.2-alpha.0",
-        "@powerhousedao/ph-cli": "0.40.29-dev.2",
+        "@powerhousedao/ph-cli": "0.40.30-dev.0",
         "@powerhousedao/reactor-api": "1.29.17-dev.2",
         "@powerhousedao/reactor-local": "1.27.25-dev.1",
         "@powerhousedao/scalars": "dev",

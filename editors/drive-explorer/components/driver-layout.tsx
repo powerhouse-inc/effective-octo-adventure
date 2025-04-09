@@ -54,7 +54,7 @@ export function DriverLayout({
       {
         atlasNodes: {} as Record<string, AtlasArticle>,
         feedbackIssues: {} as Record<string, AtlasFeedbackIssue>,
-      }
+      },
     );
   }, [state]);
 
@@ -90,14 +90,14 @@ export function DriverLayout({
       const node = await addDocument(
         driveId,
         fileName,
-        documentModel.documentModel.id
+        documentModel.documentModel.id,
       );
 
       selectedDocumentModel.current = null;
       await fetchDocuments(driveId, [node.id]);
       setActiveNodeId(node.id);
     },
-    [addDocument, driveId, setActiveNodeId]
+    [addDocument, driveId, setActiveNodeId],
   );
 
   const onSelectDocumentModel = (documentModel: DocumentModelModule) => {
@@ -106,7 +106,7 @@ export function DriverLayout({
   };
 
   const filteredDocumentModels = documentModels.filter(
-    (docModel) => docModel.documentModel.id !== "powerhouse/document-model"
+    (docModel) => docModel.documentModel.id !== "powerhouse/document-model",
   );
 
   return (
@@ -169,17 +169,17 @@ export function DriverLayout({
                           isAllowedToCreateDocuments={false}
                           onRenameNode={function (
                             name: string,
-                            uiNode: BaseUiFileNode
+                            uiNode: BaseUiFileNode,
                           ): void {
                             throw new Error("Function not implemented.");
                           }}
                           onDuplicateNode={function (
-                            uiNode: BaseUiFileNode
+                            uiNode: BaseUiFileNode,
                           ): void {
                             throw new Error("Function not implemented.");
                           }}
                           onDeleteNode={function (
-                            uiNode: BaseUiFileNode
+                            uiNode: BaseUiFileNode,
                           ): void {
                             throw new Error("Function not implemented.");
                           }}
@@ -273,7 +273,7 @@ function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
   });
 
   const result = Object.values(nodesById).filter(
-    (node) => !childrenIds.has(node.id)
+    (node) => !childrenIds.has(node.id),
   );
 
   return sortSidebarNodes(result);

@@ -1,0 +1,23 @@
+import { GenericTextForm } from "./GenericTextForm.js";
+import type { Maybe } from "document-model";
+
+interface DocNoFormProps {
+  value: Maybe<string>;
+  baselineValue: Maybe<string>;
+  onSave: (value: string) => void;
+}
+
+const DocNoForm = ({ value, baselineValue, onSave }: DocNoFormProps) => {
+  return (
+    <GenericTextForm
+      label="Doc №"
+      placeholder="Doc No"
+      required
+      value={value ?? ""}
+      baselineValue={baselineValue ?? ""}
+      onSave={onSave}
+    />
+  );
+};
+
+export { DocNoForm };

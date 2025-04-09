@@ -17,7 +17,7 @@ import {
 export type IProps = EditorProps<AtlasFoundationDocument>;
 
 export default function Editor(props: IProps) {
-  const { dispatch } = props;
+  // const { dispatch } = props;
 
   // TODO: remove or update this once all the data in global state is in the expected format or the design is updated
   const originalDocumentState = props.document.state.global;
@@ -31,111 +31,111 @@ export default function Editor(props: IProps) {
     ? `phd:${originalDocumentState.references[0].id}`
     : "";
 
-  const documentState = {
-    ...originalDocumentState,
-    parent: parentId,
-    provenance: originalDocumentState.provenance[0] || "",
-    originalContextData: originalContextDataId,
-    references: referencesId,
-  };
+  // const documentState = {
+  //   ...originalDocumentState,
+  //   parent: parentId,
+  //   provenance: originalDocumentState.provenance[0] || "",
+  //   originalContextData: originalContextDataId,
+  //   references: referencesId,
+  // };
   const parentPHIDInitialOption = fetchSelectedPHIDOption(parentId);
   const originalContextDataPHIDInitialOption = fetchSelectedPHIDOption(
     originalContextDataId,
   );
   const referencesPHIDInitialOption = fetchSelectedPHIDOption(referencesId);
 
-  const onSubmit = (data: Record<string, any>) => {
-    if (data["docNo"] !== undefined) {
-      dispatch(actions.setDocNumber({ docNo: getStringValue(data["docNo"]) }));
-    }
-    if (data["name"] !== undefined) {
-      dispatch(
-        actions.setFoundationName({ name: getStringValue(data["name"]) }),
-      );
-    }
-    if (data["atlasType"] !== undefined) {
-      dispatch(
-        actions.setAtlasType({ atlasType: data["atlasType"] as FAtlasType }),
-      );
-    }
-    if (data["masterStatus"] !== undefined) {
-      dispatch(
-        actions.setMasterStatus({
-          masterStatus: data["masterStatus"] as FStatus,
-        }),
-      );
-    }
-    if (data["content"] !== undefined) {
-      dispatch(
-        actions.setContent({ content: getStringValue(data["content"]) }),
-      );
-    }
-    if (data["parent"] !== undefined) {
-      if (data["parent"] === null) {
-        dispatch(actions.setParent({ id: "" }));
-      } else {
-        const newParentId = (data["parent"] as string).split(":")[1];
-        dispatch(actions.setParent({ id: newParentId }));
-      }
-    }
-    if (data["originalContextData"] !== undefined) {
-      if (data["originalContextData"] === null) {
-        dispatch(
-          actions.removeContextData({
-            id: documentState.originalContextData.split(":")[1],
-          }),
-        );
-      } else {
-        const newOriginalContextDataId = (
-          data["originalContextData"] as string
-        ).split(":")[1];
-        dispatch(actions.addContextData({ id: newOriginalContextDataId }));
-      }
-    }
-    if (data["provenance"] !== undefined) {
-      dispatch(
-        actions.setProvenance({ provenance: [data["provenance"] as string] }),
-      );
-    }
-    if (data["globalTags"] !== undefined) {
-      const newTags = data["globalTags"] as FGlobalTag[];
-      const currentTags = documentState.globalTags;
+  // const onSubmit = (data: Record<string, any>) => {
+  //   if (data["docNo"] !== undefined) {
+  //     dispatch(actions.setDocNumber({ docNo: getStringValue(data["docNo"]) }));
+  //   }
+  //   if (data["name"] !== undefined) {
+  //     dispatch(
+  //       actions.setFoundationName({ name: getStringValue(data["name"]) }),
+  //     );
+  //   }
+  //   if (data["atlasType"] !== undefined) {
+  //     dispatch(
+  //       actions.setAtlasType({ atlasType: data["atlasType"] as FAtlasType }),
+  //     );
+  //   }
+  //   if (data["masterStatus"] !== undefined) {
+  //     dispatch(
+  //       actions.setMasterStatus({
+  //         masterStatus: data["masterStatus"] as FStatus,
+  //       }),
+  //     );
+  //   }
+  //   if (data["content"] !== undefined) {
+  //     dispatch(
+  //       actions.setContent({ content: getStringValue(data["content"]) }),
+  //     );
+  //   }
+  //   if (data["parent"] !== undefined) {
+  //     if (data["parent"] === null) {
+  //       dispatch(actions.setParent({ id: "" }));
+  //     } else {
+  //       const newParentId = (data["parent"] as string).split(":")[1];
+  //       dispatch(actions.setParent({ id: newParentId }));
+  //     }
+  //   }
+  //   if (data["originalContextData"] !== undefined) {
+  //     if (data["originalContextData"] === null) {
+  //       dispatch(
+  //         actions.removeContextData({
+  //           id: documentState.originalContextData.split(":")[1],
+  //         }),
+  //       );
+  //     } else {
+  //       const newOriginalContextDataId = (
+  //         data["originalContextData"] as string
+  //       ).split(":")[1];
+  //       dispatch(actions.addContextData({ id: newOriginalContextDataId }));
+  //     }
+  //   }
+  //   if (data["provenance"] !== undefined) {
+  //     dispatch(
+  //       actions.setProvenance({ provenance: [data["provenance"] as string] }),
+  //     );
+  //   }
+  //   if (data["globalTags"] !== undefined) {
+  //     const newTags = data["globalTags"] as FGlobalTag[];
+  //     const currentTags = documentState.globalTags;
 
-      if (data["globalTags"] === null) {
-        dispatch(actions.removeTags({ tags: currentTags }));
-        return;
-      }
+  //     if (data["globalTags"] === null) {
+  //       dispatch(actions.removeTags({ tags: currentTags }));
+  //       return;
+  //     }
 
-      // Tags to add (are in newTags but not in currentTags)
-      const tagsToAdd = newTags.filter((tag) => !currentTags.includes(tag));
-      if (tagsToAdd.length > 0) {
-        dispatch(actions.addTags({ tags: tagsToAdd }));
-      }
+  //     // Tags to add (are in newTags but not in currentTags)
+  //     const tagsToAdd = newTags.filter((tag) => !currentTags.includes(tag));
+  //     if (tagsToAdd.length > 0) {
+  //       dispatch(actions.addTags({ tags: tagsToAdd }));
+  //     }
 
-      // Tags to remove (are in currentTags but not in newTags)
-      const tagsToRemove = currentTags.filter((tag) => !newTags.includes(tag));
-      if (tagsToRemove.length > 0) {
-        dispatch(actions.removeTags({ tags: tagsToRemove }));
-      }
-    }
-    if (data["references"] !== undefined) {
-      if (data["references"] === null) {
-        dispatch(
-          actions.removeReference({
-            id: documentState.references.split(":")[1],
-          }),
-        );
-      } else {
-        const newReferenceId = (data["references"] as string).split(":")[1];
-        dispatch(actions.addReference({ id: newReferenceId }));
-      }
-    }
-  };
+  //     // Tags to remove (are in currentTags but not in newTags)
+  //     const tagsToRemove = currentTags.filter((tag) => !newTags.includes(tag));
+  //     if (tagsToRemove.length > 0) {
+  //       dispatch(actions.removeTags({ tags: tagsToRemove }));
+  //     }
+  //   }
+  //   if (data["references"] !== undefined) {
+  //     if (data["references"] === null) {
+  //       dispatch(
+  //         actions.removeReference({
+  //           id: documentState.references.split(":")[1],
+  //         }),
+  //       );
+  //     } else {
+  //       const newReferenceId = (data["references"] as string).split(":")[1];
+  //       dispatch(actions.addReference({ id: newReferenceId }));
+  //     }
+  //   }
+  // };
 
   return (
     <EditorLayout
       title="Foundation Document"
-      notionId={documentState.notionId}
+      notionId={props.document.state.global.notionId}
       readOnlyModeEnabled={true}
       splitModeEnabled={true}
     >
@@ -144,8 +144,10 @@ export default function Editor(props: IProps) {
           <SplitView
             left={
               <FoundationForm
-                onSubmit={onSubmit}
-                documentState={documentState}
+                // onSubmit={onSubmit}
+                // documentState={documentState}
+                document={props.document}
+                dispatch={props.dispatch}
                 mode={isEditMode ? "Edition" : "DiffRemoved"}
                 parentPHIDInitialOption={parentPHIDInitialOption}
                 originalContextDataPHIDInitialOption={
@@ -156,8 +158,10 @@ export default function Editor(props: IProps) {
             }
             right={
               <FoundationForm
-                onSubmit={onSubmit}
-                documentState={documentState}
+                // onSubmit={onSubmit}
+                // documentState={documentState}
+                document={props.document}
+                dispatch={props.dispatch}
                 mode={isEditMode ? "DiffMixed" : "DiffAdditions"}
                 parentPHIDInitialOption={parentPHIDInitialOption}
                 originalContextDataPHIDInitialOption={
@@ -169,8 +173,10 @@ export default function Editor(props: IProps) {
           />
         ) : (
           <FoundationForm
-            onSubmit={onSubmit}
-            documentState={documentState}
+            // onSubmit={onSubmit}
+            // documentState={documentState}
+            document={props.document}
+            dispatch={props.dispatch}
             mode={isEditMode ? "Edition" : "Readonly"}
             parentPHIDInitialOption={parentPHIDInitialOption}
             originalContextDataPHIDInitialOption={

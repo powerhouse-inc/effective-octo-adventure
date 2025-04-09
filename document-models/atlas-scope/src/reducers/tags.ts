@@ -8,10 +8,11 @@ import { type AtlasScopeTagsOperations } from "../../gen/tags/operations.js";
 
 export const reducer: AtlasScopeTagsOperations = {
   addTagsOperation(state, action, dispatch) {
-    state.globalTags = action.input.newTags;
+    state.globalTags = [...state.globalTags, ...action.input.newTags];
   },
   removeTagsOperation(state, action, dispatch) {
-    // TODO: Implement "removeTagsOperation" reducer
-    throw new Error('Reducer "removeTagsOperation" not yet implemented');
+    state.globalTags = state.globalTags.filter(
+      (tag) => !action.input.tags.includes(tag),
+    );
   },
 };

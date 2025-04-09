@@ -1,6 +1,6 @@
 import { type Maybe } from "document-model";
-import { type DriveNodes } from "../common/ReactorClient.js";
 import fs from "node:fs";
+import { type DriveNodes } from "../common/ReactorClient.js";
 
 export type DocumentCacheEntry = {
   id: string;

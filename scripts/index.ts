@@ -1,7 +1,7 @@
-import { detectSync } from "package-manager-detector/detect";
-import { resolveCommand } from "package-manager-detector/commands";
-import { type AgentName } from "package-manager-detector";
 import { execSync } from "child_process";
+import { type AgentName } from "package-manager-detector";
+import { resolveCommand } from "package-manager-detector/commands";
+import { detectSync } from "package-manager-detector/detect";
 
 import pkg from "../package.json" with { type: "json" };
 

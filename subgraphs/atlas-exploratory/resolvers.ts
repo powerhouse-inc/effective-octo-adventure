@@ -5,10 +5,11 @@ import { type Subgraph } from "@powerhousedao/reactor-api";
 import { addFile } from "document-drive";
 import { actions } from "../../document-models/atlas-exploratory/index.js";
 import { generateId, hashKey } from "document-model";
+// import { type IResolvers } from "@graphql-tools/utils";
 
 const DEFAULT_DRIVE_ID = "powerhouse";
 
-export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
+export const getResolvers = (subgraph: Subgraph):Record<string, any> => {
   const reactor = subgraph.reactor;
 
   return {
@@ -18,15 +19,8 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           getDocument: async (args: any) => {
             const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
             const docId: string = args.docId || "";
-            console.log(_);
             const doc = await reactor.getDocument(driveId, docId);
-            return {
-              ...doc,
-              id: docId,
-              state: doc.state.global,
-              revision: doc.revision.global,
-              initialState: doc.initialState,
-            };
+            return doc;
           },
           getDocuments: async (args: any) => {
             const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
@@ -187,6 +181,34 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           driveId,
           docId,
           actions.setFindings({ ...args.input }),
+        );
+
+        return doc.revision.global + 1;
+      },
+
+      AtlasExploratory_setReference: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
+        const docId: string = args.docId || "";
+        const doc = await reactor.getDocument(driveId, docId);
+
+        await reactor.addAction(
+          driveId,
+          docId,
+          actions.setReference({ ...args.input }),
+        );
+
+        return doc.revision.global + 1;
+      },
+
+      AtlasExploratory_removeReference: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
+        const docId: string = args.docId || "";
+        const doc = await reactor.getDocument(driveId, docId);
+
+        await reactor.addAction(
+          driveId,
+          docId,
+          actions.removeReference({ ...args.input }),
         );
 
         return doc.revision.global + 1;

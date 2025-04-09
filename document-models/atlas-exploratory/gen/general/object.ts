@@ -8,6 +8,8 @@ import {
   type RemoveParentInput,
   type SetAtlasTypeInput,
   type SetFindingsInput,
+  type SetReferenceInput,
+  type RemoveReferenceInput,
   type AtlasExploratoryState,
   type AtlasExploratoryLocalState,
 } from "../types.js";
@@ -20,6 +22,8 @@ import {
   removeParent,
   setAtlasType,
   setFindings,
+  setReference,
+  removeReference,
 } from "./creators.js";
 import { type AtlasExploratoryAction } from "../actions.js";
 
@@ -58,5 +62,13 @@ export default class AtlasExploratory_General extends BaseDocumentClass<
 
   public setFindings(input: SetFindingsInput) {
     return this.dispatch(setFindings(input));
+  }
+
+  public setReference(input: SetReferenceInput) {
+    return this.dispatch(setReference(input));
+  }
+
+  public removeReference(input: RemoveReferenceInput) {
+    return this.dispatch(removeReference(input));
   }
 }

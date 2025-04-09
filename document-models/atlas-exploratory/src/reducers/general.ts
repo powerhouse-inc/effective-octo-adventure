@@ -29,8 +29,19 @@ export const reducer: AtlasExploratoryGeneralOperations = {
   setFindingsOperation(state, action, dispatch) {
     // TODO: add comment param to input
     state.findings = {
-      comment:  "",
+      comment:  action.input.comment || "",
       isAligned: action.input.isAligned,
     };
+  },
+  setReferenceOperation(state, action, dispatch) {
+    state.references = action.input.newReference ? [...state.references, action.input.newReference] : state.references;
+  },
+  removeReferenceOperation(state, action, dispatch) {
+    if (action.input.reference) {
+      state.references = state.references.filter(reference => reference !== action.input.reference);
+    } else {
+      state.references = []
+    }
+
   },
 };

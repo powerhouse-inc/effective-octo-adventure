@@ -8,6 +8,8 @@ import type {
   RemoveParentInput,
   SetAtlasTypeInput,
   SetFindingsInput,
+  SetReferenceInput,
+  RemoveReferenceInput,
 } from "../types.js";
 
 export type SetExploratoryNameAction = BaseAction<
@@ -50,6 +52,16 @@ export type SetFindingsAction = BaseAction<
   SetFindingsInput,
   "global"
 >;
+export type SetReferenceAction = BaseAction<
+  "SET_REFERENCE",
+  SetReferenceInput,
+  "global"
+>;
+export type RemoveReferenceAction = BaseAction<
+  "REMOVE_REFERENCE",
+  RemoveReferenceInput,
+  "global"
+>;
 
 export type AtlasExploratoryGeneralAction =
   | SetExploratoryNameAction
@@ -59,4 +71,6 @@ export type AtlasExploratoryGeneralAction =
   | SetParentAction
   | RemoveParentAction
   | SetAtlasTypeAction
-  | SetFindingsAction;
+  | SetFindingsAction
+  | SetReferenceAction
+  | RemoveReferenceAction;

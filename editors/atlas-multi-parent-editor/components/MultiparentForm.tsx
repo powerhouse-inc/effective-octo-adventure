@@ -147,7 +147,7 @@ export function MultiParentForm({
                                 onBlur={triggerSubmit}
                                 fetchOptionsCallback={fetchPHIDOptions}
                                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
-                                variant="withValueTitleAndDescription"
+                                variant="withValueAndTitle"
                                 allowUris={true}
                                 initialOptions={
                                     parentPHIDInitialOption
@@ -179,7 +179,7 @@ export function MultiParentForm({
                                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                                 label="Original Context Data"
                                 placeholder="phd:"
-                                variant="withValueTitleAndDescription"
+                                variant="withValueAndTitle"
                                 allowUris={true}
                                 onBlur={triggerSubmit}
                                 initialOptions={
@@ -195,7 +195,7 @@ export function MultiParentForm({
                                 name="references"
                                 label="Atlas References"
                                 placeholder="phd:"
-                                variant="withValueTitleAndDescription"
+                                variant="withValueAndTitle"
                                 allowUris
                                 initialOptions={
                                     referencesPHIDInitialOption

@@ -142,7 +142,7 @@ export function GroundingForm({
                 name="parent"
                 label="Parent Document"
                 placeholder="phd:"
-                variant="withValueTitleAndDescription"
+                variant="withValueAndTitle"
                 allowUris
                 initialOptions={
                   parentPHIDInitialOption
@@ -161,7 +161,7 @@ export function GroundingForm({
                 name="originalContextData"
                 label="Original Context Data"
                 placeholder="phd:"
-                variant="withValueTitleAndDescription"
+                variant="withValueAndTitle"
                 allowUris
                 initialOptions={
                   originalContextDataPHIDInitialOption
@@ -207,7 +207,7 @@ export function GroundingForm({
                 name="references"
                 label="Atlas References"
                 placeholder="phd:"
-                variant="withValueTitleAndDescription"
+                variant="withValueAndTitle"
                 allowUris
                 initialOptions={
                   referencesPHIDInitialOption

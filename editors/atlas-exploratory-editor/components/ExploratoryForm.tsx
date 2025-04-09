@@ -130,7 +130,7 @@ export function ExploratoryForm({
                 name="parent"
                 label="Parent Document"
                 placeholder="phd:"
-                variant="withValueTitleAndDescription"
+                variant="withValueAndTitle"
                 allowUris
                 initialOptions={
                   parentPHIDInitialOption
@@ -186,7 +186,7 @@ export function ExploratoryForm({
                 name="originalContextData"
                 label="Original Context Data"
                 placeholder="phd:"
-                variant="withValueTitleAndDescription"
+                variant="withValueAndTitle"
                 allowUris
                 initialOptions={
                   originalContextDataPHIDInitialOption
@@ -226,7 +226,7 @@ export function ExploratoryForm({
                 name="references"
                 label="Atlas References"
                 placeholder="phd:"
-                variant="withValueTitleAndDescription"
+                variant="withValueAndTitle"
                 allowUris
                 initialOptions={
                   referencesPHIDInitialOption

@@ -130,7 +130,7 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
                                     label="Original Context Data"
                                     name="originalContextData"
                                     placeholder="phd:"
-                                    variant="withValueTitleAndDescription"
+                                    variant="withValueAndTitle"
                                     onBlur={triggerSubmit}
                                     allowUris={true}
                                 />

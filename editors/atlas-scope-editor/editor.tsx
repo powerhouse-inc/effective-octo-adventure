@@ -75,6 +75,7 @@ export default function Editor(props: IProps) {
                 onSubmit={onSubmit}
                 documentState={newMomentdocumentState}
                 mode={isEditMode ? "Edition" : "DiffRemoved"}
+                isSplitMode={isSplitMode}
               />
             }
             right={
@@ -82,6 +83,7 @@ export default function Editor(props: IProps) {
                 onSubmit={onSubmit}
                 documentState={newMomentdocumentState}
                 mode={isEditMode ? "DiffMixed" : "DiffAdditions"}
+                isSplitMode={isSplitMode}
               />
             }
           />

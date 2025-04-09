@@ -144,6 +144,7 @@ export default function Editor(props: IProps) {
           <SplitView
             left={
               <FoundationForm
+                isSplitMode={isSplitMode}
                 onSubmit={onSubmit}
                 documentState={documentState}
                 mode={isEditMode ? "Edition" : "DiffRemoved"}
@@ -156,6 +157,7 @@ export default function Editor(props: IProps) {
             }
             right={
               <FoundationForm
+                isSplitMode={isSplitMode}
                 onSubmit={onSubmit}
                 documentState={documentState}
                 mode={isEditMode ? "DiffMixed" : "DiffAdditions"}

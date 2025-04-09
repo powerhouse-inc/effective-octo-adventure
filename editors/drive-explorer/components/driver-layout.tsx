@@ -2,6 +2,7 @@ import {
   Icon,
   FileItem,
   type BaseUiFileNode,
+  ToastContainer,
 } from "@powerhousedao/design-system";
 import {
   Sidebar,
@@ -19,12 +20,14 @@ import { CreateDocument } from "./create-document.js";
 import { Home } from "./home.js";
 import { documentModel as AtlasFeedbackIssues } from "../../../document-models/atlas-feedback-issues/gen/document-model.js";
 import type { Node } from "document-drive";
+import { ShareDrive } from "../../shared/components/share-drive.js";
 
 export interface DriverLayoutProps {
   readonly driveId: string;
   readonly children: React.ReactNode;
   readonly context: EditorContext;
   readonly nodes: Node[];
+  readonly driveUrl?: string | null;
 }
 
 export function DriverLayout({
@@ -32,6 +35,7 @@ export function DriverLayout({
   driveId,
   context,
   nodes: driveNodes,
+  driveUrl,
 }: DriverLayoutProps) {
   const { useDriveDocumentStates, addDocument, documentModels } =
     useDriveContext();
@@ -54,7 +58,7 @@ export function DriverLayout({
       {
         atlasNodes: {} as Record<string, AtlasArticle>,
         feedbackIssues: {} as Record<string, AtlasFeedbackIssue>,
-      }
+      },
     );
   }, [state]);
 
@@ -90,14 +94,14 @@ export function DriverLayout({
       const node = await addDocument(
         driveId,
         fileName,
-        documentModel.documentModel.id
+        documentModel.documentModel.id,
       );
 
       selectedDocumentModel.current = null;
       await fetchDocuments(driveId, [node.id]);
       setActiveNodeId(node.id);
     },
-    [addDocument, driveId, setActiveNodeId]
+    [addDocument, driveId, setActiveNodeId],
   );
 
   const onSelectDocumentModel = (documentModel: DocumentModelModule) => {
@@ -106,11 +110,12 @@ export function DriverLayout({
   };
 
   const filteredDocumentModels = documentModels.filter(
-    (docModel) => docModel.documentModel.id !== "powerhouse/document-model"
+    (docModel) => docModel.documentModel.id !== "powerhouse/document-model",
   );
 
   return (
     <SidebarProvider>
+      <ToastContainer position="bottom-right"></ToastContainer>
       <main className="flex overflow-hidden h-full">
         <Sidebar
           className="flex-0"
@@ -128,11 +133,6 @@ export function DriverLayout({
         />
         <div className="flex-1 bg-gray-50 p-4 dark:bg-slate-800 overflow-y-auto">
           <>
-            {!activeNodeId && (
-              <h1 className="mt-1 mb-4 text-lg text-gray-900 font-medium dark:text-gray-50">
-                {title}
-              </h1>
-            )}
             {activeNodeId ? (
               <EditorContainer
                 context={context}
@@ -144,56 +144,64 @@ export function DriverLayout({
                 title={title}
               />
             ) : (
-              <Home>
-                {Object.entries(feedbackIssues).length > 0 && (
-                  <div className="my-4 px-6">
-                    <h2 className="mb-3 mt-4 text-sm font-bold text-gray-600">
-                      Feedback Issues
-                    </h2>
-                    <div className="flex flex-wrap gap-4">
-                      {Object.entries(feedbackIssues).map(([id, issue]) => (
-                        <FileItem
-                          key={id}
-                          uiNode={{
-                            kind: "FILE",
-                            id,
-                            name:
-                              driveNodes.find((node) => node.id === id)?.name ||
-                              "",
-                            documentType: issue.documentType,
-                            parentFolder: "",
-                            driveId,
-                            syncStatus: undefined,
-                          }}
-                          onSelectNode={(node) => setActiveNodeId(node.id)}
-                          isAllowedToCreateDocuments={false}
-                          onRenameNode={function (
-                            name: string,
-                            uiNode: BaseUiFileNode
-                          ): void {
-                            throw new Error("Function not implemented.");
-                          }}
-                          onDuplicateNode={function (
-                            uiNode: BaseUiFileNode
-                          ): void {
-                            throw new Error("Function not implemented.");
-                          }}
-                          onDeleteNode={function (
-                            uiNode: BaseUiFileNode
-                          ): void {
-                            throw new Error("Function not implemented.");
-                          }}
-                        />
-                      ))}
+              <>
+                <div className="flex items-center justify-between mt-1 mb-4 px-1">
+                  <h1 className="text-lg text-gray-900 font-medium dark:text-gray-50">
+                    {title}
+                  </h1>
+                  {driveUrl && <ShareDrive driveUrl={driveUrl} />}
+                </div>
+                <Home>
+                  {Object.entries(feedbackIssues).length > 0 && (
+                    <div className="my-4 px-6">
+                      <h2 className="mb-3 mt-4 text-sm font-bold text-gray-600">
+                        Feedback Issues
+                      </h2>
+                      <div className="flex flex-wrap gap-4">
+                        {Object.entries(feedbackIssues).map(([id, issue]) => (
+                          <FileItem
+                            key={id}
+                            uiNode={{
+                              kind: "FILE",
+                              id,
+                              name:
+                                driveNodes.find((node) => node.id === id)
+                                  ?.name || "",
+                              documentType: issue.documentType,
+                              parentFolder: "",
+                              driveId,
+                              syncStatus: undefined,
+                            }}
+                            onSelectNode={(node) => setActiveNodeId(node.id)}
+                            isAllowedToCreateDocuments={false}
+                            onRenameNode={function (
+                              name: string,
+                              uiNode: BaseUiFileNode,
+                            ): void {
+                              throw new Error("Function not implemented.");
+                            }}
+                            onDuplicateNode={function (
+                              uiNode: BaseUiFileNode,
+                            ): void {
+                              throw new Error("Function not implemented.");
+                            }}
+                            onDeleteNode={function (
+                              uiNode: BaseUiFileNode,
+                            ): void {
+                              throw new Error("Function not implemented.");
+                            }}
+                          />
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
-                <CreateDocument
-                  /* @ts-expect-error */
-                  createDocument={onSelectDocumentModel}
-                  documentModels={filteredDocumentModels}
-                />
-              </Home>
+                  )}
+                  <CreateDocument
+                    /* @ts-expect-error */
+                    createDocument={onSelectDocumentModel}
+                    documentModels={filteredDocumentModels}
+                  />
+                </Home>
+              </>
             )}
             {children}
             <CreateDocumentModal
@@ -273,7 +281,7 @@ function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
   });
 
   const result = Object.values(nodesById).filter(
-    (node) => !childrenIds.has(node.id)
+    (node) => !childrenIds.has(node.id),
   );
 
   return sortSidebarNodes(result);

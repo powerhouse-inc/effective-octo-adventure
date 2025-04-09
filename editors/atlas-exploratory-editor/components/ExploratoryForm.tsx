@@ -16,7 +16,7 @@ import type { EditorMode } from "../../shared/types.js";
 import { isFormReadOnly } from "../../shared/utils/form-common.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import type { UseFormReturn } from "react-hook-form";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
 import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
 import { exploratoryTagsEnumOptions, globalTagsEnumOptions } from "../../shared/utils/common-options.js";
@@ -49,11 +49,13 @@ export function ExploratoryForm({
   const tagText = getTagText(mode);
 
   // baseline document state
-  const originalNodeState = getOriginalNotionDocument(
-    (documentState.notionId as string) || "notion-id-not-set",
-    (documentState.atlasType as ParsedNotionDocumentType) || "article",
+  // baseline node state
+  const [originalNodeState] = useState(() =>
+    getOriginalNotionDocument(
+      (documentState.notionId as string) || "notion-id-not-set",
+      (documentState.atlasType as ParsedNotionDocumentType) || "article",
+    ),
   );
-
   const formRef = useRef<UseFormReturn>(null);
 
   // keep the form state in sync with the document state
@@ -72,7 +74,7 @@ export function ExploratoryForm({
         {({ triggerSubmit }) => (
           <div className="flex flex-col gap-3">
             <div className="flex flex-row gap-2">
-              <div className="flex-0.5">
+              <div className="flex-1">
                 <StringDiffField
                   disabled={isReadOnly}
                   name="docNo"
@@ -83,7 +85,7 @@ export function ExploratoryForm({
                   baselineValue={originalNodeState.docNo}
                 />
               </div>
-              <div className="flex-2">
+              <div className="flex-1">
                 <StringDiffField
                   disabled={isReadOnly}
                   name="name"
@@ -92,6 +94,25 @@ export function ExploratoryForm({
                   onBlur={triggerSubmit}
                   mode={mode}
                   baselineValue={originalNodeState.name}
+                />
+              </div>
+
+            </div>
+            <div className="flex flex-row gap-2">
+              <div className="flex-1">
+                <EnumDiffField
+                  disabled={isReadOnly}
+                  label="Type"
+                  name="atlasType"
+                  onBlur={triggerSubmit}
+                  options={[
+                    { value: "SCENARIO", label: "SCENARIO" },
+                    { value: "SCENARIO_VARIATION", label: "SCENARIO_VARIATION" },
+                  ]}
+                  required
+                  variant="Select"
+                  mode={mode}
+                  baselineValue={originalNodeState.type?.toUpperCase()}
                 />
               </div>
               <div className="flex-1">

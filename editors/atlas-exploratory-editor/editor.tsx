@@ -4,6 +4,7 @@ import {
   type AtlasExploratoryDocument,
   type EStatus,
   type EGlobalTag,
+  EAtlasType,
 } from "../../document-models/atlas-exploratory/index.js";
 import { EditorLayout } from "../shared/components/EditorLayout.js";
 import { SplitView } from "../shared/components/SplitView.js";
@@ -129,6 +130,9 @@ export default function Editor(props: IProps) {
         const newReferenceId = (data["references"] as string).split(":")[1];
         dispatch(actions.setReference({ newReference: newReferenceId }));
       }
+    }
+    if (data["atlasType"] !== undefined) {
+      dispatch(actions.setAtlasType({ atlasType: data["atlasType"] as EAtlasType }));
     }
   }
   return (

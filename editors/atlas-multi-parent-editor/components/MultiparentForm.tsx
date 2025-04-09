@@ -64,8 +64,8 @@ export function MultiParentForm({
             >
                 {({ triggerSubmit }) => (
                     <div className="flex flex-col gap-3">
-                        <div className="flex flex-row gap-2">
-                            <div className="flex-1">
+                        <div className="flex flex-row gap-2 flex-wrap w-full">
+                            <div className="flex-1 min-w-[200px]">
                                 <StringDiffField
                                     disabled={isReadOnly}
                                     name="docNo"
@@ -76,7 +76,7 @@ export function MultiParentForm({
                                     baselineValue={originalNodeState.docNo}
                                 />
                             </div>
-                            <div className="flex-1">
+                            <div className="flex-1 min-w-[200px]">
                                 <StringDiffField
                                     disabled={isReadOnly}
                                     name="name"
@@ -87,7 +87,9 @@ export function MultiParentForm({
                                     baselineValue={originalNodeState.name}
                                 />
                             </div>
-                            <div className="flex-1">
+                        </div>
+                        <div className="flex flex-row gap-2 flex-wrap w-full">
+                            <div className="flex-1 min-w-[200px]">
                                 <EnumDiffField
                                     name="atlasType"
                                     placeholder="Select Atlas Type"
@@ -103,7 +105,7 @@ export function MultiParentForm({
                                     baselineValue={originalNodeState.type?.toUpperCase()}
                                 />
                             </div>
-                            <div className="flex-1">
+                            <div className="flex-1 min-w-[200px]">
                                 <EnumDiffField
                                     disabled={isReadOnly}
                                     label="Status"

@@ -7,11 +7,3 @@ export const getFlexLayoutClassName = (isSplitMode: boolean, ...additionalClasse
 export const getWidthClassName = (isSplitMode: boolean, ...additionalClasses: string[]) => {
   return cn(isSplitMode ? "w-full" : "w-1/2", ...additionalClasses);
 };
-
-export const getTagFieldLayoutClassName = (isSplitMode: boolean, height: number = 65, ...additionalClasses: string[]) => {
-  return cn(
-    "relative",
-    isSplitMode ? `w-full h-[${height}px]` : "w-1/2",
-    ...additionalClasses
-  );
-}; 

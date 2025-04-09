@@ -122,7 +122,7 @@ export default function Editor(props: IProps) {
       if (data["references"] === null) {
         dispatch(
           actions.removeReference({
-            reference: "",
+            reference: documentState.references.split(":")[1],
           }),
         );
       } else {

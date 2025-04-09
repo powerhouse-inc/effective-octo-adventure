@@ -69,10 +69,14 @@ export function FoundationForm({
       >
         {({ triggerSubmit }) => (
           <div className={cn("flex flex-col gap-3")}>
-            <div className={cn("flex gap-2", isSplitMode ? "flex-col" : "flex-row")}>
+            <div
+              className={cn(
+                "flex gap-2",
+                isSplitMode ? "flex-col" : "flex-row",
+              )}
+            >
               <div className={cn("flex-1")}>
                 <StringDiffField
-                  disabled={isReadOnly}
                   name="docNo"
                   label="Doc №"
                   placeholder="A."
@@ -91,8 +95,13 @@ export function FoundationForm({
                   baselineValue={originalNodeState.name}
                 />
               </div>
-              </div>
-              <div className={cn("flex gap-2", isSplitMode ? "flex-col" : "flex-row")}>
+            </div>
+            <div
+              className={cn(
+                "flex gap-2",
+                isSplitMode ? "flex-col" : "flex-row",
+              )}
+            >
               <div className={cn("flex-1")}>
                 <EnumDiffField
                   name="atlasType"

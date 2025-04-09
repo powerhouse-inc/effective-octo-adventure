@@ -172,6 +172,17 @@ input SetAtlasTypeInput {
 input SetFindingsInput {
   "Add your inputs here"
   isAligned: Boolean!
+  comment: String!
+}
+
+input SetReferenceInput {
+  "Add your inputs here"
+  newReference: PHID
+}
+
+input RemoveReferenceInput {
+  "Add your inputs here"
+  reference: PHID 
 }
 
 # tags

@@ -112,26 +112,24 @@ export default function Editor(props: IProps) {
         actions.setProvenance({ provenance: data["provenance"] as string }),
       );
     }
-  // TODO: need the com
-    // if(data["findings"] !== undefined) {
-    //   dispatch(actions.setFindings({ 
-    //     isAligned: data["findings"] as boolean,
-  
-    //    }));
-    // }
-    //  TODO: add references the reference 
-    // if (data["references"] !== undefined) {
-    //   if (data["references"] === null) {
-    //     dispatch(
-    //       actions.r({
-    //         id: documentState.references.split(":")[1],
-    //       }),
-    //     );
-    //   } else {
-    //     const newReferenceId = (data["references"] as string).split(":")[1];
-    //     dispatch(actions.addReference({ id: newReferenceId }));
-    //   }
-    // }
+    if(data["findings"] !== undefined) {
+      dispatch(actions.setFindings({ 
+        isAligned: data["findings"].isAligned as boolean,
+        comment: data["findings"].comment as string,
+       }));
+    }
+    if (data["references"] !== undefined) {
+      if (data["references"] === null) {
+        dispatch(
+          actions.removeReference({
+            reference: documentState.references.split(":")[1],
+          }),
+        );
+      } else {
+        const newReferenceId = (data["references"] as string).split(":")[1];
+        dispatch(actions.setReference({ newReference: newReferenceId }));
+      }
+    }
   }
   return (
     <EditorLayout

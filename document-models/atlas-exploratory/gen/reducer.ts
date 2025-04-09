@@ -83,6 +83,24 @@ const stateReducer: StateReducer<AtlasExploratoryDocument> = (
       );
       break;
 
+    case "SET_REFERENCE":
+      z.SetReferenceInputSchema().parse(action.input);
+      GeneralReducer.setReferenceOperation(
+        state[action.scope],
+        action,
+        dispatch,
+      );
+      break;
+
+    case "REMOVE_REFERENCE":
+      z.RemoveReferenceInputSchema().parse(action.input);
+      GeneralReducer.removeReferenceOperation(
+        state[action.scope],
+        action,
+        dispatch,
+      );
+      break;
+
     case "ADD_TAGS":
       z.AddTagsInputSchema().parse(action.input);
       TagsReducer.addTagsOperation(state[action.scope], action, dispatch);

@@ -8,6 +8,8 @@ import {
   type RemoveParentAction,
   type SetAtlasTypeAction,
   type SetFindingsAction,
+  type SetReferenceAction,
+  type RemoveReferenceAction,
 } from "./actions.js";
 import { type AtlasExploratoryState } from "../types.js";
 
@@ -50,6 +52,16 @@ export interface AtlasExploratoryGeneralOperations {
   setFindingsOperation: (
     state: AtlasExploratoryState,
     action: SetFindingsAction,
+    dispatch?: SignalDispatch,
+  ) => void;
+  setReferenceOperation: (
+    state: AtlasExploratoryState,
+    action: SetReferenceAction,
+    dispatch?: SignalDispatch,
+  ) => void;
+  removeReferenceOperation: (
+    state: AtlasExploratoryState,
+    action: RemoveReferenceAction,
     dispatch?: SignalDispatch,
   ) => void;
 }

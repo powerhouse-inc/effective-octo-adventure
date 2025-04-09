@@ -12,6 +12,7 @@ import type {
   RemoveAdditionalGuidanceInput,
   RemoveContextDataInput,
   RemoveParentInput,
+  RemoveReferenceInput,
   RemoveTagsInput,
   SetAtlasTypeInput,
   SetContentInput,
@@ -22,6 +23,7 @@ import type {
   SetNotionIdInput,
   SetParentInput,
   SetProvenanceInput,
+  SetReferenceInput,
 } from "./types.js";
 
 type Properties<T> = Required<{
@@ -150,6 +152,14 @@ export function RemoveParentInputSchema(): z.ZodObject<
   });
 }
 
+export function RemoveReferenceInputSchema(): z.ZodObject<
+  Properties<RemoveReferenceInput>
+> {
+  return z.object({
+    reference: z.string().nullish(),
+  });
+}
+
 export function RemoveTagsInputSchema(): z.ZodObject<
   Properties<RemoveTagsInput>
 > {
@@ -194,6 +204,7 @@ export function SetFindingsInputSchema(): z.ZodObject<
   Properties<SetFindingsInput>
 > {
   return z.object({
+    comment: z.string(),
     isAligned: z.boolean(),
   });
 }
@@ -227,5 +238,13 @@ export function SetProvenanceInputSchema(): z.ZodObject<
 > {
   return z.object({
     provenance: z.string().url().nullish(),
+  });
+}
+
+export function SetReferenceInputSchema(): z.ZodObject<
+  Properties<SetReferenceInput>
+> {
+  return z.object({
+    newReference: z.string().nullish(),
   });
 }

@@ -122,7 +122,31 @@ export const documentModel: DocumentModelState = {
               name: "SET_FINDINGS",
               description: "",
               schema:
-                'input SetFindingsInput {\n  "Add your inputs here"\n  isAligned: Boolean!\n}',
+                'input SetFindingsInput {\n  "Add your inputs here"\n  isAligned: Boolean!\n  comment: String!\n}',
+              template: "",
+              reducer: "",
+              errors: [],
+              examples: [],
+              scope: "global",
+            },
+            {
+              id: "KK6fGHQHMJ+lV+kWARy5KRoYjfE=",
+              name: "SET_REFERENCE",
+              description: "",
+              schema:
+                'input SetReferenceInput {\n  "Add your inputs here"\n  newReference: PHID\n}',
+              template: "",
+              reducer: "",
+              errors: [],
+              examples: [],
+              scope: "global",
+            },
+            {
+              id: "TStncORsC/ZFTJTI2slSpHi4avk=",
+              name: "REMOVE_REFERENCE",
+              description: "",
+              schema:
+                'input RemoveReferenceInput {\n  "Add your inputs here"\n  reference: PHID \n}',
               template: "",
               reducer: "",
               errors: [],

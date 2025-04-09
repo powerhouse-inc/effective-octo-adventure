@@ -74,7 +74,6 @@ export function FoundationForm({
             <div className={getFlexLayoutClassName(isSplitMode ?? false, )}>
               <div className={cn("flex-1")}>
                 <StringDiffField
-                  disabled={isReadOnly}
                   name="docNo"
                   label="Doc №"
                   placeholder="A."

@@ -133,7 +133,7 @@ export function GroundingForm({
                   baselineValue={originalNodeState.masterStatusNames[0]?.toUpperCase()}
                 />
               </div>
-              </div>
+            </div>
             <StringDiffField
               name="content"
               label="Content"

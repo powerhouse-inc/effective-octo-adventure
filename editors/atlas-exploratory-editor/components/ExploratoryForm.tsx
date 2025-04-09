@@ -3,7 +3,7 @@ import {
   cn,
   EnumField,
   Form,
-  PHIDField
+  PHIDField,
 } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
@@ -19,7 +19,10 @@ import type { UseFormReturn } from "react-hook-form";
 import { useEffect, useRef } from "react";
 import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
 import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
-import { exploratoryTagsEnumOptions, globalTagsEnumOptions } from "../../shared/utils/common-options.js";
+import {
+  exploratoryTagsEnumOptions,
+  globalTagsEnumOptions,
+} from "../../shared/utils/common-options.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
@@ -32,7 +35,6 @@ interface ExploratoryFormProps {
   originalContextDataPHIDInitialOption?: PHIDOption;
   referencesPHIDInitialOption?: PHIDOption;
   isAligned?: boolean;
-
 }
 
 export function ExploratoryForm({
@@ -67,6 +69,9 @@ export function ExploratoryForm({
       <Form
         onSubmit={onSubmit}
         submitChangesOnly
+        extraFormProps={{
+          shouldFocusError: false,
+        }}
         defaultValues={{ ...documentState }}
       >
         {({ triggerSubmit }) => (
@@ -144,20 +149,28 @@ export function ExploratoryForm({
             </div>
             {/* TODO: Improve this in next iteration */}
             <div className="flex flex-row justify-end items-center gap-2">
-              <span className={cn(
-                !isAligned ? "text-gray-700" : "text-gray-300",
-                "text-sm font-semibold leading-[22px]"
-              )}>Misaligned</span>
+              <span
+                className={cn(
+                  !isAligned ? "text-gray-700" : "text-gray-300",
+                  "text-sm font-semibold leading-[22px]",
+                )}
+              >
+                Misaligned
+              </span>
               <BooleanField
                 disabled={isReadOnly}
                 name="findings.isAligned"
                 isToggle
                 onChange={triggerSubmit}
               />
-              <span className={cn(
-                isAligned ? "text-gray-700" : "text-gray-300",
-                "text-sm font-semibold font-inter leading-[22px]"
-              )}>Aligned</span>
+              <span
+                className={cn(
+                  isAligned ? "text-gray-700" : "text-gray-300",
+                  "text-sm font-semibold font-inter leading-[22px]",
+                )}
+              >
+                Aligned
+              </span>
             </div>
             <StringDiffField
               disabled={isReadOnly}
@@ -238,7 +251,6 @@ export function ExploratoryForm({
                 onBlur={triggerSubmit}
               />
             </div>
-
           </div>
         )}
       </Form>

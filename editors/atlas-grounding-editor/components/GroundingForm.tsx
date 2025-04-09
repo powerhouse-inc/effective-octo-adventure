@@ -69,7 +69,12 @@ export function GroundingForm({
       >
         {({ triggerSubmit }) => (
           <div className={cn("flex flex-col gap-3")}>
-            <div className={cn("flex gap-2", isSplitMode ? "flex-col" : "flex-row")}>
+            <div
+              className={cn(
+                "flex gap-2",
+                isSplitMode ? "flex-col" : "flex-row",
+              )}
+            >
               <div className={cn("flex-1")}>
                 <StringDiffField
                   name="docNo"
@@ -90,8 +95,13 @@ export function GroundingForm({
                   baselineValue={originalNodeState.name}
                 />
               </div>
-              </div>
-              <div className={cn("flex gap-2", isSplitMode ? "flex-col" : "flex-row")}>
+            </div>
+            <div
+              className={cn(
+                "flex gap-2",
+                isSplitMode ? "flex-col" : "flex-row",
+              )}
+            >
               <div className={cn("flex-1")}>
                 <EnumDiffField
                   name="atlasType"
@@ -131,7 +141,7 @@ export function GroundingForm({
                   baselineValue={originalNodeState.masterStatusNames[0]?.toUpperCase()}
                 />
               </div>
-              </div>
+            </div>
             <StringDiffField
               name="content"
               label="Content"

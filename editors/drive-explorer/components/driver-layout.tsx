@@ -1,8 +1,8 @@
 import {
   Icon,
   FileItem,
+  type BaseUiFileNode,
   ToastContainer,
-  UiFileNode,
 } from "@powerhousedao/design-system";
 import {
   Sidebar,
@@ -164,23 +164,32 @@ export function DriverLayout({
                             uiNode={{
                               kind: "FILE",
                               id,
-                              name: driveNodes.find((node) => node.id === id)
-                                ?.name || "",
+                              name:
+                                driveNodes.find((node) => node.id === id)
+                                  ?.name || "",
                               documentType: issue.documentType,
                               parentFolder: "",
                               driveId,
                               syncStatus: undefined,
-                              synchronizationUnits: [],
-                              sharingType: "PUBLIC"
                             }}
                             onSelectNode={(node) => setActiveNodeId(node.id)}
-                            isAllowedToCreateDocuments={false} onRenameNode={function (name: string, uiNode: UiFileNode): void {
+                            isAllowedToCreateDocuments={false}
+                            onRenameNode={function (
+                              name: string,
+                              uiNode: BaseUiFileNode,
+                            ): void {
                               throw new Error("Function not implemented.");
-                            } } onDuplicateNode={function (uiNode: UiFileNode): void {
+                            }}
+                            onDuplicateNode={function (
+                              uiNode: BaseUiFileNode,
+                            ): void {
                               throw new Error("Function not implemented.");
-                            } } onDeleteNode={function (uiNode: UiFileNode): void {
+                            }}
+                            onDeleteNode={function (
+                              uiNode: BaseUiFileNode,
+                            ): void {
                               throw new Error("Function not implemented.");
-                            } }                           
+                            }}
                           />
                         ))}
                       </div>

@@ -45,7 +45,7 @@ export default function Editor(props: IProps) {
     }
     if (data["originalContextData"] !== undefined) {
       dispatch(
-        actions.addContextData({ id: data["originalContextData"] as string }),
+        actions.addContextData({ id: getStringValue(data["originalContextData"]) }),
       );
     }
     if (data["globalTags"] !== undefined) {

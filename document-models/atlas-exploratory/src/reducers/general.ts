@@ -33,17 +33,6 @@ export const reducer: AtlasExploratoryGeneralOperations = {
     };
   },
 
-  // TODO: Implement this in  here and schema
-  // setReferenceOperation(state, action, dispatch) {
-  //   state.references = action.input.newReference ? [...state.references, action.input.newReference] : state.references;
-  // },
-  // removeReferenceOperation(state, action, dispatch) {
-  //   if (action.input.reference) {
-  //     state.references = state.references.filter(reference => reference !== action.input.reference);
-  //   } else {
-  //     state.references = []
-  //   }
-  // },
     setReferenceOperation(state, action, dispatch) {
       const newReference = action.input.newReference
       if (newReference) {

@@ -7,7 +7,8 @@
 import { type AtlasGroundingContextOperations } from "../../gen/context/operations.js";
 
 export const reducer: AtlasGroundingContextOperations = {
-  addContextDataOperation(state, action, dispatch) {
+  // TODO: check this when the ui is updated
+  /* addContextDataOperation(state, action, dispatch) {
     state.originalContextData = state.originalContextData.filter(
       (ocd) => ocd.id !== action.input.id,
     );
@@ -22,6 +23,16 @@ export const reducer: AtlasGroundingContextOperations = {
     state.originalContextData = state.originalContextData.filter(
       (ocd) => ocd.id !== action.input.id,
     );
+  }, */
+  addContextDataOperation(state, action, dispatch) {
+    state.originalContextData.push({
+      id: action.input.id,
+      name: action.input.name || null,
+      docNo: action.input.docNo || null,
+    });
+  },
+  removeContextDataOperation(state, action, dispatch) {
+    state.originalContextData = [];
   },
   setProvenanceOperation(state, action, dispatch) {
     state.provenance = action.input.provenance;
@@ -29,7 +40,8 @@ export const reducer: AtlasGroundingContextOperations = {
   setNotionIdOperation(state, action, dispatch) {
     state.notionId = action.input.notionID;
   },
-  addReferenceOperation(state, action, dispatch) {
+  // TODO: check this when the ui is updated
+  /* addReferenceOperation(state, action, dispatch) {
     const newReference = {
       id: action.input.id,
       name: action.input.name || null,
@@ -40,5 +52,16 @@ export const reducer: AtlasGroundingContextOperations = {
   },
   removeReferenceOperation(state, action, dispatch) {
     state.references = state.references.filter((r) => r.id !== action.input.id);
+  }, */
+  addReferenceOperation(state, action, dispatch) {
+    const newReference = {
+      id: action.input.id,
+      name: action.input.name || null,
+      docNo: action.input.docNo || null,
+    };
+    state.references = [...state.references, newReference];
+  },
+  removeReferenceOperation(state, action, dispatch) {
+    state.references = [];
   },
 };

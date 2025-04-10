@@ -146,7 +146,7 @@ export function GroundingForm({
               baselineValue={
                 typeof originalNodeState.content[0]?.text === "string"
                   ? originalNodeState.content[0]?.text
-                  : originalNodeState.content[0]?.text[0].plain_text
+                  : originalNodeState.content[0]?.text[0]?.plain_text
               }
             />
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>

@@ -7,19 +7,7 @@
 import { type AtlasExploratoryContextOperations } from "../../gen/context/operations.js";
 
 export const reducer: AtlasExploratoryContextOperations = {
-  // TODO: Implement this in  here and schema
-  // addContextDataOperation(state, action, dispatch) {
-  //   state.originalContextData.push({
-  //     id: action.input.id,
-  //     name: action.input.name || null,
-  //     docNo: action.input.docNo || null,
-  //   });
-  // },
-  // removeContextDataOperation(state, action, dispatch) {
-  //   state.originalContextData = state.originalContextData.filter(
-  //     (ocd) => ocd.id !== action.input.id,
-  //   );
-  // },
+
   addContextDataOperation(state, action, dispatch) {
     const newContextData = {
       id: action.input.id,

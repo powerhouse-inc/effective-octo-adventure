@@ -8,22 +8,35 @@ import { type AtlasScopeContextOperations } from "../../gen/context/operations.j
 
 export const reducer: AtlasScopeContextOperations = {
   // TODO:Disable the save in the history
-  addContextDataOperation(state, action, dispatch) {
-    state.originalContextData = state.originalContextData.filter(
-      (ocd) => ocd.id !== action.input.id,
-    );
+  // addContextDataOperation(state, action, dispatch) {
+  //   state.originalContextData = state.originalContextData.filter(
+  //     (ocd) => ocd.id !== action.input.id,
+  //   );
 
+  //   state.originalContextData.push({
+  //     id: action.input.id,
+  //     name: action.input.name || null,
+  //     docNo: action.input.docNo || null,
+  //   });
+  // },
+  // removeContextDataOperation(state, action, dispatch) {
+  //   state.originalContextData = state.originalContextData.filter(
+  //     (ocd) => ocd.id !== action.input.id,
+  //   );
+  // },
+  addContextDataOperation(state, action, dispatch) {
+  
     state.originalContextData.push({
       id: action.input.id,
       name: action.input.name || null,
       docNo: action.input.docNo || null,
     });
   },
+
   removeContextDataOperation(state, action, dispatch) {
-    state.originalContextData = state.originalContextData.filter(
-      (ocd) => ocd.id !== action.input.id,
-    );
+    state.originalContextData = []
   },
+
   setProvenanceOperation(state, action, dispatch) {
     state.provenance = action.input.provenance || null;
   },

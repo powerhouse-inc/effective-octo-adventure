@@ -231,6 +231,7 @@ export function MultiParentForm({
                 onBlur={triggerSubmit}
                 multiple
                 name="globalTags"
+                placeholder="Select Tags"
                 options={globalTagsEnumOptions}
                 mode={mode}
                 // TODO: add the right baseline value

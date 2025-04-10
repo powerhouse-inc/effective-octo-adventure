@@ -7,23 +7,7 @@
 import { type AtlasGroundingContextOperations } from "../../gen/context/operations.js";
 
 export const reducer: AtlasGroundingContextOperations = {
-  // TODO: check this when the ui is updated
-  /* addContextDataOperation(state, action, dispatch) {
-    state.originalContextData = state.originalContextData.filter(
-      (ocd) => ocd.id !== action.input.id,
-    );
-
-    state.originalContextData.push({
-      id: action.input.id,
-      name: action.input.name || null,
-      docNo: action.input.docNo || null,
-    });
-  },
-  removeContextDataOperation(state, action, dispatch) {
-    state.originalContextData = state.originalContextData.filter(
-      (ocd) => ocd.id !== action.input.id,
-    );
-  }, */
+  // TODO: change this when the UI is updated
   addContextDataOperation(state, action, dispatch) {
     const newContextData = {
       id: action.input.id,
@@ -35,25 +19,14 @@ export const reducer: AtlasGroundingContextOperations = {
   removeContextDataOperation(state, action, dispatch) {
     state.originalContextData = [];
   },
+
   setProvenanceOperation(state, action, dispatch) {
     state.provenance = action.input.provenance;
   },
   setNotionIdOperation(state, action, dispatch) {
     state.notionId = action.input.notionID;
   },
-  // TODO: check this when the ui is updated
-  /* addReferenceOperation(state, action, dispatch) {
-    const newReference = {
-      id: action.input.id,
-      name: action.input.name || null,
-      docNo: action.input.docNo || null,
-    };
-
-    state.references.push(newReference);
-  },
-  removeReferenceOperation(state, action, dispatch) {
-    state.references = state.references.filter((r) => r.id !== action.input.id);
-  }, */
+  // TODO: change this when the UI is updated
   addReferenceOperation(state, action, dispatch) {
     const newReference = {
       id: action.input.id,

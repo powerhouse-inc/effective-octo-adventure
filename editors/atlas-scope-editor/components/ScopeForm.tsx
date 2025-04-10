@@ -12,12 +12,22 @@ import type { EditorMode } from "../../shared/types.js";
 import { isFormReadOnly } from "../../shared/utils/form-common.js";
 import { globalScopeTagsEnumOptions, globalTagsEnumOptions } from "../../shared/utils/common-options.js";
 import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
 import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
+import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
+
+// Custom preview renderer to make links open in new tabs
+const previewOptions = {
+  components: {
+    a: ({ node, ...props }: { node: any; [key: string]: any }) => (
+      <a {...props} target="_blank" rel="noopener noreferrer" />
+    ),
+  },
+};
 
 interface ScopeFormProps {
     onSubmit: (data: Record<string, any>) => void;
@@ -26,6 +36,12 @@ interface ScopeFormProps {
 }
 
 export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
+    const [contentValue, setContentValue] = useState<string>(documentState.content || "");
+
+    // Update contentValue when documentState changes
+    useEffect(() => {
+        setContentValue(documentState.content || "");
+    }, [documentState.content]);
 
     const isReadOnly = isFormReadOnly(mode);
     const cardVariant = getCardVariant(mode);
@@ -44,6 +60,19 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
             formRef.current.reset({ ...documentState });
         }
     }, [documentState]);
+
+    // Custom handler for content changes
+    const handleContentChange = (value: string) => {
+        setContentValue(value);
+    };
+
+    // Custom handler for content blur
+    const handleContentBlur = () => {
+        // Only submit if the content has actually changed
+        if (contentValue !== documentState.content) {
+            onSubmit({ content: contentValue });
+        }
+    };
 
     return (
         <ContentCard tagText={tagText} variant={cardVariant} className='mt-4'>
@@ -96,15 +125,14 @@ export function ScopeForm({ onSubmit, documentState, mode }: ScopeFormProps) {
 
                         </div>
                         <div className="flex-1">
-                            <StringDiffField
-                                autoExpand rows={4}
-                                multiline
-                                name="content"
-                                onBlur={triggerSubmit}
-                                placeholder="Enter content"
-                                mode={mode}
-                                // TODO: add the right baseline value
-                                baselineValue={""} />
+                            <MarkdownEditor
+                                value={contentValue}
+                                onChange={handleContentChange}
+                                onBlur={handleContentBlur}
+                                height={350}
+                                label="Content"
+                                readOnly={isReadOnly}
+                            />
                         </div>
                         <div className="flex flex-col gap-4 w-1/2">
                             <div className="flex flex-col gap-2 flex-1">

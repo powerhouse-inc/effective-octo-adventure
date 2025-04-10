@@ -18,6 +18,7 @@ import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/at
 import { useEffect, useRef, useState } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
+import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 
 interface FoundationFormProps {
   onSubmit: (data: Record<string, any>) => void;
@@ -39,13 +40,34 @@ export function FoundationForm({
   const isReadOnly = isFormReadOnly(mode);
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
+  const [contentValue, setContentValue] = useState<string>(
+    documentState.content || ""
+  );
+
+  // Update contentValue when documentState changes
+  useEffect(() => {
+    setContentValue(documentState.content || "");
+  }, [documentState.content]);
+
+  // Custom handler for content changes
+  const handleContentChange = (value: string) => {
+    setContentValue(value);
+  };
+
+  // Custom handler for content blur
+  const handleContentBlur = () => {
+    // Only submit if the content has actually changed
+    if (contentValue !== documentState.content) {
+      onSubmit({ content: contentValue });
+    }
+  };
 
   // baseline node state
   const [originalNodeState] = useState(() =>
     getOriginalNotionDocument(
       (documentState.notionId as string) || "notion-id-not-set",
-      (documentState.atlasType as ParsedNotionDocumentType) || "article",
-    ),
+      (documentState.atlasType as ParsedNotionDocumentType) || "article"
+    )
   );
 
   const formRef = useRef<UseFormReturn>(null);
@@ -132,14 +154,12 @@ export function FoundationForm({
                 />
               </div>
             </div>
-            <StringDiffField
-              name="content"
+            <MarkdownEditor
+              value={contentValue}
+              onChange={handleContentChange}
+              onBlur={handleContentBlur}
+              height={350}
               label="Content"
-              placeholder="Content"
-              multiline
-              onBlur={triggerSubmit}
-              mode={mode}
-              baselineValue={""} // TODO: add the right baseline value
             />
             <div className={cn("w-1/2")}>
               <PHIDDiffField

@@ -9,6 +9,8 @@ import {
   type RemoveParentInput,
   type SetAtlasTypeInput,
   type SetFindingsInput,
+  type SetReferenceInput,
+  type RemoveReferenceInput,
 } from "../types.js";
 import {
   type SetExploratoryNameAction,
@@ -19,6 +21,8 @@ import {
   type RemoveParentAction,
   type SetAtlasTypeAction,
   type SetFindingsAction,
+  type SetReferenceAction,
+  type RemoveReferenceAction,
 } from "./actions.js";
 
 export const setExploratoryName = (input: SetExploratoryNameInput) =>
@@ -90,5 +94,23 @@ export const setFindings = (input: SetFindingsInput) =>
     { ...input },
     undefined,
     z.SetFindingsInputSchema,
+    "global",
+  );
+
+export const setReference = (input: SetReferenceInput) =>
+  createAction<SetReferenceAction>(
+    "SET_REFERENCE",
+    { ...input },
+    undefined,
+    z.SetReferenceInputSchema,
+    "global",
+  );
+
+export const removeReference = (input: RemoveReferenceInput) =>
+  createAction<RemoveReferenceAction>(
+    "REMOVE_REFERENCE",
+    { ...input },
+    undefined,
+    z.RemoveReferenceInputSchema,
     "global",
   );

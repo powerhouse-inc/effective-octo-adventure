@@ -70,7 +70,7 @@ export const EditorLayout = ({
   }, [nodes, activeNodeId]);
 
   return (
-    <div className="min-h-screen h-screen bg-white flex flex-col rounded-2xl p-6 gap-4">
+    <div className="min-h-screen h-screen bg-white flex flex-col rounded-2xl p-6 gap-4 mt-4">
       <header>
         <div className="flex justify-between w-full">
           <div>

@@ -1,11 +1,4 @@
-import {
-  BooleanField,
-  EnumField,
-  Form,
-  PHIDField,
-  StringField,
-  UrlField,
-} from "@powerhousedao/design-system/scalars";
+import { cn, Form, PHIDField } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
   cb,
@@ -18,14 +11,15 @@ import type { EditorMode } from "../../shared/types.js";
 import { isFormReadOnly } from "../../shared/utils/form-common.js";
 import { useEffect } from "react";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
-import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
-import { type UseFormReturn } from "react-hook-form";
+import { ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
+import { UseFormReturn } from "react-hook-form";
 import { useRef } from "react";
 import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
 import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
 import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
 import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
-import { type PHIDOption } from "@powerhousedao/design-system/ui";
+import { PHIDOption } from "@powerhousedao/design-system/ui";
+import { PHIDDiffField } from "../../shared/components/diff-fields/phid-diff-field.js";
 
 interface MultiParentFormProps {
   onSubmit: (data: Record<string, any>) => void;
@@ -34,6 +28,7 @@ interface MultiParentFormProps {
   parentPHIDInitialOption?: PHIDOption;
   originalContextDataPHIDInitialOption?: PHIDOption;
   referencesPHIDInitialOption?: PHIDOption;
+  isSplitMode?: boolean;
 }
 
 export function MultiParentForm({
@@ -43,6 +38,7 @@ export function MultiParentForm({
   parentPHIDInitialOption,
   originalContextDataPHIDInitialOption,
   referencesPHIDInitialOption,
+  isSplitMode,
 }: MultiParentFormProps) {
   const isReadOnly = isFormReadOnly(mode);
   const cardVariant = getCardVariant(mode);
@@ -50,7 +46,7 @@ export function MultiParentForm({
   // baseline document state
   const originalNodeState = getOriginalNotionDocument(
     (documentState.notionId as string) || "notion-id-not-set",
-    (documentState.atlasType as ParsedNotionDocumentType) || "article",
+    (documentState.atlasType as ParsedNotionDocumentType) || "article"
   );
 
   const formRef = useRef<UseFormReturn>(null);
@@ -73,9 +69,14 @@ export function MultiParentForm({
         }}
       >
         {({ triggerSubmit }) => (
-          <div className="flex flex-col gap-3">
-            <div className="flex flex-row gap-2">
-              <div className="flex-1">
+          <div className="flex flex-col gap-4">
+            <div
+              className={cn(
+                "flex flex-row gap-2",
+                isSplitMode ? "flex-col" : "flex-row"
+              )}
+            >
+              <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
                 <StringDiffField
                   disabled={isReadOnly}
                   name="docNo"
@@ -86,7 +87,7 @@ export function MultiParentForm({
                   baselineValue={originalNodeState.docNo}
                 />
               </div>
-              <div className="flex-1">
+              <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
                 <StringDiffField
                   disabled={isReadOnly}
                   name="name"
@@ -97,7 +98,14 @@ export function MultiParentForm({
                   baselineValue={originalNodeState.name}
                 />
               </div>
-              <div className="flex-1">
+            </div>
+            <div
+              className={cn(
+                "flex flex-row gap-2",
+                isSplitMode ? "flex-col" : "flex-row"
+              )}
+            >
+              <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
                 <EnumDiffField
                   name="atlasType"
                   placeholder="Select Atlas Type"
@@ -113,7 +121,7 @@ export function MultiParentForm({
                   baselineValue={originalNodeState.type?.toUpperCase()}
                 />
               </div>
-              <div className="flex-1">
+              <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
                 <EnumDiffField
                   disabled={isReadOnly}
                   label="Status"
@@ -145,8 +153,8 @@ export function MultiParentForm({
               // TODO: add the right baseline value
               baselineValue={""}
             />
-            <div className="w-1/2">
-              <PHIDField
+            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
+              <PHIDDiffField
                 disabled={isReadOnly}
                 name="parents"
                 label="Parent Document"
@@ -154,16 +162,18 @@ export function MultiParentForm({
                 onBlur={triggerSubmit}
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
-                variant="withValueTitleAndDescription"
+                variant="withValueAndTitle"
                 allowUris={true}
                 initialOptions={
                   parentPHIDInitialOption
                     ? [parentPHIDInitialOption]
                     : undefined
                 }
+                mode={mode}
+                baselineValue={""}
               />
             </div>
-            <div className="w-1/2">
+            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
               <UrlDiffField
                 name="provenance"
                 label="Provenance"
@@ -179,14 +189,14 @@ export function MultiParentForm({
               />
             </div>
 
-            <div className="w-1/2">
-              <PHIDField
+            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
+              <PHIDDiffField
                 name="originalContextData"
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 label="Original Context Data"
                 placeholder="phd:"
-                variant="withValueTitleAndDescription"
+                variant="withValueAndTitle"
                 allowUris={true}
                 onBlur={triggerSubmit}
                 initialOptions={
@@ -194,15 +204,17 @@ export function MultiParentForm({
                     ? [originalContextDataPHIDInitialOption]
                     : undefined
                 }
+                mode={mode}
+                baselineValue={""}
               />
             </div>
-            <div className="w-1/2">
+            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
               <PHIDField
                 disabled={isReadOnly}
                 name="references"
                 label="Atlas References"
                 placeholder="phd:"
-                variant="withValueTitleAndDescription"
+                variant="withValueAndTitle"
                 allowUris
                 initialOptions={
                   referencesPHIDInitialOption
@@ -214,7 +226,7 @@ export function MultiParentForm({
                 onBlur={triggerSubmit}
               />
             </div>
-            <div className="w-1/2">
+            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
               <EnumDiffField
                 label="Tags"
                 onBlur={triggerSubmit}

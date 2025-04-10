@@ -6,6 +6,7 @@ import {
 import { DriverLayout } from "./components/driver-layout.js";
 import { type DocumentDriveDocument } from "document-drive";
 import { WagmiContext } from "@powerhousedao/design-system";
+import { getRemoteDriveUrl } from "../shared/utils/utils.js";
 
 export type IProps = DriveEditorProps<DocumentDriveDocument>;
 
@@ -16,6 +17,7 @@ export function BaseEditor(props: IProps) {
         context={props.context}
         driveId={props.document.state.global.id}
         nodes={props.document.state.global.nodes}
+        driveUrl={getRemoteDriveUrl(props.document)}
       >
         <style>
           {`

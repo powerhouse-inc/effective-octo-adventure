@@ -30,18 +30,10 @@ async function main() {
     throw new Error("Invalid endpoint URL: " + endpointBase);
   }
 
-  const subgraphs = [
-    "atlas-scope",
-    "atlas-foundation",
-    "atlas-grounding",
-    "atlas-multiparent",
-    "atlas-exploratory",
-    "system",
-  ];
-
-  for (const subgraph of subgraphs) {
-    await generateClient(endpointBase, subgraph);
-  }
+  await Promise.all([
+    generateClient(endpointBase, "graphql"),
+    generateClient(endpointBase, "system"),
+  ]);
 
   // Rename .js files to .cjs in clients directory
   const clientsDir = path.join(__dirname, "clients");

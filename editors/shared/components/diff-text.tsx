@@ -1,12 +1,14 @@
 import { Fragment, useMemo } from "react";
 import { diffSentences, diffWords } from "diff";
 import type { EditorMode } from "../types.js";
+import { cn } from "@powerhousedao/design-system/scalars";
 
 interface DiffTextProps {
   baseline: string;
   value: string;
   mode: EditorMode;
   diffMode: "words" | "sentences";
+  className?: string;
 }
 
 export const DiffText = ({
@@ -14,6 +16,7 @@ export const DiffText = ({
   value,
   mode,
   diffMode = "words",
+  className,
 }: DiffTextProps) => {
   const wordsDiff = useMemo(() => {
     return diffMode === "words"
@@ -22,7 +25,7 @@ export const DiffText = ({
   }, [baseline, value, diffMode]);
 
   return (
-    <span className="leading-normal">
+    <span className={cn("leading-normal", className)}>
       {wordsDiff.map((word, index) => {
         return word.added ? (
           mode === "DiffAdditions" || mode === "DiffMixed" ? (

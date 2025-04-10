@@ -165,6 +165,11 @@ export type RemoveParentInput = {
   parent?: InputMaybe<Array<Scalars["PHID"]["input"]>>;
 };
 
+export type RemoveReferenceInput = {
+  /** Add your inputs here */
+  reference?: InputMaybe<Scalars["PHID"]["input"]>;
+};
+
 export type RemoveTagsInput = {
   /** Add your inputs here */
   tags: Array<EGlobalTag | `${EGlobalTag}`>;
@@ -191,6 +196,7 @@ export type SetExploratoryNameInput = {
 };
 
 export type SetFindingsInput = {
+  comment: Scalars["String"]["input"];
   /** Add your inputs here */
   isAligned: Scalars["Boolean"]["input"];
 };
@@ -213,4 +219,9 @@ export type SetParentInput = {
 export type SetProvenanceInput = {
   /** Add your inputs here */
   provenance?: InputMaybe<Scalars["URL"]["input"]>;
+};
+
+export type SetReferenceInput = {
+  /** Add your inputs here */
+  newReference?: InputMaybe<Scalars["PHID"]["input"]>;
 };

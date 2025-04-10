@@ -273,6 +273,7 @@ export function ExploratoryForm({
                 label="Tags"
                 multiple
                 name="globalTags"
+                placeholder="Select Tags"
                 options={exploratoryTagsEnumOptions}
                 onBlur={triggerSubmit}
                 mode={mode}

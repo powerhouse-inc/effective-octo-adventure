@@ -144,9 +144,9 @@ export function GroundingForm({
               onBlur={triggerSubmit}
               mode={mode}
               baselineValue={
-                typeof originalNodeState.content[0].text === "string"
-                  ? originalNodeState.content[0].text
-                  : originalNodeState.content[0].text[0].plain_text
+                typeof originalNodeState.content[0]?.text === "string"
+                  ? originalNodeState.content[0]?.text
+                  : originalNodeState.content[0]?.text[0].plain_text
               }
             />
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>

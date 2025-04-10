@@ -170,6 +170,7 @@ export default function Editor(props: IProps) {
             }
           />
         ) : (
+          isEditMode && isSplitMode ?  (
           <FoundationForm
             onSubmit={onSubmit}
             documentState={documentState}
@@ -180,8 +181,18 @@ export default function Editor(props: IProps) {
             }
             referencesPHIDInitialOption={referencesPHIDInitialOption}
           />
-        )
-      }
+        ):
+        <FoundationForm
+          onSubmit={onSubmit}
+          documentState={documentState}
+          mode={isEditMode ? "Edition" : "DiffMixed"}
+          parentPHIDInitialOption={parentPHIDInitialOption}
+          originalContextDataPHIDInitialOption={
+            originalContextDataPHIDInitialOption
+          }
+          referencesPHIDInitialOption={referencesPHIDInitialOption}
+        />
+      )}
     </EditorLayout>
   );
 }

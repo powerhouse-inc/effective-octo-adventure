@@ -143,7 +143,11 @@ export function GroundingForm({
               multiline
               onBlur={triggerSubmit}
               mode={mode}
-              baselineValue={""} // TODO: add the right baseline value
+              baselineValue={
+                typeof originalNodeState.content[0]?.text === "string"
+                  ? originalNodeState.content[0]?.text
+                  : originalNodeState.content[0]?.text[0].plain_text
+              }
             />
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <PHIDDiffField

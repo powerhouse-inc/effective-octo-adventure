@@ -9,7 +9,10 @@ import {
 import { EditorLayout } from "../shared/components/EditorLayout.js";
 import { SplitView } from "../shared/components/SplitView.js";
 import { ExploratoryForm } from "./components/ExploratoryForm.js";
-import { fetchSelectedPHIDOption, getStringValue } from "../shared/utils/utils.js";
+import {
+  fetchSelectedPHIDOption,
+  getStringValue,
+} from "../shared/utils/utils.js";
 
 export type IProps = EditorProps<AtlasExploratoryDocument>;
 
@@ -38,34 +41,38 @@ export default function Editor(props: IProps) {
 
   const parentPHIDInitialOption = fetchSelectedPHIDOption(parentId);
   const originalContextDataPHIDInitialOption = fetchSelectedPHIDOption(
-    originalContextDataId,
+    originalContextDataId
   );
   const referencesPHIDInitialOption = fetchSelectedPHIDOption(referencesId);
   const isAligned = documentState.findings.isAligned;
 
   const onSubmit = (data: Record<string, any>) => {
     if (data["docNo"] !== undefined) {
-      dispatch(actions.setDocNumber({ docNo: getStringValue(data['docNo']) }));
+      dispatch(actions.setDocNumber({ docNo: getStringValue(data["docNo"]) }));
     }
     if (data["name"] !== undefined) {
-      dispatch(actions.setExploratoryName({ name: getStringValue(data["name"]) }));
+      dispatch(
+        actions.setExploratoryName({ name: getStringValue(data["name"]) })
+      );
     }
     if (data["masterStatus"] !== undefined) {
       dispatch(
         actions.setMasterStatus({
           masterStatus: data["masterStatus"] as EStatus,
-        }),
+        })
       );
     }
     if (data["content"] !== undefined) {
-      dispatch(actions.setContent({ content: getStringValue(data["content"]) }));
+      dispatch(
+        actions.setContent({ content: getStringValue(data["content"]) })
+      );
     }
     if (data["parent"] !== undefined) {
       if (data["parent"] === null) {
         dispatch(actions.setParent({ parent: [] }));
       } else {
         const newParentId = (data["parent"] as string).split(":")[1];
-        
+
         dispatch(actions.setParent({ parent: [newParentId] }));
       }
     }
@@ -92,14 +99,18 @@ export default function Editor(props: IProps) {
       }
     }
     if (data["additionalGuidance"] !== undefined) {
-      dispatch(actions.addAdditionalGuidance({ additionalGuidance: getStringValue(data["additionalGuidance"]) }));
+      dispatch(
+        actions.addAdditionalGuidance({
+          additionalGuidance: getStringValue(data["additionalGuidance"]),
+        })
+      );
     }
     if (data["originalContextData"] !== undefined) {
       if (data["originalContextData"] === null) {
         dispatch(
           actions.removeContextData({
             id: documentState.originalContextData.split(":")[1],
-          }),
+          })
         );
       } else {
         const newOriginalContextDataId = (
@@ -110,21 +121,23 @@ export default function Editor(props: IProps) {
     }
     if (data["provenance"] !== undefined) {
       dispatch(
-        actions.setProvenance({ provenance: data["provenance"] as string }),
+        actions.setProvenance({ provenance: data["provenance"] as string })
       );
     }
-    if(data["findings"] !== undefined) {
-      dispatch(actions.setFindings({ 
-        isAligned: data["findings"].isAligned as boolean,
-        comment: data["findings"].comment as string,
-       }));
+    if (data["findings"] !== undefined) {
+      dispatch(
+        actions.setFindings({
+          isAligned: data["findings"].isAligned as boolean,
+          comment: data["findings"].comment as string,
+        })
+      );
     }
     if (data["references"] !== undefined) {
       if (data["references"] === null) {
         dispatch(
           actions.removeReference({
             reference: documentState.references.split(":")[1],
-          }),
+          })
         );
       } else {
         const newReferenceId = (data["references"] as string).split(":")[1];
@@ -132,9 +145,11 @@ export default function Editor(props: IProps) {
       }
     }
     if (data["atlasType"] !== undefined) {
-      dispatch(actions.setAtlasType({ atlasType: data["atlasType"] as EAtlasType }));
+      dispatch(
+        actions.setAtlasType({ atlasType: data["atlasType"] as EAtlasType })
+      );
     }
-  }
+  };
   return (
     <EditorLayout
       title="Exploratory Document"
@@ -149,7 +164,9 @@ export default function Editor(props: IProps) {
                 documentState={documentState}
                 mode={isEditMode ? "Edition" : "DiffRemoved"}
                 parentPHIDInitialOption={parentPHIDInitialOption}
-                originalContextDataPHIDInitialOption={originalContextDataPHIDInitialOption}
+                originalContextDataPHIDInitialOption={
+                  originalContextDataPHIDInitialOption
+                }
                 referencesPHIDInitialOption={referencesPHIDInitialOption}
                 isAligned={isAligned}
                 isSplitMode={isSplitMode}
@@ -161,7 +178,9 @@ export default function Editor(props: IProps) {
                 documentState={documentState}
                 mode={isEditMode ? "DiffMixed" : "DiffAdditions"}
                 parentPHIDInitialOption={parentPHIDInitialOption}
-                originalContextDataPHIDInitialOption={originalContextDataPHIDInitialOption}
+                originalContextDataPHIDInitialOption={
+                  originalContextDataPHIDInitialOption
+                }
                 referencesPHIDInitialOption={referencesPHIDInitialOption}
                 isAligned={isAligned}
                 isSplitMode={isSplitMode}
@@ -174,7 +193,9 @@ export default function Editor(props: IProps) {
             documentState={documentState}
             mode={isEditMode ? "Edition" : "Readonly"}
             parentPHIDInitialOption={parentPHIDInitialOption}
-            originalContextDataPHIDInitialOption={originalContextDataPHIDInitialOption}
+            originalContextDataPHIDInitialOption={
+              originalContextDataPHIDInitialOption
+            }
             referencesPHIDInitialOption={referencesPHIDInitialOption}
             isAligned={isAligned}
           />

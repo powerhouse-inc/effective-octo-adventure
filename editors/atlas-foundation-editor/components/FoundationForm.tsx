@@ -68,6 +68,9 @@ export function FoundationForm({
         defaultValues={{ ...documentState }}
         onSubmit={onSubmit}
         submitChangesOnly
+        extraFormProps={{
+          shouldFocusError: false,
+        }}
       >
         {({ triggerSubmit }) => (
           <div className={cn("flex flex-col gap-3")}>

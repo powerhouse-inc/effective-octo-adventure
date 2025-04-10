@@ -9,7 +9,6 @@ import {
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import type { EditorMode } from "../../shared/types.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
-import { isFormReadOnly } from "../../shared/utils/form-common.js";
 import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
 import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
 import { PHIDDiffField } from "../../shared/components/diff-fields/phid-diff-field.js";
@@ -38,7 +37,6 @@ export function FoundationForm({
   referencesPHIDInitialOption,
   isSplitMode,
 }: FoundationFormProps) {
-  const isReadOnly = isFormReadOnly(mode);
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
 
@@ -49,6 +47,8 @@ export function FoundationForm({
       (documentState.atlasType as ParsedNotionDocumentType) || "article",
     ),
   );
+
+  console.log("originalNodeState", originalNodeState);
 
   const formRef = useRef<UseFormReturn>(null);
 
@@ -153,7 +153,11 @@ export function FoundationForm({
               multiline
               onBlur={triggerSubmit}
               mode={mode}
-              baselineValue={""} // TODO: add the right baseline value
+              baselineValue={
+                typeof originalNodeState.content[0].text === "string"
+                  ? originalNodeState.content[0].text
+                  : originalNodeState.content[0].text[0].plain_text
+              }
             />
             <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
               <PHIDDiffField
@@ -171,7 +175,7 @@ export function FoundationForm({
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}
                 mode={mode}
-                baselineValue={""} // TODO: add the right baseline value
+                baselineValue={originalNodeState.parents?.[0]}
               />
             </div>
             <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
@@ -204,7 +208,7 @@ export function FoundationForm({
                 }}
                 onBlur={triggerSubmit}
                 mode={mode}
-                baselineValue={""} // TODO: add the right baseline value
+                baselineValue={originalNodeState.hubUrls[0]}
               />
             </div>
             <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>

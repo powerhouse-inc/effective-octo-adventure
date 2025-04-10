@@ -17,6 +17,8 @@ import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/at
 import { useEffect, useRef, useState } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
+import { getFlexLayoutClassName, getWidthClassName } from "../../shared/utils/styles.js";
+import { PositionedWrapper } from "../../shared/components/PositionedWrapper.js";
 
 interface GroundingFormProps {
   onSubmit: (data: Record<string, any>) => void;
@@ -64,15 +66,13 @@ export function GroundingForm({
         defaultValues={{ ...documentState }}
         onSubmit={onSubmit}
         submitChangesOnly
+        extraFormProps={{
+          shouldFocusError: false,
+        }}
       >
         {({ triggerSubmit }) => (
           <div className={cn("flex flex-col gap-3")}>
-            <div
-              className={cn(
-                "flex gap-2",
-                isSplitMode ? "flex-col" : "flex-row",
-              )}
-            >
+            <div className={cn(getFlexLayoutClassName(isSplitMode ?? false))}>
               <div className={cn("flex-1")}>
                 <StringDiffField
                   name="docNo"
@@ -93,13 +93,8 @@ export function GroundingForm({
                   baselineValue={originalNodeState.name}
                 />
               </div>
-            </div>
-            <div
-              className={cn(
-                "flex gap-2",
-                isSplitMode ? "flex-col" : "flex-row",
-              )}
-            >
+              </div>
+              <div className={cn(getFlexLayoutClassName(isSplitMode ?? false))}>
               <div className={cn("flex-1")}>
                 <EnumDiffField
                   name="atlasType"
@@ -153,7 +148,7 @@ export function GroundingForm({
                   : originalNodeState.content[0].text[0].plain_text
               }
             />
-            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
+            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <PHIDDiffField
                 name="parent"
                 label="Parent Document"
@@ -172,7 +167,7 @@ export function GroundingForm({
                 baselineValue={originalNodeState.parents?.[0]}
               />
             </div>
-            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
+            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <PHIDDiffField
                 name="originalContextData"
                 label="Original Context Data"
@@ -191,7 +186,7 @@ export function GroundingForm({
                 baselineValue={""} // TODO: add the right baseline value
               />
             </div>
-            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
+            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <UrlDiffField
                 name="provenance"
                 label="Provenance"
@@ -205,7 +200,7 @@ export function GroundingForm({
                 baselineValue={originalNodeState.hubUrls[0]}
               />
             </div>
-            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
+           <PositionedWrapper isSplitMode={isSplitMode}>
               <EnumDiffField
                 name="globalTags"
                 label="Tags"
@@ -217,8 +212,8 @@ export function GroundingForm({
                 mode={mode}
                 baselineValue={""} // TODO: add the right baseline value
               />
-            </div>
-            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
+            </PositionedWrapper>
+            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <PHIDDiffField
                 name="references"
                 label="Atlas References"

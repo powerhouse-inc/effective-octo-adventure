@@ -67,50 +67,60 @@ const PHIDDiffField = ({
           )}
         >
           <div className={cn("flex w-full flex-col gap-1 mt-8")}>
-            {phidProps.variant === "withValueAndTitle" ||
-              (phidProps.variant === "withValueTitleAndDescription" && (
-                <div className={cn("flex gap-2 w-full")}>
-                  {/* icon space */}
-                  <div className={cn("size-6 shrink-0")} />
+            {(phidProps.variant === "withValueAndTitle" ||
+              phidProps.variant === "withValueTitleAndDescription") && (
+              <div className={cn("flex gap-2 w-full")}>
+                {/* icon space */}
+                <div className={cn("size-6 shrink-0")} />
 
-                  <div
-                    className={cn(
-                      "flex min-w-0 w-full max-w-full grow flex-col gap-[-2px] overflow-hidden",
-                    )}
-                  >
-                    {/* title */}
-                    <DiffText
-                      baseline={originalOption?.title ?? ""}
-                      value={currentOption?.title ?? ""}
-                      mode={mode}
-                      diffMode={diffMode}
-                    />
-
-                    {/* path */}
-                    <DiffText
-                      baseline={originalPathText ?? ""}
-                      value={currentPathText ?? ""}
-                      mode={mode}
-                      diffMode={diffMode}
-                    />
-                  </div>
-                </div>
-              ))}
-
-            {/* description */}
-            {phidProps.variant === "withValueTitleAndDescription" &&
-              currentOption?.description &&
-              // skip empty spaces
-              currentOption.description.trim() !== "" && (
-                <div className={cn("flex flex-col w-full")}>
+                <div
+                  className={cn(
+                    "flex min-w-0 w-full max-w-full grow flex-col gap-[-2px] overflow-hidden",
+                  )}
+                >
+                  {/* title */}
                   <DiffText
-                    baseline={originalOption?.description ?? ""}
-                    value={currentOption.description}
+                    baseline={originalOption?.title ?? "Title not available"}
+                    value={currentOption?.title ?? "Title not available"}
                     mode={mode}
                     diffMode={diffMode}
+                    className={cn(
+                      "truncate text-sm leading-5 w-full max-w-full",
+                    )}
+                  />
+
+                  {/* path */}
+                  <DiffText
+                    baseline={originalPathText ?? "Type not available"}
+                    value={currentPathText ?? "Type not available"}
+                    mode={mode}
+                    diffMode={diffMode}
+                    className={cn(
+                      "truncate text-xs leading-5 w-full max-w-full",
+                    )}
                   />
                 </div>
-              )}
+              </div>
+            )}
+
+            {/* description */}
+            {phidProps.variant === "withValueTitleAndDescription" && (
+              <div className={cn("flex flex-col w-full")}>
+                <DiffText
+                  baseline={
+                    originalOption?.description ?? "Description not available"
+                  }
+                  value={
+                    currentOption?.description ?? "Description not available"
+                  }
+                  mode={mode}
+                  diffMode={diffMode}
+                  className={cn(
+                    "line-clamp-2 text-xs leading-5 w-full max-w-full",
+                  )}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -18,6 +18,9 @@ import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/at
 import { useEffect, useRef, useState } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
+import { getFlexLayoutClassName, getWidthClassName } from "../../shared/utils/styles.js";
+import { PositionedWrapper } from "../../shared/components/PositionedWrapper.js";
+import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 
 interface GroundingFormProps {
   onSubmit: (data: Record<string, any>) => void;
@@ -26,6 +29,7 @@ interface GroundingFormProps {
   parentPHIDInitialOption?: PHIDOption;
   originalContextDataPHIDInitialOption?: PHIDOption;
   referencesPHIDInitialOption?: PHIDOption;
+  isSplitMode?: boolean;
 }
 
 export function GroundingForm({
@@ -35,10 +39,33 @@ export function GroundingForm({
   parentPHIDInitialOption,
   originalContextDataPHIDInitialOption,
   referencesPHIDInitialOption,
+  isSplitMode,
 }: GroundingFormProps) {
   const isReadOnly = isFormReadOnly(mode);
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
+
+  const [contentValue, setContentValue] = useState<string>(
+    documentState.content || ""
+  );
+
+  // Update contentValue when documentState changes
+  useEffect(() => {
+    setContentValue(documentState.content || "");
+  }, [documentState.content]);
+
+  // Custom handler for content changes
+  const handleContentChange = (value: string) => {
+    setContentValue(value);
+  };
+
+  // Custom handler for content blur
+  const handleContentBlur = () => {
+    // Only submit if the content has actually changed
+    if (contentValue !== documentState.content) {
+      onSubmit({ content: contentValue });
+    }
+  };
 
   // baseline node state
   const [originalNodeState] = useState(() =>
@@ -64,10 +91,13 @@ export function GroundingForm({
         defaultValues={{ ...documentState }}
         onSubmit={onSubmit}
         submitChangesOnly
+        extraFormProps={{
+          shouldFocusError: false,
+        }}
       >
         {({ triggerSubmit }) => (
           <div className={cn("flex flex-col gap-3")}>
-            <div className={cn("flex flex-row gap-2")}>
+            <div className={cn(getFlexLayoutClassName(isSplitMode ?? false))}>
               <div className={cn("flex-1")}>
                 <StringDiffField
                   name="docNo"
@@ -88,6 +118,8 @@ export function GroundingForm({
                   baselineValue={originalNodeState.name}
                 />
               </div>
+              </div>
+              <div className={cn(getFlexLayoutClassName(isSplitMode ?? false))}>
               <div className={cn("flex-1")}>
                 <EnumDiffField
                   name="atlasType"
@@ -128,21 +160,19 @@ export function GroundingForm({
                 />
               </div>
             </div>
-            <StringDiffField
-              name="content"
+            <MarkdownEditor
+              value={contentValue}
+              onChange={handleContentChange}
+              onBlur={handleContentBlur}
+              height={350}
               label="Content"
-              placeholder="Content"
-              multiline
-              onBlur={triggerSubmit}
-              mode={mode}
-              baselineValue={""} // TODO: add the right baseline value
             />
-            <div className={cn("w-1/2")}>
+            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <PHIDDiffField
                 name="parent"
                 label="Parent Document"
                 placeholder="phd:"
-                variant="withValueTitleAndDescription"
+                variant="withValueAndTitle"
                 allowUris
                 initialOptions={
                   parentPHIDInitialOption
@@ -156,12 +186,12 @@ export function GroundingForm({
                 baselineValue={""} // TODO: add the right baseline value
               />
             </div>
-            <div className={cn("w-1/2")}>
+            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <PHIDDiffField
                 name="originalContextData"
                 label="Original Context Data"
                 placeholder="phd:"
-                variant="withValueTitleAndDescription"
+                variant="withValueAndTitle"
                 allowUris
                 initialOptions={
                   originalContextDataPHIDInitialOption
@@ -175,7 +205,7 @@ export function GroundingForm({
                 baselineValue={""} // TODO: add the right baseline value
               />
             </div>
-            <div className={cn("w-1/2")}>
+            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <UrlDiffField
                 name="provenance"
                 label="Provenance"
@@ -189,7 +219,7 @@ export function GroundingForm({
                 baselineValue={""} // TODO: add the right baseline value
               />
             </div>
-            <div className={cn("w-1/2")}>
+           <PositionedWrapper isSplitMode={isSplitMode}>
               <EnumDiffField
                 name="globalTags"
                 label="Tags"
@@ -201,13 +231,13 @@ export function GroundingForm({
                 mode={mode}
                 baselineValue={""} // TODO: add the right baseline value
               />
-            </div>
-            <div className={cn("w-1/2")}>
+            </PositionedWrapper>
+            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <PHIDDiffField
                 name="references"
                 label="Atlas References"
                 placeholder="phd:"
-                variant="withValueTitleAndDescription"
+                variant="withValueAndTitle"
                 allowUris
                 initialOptions={
                   referencesPHIDInitialOption

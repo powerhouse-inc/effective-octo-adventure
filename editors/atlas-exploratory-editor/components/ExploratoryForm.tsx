@@ -3,7 +3,9 @@ import {
   cn,
   EnumField,
   Form,
+  InputBaseProps,
   PHIDField,
+  PHIDFieldProps,
 } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
@@ -26,6 +28,7 @@ import {
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
+import { ArrayField } from "../../shared/components/ArrayField.js";
 
 interface ExploratoryFormProps {
   onSubmit: (data: Record<string, any>) => void;
@@ -66,6 +69,25 @@ export function ExploratoryForm({
   }, [documentState]);
   return (
     <ContentCard tagText={tagText} variant={cardVariant} className="mt-4">
+      <ArrayField<string, PHIDFieldProps>
+        onAdd={(value) => alert(value)}
+        onRemove={(value) => alert(value)}
+        onUpdate={(value) => alert(value)}
+        values={[
+          "phd:2ac19da0-6564-4cf3-a668-90ffc8006786",
+          "phd:2ac19da0-6564-4cf3-a668-90ffc8006786",
+        ]}
+        label="Parent Document Testing"
+        component={PHIDField}
+        componentProps={{
+          placeholder: "phd:",
+          variant: "withValueTitleAndDescription",
+          allowUris: true,
+          fetchOptionsCallback: fetchPHIDOptions,
+          fetchSelectedOptionCallback: fetchSelectedPHIDOption,
+        }}
+      />
+
       <Form
         onSubmit={onSubmit}
         submitChangesOnly

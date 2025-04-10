@@ -17,8 +17,10 @@ import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/at
 import { useEffect, useRef, useState } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
-import { getFlexLayoutClassName, getWidthClassName } from "../../shared/utils/styles.js";
-import { PositionedWrapper } from "../../shared/components/PositionedWrapper.js";
+import {
+  getFlexLayoutClassName,
+  getWidthClassName,
+} from "../../shared/utils/styles.js";
 
 interface GroundingFormProps {
   onSubmit: (data: Record<string, any>) => void;
@@ -93,8 +95,8 @@ export function GroundingForm({
                   baselineValue={originalNodeState.name}
                 />
               </div>
-              </div>
-              <div className={cn(getFlexLayoutClassName(isSplitMode ?? false))}>
+            </div>
+            <div className={cn(getFlexLayoutClassName(isSplitMode ?? false))}>
               <div className={cn("flex-1")}>
                 <EnumDiffField
                   name="atlasType"
@@ -200,7 +202,7 @@ export function GroundingForm({
                 baselineValue={originalNodeState.hubUrls[0]}
               />
             </div>
-           <PositionedWrapper isSplitMode={isSplitMode}>
+            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <EnumDiffField
                 name="globalTags"
                 label="Tags"
@@ -212,7 +214,7 @@ export function GroundingForm({
                 mode={mode}
                 baselineValue={""} // TODO: add the right baseline value
               />
-            </PositionedWrapper>
+            </div>
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <PHIDDiffField
                 name="references"

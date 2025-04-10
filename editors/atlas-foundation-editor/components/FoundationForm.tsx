@@ -17,8 +17,10 @@ import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/at
 import { useEffect, useRef, useState } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
-import { getFlexLayoutClassName, getWidthClassName } from "../../shared/utils/styles.js";
-import { PositionedWrapper } from "../../shared/components/PositionedWrapper.js";
+import {
+  getFlexLayoutClassName,
+  getWidthClassName,
+} from "../../shared/utils/styles.js";
 
 interface FoundationFormProps {
   onSubmit: (data: Record<string, any>) => void;
@@ -50,8 +52,6 @@ export function FoundationForm({
     ),
   );
 
-  console.log("originalNodeState", originalNodeState);
-
   const formRef = useRef<UseFormReturn>(null);
 
   // keep the form state in sync with the document state
@@ -74,7 +74,7 @@ export function FoundationForm({
       >
         {({ triggerSubmit }) => (
           <div className={cn("flex flex-col gap-3")}>
-            <div className={getFlexLayoutClassName(isSplitMode ?? false, )}>
+            <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
               <div className={cn("flex-1")}>
                 <StringDiffField
                   name="docNo"
@@ -206,7 +206,7 @@ export function FoundationForm({
                 baselineValue={originalNodeState.hubUrls[0]}
               />
             </div>
-            <PositionedWrapper isSplitMode={isSplitMode}>
+            <div className={getWidthClassName(isSplitMode ?? false)}>
               <EnumDiffField
                 name="globalTags"
                 label="Tags"
@@ -218,7 +218,7 @@ export function FoundationForm({
                 mode={mode}
                 baselineValue={""} // TODO: add the right baseline value
               />
-            </PositionedWrapper>
+            </div>
             <div className={getWidthClassName(isSplitMode ?? false)}>
               <PHIDDiffField
                 name="references"

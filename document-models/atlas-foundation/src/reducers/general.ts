@@ -28,20 +28,32 @@ export const reducer: AtlasFoundationGeneralOperations = {
       docNo: action.input.docNo || null,
     };
   },
+  // TODO: Implement addReferenceOperation here and in schema
+  // addReferenceOperation(state, action, dispatch) {
+  //   state.references = state.references.filter(
+  //     (ref) => ref.id !== action.input.id,
+  //   );
 
+  //   state.references.push({
+  //     id: action.input.id,
+  //     name: action.input.name || null,
+  //     docNo: action.input.docNo || null,
+  //   });
+  // },
+  // TODO: Implement removeReferenceOperation here and in schema
+    // removeReferenceOperation(state, action, dispatch) {
+  //   state.references = state.references.filter((r) => r.id !== action.input.id);
+  //   console.log("state.references", state.references);
+  // },
   addReferenceOperation(state, action, dispatch) {
-    state.references = state.references.filter(
-      (ref) => ref.id !== action.input.id,
-    );
-
-    state.references.push({
+    const newReference = {
       id: action.input.id,
       name: action.input.name || null,
       docNo: action.input.docNo || null,
-    });
+    };
+    state.references =  [...state.references,newReference];
   },
-
   removeReferenceOperation(state, action, dispatch) {
-    state.references = state.references.filter((r) => r.id !== action.input.id);
+    state.references = []
   },
 };

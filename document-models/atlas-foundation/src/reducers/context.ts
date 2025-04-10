@@ -13,7 +13,7 @@ export const reducer: AtlasFoundationContextOperations = {
   //     docNo: action.input.docNo || null,
   //   });
   // },
-// TODO: Implement addContextDataOperation here and in schema
+  // TODO: Implement addContextDataOperation here and in schema
   // removeContextDataOperation(state, action, dispatch) {
   //   state.originalContextData = state.originalContextData.filter(
   //     (ocd) => ocd.id !== action.input.id,
@@ -21,16 +21,16 @@ export const reducer: AtlasFoundationContextOperations = {
   // }
 
   addContextDataOperation(state, action, dispatch) {
-  
-    state.originalContextData.push({
+    const newContextData = {
       id: action.input.id,
       name: action.input.name || null,
       docNo: action.input.docNo || null,
-    });
+    };
+    state.originalContextData = [newContextData];
   },
 
   removeContextDataOperation(state, action, dispatch) {
-    state.originalContextData = []
+    state.originalContextData = [];
   },
 
   setProvenanceOperation(state, action, dispatch) {

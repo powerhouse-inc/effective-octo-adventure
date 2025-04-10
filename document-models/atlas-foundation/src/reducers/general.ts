@@ -41,7 +41,7 @@ export const reducer: AtlasFoundationGeneralOperations = {
   //   });
   // },
   // TODO: Implement removeReferenceOperation here and in schema
-    // removeReferenceOperation(state, action, dispatch) {
+  // removeReferenceOperation(state, action, dispatch) {
   //   state.references = state.references.filter((r) => r.id !== action.input.id);
   //   console.log("state.references", state.references);
   // },
@@ -51,9 +51,9 @@ export const reducer: AtlasFoundationGeneralOperations = {
       name: action.input.name || null,
       docNo: action.input.docNo || null,
     };
-    state.references =  [...state.references,newReference];
+    state.references = [newReference];
   },
   removeReferenceOperation(state, action, dispatch) {
-    state.references = []
+    state.references = [];
   },
 };

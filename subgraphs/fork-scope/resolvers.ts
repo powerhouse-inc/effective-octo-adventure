@@ -11,14 +11,16 @@ if (process.env.NODE_ENV === "development") {
 }
 
 const PORT = process.env.PORT || 4001;
-const herokuOrLocal = process.env.HEROKU_APP_NAME
-  ? `https://${process.env.HEROKU_APP_NAME}.herokuapp.com`
+const herokuOrLocal = process.env.HEROKU_APP_DEFAULT_DOMAIN_NAME
+  ? `https://${process.env.HEROKU_APP_DEFAULT_DOMAIN_NAME}`
   : `http://localhost:${PORT}/`;
 // Reactor where the documents will be synchronized to
-const basePath = process.env.BASE_PATH ? 
-  (process.env.BASE_PATH[0] == "/" ? process.env.BASE_PATH.slice(1) : process.env.BASE_PATH)
+const basePath = process.env.BASE_PATH
+  ? process.env.BASE_PATH[0] == "/"
+    ? process.env.BASE_PATH.slice(1)
+    : process.env.BASE_PATH
   : "";
-const endPointWithBasePath = new URL("./" + basePath, herokuOrLocal).href
+const endPointWithBasePath = new URL("./" + basePath, herokuOrLocal).href;
 const GQL_ENDPOINT = endPointWithBasePath;
 
 console.log("> GQL_ENDPOINT: ", GQL_ENDPOINT);
@@ -40,12 +42,10 @@ export const getResolvers = (subgraph: Subgraph) => {
             .replaceAll(/[-:]/g, "")
             .replace("T", "_");
 
-         
         const driveId: string = args.driveId || DRIVE_NAME;
 
-         
         const docId = args.docId;
-        
+
         const config = {
           driveName: driveId,
           gqlEndpoint: GQL_ENDPOINT,
@@ -64,11 +64,11 @@ export const getResolvers = (subgraph: Subgraph) => {
 
         // waits 200ms to check if an error occurs in the initial sync proccess
         await Promise.race([
-          syncDocuments(config).catch(error => {
+          syncDocuments(config).catch((error) => {
             console.error("Error in syncDocuments: ", error);
             throw error;
           }),
-          new Promise((resolve) => setTimeout(resolve, 200))
+          new Promise((resolve) => setTimeout(resolve, 200)),
         ]);
 
         /*

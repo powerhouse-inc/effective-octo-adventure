@@ -7,22 +7,46 @@
 import { type AtlasScopeContextOperations } from "../../gen/context/operations.js";
 
 export const reducer: AtlasScopeContextOperations = {
-  // TODO:Disable the save in the history
-  addContextDataOperation(state, action, dispatch) {
-    state.originalContextData = state.originalContextData.filter(
-      (ocd) => ocd.id !== action.input.id,
-    );
+  // TODO: Implement this in  here and schema
+  // addContextDataOperation(state, action, dispatch) {
+  //   state.originalContextData = state.originalContextData.filter(
+  //     (ocd) => ocd.id !== action.input.id,
+  //   );
 
-    state.originalContextData.push({
+  //   state.originalContextData.push({
+  //     id: action.input.id,
+  //     name: action.input.name || null,
+  //     docNo: action.input.docNo || null,
+  //   });
+  // },
+  // removeContextDataOperation(state, action, dispatch) {
+  //   state.originalContextData = state.originalContextData.filter(
+  //     (ocd) => ocd.id !== action.input.id,
+  //   );
+  // },
+  // addContextDataOperation(state, action, dispatch) {
+  
+  //   state.originalContextData.push({
+  //     id: action.input.id,
+  //     name: action.input.name || null,
+  //     docNo: action.input.docNo || null,
+  //   });
+  // },
+
+  // removeContextDataOperation(state, action, dispatch) {
+  //   state.originalContextData = []
+  // },
+  addContextDataOperation(state, action, dispatch) {
+    const newContextData = {
       id: action.input.id,
       name: action.input.name || null,
       docNo: action.input.docNo || null,
-    });
+    };
+    state.originalContextData=[newContextData,...state.originalContextData];
   },
+
   removeContextDataOperation(state, action, dispatch) {
-    state.originalContextData = state.originalContextData.filter(
-      (ocd) => ocd.id !== action.input.id,
-    );
+    state.originalContextData = []
   },
   setProvenanceOperation(state, action, dispatch) {
     state.provenance = action.input.provenance || null;

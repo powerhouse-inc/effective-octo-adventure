@@ -1,6 +1,6 @@
 {
     "name": "@sky-ph/atlas",
-    "version": "1.2.29",
+    "version": "1.2.30",
     "license": "AGPL-3.0-only",
     "type": "module",
     "publishConfig": {
@@ -29,6 +29,14 @@
         "./manifest": {
             "types": "./dist/manifest.d.ts",
             "default": "./dist/manifest.js"
+        },
+        "./atlas-feedback-issues-document-model": {
+            "types": "./dist/document-models/atlas-feedback-issues/index.d.ts",
+            "default": "./dist/document-models/atlas-feedback-issues/index.js"
+        },
+        "./atlas-feedback-issues-editor": {
+            "types": "./dist/editors/atlas-feedback-issues/index.d.ts",
+            "default": "./dist/editors/atlas-feedback-issues/index.js"
         },
         "./style.css": "./dist/style.css"
     },

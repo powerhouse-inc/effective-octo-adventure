@@ -14,3 +14,6 @@ export const module: EditorModule<AtlasFeedbackIssuesDocument> = {
 };
 
 export default module;
+
+export * from "./utils/index.js";
+export { NodeOptionsCombobox } from "./components/node-options-combobox.js";

@@ -143,7 +143,6 @@ export function FoundationForm({
             </div>
             <StringDiffField
               name="content"
-              label="Content"
               placeholder="Content"
               multiline
               onBlur={triggerSubmit}

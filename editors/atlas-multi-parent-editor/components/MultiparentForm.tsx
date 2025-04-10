@@ -146,7 +146,6 @@ export function MultiParentForm({
               disabled={isReadOnly}
               name="content"
               multiline={true}
-              label="Content"
               placeholder="Content"
               onBlur={triggerSubmit}
               mode={mode}

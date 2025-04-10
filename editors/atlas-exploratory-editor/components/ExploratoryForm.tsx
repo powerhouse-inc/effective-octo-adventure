@@ -157,7 +157,6 @@ export function ExploratoryForm({
               disabled={isReadOnly}
               name="content"
               multiline={true}
-              label="Content"
               placeholder="Content"
               onBlur={triggerSubmit}
               mode={mode}
@@ -274,7 +273,6 @@ export function ExploratoryForm({
                 label="Tags"
                 multiple
                 name="globalTags"
-                onChange={triggerSubmit}
                 options={exploratoryTagsEnumOptions}
                 onBlur={triggerSubmit}
                 mode={mode}

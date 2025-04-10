@@ -7,38 +7,35 @@
 import { type AtlasGroundingContextOperations } from "../../gen/context/operations.js";
 
 export const reducer: AtlasGroundingContextOperations = {
+  // TODO: change this when the UI is updated
   addContextDataOperation(state, action, dispatch) {
-    state.originalContextData = state.originalContextData.filter(
-      (ocd) => ocd.id !== action.input.id,
-    );
-
-    state.originalContextData.push({
+    const newContextData = {
       id: action.input.id,
       name: action.input.name || null,
       docNo: action.input.docNo || null,
-    });
+    };
+    state.originalContextData = [newContextData];
   },
   removeContextDataOperation(state, action, dispatch) {
-    state.originalContextData = state.originalContextData.filter(
-      (ocd) => ocd.id !== action.input.id,
-    );
+    state.originalContextData = [];
   },
+
   setProvenanceOperation(state, action, dispatch) {
     state.provenance = action.input.provenance;
   },
   setNotionIdOperation(state, action, dispatch) {
     state.notionId = action.input.notionID;
   },
+  // TODO: change this when the UI is updated
   addReferenceOperation(state, action, dispatch) {
     const newReference = {
       id: action.input.id,
       name: action.input.name || null,
       docNo: action.input.docNo || null,
     };
-
-    state.references.push(newReference);
+    state.references = [newReference];
   },
   removeReferenceOperation(state, action, dispatch) {
-    state.references = state.references.filter((r) => r.id !== action.input.id);
+    state.references = [];
   },
 };

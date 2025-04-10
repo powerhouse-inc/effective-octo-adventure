@@ -22,7 +22,7 @@ export default function Editor(props: IProps) {
   // TODO: remove or update this once all the data in global state is in the expected format or the design is updated
   const originalDocumentState = props.document.state.global;
   const parentId = originalDocumentState.parent?.id
-    ? `phd:${originalDocumentState.parent?.id}`
+    ? `phd:${originalDocumentState.parent.id}`
     : "";
   const originalContextDataId = originalDocumentState.originalContextData[0]?.id
     ? `phd:${originalDocumentState.originalContextData[0].id}`
@@ -173,7 +173,7 @@ export default function Editor(props: IProps) {
           <GroundingForm
             onSubmit={onSubmit}
             documentState={documentState}
-            mode={isEditMode ? "Edition" : "Readonly"}
+            mode={isEditMode ? "Edition" : "DiffMixed"}
             parentPHIDInitialOption={parentPHIDInitialOption}
             originalContextDataPHIDInitialOption={
               originalContextDataPHIDInitialOption

@@ -11,7 +11,8 @@ import {
 } from "../scripts/apply-changes/atlas-base/NotionTypes.js";
 
 export const viewTree: ViewTree = viewTreeData as unknown as ViewTree;
-export const documentIndex = documentIndexData as ParsedNotionDocumentIndex;
+export const documentIndex =
+  documentIndexData as unknown as ParsedNotionDocumentIndex;
 
 export const getEmptyNotionDocument = (
   notionId: string,

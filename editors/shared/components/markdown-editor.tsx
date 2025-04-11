@@ -3,14 +3,19 @@ import { useEffect, useState } from "react";
 import "@uiw/react-md-editor/markdown-editor.css";
 // No import is required in the WebPack.
 import "@uiw/react-markdown-preview/markdown.css";
+import remarkGfm from 'remark-gfm';
+import rehypeSlug from 'rehype-slug';
+import './markdown-editor.module.css';
 
-// Custom preview renderer to make links open in new tabs
+// Custom preview renderer to make links open in new tabs and ensure proper list rendering
 const previewOptions = {
   components: {
     a: ({ node, ...props }: { node: any; [key: string]: any }) => (
       <a {...props} target="_blank" rel="noopener noreferrer" />
     ),
   },
+  rehypePlugins: [rehypeSlug],
+  remarkPlugins: [remarkGfm],
 };
 
 interface MarkdownEditorProps {
@@ -75,6 +80,11 @@ export function MarkdownEditor({
             previewOptions={previewOptions}
             hideToolbar={readOnly}
             enableScroll={true}
+            preview="live"
+            extraCommands={[]}
+            textareaProps={{
+              placeholder: "Write your content here...",
+            }}
           />
         </div>
       )}

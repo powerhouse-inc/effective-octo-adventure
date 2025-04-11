@@ -81,7 +81,11 @@ const PHIDDiffField = ({
                   {/* title */}
                   <DiffText
                     baseline={originalOption?.title ?? "Title not available"}
-                    value={currentOption?.title ?? "Title not available"}
+                    value={
+                      currentOption?.title ??
+                      phidProps.initialOptions?.[0].title ??
+                      "Title not available"
+                    }
                     mode={mode}
                     diffMode={diffMode}
                     className={cn(

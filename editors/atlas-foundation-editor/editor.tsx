@@ -13,6 +13,7 @@ import {
   getStringValue,
   fetchSelectedPHIDOption,
 } from "../shared/utils/utils.js";
+import { type PHIDOption } from "@powerhousedao/design-system/ui";
 
 export type IProps = EditorProps<AtlasFoundationDocument>;
 
@@ -34,11 +35,18 @@ export default function Editor(props: IProps) {
   const documentState = {
     ...originalDocumentState,
     parent: parentId,
-    provenance: originalDocumentState.provenance[0] || "",
+    provenance: originalDocumentState.provenance?.[0] || "",
     originalContextData: originalContextDataId,
     references: referencesId,
   };
-  const parentPHIDInitialOption = fetchSelectedPHIDOption(parentId);
+  // TODO: update this with the correct data when available
+  const parentPHIDInitialOption: PHIDOption = {
+    icon: "File",
+    title: `${originalDocumentState.parent?.docNo ?? ""} - ${originalDocumentState.parent?.name ?? ""}`,
+    path: "Type not available",
+    value: parentId,
+    description: undefined,
+  };
   const originalContextDataPHIDInitialOption = fetchSelectedPHIDOption(
     originalContextDataId,
   );
@@ -72,10 +80,19 @@ export default function Editor(props: IProps) {
     }
     if (data["parent"] !== undefined) {
       if (data["parent"] === null) {
-        dispatch(actions.setParent({ id: "" }));
+        dispatch(
+          actions.setParent({ id: "", docNo: undefined, name: undefined }),
+        );
       } else {
         const newParentId = (data["parent"] as string).split(":")[1];
-        dispatch(actions.setParent({ id: newParentId }));
+        const newParentData = fetchSelectedPHIDOption(data["parent"] as string);
+        dispatch(
+          actions.setParent({
+            id: newParentId,
+            docNo: newParentData?.title?.split(" - ")[0] ?? "",
+            name: newParentData?.title?.split(" - ")[1] ?? "",
+          }),
+        );
       }
     }
     if (data["originalContextData"] !== undefined) {

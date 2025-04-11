@@ -6,134 +6,134 @@
     "publishConfig": {
         "access": "public"
     },
-    "files": [
-        "/dist"
-    ],
-    "exports": {
-        ".": {
-            "types": "./dist/index.d.ts",
-            "default": "./dist/index.js"
-        },
-        "./editors": {
-            "types": "./dist/editors/index.d.ts",
-            "default": "./dist/editors/index.js"
-        },
-        "./document-models": {
-            "types": "./dist/document-models/index.d.ts",
-            "default": "./dist/document-models/index.js"
-        },
-        "./subgraphs": {
-            "types": "./dist/subgraphs/index.d.ts",
-            "default": "./dist/subgraphs/index.js"
-        },
-        "./manifest": {
-            "types": "./dist/manifest.d.ts",
-            "default": "./dist/manifest.js"
-        },
-        "./atlas-feedback-issues-document-model": {
-            "types": "./dist/document-models/atlas-feedback-issues/index.d.ts",
-            "default": "./dist/document-models/atlas-feedback-issues/index.js"
-        },
-        "./atlas-feedback-issues-editor": {
-            "types": "./dist/editors/atlas-feedback-issues/index.d.ts",
-            "default": "./dist/editors/atlas-feedback-issues/index.js"
-        },
-        "./style.css": "./dist/style.css"
+  "files": [
+    "/dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
-    "scripts": {
-        "lint": "eslint .",
-        "build:tsc": "tsc",
-        "build:tsc:watch": "tsc --watch",
-        "build:css": "npx @tailwindcss/cli -i ./style.css -o ./dist/style.css",
-        "build:css:watch": "npx @tailwindcss/cli -i ./style.css -o ./dist/style.css --watch",
-        "build": "npm run build:tsc && npm run build:css",
-        "test": "vitest run",
-        "test:watch": "vitest",
-        "prepublishOnly": "npm run build",
-        "generate": "ph-cli generate",
-        "connect": "ph-cli connect",
-        "reactor": "ph-cli reactor",
-        "service": "ph-cli service",
-        "dev": "concurrently --kill-others \"npm run reactor\" \"wait-on tcp:4001 && npm run connect\" \"wait-on tcp:4001 && npm run build:css:watch\" \"wait-on tcp:4001 && npm run build:tsc:watch\"",
-        "service-startup": "bash ./node_modules/@powerhousedao/ph-cli/dist/scripts/service-startup.sh",
-        "service-unstartup": "bash ./node_modules/@powerhousedao/ph-cli/dist/scripts/service-unstartup.sh",
-        "script:apply-changes": "bun run ./scripts/apply-changes.ts",
-        "script:fetch-data": "bun run ./scripts/fetch-data.ts",
-        "script:generate-gql-clients": "bun run ./scripts/gen-clients.ts",
-        "script:generate-all": "bash ./docmodel-zips/generate-all.sh"
+    "./editors": {
+      "types": "./dist/editors/index.d.ts",
+      "default": "./dist/editors/index.js"
     },
-    "dependencies": {
-        "@hookform/resolvers": "^3.10.0",
-        "@powerhousedao/common": "1.10.27-staging.0",
-        "@powerhousedao/design-system": "1.39.15-staging.1",
-        "@powerhousedao/reactor-browser": "1.22.23-staging.0",
-        "@radix-ui/react-dialog": "^1.1.7",
-        "@radix-ui/react-dropdown-menu": "^2.1.7",
-        "@radix-ui/react-label": "^2.1.3",
-        "@radix-ui/react-popover": "^1.1.7",
-        "@radix-ui/react-slot": "^1.2.0",
-        "class-variance-authority": "^0.7.1",
-        "clsx": "^2.1.1",
-        "cmdk": "^1.1.1",
-        "date-fns-tz": "^3.2.0",
-        "diff": "^7.0.0",
-        "document-drive": "1.29.8-staging.1",
-        "document-model": "2.28.1-staging.1",
-        "graphql-ts-client": "^10.4.0",
-        "lodash": "^4.17.21",
-        "lucide-react": "^0.487.0",
-        "react-hook-form": "^7.55.0",
-        "tailwind-merge": "^2.6.0",
-        "ts-essentials": "^10.0.4",
-        "usehooks-ts": "^3.1.1",
-        "viem": "^2.26.2",
-        "wagmi": "^2.14.16",
-        "zod": "^3.24.2"
+    "./document-models": {
+      "types": "./dist/document-models/index.d.ts",
+      "default": "./dist/document-models/index.js"
     },
-    "devDependencies": {
-        "@eslint/js": "^9.24.0",
-        "@powerhousedao/analytics-engine-core": "^0.3.2",
-        "@powerhousedao/builder-tools": "0.9.25-staging.0",
-        "@powerhousedao/codegen": "0.49.2-staging.1",
-        "@powerhousedao/mips-parser": "2.2.2-alpha.0",
-        "@powerhousedao/ph-cli": "0.40.35-staging.0",
-        "@powerhousedao/reactor-api": "1.29.18-staging.0",
-        "@powerhousedao/reactor-local": "1.27.28-staging.0",
-        "@powerhousedao/scalars": "1.33.1-staging.1",
-        "@tailwindcss/cli": "^4.1.3",
-        "@testing-library/react": "^16.3.0",
-        "@types/diff": "^7.0.2",
-        "@types/lodash": "^4.17.16",
-        "@types/node": "^22.14.0",
-        "@types/react": "^18.3.20",
-        "@vitejs/plugin-react": "^4.3.4",
-        "concurrently": "^9.1.2",
-        "dotenv": "^16.4.7",
-        "eslint": "^9.24.0",
-        "eslint-config-prettier": "^10.1.1",
-        "eslint-plugin-prettier": "^5.2.6",
-        "eslint-plugin-react": "^7.37.5",
-        "eslint-plugin-react-hooks": "^5.2.0",
-        "globals": "^16.0.0",
-        "graphql": "^16.10.0",
-        "graphql-request": "^7.1.2",
-        "graphql-tag": "^2.12.6",
-        "package-manager-detector": "^0.2.11",
-        "pm2": "^5.4.3",
-        "react": "^18.3.1",
-        "react-dom": "^18.3.1",
-        "tailwind-scrollbar": "^4.0.2",
-        "tailwindcss": "^4.1.3",
-        "typescript": "^5.8.3",
-        "typescript-eslint": "^8.29.1",
-        "vite": "^6.2.5",
-        "vite-plugin-commonjs": "^0.10.4",
-        "vite-plugin-graphql-loader": "^4.0.4",
-        "vitest": "^3.1.1",
-        "wait-on": "^8.0.3"
+    "./subgraphs": {
+      "types": "./dist/subgraphs/index.d.ts",
+      "default": "./dist/subgraphs/index.js"
     },
-    "peerDependencies": {
-        "react": "^18.3.1",
-        "react-dom": "^18.3.1"
-    }
+    "./manifest": {
+      "types": "./dist/manifest.d.ts",
+      "default": "./dist/manifest.js"
+    },
+    "./atlas-feedback-issues-document-model": {
+      "types": "./dist/document-models/atlas-feedback-issues/index.d.ts",
+      "default": "./dist/document-models/atlas-feedback-issues/index.js"
+    },
+    "./atlas-feedback-issues-editor": {
+      "types": "./dist/editors/atlas-feedback-issues/index.d.ts",
+      "default": "./dist/editors/atlas-feedback-issues/index.js"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "build:tsc": "tsc",
+    "build:tsc:watch": "tsc --watch",
+    "build:css": "npx @tailwindcss/cli -i ./style.css -o ./dist/style.css",
+    "build:css:watch": "npx @tailwindcss/cli -i ./style.css -o ./dist/style.css --watch",
+    "build": "npm run build:tsc && npm run build:css",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build",
+    "generate": "ph-cli generate",
+    "connect": "ph-cli connect",
+    "reactor": "ph-cli reactor",
+    "service": "ph-cli service",
+    "dev": "concurrently --kill-others \"npm run reactor\" \"wait-on tcp:4001 && npm run connect\" \"wait-on tcp:4001 && npm run build:css:watch\" \"wait-on tcp:4001 && npm run build:tsc:watch\"",
+    "service-startup": "bash ./node_modules/@powerhousedao/ph-cli/dist/scripts/service-startup.sh",
+    "service-unstartup": "bash ./node_modules/@powerhousedao/ph-cli/dist/scripts/service-unstartup.sh",
+    "script:apply-changes": "bun run ./scripts/apply-changes.ts",
+    "script:fetch-data": "bun run ./scripts/fetch-data.ts",
+    "script:generate-gql-clients": "bun run ./scripts/gen-clients.ts",
+    "script:generate-all": "bash ./docmodel-zips/generate-all.sh"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.10.0",
+    "@powerhousedao/common": "1.10.27-staging.0",
+    "@powerhousedao/design-system": "1.39.15-staging.1",
+    "@powerhousedao/reactor-browser": "1.22.23-staging.0",
+    "@radix-ui/react-dialog": "^1.1.7",
+    "@radix-ui/react-dropdown-menu": "^2.1.7",
+    "@radix-ui/react-label": "^2.1.3",
+    "@radix-ui/react-popover": "^1.1.7",
+    "@radix-ui/react-slot": "^1.2.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
+    "date-fns-tz": "^3.2.0",
+    "diff": "^7.0.0",
+    "document-drive": "1.29.8-staging.1",
+    "document-model": "2.28.1-staging.1",
+    "graphql-ts-client": "^10.4.0",
+    "lodash": "^4.17.21",
+    "lucide-react": "^0.487.0",
+    "react-hook-form": "^7.55.0",
+    "tailwind-merge": "^2.6.0",
+    "ts-essentials": "^10.0.4",
+    "usehooks-ts": "^3.1.1",
+    "viem": "^2.26.2",
+    "wagmi": "^2.14.16",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.24.0",
+    "@powerhousedao/analytics-engine-core": "^0.3.2",
+    "@powerhousedao/builder-tools": "0.9.25-staging.0",
+    "@powerhousedao/codegen": "0.49.2-staging.1",
+    "@powerhousedao/mips-parser": "2.2.2-alpha.0",
+    "@powerhousedao/ph-cli": "0.40.36-staging.0",
+    "@powerhousedao/reactor-api": "1.29.18-staging.1",
+    "@powerhousedao/reactor-local": "1.27.28-staging.1",
+    "@powerhousedao/scalars": "1.33.1-staging.1",
+    "@tailwindcss/cli": "^4.1.3",
+    "@testing-library/react": "^16.3.0",
+    "@types/diff": "^7.0.2",
+    "@types/lodash": "^4.17.16",
+    "@types/node": "^22.14.0",
+    "@types/react": "^18.3.20",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "dotenv": "^16.4.7",
+    "eslint": "^9.24.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.6",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "globals": "^16.0.0",
+    "graphql": "^16.10.0",
+    "graphql-request": "^7.1.2",
+    "graphql-tag": "^2.12.6",
+    "package-manager-detector": "^0.2.11",
+    "pm2": "^5.4.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-scrollbar": "^4.0.2",
+    "tailwindcss": "^4.1.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.29.1",
+    "vite": "^6.2.5",
+    "vite-plugin-commonjs": "^0.10.4",
+    "vite-plugin-graphql-loader": "^4.0.4",
+    "vitest": "^3.1.1",
+    "wait-on": "^8.0.3"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
 }

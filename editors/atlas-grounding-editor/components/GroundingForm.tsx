@@ -75,7 +75,7 @@ export function GroundingForm({
         {({ triggerSubmit }) => (
           <div className={cn("flex flex-col gap-3")}>
             <div className={cn(getFlexLayoutClassName(isSplitMode ?? false))}>
-              <div className={cn("flex-1")}>
+              <div className={cn("flex-1 truncate")}>
                 <StringDiffField
                   name="docNo"
                   label="Doc №"
@@ -85,7 +85,7 @@ export function GroundingForm({
                   baselineValue={originalNodeState.docNo}
                 />
               </div>
-              <div className={cn("flex-1")}>
+              <div className={cn("flex-1 truncate")}>
                 <StringDiffField
                   name="name"
                   label="Name"

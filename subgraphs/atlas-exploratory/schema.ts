@@ -176,6 +176,16 @@ export const schema: DocumentNode = gql`
       docId: PHID
       input: AtlasExploratory_SetFindingsInput
     ): Int
+    AtlasExploratory_setReference(
+      driveId: String
+      docId: PHID
+      input: AtlasExploratory_SetReferenceInput
+    ): Int
+    AtlasExploratory_removeReference(
+      driveId: String
+      docId: PHID
+      input: AtlasExploratory_RemoveReferenceInput
+    ): Int
     AtlasExploratory_addTags(
       driveId: String
       docId: PHID
@@ -252,6 +262,15 @@ export const schema: DocumentNode = gql`
   input AtlasExploratory_SetFindingsInput {
     "Add your inputs here"
     isAligned: Boolean!
+    comment: String!
+  }
+  input AtlasExploratory_SetReferenceInput {
+    "Add your inputs here"
+    newReference: PHID
+  }
+  input AtlasExploratory_RemoveReferenceInput {
+    "Add your inputs here"
+    reference: PHID
   }
 
   """

@@ -1,22 +1,19 @@
 import { type AtlasMultiParentContextOperations } from "../../gen/context/operations.js";
 
 export const reducer: AtlasMultiParentContextOperations = {
-  addContextDataOperation(state, action, dispatch) {
-    state.originalContextData = state.originalContextData.filter(
-      (ocd) => ocd.id !== action.input.id,
-    );
 
-    state.originalContextData.push({
+
+  addContextDataOperation(state, action, dispatch) {
+    const newContextData = {
       id: action.input.id,
       name: action.input.name || null,
       docNo: action.input.docNo || null,
-    });
+    };
+    state.originalContextData = [newContextData, ...state.originalContextData];
   },
 
   removeContextDataOperation(state, action, dispatch) {
-    state.originalContextData = state.originalContextData.filter(
-      (ocd) => ocd.id !== action.input.id,
-    );
+    state.originalContextData = [];
   },
 
   setProvenanceOperation(state, action, dispatch) {
@@ -28,18 +25,15 @@ export const reducer: AtlasMultiParentContextOperations = {
   },
 
   addReferenceOperation(state, action, dispatch) {
-    state.references = state.references.filter(
-      (ref) => ref.id !== action.input.id,
-    );
-
-    state.references.push({
+    const newReference = {
       id: action.input.id,
       name: action.input.name || null,
       docNo: action.input.docNo || null,
-    });
+    }
+      state.references = [newReference, ...state.references];
   },
 
   removeReferenceOperation(state, action, dispatch) {
-    state.references = state.references.filter((r) => r.id !== action.input.id);
+    state.references = [];
   },
 };

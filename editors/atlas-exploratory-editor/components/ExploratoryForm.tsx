@@ -18,7 +18,7 @@ import type { EditorMode } from "../../shared/types.js";
 import { isFormReadOnly } from "../../shared/utils/form-common.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import type { UseFormReturn } from "react-hook-form";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
 import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
 import {
@@ -38,6 +38,7 @@ interface ExploratoryFormProps {
   originalContextDataPHIDInitialOption?: PHIDOption;
   referencesPHIDInitialOption?: PHIDOption;
   isAligned?: boolean;
+  isSplitMode?: boolean;
 }
 
 export function ExploratoryForm({
@@ -48,17 +49,19 @@ export function ExploratoryForm({
   originalContextDataPHIDInitialOption,
   referencesPHIDInitialOption,
   isAligned,
+  isSplitMode,
 }: ExploratoryFormProps) {
   const isReadOnly = isFormReadOnly(mode);
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
 
-  // baseline document state
-  const originalNodeState = getOriginalNotionDocument(
-    (documentState.notionId as string) || "notion-id-not-set",
-    (documentState.atlasType as ParsedNotionDocumentType) || "article",
+  // baseline node state
+  const [originalNodeState] = useState(() =>
+    getOriginalNotionDocument(
+      (documentState.notionId as string) || "notion-id-not-set",
+      (documentState.atlasType as ParsedNotionDocumentType) || "article"
+    )
   );
-
   const formRef = useRef<UseFormReturn>(null);
 
   // keep the form state in sync with the document state
@@ -97,9 +100,14 @@ export function ExploratoryForm({
         defaultValues={{ ...documentState }}
       >
         {({ triggerSubmit }) => (
-          <div className="flex flex-col gap-3">
-            <div className="flex flex-row gap-2">
-              <div className="flex-0.5">
+          <div className="flex flex-col gap-4">
+            <div
+              className={cn(
+                "flex flex-row gap-2",
+                isSplitMode ? "flex-col" : "flex-row"
+              )}
+            >
+              <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
                 <StringDiffField
                   disabled={isReadOnly}
                   name="docNo"
@@ -110,7 +118,7 @@ export function ExploratoryForm({
                   baselineValue={originalNodeState.docNo}
                 />
               </div>
-              <div className="flex-2">
+              <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
                 <StringDiffField
                   disabled={isReadOnly}
                   name="name"
@@ -121,7 +129,33 @@ export function ExploratoryForm({
                   baselineValue={originalNodeState.name}
                 />
               </div>
-              <div className="flex-1">
+            </div>
+            <div
+              className={cn(
+                "flex flex-row gap-2",
+                isSplitMode ? "flex-col" : "flex-row"
+              )}
+            >
+              <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
+                <EnumDiffField
+                  disabled={isReadOnly}
+                  label="Type"
+                  name="atlasType"
+                  onBlur={triggerSubmit}
+                  options={[
+                    { value: "SCENARIO", label: "SCENARIO" },
+                    {
+                      value: "SCENARIO_VARIATION",
+                      label: "SCENARIO_VARIATION",
+                    },
+                  ]}
+                  required
+                  variant="Select"
+                  mode={mode}
+                  baselineValue={originalNodeState.type?.toUpperCase()}
+                />
+              </div>
+              <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
                 <EnumDiffField
                   disabled={isReadOnly}
                   label="Status"
@@ -145,19 +179,23 @@ export function ExploratoryForm({
               disabled={isReadOnly}
               name="content"
               multiline={true}
-              label="Content"
               placeholder="Content"
               onBlur={triggerSubmit}
               mode={mode}
               baselineValue={""} // TODO: add the right baseline value
             />
-            <div className="flex flex-col gap-3 w-full lg:w-1/2">
+            <div
+              className={cn(
+                "flex flex-col gap-4",
+                isSplitMode ? "w-full" : "w-1/2"
+              )}
+            >
               <PHIDField
                 disabled={isReadOnly}
                 name="parent"
                 label="Parent Document"
                 placeholder="phd:"
-                variant="withValueTitleAndDescription"
+                variant="withValueAndTitle"
                 allowUris
                 initialOptions={
                   parentPHIDInitialOption
@@ -174,7 +212,7 @@ export function ExploratoryForm({
               <span
                 className={cn(
                   !isAligned ? "text-gray-700" : "text-gray-300",
-                  "text-sm font-semibold leading-[22px]",
+                  "text-sm font-semibold leading-[22px]"
                 )}
               >
                 Misaligned
@@ -188,12 +226,13 @@ export function ExploratoryForm({
               <span
                 className={cn(
                   isAligned ? "text-gray-700" : "text-gray-300",
-                  "text-sm font-semibold font-inter leading-[22px]",
+                  "text-sm font-semibold font-inter leading-[22px]"
                 )}
               >
                 Aligned
               </span>
             </div>
+
             <StringDiffField
               disabled={isReadOnly}
               name="findings.comment"
@@ -204,6 +243,7 @@ export function ExploratoryForm({
               mode={mode}
               baselineValue={""} // TODO: add the right baseline value
             />
+
             <StringDiffField
               disabled={isReadOnly}
               name="additionalGuidance"
@@ -215,13 +255,18 @@ export function ExploratoryForm({
               baselineValue={""} // TODO: add the right baseline value
             />
 
-            <div className="flex flex-col gap-3 w-full lg:w-1/2">
+            <div
+              className={cn(
+                "flex flex-col gap-4",
+                isSplitMode ? "w-full" : "w-1/2"
+              )}
+            >
               <PHIDField
                 disabled={isReadOnly}
                 name="originalContextData"
                 label="Original Context Data"
                 placeholder="phd:"
-                variant="withValueTitleAndDescription"
+                variant="withValueAndTitle"
                 allowUris
                 initialOptions={
                   originalContextDataPHIDInitialOption
@@ -250,7 +295,7 @@ export function ExploratoryForm({
                 label="Tags"
                 multiple
                 name="globalTags"
-                onChange={triggerSubmit}
+                placeholder="Select Tags"
                 options={exploratoryTagsEnumOptions}
                 onBlur={triggerSubmit}
                 mode={mode}
@@ -261,7 +306,7 @@ export function ExploratoryForm({
                 name="references"
                 label="Atlas References"
                 placeholder="phd:"
-                variant="withValueTitleAndDescription"
+                variant="withValueAndTitle"
                 allowUris
                 initialOptions={
                   referencesPHIDInitialOption

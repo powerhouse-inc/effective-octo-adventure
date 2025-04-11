@@ -1,7 +1,7 @@
-import { type ReactorClient } from "./ReactorClient.js";
-import { type DocumentsCache, DocumentCacheEntry } from "./DocumentsCache.js";
-import { gql } from "graphql-request";
 import { type Maybe } from "document-model";
+import { gql } from "graphql-request";
+import { type DocumentsCache } from "./DocumentsCache.js";
+import { type ReactorClient } from "./ReactorClient.js";
 
 const DEFAULT_MAX_QUERY_BATCH_SIZE = 5;
 

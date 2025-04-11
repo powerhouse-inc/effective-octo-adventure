@@ -13,10 +13,13 @@ import { getStringValue } from "../shared/utils/utils.js";
 export type IProps = EditorProps<AtlasScopeDocument>;
 export default function Editor(props: IProps) {
   const { dispatch } = props;
-  const documentState = props.document.state.global;
-  const newMomentdocumentState = {
-    ...documentState,
-    originalContextData: documentState.originalContextData?.[0]?.id || "",
+  const originalDocumentState = props.document.state.global;
+  const originalContextDataId = originalDocumentState.originalContextData[0]?.id
+  ? `phd:${originalDocumentState.originalContextData[0].id}`
+  : "";
+  const documentState = {
+    ...originalDocumentState,
+    originalContextData: originalContextDataId,
   };
 
   const onSubmit = (data: Record<string, any>) => {
@@ -44,9 +47,18 @@ export default function Editor(props: IProps) {
       );
     }
     if (data["originalContextData"] !== undefined) {
-      dispatch(
-        actions.addContextData({ id: data["originalContextData"] as string }),
-      );
+      if (data["originalContextData"] === null) {
+        dispatch(
+          actions.removeContextData({
+            id: documentState.originalContextData.split(":")[1],
+          }),
+        );
+      } else {
+        const newOriginalContextDataId = (
+          data["originalContextData"] as string
+        ).split(":")[1];
+        dispatch(actions.addContextData({ id: newOriginalContextDataId }));
+      }
     }
     if (data["globalTags"] !== undefined) {
       const newTags = data["globalTags"] as GlobalTag[];
@@ -82,22 +94,24 @@ export default function Editor(props: IProps) {
             left={
               <ScopeForm
                 onSubmit={onSubmit}
-                documentState={newMomentdocumentState}
+                documentState={documentState}
                 mode={isEditMode ? "Edition" : "DiffRemoved"}
+                isSplitMode={isSplitMode}
               />
             }
             right={
               <ScopeForm
                 onSubmit={onSubmit}
-                documentState={newMomentdocumentState}
+                documentState={documentState}
                 mode={isEditMode ? "DiffMixed" : "DiffAdditions"}
+                isSplitMode={isSplitMode}
               />
             }
           />
         ) : (
           <ScopeForm
             onSubmit={onSubmit}
-            documentState={newMomentdocumentState}
+            documentState={documentState}
             mode={isEditMode ? "Edition" : "Readonly"}
           />
         )

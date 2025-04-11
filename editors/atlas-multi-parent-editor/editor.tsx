@@ -71,7 +71,9 @@ export default function Editor(props: IProps) {
     }
     if (data["parents"] !== undefined) {
       if (data["parents"] === null) {
-        dispatch(actions.addParent({ id: "" }));
+        dispatch(actions.removeParent({ 
+          id: documentState.parents.split(":")[1],
+        }));
       } else {
         const newParentId = (data["parents"] as string).split(":")[1];
         dispatch(actions.addParent({ id: newParentId }));
@@ -131,6 +133,7 @@ export default function Editor(props: IProps) {
                 referencesPHIDInitialOption={referencesPHIDInitialOption}
                 parentPHIDInitialOption={parentPHIDInitialOption}
                 originalContextDataPHIDInitialOption={originalContextDataPHIDInitialOption}
+                isSplitMode={isSplitMode}
               />
             }
             right={
@@ -141,6 +144,7 @@ export default function Editor(props: IProps) {
                 referencesPHIDInitialOption={referencesPHIDInitialOption}
                 parentPHIDInitialOption={parentPHIDInitialOption}
                 originalContextDataPHIDInitialOption={originalContextDataPHIDInitialOption}
+                isSplitMode={isSplitMode}
               />
             }
           />

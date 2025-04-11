@@ -13,6 +13,7 @@ import {
   getStringValue,
   fetchSelectedPHIDOption,
 } from "../shared/utils/utils.js";
+import { type PHIDOption } from "@powerhousedao/design-system/ui";
 
 export type IProps = EditorProps<AtlasGroundingDocument>;
 
@@ -22,7 +23,7 @@ export default function Editor(props: IProps) {
   // TODO: remove or update this once all the data in global state is in the expected format or the design is updated
   const originalDocumentState = props.document.state.global;
   const parentId = originalDocumentState.parent?.id
-    ? `phd:${originalDocumentState.parent?.id}`
+    ? `phd:${originalDocumentState.parent.id}`
     : "";
   const originalContextDataId = originalDocumentState.originalContextData[0]?.id
     ? `phd:${originalDocumentState.originalContextData[0].id}`
@@ -34,11 +35,18 @@ export default function Editor(props: IProps) {
   const documentState = {
     ...originalDocumentState,
     parent: parentId,
-    provenance: originalDocumentState.provenance[0] || "",
+    provenance: originalDocumentState.provenance?.[0] || "",
     originalContextData: originalContextDataId,
     references: referencesId,
   };
-  const parentPHIDInitialOption = fetchSelectedPHIDOption(parentId);
+  // TODO: update this with the correct data when available
+  const parentPHIDInitialOption: PHIDOption = {
+    icon: "File",
+    title: `${originalDocumentState.parent?.docNo ?? ""} - ${originalDocumentState.parent?.name ?? ""}`,
+    path: "Type not available",
+    value: parentId,
+    description: undefined,
+  };
   const originalContextDataPHIDInitialOption = fetchSelectedPHIDOption(
     originalContextDataId,
   );
@@ -72,10 +80,19 @@ export default function Editor(props: IProps) {
     }
     if (data["parent"] !== undefined) {
       if (data["parent"] === null) {
-        dispatch(actions.setParent({ id: "" }));
+        dispatch(
+          actions.setParent({ id: "", docNo: undefined, name: undefined }),
+        );
       } else {
         const newParentId = (data["parent"] as string).split(":")[1];
-        dispatch(actions.setParent({ id: newParentId }));
+        const newParentData = fetchSelectedPHIDOption(data["parent"] as string);
+        dispatch(
+          actions.setParent({
+            id: newParentId,
+            docNo: newParentData?.title?.split(" - ")[0] ?? "",
+            name: newParentData?.title?.split(" - ")[1] ?? "",
+          }),
+        );
       }
     }
     if (data["originalContextData"] !== undefined) {
@@ -152,6 +169,7 @@ export default function Editor(props: IProps) {
                   originalContextDataPHIDInitialOption
                 }
                 referencesPHIDInitialOption={referencesPHIDInitialOption}
+                isSplitMode={isSplitMode}
               />
             }
             right={
@@ -164,6 +182,7 @@ export default function Editor(props: IProps) {
                   originalContextDataPHIDInitialOption
                 }
                 referencesPHIDInitialOption={referencesPHIDInitialOption}
+                isSplitMode={isSplitMode}
               />
             }
           />
@@ -171,7 +190,7 @@ export default function Editor(props: IProps) {
           <GroundingForm
             onSubmit={onSubmit}
             documentState={documentState}
-            mode={isEditMode ? "Edition" : "Readonly"}
+            mode={isEditMode ? "Edition" : "DiffMixed"}
             parentPHIDInitialOption={parentPHIDInitialOption}
             originalContextDataPHIDInitialOption={
               originalContextDataPHIDInitialOption

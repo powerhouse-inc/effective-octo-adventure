@@ -1,4 +1,4 @@
-import { cn, Form, PHIDField } from "@powerhousedao/design-system/scalars";
+import { cn, Form } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchPHIDOptions,
@@ -9,14 +9,18 @@ import {
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import type { EditorMode } from "../../shared/types.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
-import { isFormReadOnly } from "../../shared/utils/form-common.js";
 import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
 import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
+import { PHIDDiffField } from "../../shared/components/diff-fields/phid-diff-field.js";
 import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
+import {
+  getFlexLayoutClassName,
+  getWidthClassName,
+} from "../../shared/utils/styles.js";
 
 interface GroundingFormProps {
   onSubmit: (data: Record<string, any>) => void;
@@ -25,6 +29,7 @@ interface GroundingFormProps {
   parentPHIDInitialOption?: PHIDOption;
   originalContextDataPHIDInitialOption?: PHIDOption;
   referencesPHIDInitialOption?: PHIDOption;
+  isSplitMode?: boolean;
 }
 
 export function GroundingForm({
@@ -34,19 +39,18 @@ export function GroundingForm({
   parentPHIDInitialOption,
   originalContextDataPHIDInitialOption,
   referencesPHIDInitialOption,
+  isSplitMode,
 }: GroundingFormProps) {
-  const isReadOnly = isFormReadOnly(mode);
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
 
-  // baseline document state, use useRef to keep the original value between renders
-  const originalNodeStateRef = useRef(
+  // baseline node state
+  const [originalNodeState] = useState(() =>
     getOriginalNotionDocument(
       (documentState.notionId as string) || "notion-id-not-set",
       (documentState.atlasType as ParsedNotionDocumentType) || "tenet",
     ),
   );
-  const originalNodeState = originalNodeStateRef.current;
 
   const formRef = useRef<UseFormReturn>(null);
 
@@ -70,8 +74,8 @@ export function GroundingForm({
       >
         {({ triggerSubmit }) => (
           <div className={cn("flex flex-col gap-3")}>
-            <div className={cn("flex flex-row gap-2")}>
-              <div className={cn("flex-1")}>
+            <div className={cn(getFlexLayoutClassName(isSplitMode ?? false))}>
+              <div className={cn("flex-1 truncate")}>
                 <StringDiffField
                   name="docNo"
                   label="Doc №"
@@ -81,7 +85,7 @@ export function GroundingForm({
                   baselineValue={originalNodeState.docNo}
                 />
               </div>
-              <div className={cn("flex-1")}>
+              <div className={cn("flex-1 truncate")}>
                 <StringDiffField
                   name="name"
                   label="Name"
@@ -91,6 +95,8 @@ export function GroundingForm({
                   baselineValue={originalNodeState.name}
                 />
               </div>
+            </div>
+            <div className={cn(getFlexLayoutClassName(isSplitMode ?? false))}>
               <div className={cn("flex-1")}>
                 <EnumDiffField
                   name="atlasType"
@@ -133,20 +139,22 @@ export function GroundingForm({
             </div>
             <StringDiffField
               name="content"
-              label="Content"
               placeholder="Content"
               multiline
               onBlur={triggerSubmit}
               mode={mode}
-              baselineValue={""} // TODO: add the right baseline value
+              baselineValue={
+                typeof originalNodeState.content[0]?.text === "string"
+                  ? originalNodeState.content[0]?.text
+                  : originalNodeState.content[0]?.text[0]?.plain_text
+              }
             />
-            <div className={cn("w-1/2")}>
-              <PHIDField
-                disabled={isReadOnly}
+            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
+              <PHIDDiffField
                 name="parent"
                 label="Parent Document"
                 placeholder="phd:"
-                variant="withValueTitleAndDescription"
+                variant="withValueAndTitle"
                 allowUris
                 initialOptions={
                   parentPHIDInitialOption
@@ -156,15 +164,16 @@ export function GroundingForm({
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}
+                mode={mode}
+                baselineValue={originalNodeState.parents?.[0]}
               />
             </div>
-            <div className={cn("w-1/2")}>
-              <PHIDField
-                disabled={isReadOnly}
+            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
+              <PHIDDiffField
                 name="originalContextData"
                 label="Original Context Data"
                 placeholder="phd:"
-                variant="withValueTitleAndDescription"
+                variant="withValueAndTitle"
                 allowUris
                 initialOptions={
                   originalContextDataPHIDInitialOption
@@ -174,9 +183,11 @@ export function GroundingForm({
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}
+                mode={mode}
+                baselineValue={""} // TODO: add the right baseline value
               />
             </div>
-            <div className={cn("w-1/2")}>
+            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <UrlDiffField
                 name="provenance"
                 label="Provenance"
@@ -187,10 +198,10 @@ export function GroundingForm({
                 }}
                 onBlur={triggerSubmit}
                 mode={mode}
-                baselineValue={""} // TODO: add the right baseline value
+                baselineValue={originalNodeState.hubUrls[0]}
               />
             </div>
-            <div className={cn("w-1/2")}>
+            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <EnumDiffField
                 name="globalTags"
                 label="Tags"
@@ -203,13 +214,12 @@ export function GroundingForm({
                 baselineValue={""} // TODO: add the right baseline value
               />
             </div>
-            <div className={cn("w-1/2")}>
-              <PHIDField
-                disabled={isReadOnly}
+            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
+              <PHIDDiffField
                 name="references"
                 label="Atlas References"
                 placeholder="phd:"
-                variant="withValueTitleAndDescription"
+                variant="withValueAndTitle"
                 allowUris
                 initialOptions={
                   referencesPHIDInitialOption
@@ -219,6 +229,8 @@ export function GroundingForm({
                 fetchOptionsCallback={fetchPHIDOptions}
                 fetchSelectedOptionCallback={fetchSelectedPHIDOption}
                 onBlur={triggerSubmit}
+                mode={mode}
+                baselineValue={""} // TODO: add the right baseline value
               />
             </div>
           </div>

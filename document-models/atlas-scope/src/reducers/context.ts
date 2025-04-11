@@ -7,22 +7,17 @@
 import { type AtlasScopeContextOperations } from "../../gen/context/operations.js";
 
 export const reducer: AtlasScopeContextOperations = {
-  // TODO:Disable the save in the history
   addContextDataOperation(state, action, dispatch) {
-    state.originalContextData = state.originalContextData.filter(
-      (ocd) => ocd.id !== action.input.id,
-    );
-
-    state.originalContextData.push({
+    const newContextData = {
       id: action.input.id,
       name: action.input.name || null,
       docNo: action.input.docNo || null,
-    });
+    };
+    state.originalContextData=[newContextData,...state.originalContextData];
   },
+
   removeContextDataOperation(state, action, dispatch) {
-    state.originalContextData = state.originalContextData.filter(
-      (ocd) => ocd.id !== action.input.id,
-    );
+    state.originalContextData = []
   },
   setProvenanceOperation(state, action, dispatch) {
     state.provenance = action.input.provenance || null;

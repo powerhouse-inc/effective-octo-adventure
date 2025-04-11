@@ -1,7 +1,7 @@
 export * as AtlasExploratorySubgraph from "./atlas-exploratory/index.js";
+export * as AtlasFeedbackIssuesSubgraph from "./atlas-feedback-issues/index.js";
 export * as AtlasFoundationSubgraph from "./atlas-foundation/index.js";
 export * as AtlasGroundingSubgraph from "./atlas-grounding/index.js";
 export * as AtlasMultiparentSubgraph from "./atlas-multiparent/index.js";
 export * as AtlasScopeSubgraph from "./atlas-scope/index.js";
 export * as ForkSubgraph from "./fork-scope/index.js";
-export * as AtlasFeedbackIssuesSubgraph from "./atlas-feedback-issues/index.js";

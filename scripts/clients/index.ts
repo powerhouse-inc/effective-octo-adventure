@@ -1,9 +1,6 @@
-import AtlasScope from "./atlas-scope.cjs";
-import AtlasFoundation from "./atlas-foundation.cjs";
-import SystemClient from "./system.cjs";
+import GraphQL from "./graphql.cjs";
+import System from "./system.cjs";
+const { client: graphqlClient } = GraphQL;
+const { client: systemClient } = System;
 
-const { client: atlasScopeClient } = AtlasScope;
-const { client: atlasFoundationClient } = AtlasFoundation;
-const { client: systemClient } = SystemClient;
-
-export { atlasScopeClient, atlasFoundationClient, systemClient };
+export { graphqlClient, systemClient };

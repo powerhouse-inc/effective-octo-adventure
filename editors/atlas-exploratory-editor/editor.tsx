@@ -4,6 +4,7 @@ import {
   type AtlasExploratoryDocument,
   type EStatus,
   type EGlobalTag,
+  EAtlasType,
 } from "../../document-models/atlas-exploratory/index.js";
 import { EditorLayout } from "../shared/components/EditorLayout.js";
 import { SplitView } from "../shared/components/SplitView.js";
@@ -40,7 +41,7 @@ export default function Editor(props: IProps) {
 
   const parentPHIDInitialOption = fetchSelectedPHIDOption(parentId);
   const originalContextDataPHIDInitialOption = fetchSelectedPHIDOption(
-    originalContextDataId,
+    originalContextDataId
   );
   const referencesPHIDInitialOption = fetchSelectedPHIDOption(referencesId);
   const isAligned = documentState.findings.isAligned;
@@ -58,7 +59,7 @@ export default function Editor(props: IProps) {
       dispatch(
         actions.setMasterStatus({
           masterStatus: data["masterStatus"] as EStatus,
-        }),
+        })
       );
     }
     if (data["content"] !== undefined) {
@@ -109,7 +110,7 @@ export default function Editor(props: IProps) {
         dispatch(
           actions.removeContextData({
             id: documentState.originalContextData.split(":")[1],
-          }),
+          })
         );
       } else {
         const newOriginalContextDataId = (
@@ -120,29 +121,34 @@ export default function Editor(props: IProps) {
     }
     if (data["provenance"] !== undefined) {
       dispatch(
-        actions.setProvenance({ provenance: data["provenance"] as string }),
+        actions.setProvenance({ provenance: data["provenance"] as string })
       );
     }
-    // TODO: need the com
-    // if(data["findings"] !== undefined) {
-    //   dispatch(actions.setFindings({
-    //     isAligned: data["findings"] as boolean,
-
-    //    }));
-    // }
-    //  TODO: add references the reference
-    // if (data["references"] !== undefined) {
-    //   if (data["references"] === null) {
-    //     dispatch(
-    //       actions.r({
-    //         id: documentState.references.split(":")[1],
-    //       }),
-    //     );
-    //   } else {
-    //     const newReferenceId = (data["references"] as string).split(":")[1];
-    //     dispatch(actions.addReference({ id: newReferenceId }));
-    //   }
-    // }
+    if (data["findings"] !== undefined) {
+      dispatch(
+        actions.setFindings({
+          isAligned: data["findings"].isAligned as boolean,
+          comment: data["findings"].comment as string,
+        })
+      );
+    }
+    if (data["references"] !== undefined) {
+      if (data["references"] === null) {
+        dispatch(
+          actions.removeReference({
+            reference: documentState.references.split(":")[1],
+          })
+        );
+      } else {
+        const newReferenceId = (data["references"] as string).split(":")[1];
+        dispatch(actions.setReference({ newReference: newReferenceId }));
+      }
+    }
+    if (data["atlasType"] !== undefined) {
+      dispatch(
+        actions.setAtlasType({ atlasType: data["atlasType"] as EAtlasType })
+      );
+    }
   };
   return (
     <EditorLayout
@@ -163,6 +169,7 @@ export default function Editor(props: IProps) {
                 }
                 referencesPHIDInitialOption={referencesPHIDInitialOption}
                 isAligned={isAligned}
+                isSplitMode={isSplitMode}
               />
             }
             right={
@@ -176,6 +183,7 @@ export default function Editor(props: IProps) {
                 }
                 referencesPHIDInitialOption={referencesPHIDInitialOption}
                 isAligned={isAligned}
+                isSplitMode={isSplitMode}
               />
             }
           />

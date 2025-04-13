@@ -5,7 +5,7 @@ import {
   Form,
   InputBaseProps,
   PHIDField,
-  PHIDFieldProps,
+  type PHIDFieldProps,
 } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
@@ -59,8 +59,8 @@ export function ExploratoryForm({
   const [originalNodeState] = useState(() =>
     getOriginalNotionDocument(
       (documentState.notionId as string) || "notion-id-not-set",
-      (documentState.atlasType as ParsedNotionDocumentType) || "article"
-    )
+      (documentState.atlasType as ParsedNotionDocumentType) || "article",
+    ),
   );
   const formRef = useRef<UseFormReturn>(null);
 
@@ -70,21 +70,38 @@ export function ExploratoryForm({
       formRef.current.reset({ ...documentState });
     }
   }, [documentState]);
+
+  // TODO: remove this
+  const [fields, setFields] = useState<{ id: string; value: string }[]>([
+    {
+      id: crypto.randomUUID(),
+      value: "phd:2ac19da0-6564-4cf3-a668-90ffc8006786",
+    },
+    {
+      id: crypto.randomUUID(),
+      value: "phd:2ac19da0-6564-4cf3-a668-90ffc8006786",
+    },
+  ]);
+
   return (
     <ContentCard tagText={tagText} variant={cardVariant} className="mt-4">
+      {/* TODO: move this array to the right place */}
       <ArrayField<string, PHIDFieldProps>
-        onAdd={(value) => alert(value)}
-        onRemove={(value) => alert(value)}
-        onUpdate={(value) => alert(value)}
-        values={[
-          "phd:2ac19da0-6564-4cf3-a668-90ffc8006786",
-          "phd:2ac19da0-6564-4cf3-a668-90ffc8006786",
-        ]}
+        onAdd={(value) =>
+          setFields([...fields, { id: crypto.randomUUID(), value }])
+        }
+        onRemove={({ id }) => {
+          setFields(fields.filter((f) => f.id !== id));
+        }}
+        onUpdate={({ value, id }) => {
+          setFields(fields.map((f) => (f.id === id ? { ...f, value } : f)));
+        }}
+        fields={fields}
         label="Parent Document Testing"
         component={PHIDField}
         componentProps={{
           placeholder: "phd:",
-          variant: "withValueTitleAndDescription",
+          variant: "withValueAndTitle",
           allowUris: true,
           fetchOptionsCallback: fetchPHIDOptions,
           fetchSelectedOptionCallback: fetchSelectedPHIDOption,
@@ -96,6 +113,7 @@ export function ExploratoryForm({
         submitChangesOnly
         extraFormProps={{
           shouldFocusError: false,
+          shouldUnregister: true,
         }}
         defaultValues={{ ...documentState }}
       >
@@ -104,7 +122,7 @@ export function ExploratoryForm({
             <div
               className={cn(
                 "flex flex-row gap-2",
-                isSplitMode ? "flex-col" : "flex-row"
+                isSplitMode ? "flex-col" : "flex-row",
               )}
             >
               <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
@@ -133,7 +151,7 @@ export function ExploratoryForm({
             <div
               className={cn(
                 "flex flex-row gap-2",
-                isSplitMode ? "flex-col" : "flex-row"
+                isSplitMode ? "flex-col" : "flex-row",
               )}
             >
               <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
@@ -187,7 +205,7 @@ export function ExploratoryForm({
             <div
               className={cn(
                 "flex flex-col gap-4",
-                isSplitMode ? "w-full" : "w-1/2"
+                isSplitMode ? "w-full" : "w-1/2",
               )}
             >
               <PHIDField
@@ -212,7 +230,7 @@ export function ExploratoryForm({
               <span
                 className={cn(
                   !isAligned ? "text-gray-700" : "text-gray-300",
-                  "text-sm font-semibold leading-[22px]"
+                  "text-sm font-semibold leading-[22px]",
                 )}
               >
                 Misaligned
@@ -226,7 +244,7 @@ export function ExploratoryForm({
               <span
                 className={cn(
                   isAligned ? "text-gray-700" : "text-gray-300",
-                  "text-sm font-semibold font-inter leading-[22px]"
+                  "text-sm font-semibold font-inter leading-[22px]",
                 )}
               >
                 Aligned
@@ -258,7 +276,7 @@ export function ExploratoryForm({
             <div
               className={cn(
                 "flex flex-col gap-4",
-                isSplitMode ? "w-full" : "w-1/2"
+                isSplitMode ? "w-full" : "w-1/2",
               )}
             >
               <PHIDField

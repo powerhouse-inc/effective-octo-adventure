@@ -28,6 +28,7 @@ import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js"
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
 import { useState } from "react";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
+import ReferencesArray from "./ReferencesArray.js";
 
 interface FoundationFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
@@ -65,7 +66,6 @@ export function FoundationForm({
     parent: parentId,
     provenance: stateDocument.provenance[0] || "",
     originalContextData: originalContextDataId,
-    references: referencesId,
   };
 
   // baseline node state
@@ -138,7 +138,12 @@ export function FoundationForm({
             }}
           />
 
-          <div className={getWidthClassName(isSplitMode ?? false)}>
+          <div
+            className={cn(
+              "flex flex-col gap-3",
+              getWidthClassName(!!isSplitMode),
+            )}
+          >
             <SinglePhIdForm
               label="Parent Document"
               value={documentState.parent}
@@ -165,9 +170,7 @@ export function FoundationForm({
                 }
               }}
             />
-          </div>
 
-          <div className={getWidthClassName(isSplitMode ?? false)}>
             <SinglePhIdForm
               label="Original Context Data"
               value={documentState.originalContextData}
@@ -187,9 +190,7 @@ export function FoundationForm({
                 }
               }}
             />
-          </div>
 
-          <div className={getWidthClassName(isSplitMode ?? false)}>
             <ProvenanceForm
               value={documentState.provenance}
               baselineValue={originalNodeState.hubUrls[0]}
@@ -197,9 +198,7 @@ export function FoundationForm({
                 dispatch(actions.setProvenance({ provenance: [value] }));
               }}
             />
-          </div>
 
-          <div className={getWidthClassName(isSplitMode ?? false)}>
             <GlobalTagsForm
               value={documentState.globalTags}
               baselineValue={[]}
@@ -229,30 +228,10 @@ export function FoundationForm({
                 }
               }}
             />
-          </div>
 
-          <div className={getWidthClassName(isSplitMode ?? false)}>
-            <SinglePhIdForm
-              label="Atlas References"
-              value={documentState.references}
-              baselineValue={""}
-              initialOptions={
-                referencesPHIDInitialOption
-                  ? [referencesPHIDInitialOption]
-                  : undefined
-              }
-              onSave={(value) => {
-                if (value === null) {
-                  dispatch(
-                    actions.removeReference({
-                      id: documentState.references.split(":")[1],
-                    }),
-                  );
-                } else {
-                  const newReferenceId = value.split(":")[1];
-                  dispatch(actions.addReference({ id: newReferenceId }));
-                }
-              }}
+            <ReferencesArray
+              dispatch={dispatch}
+              references={documentState.references}
             />
           </div>
         </div>

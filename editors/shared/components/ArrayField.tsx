@@ -100,8 +100,13 @@ const ArrayField = <TValue, TProps>({
       ref={formRef}
       onSubmit={onSubmit}
       submitChangesOnly
-      extraFormProps={{ shouldFocusError: true }}
+      extraFormProps={{ shouldFocusError: false }}
       defaultValues={defaultValues}
+      submissionErrorMatcher={(error) => {
+        return {
+          "root.serverError": error.message,
+        };
+      }}
     >
       {({ triggerSubmit }) => (
         <div className="flex flex-col gap-3">

@@ -15,6 +15,7 @@ import {
   DefaultEditorLoader,
 } from "@powerhousedao/design-system";
 import { useState, Suspense, type FC, useCallback, lazy } from "react";
+import { ViewModeProvider } from "../../shared/context/view-mode-context.js";
 
 import {
   AtlasExploratory,
@@ -88,6 +89,7 @@ export const EditorContainer: React.FC<EditorContainerProps> = (props) => {
   const { driveId, documentId, documentType, onClose, title, context } = props;
 
   const [showRevisionHistory, setShowRevisionHistory] = useState(false);
+
   const { useDocumentEditorProps } = useDriveContext();
   const user = context.user as User | undefined;
 
@@ -130,30 +132,34 @@ export const EditorContainer: React.FC<EditorContainerProps> = (props) => {
   }
   const EditorComponent = Editor as FC<EditorProps<PHDocument>>;
 
-  return showRevisionHistory ? (
-    <RevisionHistory
-      documentId={documentId}
-      documentTitle={title}
-      globalOperations={document.operations.global}
-      key={documentId}
-      localOperations={document.operations.local}
-      onClose={() => setShowRevisionHistory(false)}
-    />
-  ) : (
-    <Suspense fallback={loadingContent}>
-      <DocumentToolbar
-        onClose={onClose}
-        onExport={onExport}
-        onShowRevisionHistory={() => setShowRevisionHistory(true)}
-        onSwitchboardLinkClick={() => {}}
-        title={title}
-      />
-      <EditorComponent
-        context={context}
-        dispatch={dispatch}
-        document={document}
-        error={error}
-      />
-    </Suspense>
+  return (
+    <ViewModeProvider>
+      {showRevisionHistory ? (
+        <RevisionHistory
+          documentId={documentId}
+          documentTitle={title}
+          globalOperations={document.operations.global}
+          key={documentId}
+          localOperations={document.operations.local}
+          onClose={() => setShowRevisionHistory(false)}
+        />
+      ) : (
+        <Suspense fallback={loadingContent}>
+          <DocumentToolbar
+            onClose={onClose}
+            onExport={onExport}
+            onShowRevisionHistory={() => setShowRevisionHistory(true)}
+            onSwitchboardLinkClick={() => {}}
+            title={title}
+          />
+          <EditorComponent
+            context={context}
+            dispatch={dispatch}
+            document={document}
+            error={error}
+          />
+        </Suspense>
+      )}
+    </ViewModeProvider>
   );
 };

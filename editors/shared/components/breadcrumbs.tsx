@@ -69,7 +69,9 @@ export function Breadcrumbs({
           <>
             {items.map((item, index) => (
               <Fragment key={item.id}>
-                {index !== 0 && <BreadcrumbSeparator />}
+                {index !== 0 && (
+                  <BreadcrumbSeparator children="/" className="text-gray-600" />
+                )}
                 <BreadcrumbItem
                   className={cn(
                     index === items.length - 1

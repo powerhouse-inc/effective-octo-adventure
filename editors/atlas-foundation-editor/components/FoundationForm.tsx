@@ -1,7 +1,6 @@
-import { cn, Form } from "@powerhousedao/design-system/scalars";
+import { cn } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
-  fetchPHIDOptions,
   fetchSelectedPHIDOption,
   getCardVariant,
   getTagText,
@@ -9,22 +8,26 @@ import {
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import type { EditorMode } from "../../shared/types.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
-import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
-import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
-import { PHIDDiffField } from "../../shared/components/diff-fields/phid-diff-field.js";
-import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
-import { useEffect, useRef, useState } from "react";
-import type { UseFormReturn } from "react-hook-form";
-import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
 } from "../../shared/utils/styles.js";
+import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
+import { DocNoForm } from "../../shared/components/forms/DocNoForm.js";
+import type { IProps } from "../editor.js";
+import { actions } from "../../../document-models/atlas-foundation/index.js";
+import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
+import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
+import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
+import { ContentForm } from "../../shared/components/forms/ContentForm.js";
+import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js";
+import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
+import { useState } from "react";
 
-interface FoundationFormProps {
-  onSubmit: (data: Record<string, any>) => void;
-  documentState: Record<string, any>;
+interface FoundationFormProps extends Pick<IProps, "document" | "dispatch"> {
+  // onSubmit: (data: Record<string, any>) => void;
+  // documentState: Record<string, any>;
   mode: EditorMode;
   parentPHIDInitialOption?: PHIDOption;
   originalContextDataPHIDInitialOption?: PHIDOption;
@@ -33,8 +36,8 @@ interface FoundationFormProps {
 }
 
 export function FoundationForm({
-  onSubmit,
-  documentState,
+  document,
+  dispatch,
   mode,
   parentPHIDInitialOption,
   originalContextDataPHIDInitialOption,
@@ -44,6 +47,25 @@ export function FoundationForm({
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
 
+  const stateDocument = document.state.global;
+  const parentId = stateDocument.parent?.id
+    ? `phd:${stateDocument.parent?.id}`
+    : "";
+  const originalContextDataId = stateDocument.originalContextData[0]?.id
+    ? `phd:${stateDocument.originalContextData[0].id}`
+    : "";
+  const referencesId = stateDocument.references[0]?.id
+    ? `phd:${stateDocument.references[0].id}`
+    : "";
+
+  const documentState = {
+    ...stateDocument,
+    parent: parentId,
+    provenance: stateDocument.provenance[0] || "",
+    originalContextData: originalContextDataId,
+    references: referencesId,
+  };
+
   // baseline node state
   const [originalNodeState] = useState(() =>
     getOriginalNotionDocument(
@@ -52,194 +74,170 @@ export function FoundationForm({
     ),
   );
 
-  const formRef = useRef<UseFormReturn>(null);
-
-  // keep the form state in sync with the document state
-  useEffect(() => {
-    if (formRef.current) {
-      formRef.current.reset({ ...documentState });
-    }
-  }, [documentState]);
-
   return (
-    <ContentCard tagText={tagText} variant={cardVariant} className={cn("mt-4")}>
-      <Form
-        ref={formRef}
-        defaultValues={{ ...documentState }}
-        onSubmit={onSubmit}
-        submitChangesOnly
-        extraFormProps={{
-          shouldFocusError: false,
-        }}
+    <FormModeProvider mode={mode}>
+      <ContentCard
+        tagText={tagText}
+        variant={cardVariant}
+        className={cn("mt-4")}
       >
-        {({ triggerSubmit }) => (
-          <div className={cn("flex flex-col gap-3")}>
-            <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
-              <div className={cn("flex-1 truncate")}>
-                <StringDiffField
-                  name="docNo"
-                  label="Doc №"
-                  placeholder="A."
-                  onBlur={triggerSubmit}
-                  mode={mode}
-                  baselineValue={originalNodeState.docNo}
-                />
-              </div>
-              <div className={cn("flex-1 truncate")}>
-                <StringDiffField
-                  name="name"
-                  label="Name"
-                  placeholder="Name"
-                  onBlur={triggerSubmit}
-                  mode={mode}
-                  baselineValue={originalNodeState.name}
-                />
-              </div>
-            </div>
-            <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
-              <div className={cn("flex-1")}>
-                <EnumDiffField
-                  name="atlasType"
-                  label="Type"
-                  placeholder="Select Type"
-                  options={[
-                    {
-                      value: "ACTIVE_DATA_CONTROLLER",
-                      label: "ACTIVE_DATA_CONTROLLER ",
-                    },
-                    {
-                      value: "ARTICLE",
-                      label: "ARTICLE",
-                    },
-                    { value: "CORE", label: "CORE" },
-                    { value: "SECTION", label: "SECTION" },
-                  ]}
-                  required
-                  variant="Select"
-                  onBlur={triggerSubmit}
-                  mode={mode}
-                  baselineValue={originalNodeState.type?.toUpperCase()}
-                />
-              </div>
-              <div className={cn("flex-1")}>
-                <EnumDiffField
-                  name="masterStatus"
-                  label="Status"
-                  placeholder="Select Status"
-                  options={[
-                    { value: "APPROVED", label: "APPROVED " },
-                    { value: "ARCHIVED", label: "ARCHIVED" },
-                    { value: "DEFERRED", label: "DEFERRED" },
-                    { value: "PLACEHOLDER", label: "PLACEHOLDER" },
-                    { value: "PROVISIONAL", label: "PROVISIONAL" },
-                  ]}
-                  required
-                  variant="Select"
-                  onBlur={triggerSubmit}
-                  mode={mode}
-                  baselineValue={originalNodeState.masterStatusNames[0]?.toUpperCase()}
-                />
-              </div>
-            </div>
-            <StringDiffField
-              name="content"
-              placeholder="Content"
-              multiline
-              onBlur={triggerSubmit}
-              mode={mode}
-              baselineValue={
-                typeof originalNodeState.content[0]?.text === "string"
-                  ? originalNodeState.content[0]?.text
-                  : originalNodeState.content[0]?.text[0]?.plain_text
-              }
-            />
-            <div className={getWidthClassName(isSplitMode ?? false)}>
-              <PHIDDiffField
-                name="parent"
-                label="Parent Document"
-                placeholder="phd:"
-                variant="withValueAndTitle"
-                allowUris
-                initialOptions={
-                  parentPHIDInitialOption
-                    ? [parentPHIDInitialOption]
-                    : undefined
-                }
-                fetchOptionsCallback={fetchPHIDOptions}
-                fetchSelectedOptionCallback={fetchSelectedPHIDOption}
-                onBlur={triggerSubmit}
-                mode={mode}
-                baselineValue={originalNodeState.parents?.[0]}
-              />
-            </div>
-            <div className={getWidthClassName(isSplitMode ?? false)}>
-              <PHIDDiffField
-                name="originalContextData"
-                label="Original Context Data"
-                placeholder="phd:"
-                variant="withValueAndTitle"
-                allowUris
-                initialOptions={
-                  originalContextDataPHIDInitialOption
-                    ? [originalContextDataPHIDInitialOption]
-                    : undefined
-                }
-                fetchOptionsCallback={fetchPHIDOptions}
-                fetchSelectedOptionCallback={fetchSelectedPHIDOption}
-                onBlur={triggerSubmit}
-                mode={mode}
-                baselineValue={""} // TODO: add the right baseline value
-              />
-            </div>
-            <div className={getWidthClassName(isSplitMode ?? false)}>
-              <UrlDiffField
-                name="provenance"
-                label="Provenance"
-                placeholder="Provenance"
-                platformIcons={{
-                  "notion.so": "Globe",
-                  "www.notion.so": "Globe",
+        <div className={cn("flex flex-col gap-3")}>
+          <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
+            <div className={cn("flex-1 truncate")}>
+              <DocNoForm
+                value={documentState.docNo}
+                baselineValue={originalNodeState.docNo}
+                onSave={(value) => {
+                  dispatch(actions.setDocNumber({ docNo: value }));
                 }}
-                onBlur={triggerSubmit}
-                mode={mode}
-                baselineValue={originalNodeState.hubUrls[0]}
               />
             </div>
-            <div className={getWidthClassName(isSplitMode ?? false)}>
-              <EnumDiffField
-                name="globalTags"
-                label="Tags"
-                placeholder="Select Tags"
-                options={globalTagsEnumOptions}
-                variant="Select"
-                multiple
-                onBlur={triggerSubmit}
-                mode={mode}
-                baselineValue={""} // TODO: add the right baseline value
-              />
-            </div>
-            <div className={getWidthClassName(isSplitMode ?? false)}>
-              <PHIDDiffField
-                name="references"
-                label="Atlas References"
-                placeholder="phd:"
-                variant="withValueAndTitle"
-                allowUris
-                initialOptions={
-                  referencesPHIDInitialOption
-                    ? [referencesPHIDInitialOption]
-                    : undefined
-                }
-                fetchOptionsCallback={fetchPHIDOptions}
-                fetchSelectedOptionCallback={fetchSelectedPHIDOption}
-                onBlur={triggerSubmit}
-                mode={mode}
-                baselineValue={""} // TODO: add the right baseline value
+            <div className={cn("flex-1 truncate")}>
+              <DocNameForm
+                value={documentState.name}
+                baselineValue={originalNodeState.name}
+                onSave={(value) => {
+                  dispatch(actions.setFoundationName({ name: value }));
+                }}
+                placeholder="Name"
               />
             </div>
           </div>
-        )}
-      </Form>
-    </ContentCard>
+          <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
+            <div className={cn("flex-1")}>
+              <DocTypeForm
+                value={documentState.atlasType}
+                baselineValue={originalNodeState.type?.toUpperCase()}
+                onSave={(value) => {
+                  dispatch(actions.setAtlasType({ atlasType: value }));
+                }}
+              />
+            </div>
+            <div className={cn("flex-1")}>
+              <MasterStatusForm
+                value={documentState.masterStatus}
+                baselineValue={originalNodeState.masterStatusNames[0]?.toUpperCase()}
+                onSave={(value) => {
+                  dispatch(actions.setMasterStatus({ masterStatus: value }));
+                }}
+              />
+            </div>
+          </div>
+
+          <ContentForm
+            value={documentState.content}
+            baselineValue={
+              typeof originalNodeState.content[0]?.text === "string"
+                ? originalNodeState.content[0]?.text
+                : originalNodeState.content[0]?.text[0]?.plain_text
+            }
+            onSave={(value) => {
+              dispatch(actions.setContent({ content: value }));
+            }}
+          />
+
+          <div className={getWidthClassName(isSplitMode ?? false)}>
+            <SinglePhIdForm
+              label="Parent Document"
+              value={documentState.parent}
+              baselineValue={originalNodeState.parents?.[0] ?? ""}
+              onSave={(value) => {
+                if (value === null) {
+                  dispatch(
+                    actions.setParent({
+                      id: "",
+                      docNo: undefined,
+                      name: undefined,
+                    }),
+                  );
+                } else {
+                  const newParentId = value.split(":")[1];
+                  const newParentData = fetchSelectedPHIDOption(value);
+                  dispatch(
+                    actions.setParent({
+                      id: newParentId,
+                      docNo: newParentData?.title?.split(" - ")[0] ?? "",
+                      name: newParentData?.title?.split(" - ")[1] ?? "",
+                    }),
+                  );
+                }
+              }}
+            />
+          </div>
+
+          <div className={getWidthClassName(isSplitMode ?? false)}>
+            <SinglePhIdForm
+              label="Original Context Data"
+              value={documentState.originalContextData}
+              baselineValue={""}
+              onSave={(value) => {
+                if (value === null) {
+                  dispatch(
+                    actions.removeContextData({
+                      id: documentState.originalContextData.split(":")[1],
+                    }),
+                  );
+                } else {
+                  const newOriginalContextDataId = value.split(":")[1];
+                  dispatch(
+                    actions.addContextData({ id: newOriginalContextDataId }),
+                  );
+                }
+              }}
+            />
+          </div>
+
+          <div className={getWidthClassName(isSplitMode ?? false)}>
+            <ProvenanceForm
+              value={documentState.provenance}
+              baselineValue={originalNodeState.hubUrls[0]}
+              onSave={(value) => {
+                dispatch(actions.setProvenance({ provenance: [value] }));
+              }}
+            />
+          </div>
+
+          {/*
+          <div className={getWidthClassName(isSplitMode ?? false)}>
+            <EnumDiffField
+              name="globalTags"
+              label="Tags"
+              placeholder="Select Tags"
+              options={globalTagsEnumOptions}
+              variant="Select"
+              multiple
+              onBlur={triggerSubmit}
+              mode={mode}
+              baselineValue={""} // TODO: add the right baseline value
+            />
+          </div> */}
+
+          <div className={getWidthClassName(isSplitMode ?? false)}>
+            <SinglePhIdForm
+              label="Atlas References"
+              value={documentState.references}
+              baselineValue={""}
+              initialOptions={
+                referencesPHIDInitialOption
+                  ? [referencesPHIDInitialOption]
+                  : undefined
+              }
+              onSave={(value) => {
+                if (value === null) {
+                  dispatch(
+                    actions.removeReference({
+                      id: documentState.references.split(":")[1],
+                    }),
+                  );
+                } else {
+                  const newReferenceId = value.split(":")[1];
+                  dispatch(actions.addReference({ id: newReferenceId }));
+                }
+              }}
+            />
+          </div>
+        </div>
+      </ContentCard>
+    </FormModeProvider>
   );
 }

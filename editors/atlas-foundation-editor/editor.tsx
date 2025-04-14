@@ -12,6 +12,8 @@ import { FoundationForm } from "./components/FoundationForm.js";
 import {
   getStringValue,
   fetchSelectedPHIDOption,
+  getTitleText,
+  parseTitleText,
 } from "../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
 
@@ -40,12 +42,13 @@ export default function Editor(props: IProps) {
     references: referencesId,
   };
   // TODO: update this with the correct data when available
+  const parentDocNo = originalDocumentState.parent?.docNo ?? "";
+  const parentName = originalDocumentState.parent?.name ?? "";
   const parentPHIDInitialOption: PHIDOption = {
     icon: "File",
-    title: `${originalDocumentState.parent?.docNo ?? ""} - ${originalDocumentState.parent?.name ?? ""}`,
+    title: getTitleText(parentDocNo, parentName),
     path: "Type not available",
     value: parentId,
-    description: undefined,
   };
   const originalContextDataPHIDInitialOption = fetchSelectedPHIDOption(
     originalContextDataId,
@@ -86,11 +89,12 @@ export default function Editor(props: IProps) {
       } else {
         const newParentId = (data["parent"] as string).split(":")[1];
         const newParentData = fetchSelectedPHIDOption(data["parent"] as string);
+        const { docNo, name } = parseTitleText(newParentData?.title ?? "");
         dispatch(
           actions.setParent({
             id: newParentId,
-            docNo: newParentData?.title?.split(" - ")[0] ?? "",
-            name: newParentData?.title?.split(" - ")[1] ?? "",
+            docNo,
+            name,
           }),
         );
       }
@@ -161,9 +165,11 @@ export default function Editor(props: IProps) {
           <SplitView
             left={
               <FoundationForm
+                document={props.document}
+                dispatch={props.dispatch}
                 isSplitMode={isSplitMode}
-                onSubmit={onSubmit}
-                documentState={documentState}
+                // onSubmit={onSubmit}
+                // documentState={documentState}
                 mode={isEditMode ? "Edition" : "DiffRemoved"}
                 parentPHIDInitialOption={parentPHIDInitialOption}
                 originalContextDataPHIDInitialOption={
@@ -174,9 +180,11 @@ export default function Editor(props: IProps) {
             }
             right={
               <FoundationForm
+                document={props.document}
+                dispatch={props.dispatch}
                 isSplitMode={isSplitMode}
-                onSubmit={onSubmit}
-                documentState={documentState}
+                // onSubmit={onSubmit}
+                // documentState={documentState}
                 mode={isEditMode ? "DiffMixed" : "DiffAdditions"}
                 parentPHIDInitialOption={parentPHIDInitialOption}
                 originalContextDataPHIDInitialOption={
@@ -188,8 +196,10 @@ export default function Editor(props: IProps) {
           />
         ) : (
           <FoundationForm
-            onSubmit={onSubmit}
-            documentState={documentState}
+            document={props.document}
+            dispatch={props.dispatch}
+            // onSubmit={onSubmit}
+            // documentState={documentState}
             mode={isEditMode ? "Edition" : "DiffMixed"}
             parentPHIDInitialOption={parentPHIDInitialOption}
             originalContextDataPHIDInitialOption={

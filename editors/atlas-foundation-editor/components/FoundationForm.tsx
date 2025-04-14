@@ -16,7 +16,10 @@ import {
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { DocNoForm } from "../../shared/components/forms/DocNoForm.js";
 import type { IProps } from "../editor.js";
-import { actions } from "../../../document-models/atlas-foundation/index.js";
+import {
+  actions,
+  type FGlobalTag,
+} from "../../../document-models/atlas-foundation/index.js";
 import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
@@ -24,10 +27,9 @@ import { ContentForm } from "../../shared/components/forms/ContentForm.js";
 import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
 import { useState } from "react";
+import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 
 interface FoundationFormProps extends Pick<IProps, "document" | "dispatch"> {
-  // onSubmit: (data: Record<string, any>) => void;
-  // documentState: Record<string, any>;
   mode: EditorMode;
   parentPHIDInitialOption?: PHIDOption;
   originalContextDataPHIDInitialOption?: PHIDOption;
@@ -83,7 +85,7 @@ export function FoundationForm({
       >
         <div className={cn("flex flex-col gap-3")}>
           <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
-            <div className={cn("flex-1 truncate")}>
+            <div className={cn("flex-1")}>
               <DocNoForm
                 value={documentState.docNo}
                 baselineValue={originalNodeState.docNo}
@@ -92,7 +94,7 @@ export function FoundationForm({
                 }}
               />
             </div>
-            <div className={cn("flex-1 truncate")}>
+            <div className={cn("flex-1")}>
               <DocNameForm
                 value={documentState.name}
                 baselineValue={originalNodeState.name}
@@ -197,20 +199,37 @@ export function FoundationForm({
             />
           </div>
 
-          {/*
           <div className={getWidthClassName(isSplitMode ?? false)}>
-            <EnumDiffField
-              name="globalTags"
-              label="Tags"
-              placeholder="Select Tags"
-              options={globalTagsEnumOptions}
-              variant="Select"
-              multiple
-              onBlur={triggerSubmit}
-              mode={mode}
-              baselineValue={""} // TODO: add the right baseline value
+            <GlobalTagsForm
+              value={documentState.globalTags}
+              baselineValue={[]}
+              onSave={(value) => {
+                const newTags = value as FGlobalTag[];
+                const currentTags = documentState.globalTags;
+
+                if (value === null) {
+                  dispatch(actions.removeTags({ tags: currentTags }));
+                  return;
+                }
+
+                // Tags to add (are in newTags but not in currentTags)
+                const tagsToAdd = newTags.filter(
+                  (tag) => !currentTags.includes(tag),
+                );
+                if (tagsToAdd.length > 0) {
+                  dispatch(actions.addTags({ tags: tagsToAdd }));
+                }
+
+                // Tags to remove (are in currentTags but not in newTags)
+                const tagsToRemove = currentTags.filter(
+                  (tag) => !newTags.includes(tag),
+                );
+                if (tagsToRemove.length > 0) {
+                  dispatch(actions.removeTags({ tags: tagsToRemove }));
+                }
+              }}
             />
-          </div> */}
+          </div>
 
           <div className={getWidthClassName(isSplitMode ?? false)}>
             <SinglePhIdForm

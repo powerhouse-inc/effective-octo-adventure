@@ -52,7 +52,7 @@ export default function Editor(props: IProps) {
     }
     if (data["name"] !== undefined) {
       dispatch(
-        actions.setExploratoryName({ name: getStringValue(data["name"]) })
+        actions.setExploratoryName({ name: getStringValue(data["name"]) }),
       );
     }
     if (data["masterStatus"] !== undefined) {
@@ -64,7 +64,7 @@ export default function Editor(props: IProps) {
     }
     if (data["content"] !== undefined) {
       dispatch(
-        actions.setContent({ content: getStringValue(data["content"]) })
+        actions.setContent({ content: getStringValue(data["content"]) }),
       );
     }
     if (data["parent"] !== undefined) {
@@ -102,7 +102,7 @@ export default function Editor(props: IProps) {
       dispatch(
         actions.addAdditionalGuidance({
           additionalGuidance: getStringValue(data["additionalGuidance"]),
-        })
+        }),
       );
     }
     if (data["originalContextData"] !== undefined) {

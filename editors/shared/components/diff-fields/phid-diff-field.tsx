@@ -10,7 +10,7 @@ import { useFormContext } from "react-hook-form";
 import { cn } from "@powerhousedao/design-system/scalars";
 import { fetchSelectedPHIDOption } from "../../../shared/utils/utils.js";
 
-type PHIDDiffFieldProps = PHIDFieldProps & BaseDiffFieldProps;
+export type PHIDDiffFieldProps = PHIDFieldProps & BaseDiffFieldProps;
 
 const PHIDDiffField = ({
   mode,

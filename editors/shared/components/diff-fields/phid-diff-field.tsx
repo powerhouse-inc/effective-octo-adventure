@@ -51,8 +51,8 @@ const PHIDDiffField = ({
         <div className={cn("absolute top-0 left-0 right-0 z-10 w-full")}>
           <FakeInput>
             <DiffText
-              baseline={baselineValue}
-              value={currentValue}
+              baseline={baselineValue.replace(/phd:|phd:\/\//, "")}
+              value={currentValue.replace(/phd:|phd:\/\//, "")}
               mode={mode}
               diffMode={diffMode}
             />

@@ -86,7 +86,29 @@ export const getStringValue = (value: any): string => {
 
 export const getRemoteDriveUrl = (drive: DocumentDriveDocument) => {
   const trigger = drive.state.local.triggers.find(
-    trigger => trigger.data?.url,
+    (trigger) => trigger.data?.url,
   );
-  return  trigger?.data?.url || null;
-}
+  return trigger?.data?.url || null;
+};
+
+export const getTitleText = (docNo: string, name: string) => {
+  if (docNo !== "" && name !== "") {
+    return `${docNo} - ${name}`;
+  }
+  if (docNo !== "" && name === "") {
+    return docNo;
+  }
+  if (docNo === "" && name !== "") {
+    return name;
+  }
+  return "Title not available";
+};
+
+export const parseTitleText = (title: string) => {
+  if (title === "") return { docNo: "", name: "" };
+  if (title.includes(" - ")) {
+    const parts = title.split(" - ");
+    return { docNo: parts[0], name: parts[1] };
+  }
+  return { docNo: "", name: title };
+};

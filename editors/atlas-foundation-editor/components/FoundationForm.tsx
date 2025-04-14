@@ -8,7 +8,10 @@ import {
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import type { EditorMode } from "../../shared/types.js";
-import { getOriginalNotionDocument } from "../../../document-models/utils.js";
+import {
+  getOriginalNotionDocument,
+  pndContentToString,
+} from "../../../document-models/utils.js";
 import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
 import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
 import { PHIDDiffField } from "../../shared/components/diff-fields/phid-diff-field.js";
@@ -147,11 +150,10 @@ export function FoundationForm({
               multiline
               onBlur={triggerSubmit}
               mode={mode}
-              baselineValue={
-                typeof originalNodeState.content[0]?.text === "string"
-                  ? originalNodeState.content[0]?.text
-                  : originalNodeState.content[0]?.text[0]?.plain_text
-              }
+              baselineValue={originalNodeState.content
+                .map((c) => pndContentToString(c))
+                .join("\n")
+                .trim()}
             />
             <div className={getWidthClassName(isSplitMode ?? false)}>
               <PHIDDiffField

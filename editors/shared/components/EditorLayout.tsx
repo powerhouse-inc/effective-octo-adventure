@@ -114,6 +114,7 @@ export const EditorLayout = ({
               onChange={(selectedIndex) => {
                 setIsSplitMode(splitModeEnabled ? selectedIndex === 1 : false);
               }}
+              className={cn(!splitModeEnabled && "p-0")}
             />
             <ToggleSwitch
               options={readOnlyModeEnabled ? ["Read Only", "Edit"] : ["Edit"]}
@@ -121,6 +122,7 @@ export const EditorLayout = ({
               onChange={(option) => {
                 setIsEditMode(readOnlyModeEnabled ? option === 1 : true);
               }}
+              className={cn(!readOnlyModeEnabled && "p-0")}
             />
           </div>
         </div>

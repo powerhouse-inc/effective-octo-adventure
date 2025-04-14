@@ -1,6 +1,5 @@
 import { Form, type SelectOption } from "@powerhousedao/design-system/scalars";
 import { useFormMode } from "../../../providers/FormModeProvider.js";
-import { StringDiffField } from "../../diff-fields/string-diff-field.js";
 import { EnumDiffField } from "../../diff-fields/enum-diff-field.js";
 
 type GenericEnumFormProps = {
@@ -8,10 +7,20 @@ type GenericEnumFormProps = {
   placeholder: string;
   required?: boolean;
   options: SelectOption[];
-  value: string;
-  baselineValue: string;
-  onSave: (value: string) => void;
-};
+} & (
+  | {
+      multiple: true;
+      onSave: (value: string[]) => void;
+      value: string[];
+      baselineValue: string[];
+    }
+  | {
+      multiple: false;
+      onSave: (value: string) => void;
+      value: string;
+      baselineValue: string;
+    }
+);
 
 const GenericEnumForm = ({
   label,
@@ -21,11 +30,12 @@ const GenericEnumForm = ({
   baselineValue,
   onSave,
   required = false,
+  multiple = false,
 }: GenericEnumFormProps) => {
   const formMode = useFormMode();
-  const onSubmit = (data: { genericEnum: string }) => {
+  const onSubmit = (data: { genericEnum: unknown }) => {
     if (data.genericEnum !== undefined && data.genericEnum !== value) {
-      onSave(data.genericEnum);
+      onSave(data.genericEnum as string & string[]);
     }
   };
 
@@ -42,9 +52,10 @@ const GenericEnumForm = ({
           placeholder={placeholder}
           variant="Select"
           required={required}
+          multiple={multiple}
           onBlur={triggerSubmit}
           mode={formMode}
-          baselineValue={baselineValue}
+          baselineValue={baselineValue.toString()}
           options={options}
         />
       )}

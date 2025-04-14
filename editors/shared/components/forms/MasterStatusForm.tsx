@@ -28,6 +28,7 @@ const MasterStatusForm = ({
       value={value ?? ""}
       baselineValue={baselineValue ?? ""}
       onSave={onSave as (value: string) => void}
+      multiple={false}
     />
   );
 };

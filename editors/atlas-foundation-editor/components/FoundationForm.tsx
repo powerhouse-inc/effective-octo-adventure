@@ -1,7 +1,6 @@
-import { cn, Form } from "@powerhousedao/design-system/scalars";
+import { cn } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
-  fetchPHIDOptions,
   fetchSelectedPHIDOption,
   getCardVariant,
   getTagText,
@@ -9,14 +8,7 @@ import {
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import type { EditorMode } from "../../shared/types.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
-import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
-import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
-import { PHIDDiffField } from "../../shared/components/diff-fields/phid-diff-field.js";
-import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
-import { useEffect, useRef, useState } from "react";
-import type { UseFormReturn } from "react-hook-form";
-import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
@@ -24,19 +16,14 @@ import {
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { DocNoForm } from "../../shared/components/forms/DocNoForm.js";
 import type { IProps } from "../editor.js";
-import {
-  actions,
-  type AtlasFoundationDocument,
-  type FAtlasType,
-  type FGlobalTag,
-  type FStatus,
-} from "../../../document-models/atlas-foundation/index.js";
+import { actions } from "../../../document-models/atlas-foundation/index.js";
 import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { ContentForm } from "../../shared/components/forms/ContentForm.js";
 import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
+import { useState } from "react";
 
 interface FoundationFormProps extends Pick<IProps, "document" | "dispatch"> {
   // onSubmit: (data: Record<string, any>) => void;

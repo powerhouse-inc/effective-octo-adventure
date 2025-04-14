@@ -161,9 +161,11 @@ export default function Editor(props: IProps) {
           <SplitView
             left={
               <FoundationForm
+                document={props.document}
+                dispatch={props.dispatch}
                 isSplitMode={isSplitMode}
-                onSubmit={onSubmit}
-                documentState={documentState}
+                // onSubmit={onSubmit}
+                // documentState={documentState}
                 mode={isEditMode ? "Edition" : "DiffRemoved"}
                 parentPHIDInitialOption={parentPHIDInitialOption}
                 originalContextDataPHIDInitialOption={
@@ -174,9 +176,11 @@ export default function Editor(props: IProps) {
             }
             right={
               <FoundationForm
+                document={props.document}
+                dispatch={props.dispatch}
                 isSplitMode={isSplitMode}
-                onSubmit={onSubmit}
-                documentState={documentState}
+                // onSubmit={onSubmit}
+                // documentState={documentState}
                 mode={isEditMode ? "DiffMixed" : "DiffAdditions"}
                 parentPHIDInitialOption={parentPHIDInitialOption}
                 originalContextDataPHIDInitialOption={
@@ -188,8 +192,10 @@ export default function Editor(props: IProps) {
           />
         ) : (
           <FoundationForm
-            onSubmit={onSubmit}
-            documentState={documentState}
+            document={props.document}
+            dispatch={props.dispatch}
+            // onSubmit={onSubmit}
+            // documentState={documentState}
             mode={isEditMode ? "Edition" : "DiffMixed"}
             parentPHIDInitialOption={parentPHIDInitialOption}
             originalContextDataPHIDInitialOption={

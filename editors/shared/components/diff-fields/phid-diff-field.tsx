@@ -10,7 +10,7 @@ import { useFormContext } from "react-hook-form";
 import { cn } from "@powerhousedao/design-system/scalars";
 import { fetchSelectedPHIDOption } from "../../../shared/utils/utils.js";
 
-type PHIDDiffFieldProps = PHIDFieldProps & BaseDiffFieldProps;
+export type PHIDDiffFieldProps = PHIDFieldProps & BaseDiffFieldProps;
 
 const PHIDDiffField = ({
   mode,
@@ -51,8 +51,8 @@ const PHIDDiffField = ({
         <div className={cn("absolute top-0 left-0 right-0 z-10 w-full")}>
           <FakeInput>
             <DiffText
-              baseline={baselineValue}
-              value={currentValue}
+              baseline={baselineValue.replace(/phd:|phd:\/\//, "")}
+              value={currentValue.replace(/phd:|phd:\/\//, "")}
               mode={mode}
               diffMode={diffMode}
             />

@@ -29,7 +29,7 @@ export default function ToggleSwitch({
   return (
     <div
       className={cn(
-        "flex items-center bg-slate-50 w-fit rounded-[6px] border-[1px] border-slate-200 box-border",
+        "flex items-center bg-slate-50 w-fit rounded-[6px] border-[1px] border-gray-200 p-[2px]",
         className,
       )}
     >

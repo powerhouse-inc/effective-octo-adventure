@@ -1,0 +1,28 @@
+import { GenericTextForm } from "./generics/GenericTextForm.js";
+import type { Maybe } from "document-model";
+
+interface DocNameFormProps {
+  value: Maybe<string>;
+  baselineValue: Maybe<string>;
+  onSave: (value: string) => void;
+  placeholder?: string;
+}
+
+const DocNameForm = ({
+  value,
+  baselineValue,
+  onSave,
+  placeholder = "Document Name",
+}: DocNameFormProps) => {
+  return (
+    <GenericTextForm
+      label="Name"
+      placeholder={placeholder}
+      value={value ?? ""}
+      baselineValue={baselineValue ?? ""}
+      onSave={onSave}
+    />
+  );
+};
+
+export { DocNameForm };

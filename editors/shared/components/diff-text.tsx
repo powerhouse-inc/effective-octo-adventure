@@ -25,12 +25,12 @@ export const DiffText = ({
   }, [baseline, value, diffMode]);
 
   return (
-    <span className={cn("leading-normal", className)}>
+    <span className={cn("leading-[18px]", className)}>
       {wordsDiff.map((word, index) => {
         return word.added ? (
           mode === "DiffAdditions" || mode === "DiffMixed" ? (
             <span
-              className="bg-green-600/30 mr-0.5"
+              className="bg-green-600/30 mr-0.5 text-gray-700"
               key={`${word.value}-${index}`}
             >
               {word.value}
@@ -39,7 +39,7 @@ export const DiffText = ({
         ) : word.removed ? (
           mode === "DiffRemoved" || mode === "DiffMixed" ? (
             <span
-              className="bg-red-600/30 mr-0.5"
+              className="bg-red-600/30 text-gray-700 mr-0.5"
               key={`${word.value}-${index}`}
             >
               {word.value}

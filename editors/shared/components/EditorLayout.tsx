@@ -4,6 +4,7 @@ import type { Maybe } from "document-model";
 import { useSidebar, type SidebarNode } from "@powerhousedao/design-system/ui";
 import { Breadcrumbs } from "./breadcrumbs.js";
 import { cn } from "@powerhousedao/design-system/scalars";
+import { useViewMode } from "../context/view-mode-context.js";
 
 export type ChildrenFn = ({
   isSplitMode,
@@ -28,8 +29,8 @@ export const EditorLayout = ({
   splitModeEnabled = false,
   readOnlyModeEnabled = false,
 }: EditorLayoutProps) => {
-  const [isSplitMode, setIsSplitMode] = useState<boolean>(false);
-  const [isEditMode, setIsEditMode] = useState<boolean>(true);
+  const { isSplitMode, setIsSplitMode, isEditMode, setIsEditMode } =
+    useViewMode();
 
   const { nodes, activeNodeId, onActiveNodeChange } = useSidebar();
 
@@ -114,6 +115,7 @@ export const EditorLayout = ({
               onChange={(selectedIndex) => {
                 setIsSplitMode(splitModeEnabled ? selectedIndex === 1 : false);
               }}
+              className={cn(!splitModeEnabled && "p-0")}
             />
             <ToggleSwitch
               options={readOnlyModeEnabled ? ["Read Only", "Edit"] : ["Edit"]}
@@ -121,6 +123,7 @@ export const EditorLayout = ({
               onChange={(option) => {
                 setIsEditMode(readOnlyModeEnabled ? option === 1 : true);
               }}
+              className={cn(!readOnlyModeEnabled && "p-0")}
             />
           </div>
         </div>

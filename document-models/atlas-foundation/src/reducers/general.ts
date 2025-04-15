@@ -28,16 +28,21 @@ export const reducer: AtlasFoundationGeneralOperations = {
       docNo: action.input.docNo || null,
     };
   },
-  // TODO: change this when the UI is updated
+
   addReferenceOperation(state, action, dispatch) {
     const newReference = {
       id: action.input.id,
       name: action.input.name || null,
       docNo: action.input.docNo || null,
     };
-    state.references = [newReference];
+    state.references = [...state.references, newReference];
   },
+
   removeReferenceOperation(state, action, dispatch) {
-    state.references = [];
+    state.references = [
+      ...state.references.filter(
+        (reference) => reference.id !== action.input.id,
+      ),
+    ];
   },
 };

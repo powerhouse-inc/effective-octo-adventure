@@ -30,7 +30,7 @@ export const DiffText = ({
         return word.added ? (
           mode === "DiffAdditions" || mode === "DiffMixed" ? (
             <span
-              className="bg-green-600 mr-0.5 text-gray-700"
+              className="bg-green-600/30 mr-0.5 text-gray-700"
               key={`${word.value}-${index}`}
             >
               {word.value}
@@ -39,7 +39,7 @@ export const DiffText = ({
         ) : word.removed ? (
           mode === "DiffRemoved" || mode === "DiffMixed" ? (
             <span
-              className="bg-red-600 text-gray-700 mr-0.5"
+              className="bg-red-600/30 text-gray-700 mr-0.5"
               key={`${word.value}-${index}`}
             >
               {word.value}

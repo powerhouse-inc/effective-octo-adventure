@@ -2,39 +2,44 @@ import { useMemo } from "react";
 import {
   type FDocumentLink,
   actions,
-} from "../../../document-models/atlas-foundation/index.js";
-import { ArrayField } from "../../shared/components/ArrayField.js";
+} from "../../../../document-models/atlas-foundation/index.js";
+import { ArrayField } from "../ArrayField.js";
 import {
   PHIDDiffField,
   type PHIDDiffFieldProps,
-} from "../../shared/components/diff-fields/phid-diff-field.js";
-import { useFormMode } from "../../shared/providers/FormModeProvider.js";
+} from "../diff-fields/phid-diff-field.js";
+import { useFormMode } from "../../providers/FormModeProvider.js";
 import {
   fetchPHIDOptions,
   fetchSelectedPHIDOption,
-} from "../../shared/utils/utils.js";
-import { type IProps } from "../editor.js";
+} from "../../utils/utils.js";
 
-interface ReferencesArrayProps extends Pick<IProps, "dispatch"> {
-  references: FDocumentLink[];
+interface ReferencesArrayProps<RefType = { id: string }> {
+  onAdd: (value: string) => void;
+  onRemove: (value: string) => void;
+  onUpdate: (value: string) => void;
+  references: RefType[];
 }
 
-const ReferencesArray = ({ references, dispatch }: ReferencesArrayProps) => {
+// TODO: remove this as reference field is going to be removed
+const ReferencesArray = ({
+  references,
+  onAdd,
+  onRemove,
+  onUpdate,
+}: ReferencesArrayProps) => {
   const formMode = useFormMode();
 
   return (
     <ArrayField<string, PHIDDiffFieldProps>
       onAdd={(value) => {
-        const phid = value.split(":")[1];
-        dispatch(actions.addReference({ id: phid }));
+        onAdd(value);
       }}
       onRemove={({ value }) => {
-        const phid = value.split(":")[1];
-        dispatch(actions.removeReference({ id: phid }));
+        onRemove(value);
       }}
-      onUpdate={() => {
-        // TODO: implement references updates
-        throw new Error("Updates not supported yet");
+      onUpdate={({ value }) => {
+        onUpdate(value);
       }}
       fields={references.map((reference) => ({
         id: reference.id,

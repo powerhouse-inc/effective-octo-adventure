@@ -28,7 +28,7 @@ import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js"
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
 import { useState } from "react";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
-import ReferencesArray from "./ReferencesArray.js";
+import ReferencesArray from "../../shared/components/forms/ReferencesArray.js";
 
 interface FoundationFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
@@ -230,7 +230,18 @@ export function FoundationForm({
             />
 
             <ReferencesArray
-              dispatch={dispatch}
+              onAdd={(value) => {
+                const phid = value.split(":")[1];
+                dispatch(actions.addReference({ id: phid }));
+              }}
+              onRemove={(value) => {
+                const phid = value.split(":")[1];
+                dispatch(actions.removeReference({ id: phid }));
+              }}
+              onUpdate={() => {
+                // TODO: implement references updates
+                throw new Error("Updates not supported yet");
+              }}
               references={documentState.references}
             />
           </div>

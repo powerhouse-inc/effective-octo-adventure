@@ -136,7 +136,7 @@ export type EGlobalTag =
   | "SCOPE_ADVISOR"
   | "TWO_STAGE_BRIDGE";
 
-/** Defines the lifecycle stage of the Grounding document within Atlas.   */
+/** Defines the lifecycle stage of the Grounding document within Atlas. */
 export type EStatus =
   | "APPROVED"
   | "ARCHIVED"
@@ -144,7 +144,7 @@ export type EStatus =
   | "PLACEHOLDER"
   | "PROVISIONAL";
 
-/** Reference to a document within Atlas with optional name and document number for display reasons.  */
+/** Reference to a document within Atlas with optional name and document number for display reasons. */
 export type Finding = {
   comment: Maybe<Scalars["String"]["output"]>;
   isAligned: Scalars["Boolean"]["output"];

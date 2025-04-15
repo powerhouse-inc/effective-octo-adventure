@@ -10,7 +10,6 @@ interface ProvenanceFormProps {
   onSave: (value: string) => void;
 }
 
-// TODO: allow to handle multiple provenance urls
 const ProvenanceForm = ({
   value,
   baselineValue,

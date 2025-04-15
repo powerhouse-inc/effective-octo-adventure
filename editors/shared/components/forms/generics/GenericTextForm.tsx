@@ -44,6 +44,7 @@ const GenericTextForm = ({
           mode={formMode}
           baselineValue={baselineValue}
           multiline={multiline}
+          autoExpand
         />
       )}
     </Form>

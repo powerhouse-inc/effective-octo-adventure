@@ -14,8 +14,8 @@ import {
 } from "../../shared/utils/common-options.js";
 import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
 import { useEffect, useRef } from "react";
-import { UseFormReturn } from "react-hook-form";
-import { ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
+import { type UseFormReturn } from "react-hook-form";
+import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
 import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
@@ -45,7 +45,7 @@ export function ScopeForm({
   // baseline document state
   const originalNodeState = getOriginalNotionDocument(
     (documentState.notionId as string) || "notion-id-not-set",
-    (documentState.atlasType as ParsedNotionDocumentType) || "article"
+    (documentState.atlasType as ParsedNotionDocumentType) || "article",
   );
 
   const formRef = useRef<UseFormReturn>(null);
@@ -57,7 +57,7 @@ export function ScopeForm({
   }, [documentState]);
 
   return (
-    <ContentCard tagText={tagText} variant={cardVariant} className="mt-4">
+    <ContentCard tagText={tagText} variant={cardVariant}>
       <Form
         onSubmit={onSubmit}
         submitChangesOnly

@@ -65,7 +65,7 @@ export function GroundingForm({
   }, [documentState]);
 
   return (
-    <ContentCard tagText={tagText} variant={cardVariant} className={cn("mt-4")}>
+    <ContentCard tagText={tagText} variant={cardVariant}>
       <Form
         ref={formRef}
         defaultValues={{ ...documentState }}

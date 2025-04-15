@@ -47,7 +47,6 @@ export default function Editor(props: IProps) {
   const parentPHIDInitialOption: PHIDOption = {
     icon: "File",
     title: getTitleText(parentDocNo, parentName),
-    path: "Type not available",
     value: parentId,
   };
   const originalContextDataPHIDInitialOption = fetchSelectedPHIDOption(

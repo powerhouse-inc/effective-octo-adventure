@@ -11,14 +11,14 @@ import type { EditorMode } from "../../shared/types.js";
 import { isFormReadOnly } from "../../shared/utils/form-common.js";
 import { useEffect } from "react";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
-import { ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
-import { UseFormReturn } from "react-hook-form";
+import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
+import { type UseFormReturn } from "react-hook-form";
 import { useRef } from "react";
 import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
 import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
 import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
 import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
-import { PHIDOption } from "@powerhousedao/design-system/ui";
+import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import { PHIDDiffField } from "../../shared/components/diff-fields/phid-diff-field.js";
 
 interface MultiParentFormProps {
@@ -46,7 +46,7 @@ export function MultiParentForm({
   // baseline document state
   const originalNodeState = getOriginalNotionDocument(
     (documentState.notionId as string) || "notion-id-not-set",
-    (documentState.atlasType as ParsedNotionDocumentType) || "article"
+    (documentState.atlasType as ParsedNotionDocumentType) || "article",
   );
 
   const formRef = useRef<UseFormReturn>(null);
@@ -59,7 +59,7 @@ export function MultiParentForm({
   }, [documentState]);
 
   return (
-    <ContentCard tagText={tagText} variant={cardVariant} className="mt-4">
+    <ContentCard tagText={tagText} variant={cardVariant}>
       <Form
         onSubmit={onSubmit}
         submitChangesOnly
@@ -73,7 +73,7 @@ export function MultiParentForm({
             <div
               className={cn(
                 "flex flex-row gap-2",
-                isSplitMode ? "flex-col" : "flex-row"
+                isSplitMode ? "flex-col" : "flex-row",
               )}
             >
               <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
@@ -102,7 +102,7 @@ export function MultiParentForm({
             <div
               className={cn(
                 "flex flex-row gap-2",
-                isSplitMode ? "flex-col" : "flex-row"
+                isSplitMode ? "flex-col" : "flex-row",
               )}
             >
               <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>

@@ -84,7 +84,7 @@ export function ExploratoryForm({
   ]);
 
   return (
-    <ContentCard tagText={tagText} variant={cardVariant} className="mt-4">
+    <ContentCard tagText={tagText} variant={cardVariant}>
       {/* TODO: move this array to the right place */}
       <ArrayField<string, PHIDFieldProps>
         onAdd={(value) =>

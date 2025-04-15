@@ -78,11 +78,7 @@ export function FoundationForm({
 
   return (
     <FormModeProvider mode={mode}>
-      <ContentCard
-        tagText={tagText}
-        variant={cardVariant}
-        className={cn("mt-4")}
-      >
+      <ContentCard tagText={tagText} variant={cardVariant}>
         <div className={cn("flex flex-col gap-3")}>
           <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
             <div className={cn("flex-1")}>

@@ -16,8 +16,9 @@ export const reducer: AtlasExploratoryGeneralOperations = {
   setParentOperation(state, action, dispatch) {
     // TODO: change input to singular
     //state.parent = action.input.parent?
-    state.parent = Array.isArray(action.input.parent) ? action.input.parent[0] || "" : action.input.parent || "";
-
+    state.parent = Array.isArray(action.input.parent)
+      ? action.input.parent[0] || ""
+      : action.input.parent || "";
   },
   removeParentOperation(state, action, dispatch) {
     // TODO: Implement "removeParentOperation" reducer
@@ -28,18 +29,21 @@ export const reducer: AtlasExploratoryGeneralOperations = {
   },
   setFindingsOperation(state, action, dispatch) {
     state.findings = {
-      comment:  action.input.comment || "",
+      comment: action.input.comment || "",
       isAligned: action.input.isAligned,
     };
   },
 
-    setReferenceOperation(state, action, dispatch) {
-      const newReference = action.input.newReference
-      if (newReference) {
-        state.references =  [newReference,...state.references]
-      }
+  setReferenceOperation(state, action, dispatch) {
+    const newReference = action.input.newReference;
+    if (newReference) {
+      state.references = [...state.references, newReference];
+    }
   },
   removeReferenceOperation(state, action, dispatch) {
-      state.references = []
+    const reference = action.input.reference;
+    if (reference) {
+      state.references = state.references.filter((ref) => ref !== reference);
+    }
   },
 };

@@ -1,50 +1,52 @@
-import { cn, Form } from "@powerhousedao/design-system/scalars";
+import { cn } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
-import {
-  fetchPHIDOptions,
-  fetchSelectedPHIDOption,
-  getCardVariant,
-  getTagText,
-} from "../../shared/utils/utils.js";
+import { getCardVariant, getTagText } from "../../shared/utils/utils.js";
 import type { EditorMode } from "../../shared/types.js";
-import { isFormReadOnly } from "../../shared/utils/form-common.js";
-import {
-  globalScopeTagsEnumOptions,
-  globalTagsEnumOptions,
-} from "../../shared/utils/common-options.js";
-import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
 import { useEffect, useRef } from "react";
 import { type UseFormReturn } from "react-hook-form";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
-import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
-import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
-import { PHIDDiffField } from "../../shared/components/diff-fields/phid-diff-field.js";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
 } from "../../shared/utils/styles.js";
 import { PositionedWrapper } from "../../shared/components/PositionedWrapper.js";
-interface ScopeFormProps {
-  onSubmit: (data: Record<string, any>) => void;
-  documentState: Record<string, any>;
+import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
+import { DocNoForm } from "../../shared/components/forms/DocNoForm.js";
+import type { IProps } from "../editor.js";
+import {
+  actions,
+  type GlobalTag,
+} from "../../../document-models/atlas-scope/index.js";
+import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
+import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
+import { ContentForm } from "../../shared/components/forms/ContentForm.js";
+import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js";
+import { ContextDataForm } from "../../shared/components/forms/ContextDataForm.js";
+import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
+import { globalScopeTagsEnumOptions } from "../../shared/utils/common-options.js";
+
+interface ScopeFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
   isSplitMode?: boolean;
 }
 
 export function ScopeForm({
-  onSubmit,
-  documentState,
+  document,
+  dispatch,
   mode,
   isSplitMode,
 }: ScopeFormProps) {
-  const isReadOnly = isFormReadOnly(mode);
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
 
+  const documentState = document.state.global;
+
+  // TODO: replace the entire originalNodeState with the actual baseline document
   // baseline document state
   const originalNodeState = getOriginalNotionDocument(
     (documentState.notionId as string) || "notion-id-not-set",
+    // @ts-ignore
     (documentState.atlasType as ParsedNotionDocumentType) || "article",
   );
 
@@ -57,123 +59,110 @@ export function ScopeForm({
   }, [documentState]);
 
   return (
-    <ContentCard tagText={tagText} variant={cardVariant}>
-      <Form
-        onSubmit={onSubmit}
-        submitChangesOnly
-        defaultValues={{ ...documentState }}
-        extraFormProps={{
-          shouldFocusError: false,
-        }}
-      >
-        {({ triggerSubmit }) => (
-          <div className="flex flex-col gap-4">
-            <div className={cn(getFlexLayoutClassName(isSplitMode ?? false))}>
-              <div className="flex-1">
-                <StringDiffField
-                  name="docNo"
-                  label="Doc №"
-                  placeholder="A."
-                  onBlur={triggerSubmit}
-                  mode={mode}
-                  baselineValue={originalNodeState.docNo || ""}
-                />
-              </div>
-              <div className="flex-1 min-w-[200px]">
-                <StringDiffField
-                  name="name"
-                  label="Scope"
-                  placeholder="The Governance Scope"
-                  onBlur={triggerSubmit}
-                  mode={mode}
-                  baselineValue={originalNodeState.name}
-                />
-              </div>
+    <FormModeProvider mode={mode}>
+      <ContentCard tagText={tagText} variant={cardVariant} className="mt-4">
+        <div className="flex flex-col gap-4">
+          <div className={cn(getFlexLayoutClassName(isSplitMode ?? false))}>
+            <div className="flex-1">
+              <DocNoForm
+                value={documentState.docNo}
+                baselineValue={originalNodeState.docNo}
+                onSave={(value) => {
+                  dispatch(actions.setDocNumber({ docNo: value }));
+                }}
+              />
             </div>
-            <div className={cn(getFlexLayoutClassName(isSplitMode ?? false))}>
-              <div className={cn(getWidthClassName(isSplitMode ?? false))}>
-                <EnumDiffField
-                  label="Status"
-                  name="masterStatus"
-                  onBlur={triggerSubmit}
-                  mode={mode}
-                  options={[
-                    { value: "PLACEHOLDER", label: "PLACEHOLDER" },
-                    { value: "PROVISIONAL", label: "PROVISIONAL" },
-                    { value: "APPROVED", label: "APPROVED " },
-                    { value: "DEFERRED", label: "DEFERRED" },
-                    { value: "ARCHIVED", label: "ARCHIVED" },
-                  ]}
-                  disabled={isReadOnly}
-                  required
-                  variant="Select"
-                  baselineValue={originalNodeState.masterStatusNames[0]?.toUpperCase()}
-                />
-              </div>
-            </div>
-
-            <StringDiffField
-              autoExpand
-              rows={4}
-              multiline
-              name="content"
-              onBlur={triggerSubmit}
-              placeholder="Enter content"
-              mode={mode}
-              // TODO: add the right baseline value
-              baselineValue={""}
-            />
-            {/* </div> */}
-            <div className={cn("flex flex-col gap-4")}>
-              <div className={cn(getWidthClassName(isSplitMode ?? false))}>
-                <UrlDiffField
-                  name="provenance"
-                  label="Provenance"
-                  placeholder="Provenance"
-                  platformIcons={{
-                    "notion.so": "Globe",
-                    "www.notion.so": "Globe",
-                  }}
-                  onBlur={triggerSubmit}
-                  mode={mode}
-                  // TODO: add the right baseline value
-                  baselineValue={""}
-                />
-              </div>
-              <div className={cn(getWidthClassName(isSplitMode ?? false))}>
-                <PHIDDiffField
-                  disabled={isReadOnly}
-                  fetchOptionsCallback={fetchPHIDOptions}
-                  fetchSelectedOptionCallback={fetchSelectedPHIDOption}
-                  label="Original Context Data"
-                  name="originalContextData"
-                  placeholder="phd:"
-                  variant="withValueAndTitle"
-                  onBlur={triggerSubmit}
-                  allowUris={true}
-                  mode={mode}
-                  // TODO: add the right baseline value
-                  baselineValue={""}
-                />
-              </div>
-              <PositionedWrapper isSplitMode={isSplitMode}>
-                <EnumDiffField
-                  name="globalTags"
-                  label="Tags"
-                  placeholder="Select Tags"
-                  options={globalScopeTagsEnumOptions}
-                  variant="Select"
-                  multiple
-                  onBlur={triggerSubmit}
-                  mode={mode}
-                  // TODO: add the right baseline value
-                  baselineValue={""}
-                />
-              </PositionedWrapper>
+            <div className="flex-1 min-w-[200px]">
+              <DocNameForm
+                value={documentState.name}
+                baselineValue={originalNodeState.name}
+                onSave={(value) => {
+                  dispatch(actions.setScopeName({ name: value }));
+                }}
+                placeholder="The Governance Scope"
+              />
             </div>
           </div>
-        )}
-      </Form>
-    </ContentCard>
+          <div className={cn(getFlexLayoutClassName(isSplitMode ?? false))}>
+            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
+              <MasterStatusForm
+                value={documentState.masterStatus}
+                baselineValue={originalNodeState.masterStatus[0]?.toUpperCase()}
+                onSave={(value) => {
+                  dispatch(actions.setMasterStatus({ masterStatus: value }));
+                }}
+              />
+            </div>
+          </div>
+
+          <ContentForm
+            value={documentState.content}
+            baselineValue={""}
+            onSave={(value) => {
+              dispatch(actions.setContent({ content: value }));
+            }}
+          />
+
+          <div className={cn("flex flex-col gap-4")}>
+            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
+              <ProvenanceForm
+                value={documentState.provenance}
+                baselineValue={""}
+                onSave={(value) => {
+                  dispatch(actions.setProvenance({ provenance: value }));
+                }}
+              />
+            </div>
+            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
+              <ContextDataForm
+                onAdd={(value) => {
+                  dispatch(actions.addContextData({ id: value }));
+                }}
+                onRemove={(value) => {
+                  dispatch(actions.removeContextData({ id: value }));
+                }}
+                onUpdate={(value) => {
+                  // TODO: implement context data updates
+                  throw new Error("Updates not supported yet");
+                }}
+                data={documentState.originalContextData}
+              />
+            </div>
+            <PositionedWrapper isSplitMode={isSplitMode}>
+              <GlobalTagsForm
+                options={globalScopeTagsEnumOptions}
+                value={documentState.globalTags}
+                baselineValue={[]}
+                onSave={(value) => {
+                  const newTags = value as GlobalTag[];
+                  const currentTags = documentState.globalTags;
+
+                  if (value === null) {
+                    dispatch(actions.removeTags({ tags: currentTags }));
+                    return;
+                  }
+
+                  // Tags to add (are in newTags but not in currentTags)
+                  const tagsToAdd = newTags.filter(
+                    (tag) => !currentTags.includes(tag),
+                  );
+                  if (tagsToAdd.length > 0) {
+                    dispatch(actions.addTags({ newTags: tagsToAdd }));
+                  }
+
+                  // Tags to remove (are in currentTags but not in newTags)
+                  const tagsToRemove = currentTags.filter(
+                    (tag) => !newTags.includes(tag),
+                  );
+                  if (tagsToRemove.length > 0) {
+                    dispatch(actions.removeTags({ tags: tagsToRemove }));
+                  }
+                }}
+              />
+            </PositionedWrapper>
+          </div>
+        </div>
+      </ContentCard>
+    </FormModeProvider>
   );
 }

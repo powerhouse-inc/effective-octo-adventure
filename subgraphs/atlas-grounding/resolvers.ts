@@ -19,7 +19,14 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
             const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
             const docId: string = args.docId || "";
             const doc = await reactor.getDocument(driveId, docId);
-            return doc;
+            return {
+              id: docId,
+              driveId: driveId,
+              ...doc,
+              state: doc.state.global,
+              stateJSON: doc.state.global,
+              revision: doc.revision.global,
+            };
           },
           getDocuments: async (args: any) => {
             const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
@@ -32,6 +39,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
                   driveId: driveId,
                   ...doc,
                   state: doc.state.global,
+                  stateJSON: doc.state.global,
                   revision: doc.revision.global,
                 };
               }),

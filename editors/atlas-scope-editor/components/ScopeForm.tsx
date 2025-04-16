@@ -2,7 +2,7 @@ import { cn } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import { getCardVariant, getTagText } from "../../shared/utils/utils.js";
 import type { EditorMode } from "../../shared/types.js";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { type UseFormReturn } from "react-hook-form";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
@@ -20,11 +20,11 @@ import {
 } from "../../../document-models/atlas-scope/index.js";
 import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
-import { ContentForm } from "../../shared/components/forms/ContentForm.js";
 import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js";
 import { ContextDataForm } from "../../shared/components/forms/ContextDataForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import { globalScopeTagsEnumOptions } from "../../shared/utils/common-options.js";
+import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 
 interface ScopeFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
@@ -43,6 +43,28 @@ export function ScopeForm({
   const documentState = document.state.global;
 
   // TODO: replace the entire originalNodeState with the actual baseline document
+  const [contentValue, setContentValue] = useState<string>(
+    documentState.content || ""
+  );
+
+  // Update contentValue when documentState changes
+  useEffect(() => {
+    setContentValue(documentState.content || "");
+  }, [documentState.content]);
+
+  // Custom handler for content changes
+  const handleContentChange = (value: string) => {
+    setContentValue(value);
+  };
+
+  // Custom handler for content blur
+  const handleContentBlur = () => {
+    // Only submit if the content has actually changed
+    if (contentValue !== documentState.content) {
+      dispatch(actions.setContent({ content: contentValue }));
+    }
+  };
+
   // baseline document state
   const originalNodeState = getOriginalNotionDocument(
     (documentState.notionId as string) || "notion-id-not-set",
@@ -95,13 +117,20 @@ export function ScopeForm({
             </div>
           </div>
 
-          <ContentForm
+          <MarkdownEditor
+              value={contentValue}
+              onChange={handleContentChange}
+              onBlur={handleContentBlur}
+              height={350}
+              label="Content"
+            />
+          {/* <ContentForm
             value={documentState.content}
             baselineValue={""}
             onSave={(value) => {
               dispatch(actions.setContent({ content: value }));
             }}
-          />
+          /> */}
 
           <div className={cn("flex flex-col gap-4")}>
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>

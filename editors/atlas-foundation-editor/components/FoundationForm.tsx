@@ -16,10 +16,6 @@ import {
   pndContentToString,
 } from "../../../document-models/utils.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
-import {
-  getFlexLayoutClassName,
-  getWidthClassName,
-} from "../../shared/utils/styles.js";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { DocNoForm } from "../../shared/components/forms/DocNoForm.js";
 import type { IProps } from "../editor.js";
@@ -36,7 +32,9 @@ import { ContextDataForm } from "../../shared/components/forms/ContextDataForm.j
 import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import ReferencesArray from "../../shared/components/forms/ReferencesArray.js";
-
+import { useEffect, useState } from "react";
+import { getFlexLayoutClassName, getWidthClassName } from "../../shared/utils/styles.js";
+import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 interface FoundationFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
   isSplitMode?: boolean;
@@ -74,8 +72,8 @@ export function FoundationForm({
   const [originalNodeState] = useState(() =>
     getOriginalNotionDocument(
       (documentState.notionId as string) || "notion-id-not-set",
-      (documentState.atlasType as ParsedNotionDocumentType) || "article",
-    ),
+      (documentState.atlasType as ParsedNotionDocumentType) || "article"
+    )
   );
 
   return (

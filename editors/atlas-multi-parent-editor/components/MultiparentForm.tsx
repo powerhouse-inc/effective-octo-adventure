@@ -9,7 +9,7 @@ import {
 } from "../../shared/utils/utils.js";
 import type { EditorMode } from "../../shared/types.js";
 import { isFormReadOnly } from "../../shared/utils/form-common.js";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { type UseFormReturn } from "react-hook-form";
@@ -20,6 +20,7 @@ import { UrlDiffField } from "../../shared/components/diff-fields/url-diff-field
 import { globalTagsEnumOptions } from "../../shared/utils/common-options.js";
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import { PHIDDiffField } from "../../shared/components/diff-fields/phid-diff-field.js";
+import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 
 interface MultiParentFormProps {
   onSubmit: (data: Record<string, any>) => void;
@@ -57,6 +58,28 @@ export function MultiParentForm({
       formRef.current.reset({ ...documentState });
     }
   }, [documentState]);
+
+  const [contentValue, setContentValue] = useState<string>(
+    documentState.content || "",
+  );
+
+  // Update contentValue when documentState changes
+  useEffect(() => {
+    setContentValue(documentState.content || "");
+  }, [documentState.content]);
+
+  // Custom handler for content changes
+  const handleContentChange = (value: string) => {
+    setContentValue(value);
+  };
+
+  // Custom handler for content blur
+  const handleContentBlur = () => {
+    // Only submit if the content has actually changed
+    if (contentValue !== documentState.content) {
+      onSubmit({ content: contentValue });
+    }
+  };
 
   return (
     <ContentCard tagText={tagText} variant={cardVariant}>
@@ -142,15 +165,12 @@ export function MultiParentForm({
               </div>
             </div>
 
-            <StringDiffField
-              disabled={isReadOnly}
-              name="content"
-              multiline={true}
-              placeholder="Content"
-              onBlur={triggerSubmit}
-              mode={mode}
-              // TODO: add the right baseline value
-              baselineValue={""}
+            <MarkdownEditor
+              value={contentValue}
+              onChange={handleContentChange}
+              onBlur={handleContentBlur}
+              height={350}
+              label="Content"
             />
             <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
               <PHIDDiffField

@@ -1,5 +1,4 @@
 import { cn } from "@powerhousedao/design-system/scalars";
-import { useState } from "react";
 import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchSelectedPHIDOption,
@@ -11,15 +10,8 @@ import {
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import type { EditorMode } from "../../shared/types.js";
-import {
-  getOriginalNotionDocument,
-  pndContentToString,
-} from "../../../document-models/utils.js";
+import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
-import {
-  getFlexLayoutClassName,
-  getWidthClassName,
-} from "../../shared/utils/styles.js";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { DocNoForm } from "../../shared/components/forms/DocNoForm.js";
 import type { IProps } from "../editor.js";
@@ -31,13 +23,17 @@ import {
 import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
-import { ContentForm } from "../../shared/components/forms/ContentForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
 import { ContextDataForm } from "../../shared/components/forms/ContextDataForm.js";
 import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import ReferencesArray from "../../shared/components/forms/ReferencesArray.js";
-
+import { useEffect, useState } from "react";
+import {
+  getFlexLayoutClassName,
+  getWidthClassName,
+} from "../../shared/utils/styles.js";
+import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 interface GroundingFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
   isSplitMode?: boolean;
@@ -69,6 +65,26 @@ export function GroundingForm({
     ...originalDocumentState,
     parent: parentId,
     provenance: originalDocumentState.provenance?.[0] || "",
+  };
+
+  const [contentValue, setContentValue] = useState(documentState.content || "");
+
+  // Update contentValue when documentState changes
+  useEffect(() => {
+    setContentValue(documentState.content || "");
+  }, [documentState.content]);
+
+  // Custom handler for content changes
+  const handleContentChange = (value: string) => {
+    setContentValue(value);
+  };
+
+  // Custom handler for content blur
+  const handleContentBlur = () => {
+    // Only save if the content has actually changed
+    if (contentValue !== documentState.content) {
+      dispatch(actions.setContent({ content: getStringValue(contentValue) }));
+    }
   };
 
   // baseline node state
@@ -124,9 +140,7 @@ export function GroundingForm({
                 ]}
                 onSave={(value) => {
                   dispatch(
-                    actions.setAtlasType({
-                      atlasType: value as GAtlasType,
-                    }),
+                    actions.setAtlasType({ atlasType: value as GAtlasType }),
                   );
                 }}
               />
@@ -142,15 +156,12 @@ export function GroundingForm({
             </div>
           </div>
 
-          <ContentForm
-            value={documentState.content}
-            baselineValue={originalNodeState.content
-              .map((c) => pndContentToString(c))
-              .join("\n")
-              .trim()}
-            onSave={(value) => {
-              dispatch(actions.setContent({ content: getStringValue(value) }));
-            }}
+          <MarkdownEditor
+            value={contentValue}
+            onChange={handleContentChange}
+            onBlur={handleContentBlur}
+            height={350}
+            label="Content"
           />
 
           <div

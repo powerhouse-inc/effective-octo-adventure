@@ -7,7 +7,10 @@ import {
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import type { EditorMode } from "../../shared/types.js";
-import { getOriginalNotionDocument } from "../../../document-models/utils.js";
+import {
+  getOriginalNotionDocument,
+  pndContentToString,
+} from "../../../document-models/utils.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import {
   getFlexLayoutClassName,
@@ -64,7 +67,7 @@ export function FoundationForm({
   const documentState = {
     ...stateDocument,
     parent: parentId,
-    provenance: stateDocument.provenance[0] || "",
+    provenance: stateDocument.provenance?.[0] || "",
     originalContextData: originalContextDataId,
   };
 
@@ -124,11 +127,10 @@ export function FoundationForm({
 
           <ContentForm
             value={documentState.content}
-            baselineValue={
-              typeof originalNodeState.content[0]?.text === "string"
-                ? originalNodeState.content[0]?.text
-                : originalNodeState.content[0]?.text[0]?.plain_text
-            }
+            baselineValue={originalNodeState.content
+              .map((c) => pndContentToString(c))
+              .join("\n")
+              .trim()}
             onSave={(value) => {
               dispatch(actions.setContent({ content: value }));
             }}
@@ -165,6 +167,9 @@ export function FoundationForm({
                   );
                 }
               }}
+              initialOptions={
+                parentPHIDInitialOption ? [parentPHIDInitialOption] : undefined
+              }
             />
 
             <SinglePhIdForm

@@ -8,10 +8,7 @@ import {
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import type { EditorMode } from "../../shared/types.js";
-import {
-  getOriginalNotionDocument,
-  pndContentToString,
-} from "../../../document-models/utils.js";
+import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import { StringDiffField } from "../../shared/components/diff-fields/string-diff-field.js";
 import { EnumDiffField } from "../../shared/components/diff-fields/enum-diff-field.js";
 import { PHIDDiffField } from "../../shared/components/diff-fields/phid-diff-field.js";
@@ -24,6 +21,7 @@ import {
   getFlexLayoutClassName,
   getWidthClassName,
 } from "../../shared/utils/styles.js";
+import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 
 interface GroundingFormProps {
   onSubmit: (data: Record<string, any>) => void;
@@ -46,6 +44,28 @@ export function GroundingForm({
 }: GroundingFormProps) {
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
+
+  const [contentValue, setContentValue] = useState<string>(
+    documentState.content || "",
+  );
+
+  // Update contentValue when documentState changes
+  useEffect(() => {
+    setContentValue(documentState.content || "");
+  }, [documentState.content]);
+
+  // Custom handler for content changes
+  const handleContentChange = (value: string) => {
+    setContentValue(value);
+  };
+
+  // Custom handler for content blur
+  const handleContentBlur = () => {
+    // Only submit if the content has actually changed
+    if (contentValue !== documentState.content) {
+      onSubmit({ content: contentValue });
+    }
+  };
 
   // baseline node state
   const [originalNodeState] = useState(() =>
@@ -140,16 +160,12 @@ export function GroundingForm({
                 />
               </div>
             </div>
-            <StringDiffField
-              name="content"
-              placeholder="Content"
-              multiline
-              onBlur={triggerSubmit}
-              mode={mode}
-              baselineValue={originalNodeState.content
-                .map((c) => pndContentToString(c))
-                .join("\n")
-                .trim()}
+            <MarkdownEditor
+              value={contentValue}
+              onChange={handleContentChange}
+              onBlur={handleContentBlur}
+              height={350}
+              label="Content"
             />
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <PHIDDiffField

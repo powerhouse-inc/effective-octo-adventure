@@ -25,7 +25,8 @@ import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js"
 import { ContextDataForm } from "../../shared/components/forms/ContextDataForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
 import { Toggle } from "@powerhousedao/design-system/ui";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 
 interface ExploratoryFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
@@ -50,6 +51,27 @@ export function ExploratoryForm({
   const tagText = getTagText(mode);
 
   const documentState = document.state.global;
+  const [contentValue, setContentValue] = useState<string>(
+    documentState.content || "",
+  );
+
+  // Update contentValue when documentState changes
+  useEffect(() => {
+    setContentValue(documentState.content || "");
+  }, [documentState.content]);
+
+  // Custom handler for content changes
+  const handleContentChange = (value: string) => {
+    setContentValue(value);
+  };
+
+  // Custom handler for content blur
+  const handleContentBlur = () => {
+    // Only submit if the content has actually changed
+    if (contentValue !== documentState.content) {
+      dispatch(actions.setContent({ content: contentValue }));
+    }
+  };
 
   // baseline node state
   const [originalNodeState] = useState(
@@ -130,22 +152,12 @@ export function ExploratoryForm({
             </div>
           </div>
 
-          <ContentForm
-            value={documentState.content}
-            baselineValue={
-              // TODO: replace with MD editor later (ignore ts errors for now)
-              // @ts-ignore
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-              typeof originalNodeState.content[0]?.text === "string"
-                ? // @ts-ignore
-                  originalNodeState.content[0]?.text
-                : // @ts-ignore
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                  originalNodeState.content[0]?.text?.[0]?.plain_text
-            }
-            onSave={(value) => {
-              dispatch(actions.setContent({ content: value }));
-            }}
+          <MarkdownEditor
+            value={contentValue}
+            onChange={handleContentChange}
+            onBlur={handleContentBlur}
+            height={350}
+            label="Content"
           />
           <div
             className={cn(

@@ -9,10 +9,6 @@ import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import type { EditorMode } from "../../shared/types.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
-import {
-  getFlexLayoutClassName,
-  getWidthClassName,
-} from "../../shared/utils/styles.js";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { DocNoForm } from "../../shared/components/forms/DocNoForm.js";
 import type { IProps } from "../editor.js";
@@ -23,13 +19,13 @@ import {
 import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
-import { ContentForm } from "../../shared/components/forms/ContentForm.js";
 import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
-import { useState } from "react";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import ReferencesArray from "../../shared/components/forms/ReferencesArray.js";
-
+import { useEffect, useState } from "react";
+import { getFlexLayoutClassName, getWidthClassName } from "../../shared/utils/styles.js";
+import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 interface FoundationFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
   parentPHIDInitialOption?: PHIDOption;
@@ -49,6 +45,27 @@ export function FoundationForm({
 }: FoundationFormProps) {
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
+  const [contentValue, setContentValue] = useState<string>(
+    documentState.content || ""
+  );
+
+  // Update contentValue when documentState changes
+  useEffect(() => {
+    setContentValue(documentState.content || "");
+  }, [documentState.content]);
+
+  // Custom handler for content changes
+  const handleContentChange = (value: string) => {
+    setContentValue(value);
+  };
+
+  // Custom handler for content blur
+  const handleContentBlur = () => {
+    // Only submit if the content has actually changed
+    if (contentValue !== documentState.content) {
+      onSubmit({ content: contentValue });
+    }
+  };
 
   const stateDocument = document.state.global;
   const parentId = stateDocument.parent?.id
@@ -72,8 +89,8 @@ export function FoundationForm({
   const [originalNodeState] = useState(() =>
     getOriginalNotionDocument(
       (documentState.notionId as string) || "notion-id-not-set",
-      (documentState.atlasType as ParsedNotionDocumentType) || "article",
-    ),
+      (documentState.atlasType as ParsedNotionDocumentType) || "article"
+    )
   );
 
   return (
@@ -126,16 +143,12 @@ export function FoundationForm({
             </div>
           </div>
 
-          <ContentForm
-            value={documentState.content}
-            baselineValue={
-              typeof originalNodeState.content[0]?.text === "string"
-                ? originalNodeState.content[0]?.text
-                : originalNodeState.content[0]?.text[0]?.plain_text
-            }
-            onSave={(value) => {
-              dispatch(actions.setContent({ content: value }));
-            }}
+          <MarkdownEditor
+            value={contentValue}
+            onChange={handleContentChange}
+            onBlur={handleContentBlur}
+            height={350}
+            label="Content"
           />
 
           <div

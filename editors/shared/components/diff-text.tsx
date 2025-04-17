@@ -1,4 +1,4 @@
-import { Fragment, useMemo } from "react";
+import { useMemo } from "react";
 import { diffSentences, diffWords } from "diff";
 import type { EditorMode } from "../types.js";
 import { cn } from "@powerhousedao/design-system/scalars";
@@ -30,7 +30,7 @@ export const DiffText = ({
         return word.added ? (
           mode === "DiffAdditions" || mode === "DiffMixed" ? (
             <span
-              className="bg-green-600/30 mr-0.5 text-gray-700"
+              className="bg-green-600/30 mr-1 text-gray-700"
               key={`${word.value}-${index}`}
             >
               {word.value}
@@ -39,14 +39,16 @@ export const DiffText = ({
         ) : word.removed ? (
           mode === "DiffRemoved" || mode === "DiffMixed" ? (
             <span
-              className="bg-red-600/30 text-gray-700 mr-0.5"
+              className="bg-red-600/30 text-gray-700 mr-1"
               key={`${word.value}-${index}`}
             >
               {word.value}
             </span>
           ) : null
         ) : (
-          <Fragment key={`${word.value}-${index}`}>{word.value}</Fragment>
+          <span className="mr-1" key={`${word.value}-${index}`}>
+            {word.value}
+          </span>
         );
       })}
     </span>

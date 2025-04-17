@@ -3,12 +3,13 @@ import { useFormMode } from "../../../providers/FormModeProvider.js";
 import { StringDiffField } from "../../diff-fields/string-diff-field.js";
 
 interface GenericTextFormProps {
-  label: string;
+  label?: string;
   placeholder: string;
   value: string;
   baselineValue: string;
   required?: boolean;
   multiline?: boolean;
+  autoExpand?: boolean;
   onSave: (value: string) => void;
 }
 
@@ -20,6 +21,7 @@ const GenericTextForm = ({
   onSave,
   required = false,
   multiline = false,
+  autoExpand = false,
 }: GenericTextFormProps) => {
   const formMode = useFormMode();
   const onSubmit = (data: { genericText: string }) => {
@@ -44,6 +46,7 @@ const GenericTextForm = ({
           mode={formMode}
           baselineValue={baselineValue}
           multiline={multiline}
+          autoExpand={autoExpand}
         />
       )}
     </Form>

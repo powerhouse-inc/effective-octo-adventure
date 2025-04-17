@@ -3,16 +3,15 @@ import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchSelectedPHIDOption,
   getCardVariant,
+  getStringValue,
   getTagText,
+  getTitleText,
+  parseTitleText,
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import type { EditorMode } from "../../shared/types.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
-import {
-  getFlexLayoutClassName,
-  getWidthClassName,
-} from "../../shared/utils/styles.js";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { DocNoForm } from "../../shared/components/forms/DocNoForm.js";
 import type { IProps } from "../editor.js";
@@ -23,18 +22,19 @@ import {
 import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
-import { ContentForm } from "../../shared/components/forms/ContentForm.js";
-import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
-import { useState } from "react";
+import { ContextDataForm } from "../../shared/components/forms/ContextDataForm.js";
+import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
-import ReferencesArray from "./ReferencesArray.js";
-
+import ReferencesArray from "../../shared/components/forms/ReferencesArray.js";
+import { useEffect, useState } from "react";
+import {
+  getFlexLayoutClassName,
+  getWidthClassName,
+} from "../../shared/utils/styles.js";
+import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 interface FoundationFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
-  parentPHIDInitialOption?: PHIDOption;
-  originalContextDataPHIDInitialOption?: PHIDOption;
-  referencesPHIDInitialOption?: PHIDOption;
   isSplitMode?: boolean;
 }
 
@@ -42,30 +42,50 @@ export function FoundationForm({
   document,
   dispatch,
   mode,
-  parentPHIDInitialOption,
-  originalContextDataPHIDInitialOption,
-  referencesPHIDInitialOption,
   isSplitMode,
 }: FoundationFormProps) {
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
 
-  const stateDocument = document.state.global;
-  const parentId = stateDocument.parent?.id
-    ? `phd:${stateDocument.parent?.id}`
+  const originalDocumentState = document.state.global;
+  const parentId = originalDocumentState.parent?.id
+    ? `phd:${originalDocumentState.parent.id}`
     : "";
-  const originalContextDataId = stateDocument.originalContextData[0]?.id
-    ? `phd:${stateDocument.originalContextData[0].id}`
-    : "";
-  const referencesId = stateDocument.references[0]?.id
-    ? `phd:${stateDocument.references[0].id}`
-    : "";
+  const parentDocNo = originalDocumentState.parent?.docNo ?? "";
+  const parentName = originalDocumentState.parent?.name ?? "";
+
+  const parentPHIDInitialOption: PHIDOption = {
+    icon: "File",
+    title: getTitleText(parentDocNo, parentName),
+    value: parentId,
+  };
 
   const documentState = {
-    ...stateDocument,
+    ...originalDocumentState,
     parent: parentId,
-    provenance: stateDocument.provenance[0] || "",
-    originalContextData: originalContextDataId,
+    provenance: originalDocumentState.provenance?.[0] || "",
+  };
+
+  const [contentValue, setContentValue] = useState<string>(
+    documentState.content || "",
+  );
+
+  // Update contentValue when documentState changes
+  useEffect(() => {
+    setContentValue(documentState.content || "");
+  }, [documentState.content]);
+
+  // Custom handler for content changes
+  const handleContentChange = (value: string) => {
+    setContentValue(value);
+  };
+
+  // Custom handler for content blur
+  const handleContentBlur = () => {
+    // Only save if the content has actually changed
+    if (contentValue !== documentState.content) {
+      dispatch(actions.setContent({ content: getStringValue(contentValue) }));
+    }
   };
 
   // baseline node state
@@ -78,11 +98,7 @@ export function FoundationForm({
 
   return (
     <FormModeProvider mode={mode}>
-      <ContentCard
-        tagText={tagText}
-        variant={cardVariant}
-        className={cn("mt-4")}
-      >
+      <ContentCard tagText={tagText} variant={cardVariant}>
         <div className={cn("flex flex-col gap-3")}>
           <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
             <div className={cn("flex-1")}>
@@ -90,7 +106,9 @@ export function FoundationForm({
                 value={documentState.docNo}
                 baselineValue={originalNodeState.docNo}
                 onSave={(value) => {
-                  dispatch(actions.setDocNumber({ docNo: value }));
+                  dispatch(
+                    actions.setDocNumber({ docNo: getStringValue(value) }),
+                  );
                 }}
               />
             </div>
@@ -99,9 +117,12 @@ export function FoundationForm({
                 value={documentState.name}
                 baselineValue={originalNodeState.name}
                 onSave={(value) => {
-                  dispatch(actions.setFoundationName({ name: value }));
+                  dispatch(
+                    actions.setFoundationName({
+                      name: getStringValue(value),
+                    }),
+                  );
                 }}
-                placeholder="Name"
               />
             </div>
           </div>
@@ -126,16 +147,12 @@ export function FoundationForm({
             </div>
           </div>
 
-          <ContentForm
-            value={documentState.content}
-            baselineValue={
-              typeof originalNodeState.content[0]?.text === "string"
-                ? originalNodeState.content[0]?.text
-                : originalNodeState.content[0]?.text[0]?.plain_text
-            }
-            onSave={(value) => {
-              dispatch(actions.setContent({ content: value }));
-            }}
+          <MarkdownEditor
+            value={contentValue}
+            onChange={handleContentChange}
+            onBlur={handleContentBlur}
+            height={350}
+            label="Content"
           />
 
           <div
@@ -160,35 +177,33 @@ export function FoundationForm({
                 } else {
                   const newParentId = value.split(":")[1];
                   const newParentData = fetchSelectedPHIDOption(value);
+                  const { docNo, name } = parseTitleText(
+                    newParentData?.title ?? "",
+                  );
                   dispatch(
                     actions.setParent({
                       id: newParentId,
-                      docNo: newParentData?.title?.split(" - ")[0] ?? "",
-                      name: newParentData?.title?.split(" - ")[1] ?? "",
+                      docNo,
+                      name,
                     }),
                   );
                 }
               }}
+              initialOptions={[parentPHIDInitialOption]}
             />
 
-            <SinglePhIdForm
-              label="Original Context Data"
-              value={documentState.originalContextData}
-              baselineValue={""}
-              onSave={(value) => {
-                if (value === null) {
-                  dispatch(
-                    actions.removeContextData({
-                      id: documentState.originalContextData.split(":")[1],
-                    }),
-                  );
-                } else {
-                  const newOriginalContextDataId = value.split(":")[1];
-                  dispatch(
-                    actions.addContextData({ id: newOriginalContextDataId }),
-                  );
-                }
+            <ContextDataForm
+              onAdd={(value) => {
+                dispatch(actions.addContextData({ id: value }));
               }}
+              onRemove={(value) => {
+                dispatch(actions.removeContextData({ id: value }));
+              }}
+              onUpdate={(value) => {
+                // TODO: implement context data updates
+                throw new Error("Updates not supported yet");
+              }}
+              data={documentState.originalContextData}
             />
 
             <ProvenanceForm
@@ -230,7 +245,18 @@ export function FoundationForm({
             />
 
             <ReferencesArray
-              dispatch={dispatch}
+              onAdd={(value) => {
+                const phid = value.split(":")[1];
+                dispatch(actions.addReference({ id: phid }));
+              }}
+              onRemove={(value) => {
+                const phid = value.split(":")[1];
+                dispatch(actions.removeReference({ id: phid }));
+              }}
+              onUpdate={() => {
+                // TODO: implement references updates
+                throw new Error("Updates not supported yet");
+              }}
               references={documentState.references}
             />
           </div>

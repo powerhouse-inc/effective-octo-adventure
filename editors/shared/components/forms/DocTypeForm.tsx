@@ -1,35 +1,46 @@
 import { GenericEnumForm } from "./generics/GenericEnumForm.js";
 import type { Maybe } from "document-model";
 import { type FAtlasType } from "../../../../document-models/atlas-foundation/index.js";
+import { type SelectOption } from "@powerhousedao/design-system/scalars";
 
 interface DocTypeFormProps {
+  label?: string;
   value: Maybe<string>;
   baselineValue: Maybe<string>;
   onSave: (value: FAtlasType) => void;
+  options?: SelectOption[];
 }
 
-const DocTypeForm = ({ value, baselineValue, onSave }: DocTypeFormProps) => {
+const foundationOptions = [
+  {
+    value: "ACTIVE_DATA_CONTROLLER",
+    label: "ACTIVE_DATA_CONTROLLER ",
+  },
+  {
+    value: "ARTICLE",
+    label: "ARTICLE",
+  },
+  { value: "CORE", label: "CORE" },
+  { value: "SECTION", label: "SECTION" },
+];
+
+const DocTypeForm = ({
+  label = "Doc Type",
+  value,
+  baselineValue,
+  onSave,
+  options = foundationOptions,
+}: DocTypeFormProps) => {
   return (
     <GenericEnumForm
-      label="Doc Type"
+      label={label}
       placeholder="Doc Type"
       required
-      multiple={false}
-      options={[
-        {
-          value: "ACTIVE_DATA_CONTROLLER",
-          label: "ACTIVE_DATA_CONTROLLER ",
-        },
-        {
-          value: "ARTICLE",
-          label: "ARTICLE",
-        },
-        { value: "CORE", label: "CORE" },
-        { value: "SECTION", label: "SECTION" },
-      ]}
+      options={options}
       value={value ?? ""}
       baselineValue={baselineValue ?? ""}
       onSave={onSave as (value: string) => void}
+      multiple={false}
     />
   );
 };

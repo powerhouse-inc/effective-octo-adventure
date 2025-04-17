@@ -19,7 +19,7 @@ export const FakeInput = ({
     <div
       className={cn(
         "flex w-full font-sans rounded-md text-sm font-normal leading-5 text-gray-600",
-        "border border-gray-300 bg-transparent px-3 py-2 cursor-not-allowed",
+        "border border-gray-300 bg-transparent px-3 py-[7px] cursor-not-allowed",
         !multiline && ellipsis && "truncate [&>span]:truncate",
         className,
       )}

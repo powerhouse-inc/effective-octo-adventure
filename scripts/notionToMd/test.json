@@ -1,0 +1,156 @@
+{
+    "Additional Guidance": {
+        "id": "AVs~",
+        "type": "rich_text",
+        "rich_text": [
+            {
+                "type": "text",
+                "text": {
+                    "content": "That Entity is alternating between two roles to perform their duties in separate time intervals does not negate the misalignment risk that the Target Document is intended to protect against. They are still formally occupying two roles at once. They still have access to sensitive information and experiences in two roles with different mandates and incentives.\n\nThe Facilitator should derecognize Entity per ",
+                    "link": null
+                },
+                "annotations": {
+                    "bold": false,
+                    "italic": false,
+                    "strikethrough": false,
+                    "underline": false,
+                    "code": false,
+                    "color": "default"
+                },
+                "plain_text": "That Entity is alternating between two roles to perform their duties in separate time intervals does not negate the misalignment risk that the Target Document is intended to protect against. They are still formally occupying two roles at once. They still have access to sensitive information and experiences in two roles with different mandates and incentives.\n\nThe Facilitator should derecognize Entity per ",
+                "href": null
+            },
+            {
+                "type": "mention",
+                "mention": {
+                    "type": "page",
+                    "page": {
+                        "id": "fac5b89b-fb80-4e02-9809-5e502f5db0b3"
+                    }
+                },
+                "annotations": {
+                    "bold": false,
+                    "italic": false,
+                    "strikethrough": false,
+                    "underline": false,
+                    "code": false,
+                    "color": "default"
+                },
+                "plain_text": "A.1.4 - Alignment Conservers - Accountability And Misalignment Handling - AC Derecognition",
+                "href": "https://www.notion.so/fac5b89bfb804e0298095e502f5db0b3"
+            },
+            {
+                "type": "text",
+                "text": {
+                    "content": ".",
+                    "link": null
+                },
+                "annotations": {
+                    "bold": false,
+                    "italic": false,
+                    "strikethrough": false,
+                    "underline": false,
+                    "code": false,
+                    "color": "default"
+                },
+                "plain_text": ".",
+                "href": null
+            }
+        ]
+    },
+    "Content": {
+        "id": "_h%3AV",
+        "type": "rich_text",
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "To the extent Sky invests capital in Agents and receives tokens in exchange, it will distribute those tokens to the following stakeholders:\n\n• USDS Token Rewards users\n• SKY Activation users (see ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "To the extent Sky invests capital in Agents and receives tokens in exchange, it will distribute those tokens to the following stakeholders:\n\n• USDS Token Rewards users\n• SKY Activation users (see ",
+            "href": null
+          },
+          {
+            "type": "mention",
+            "mention": {
+              "type": "page",
+              "page": {
+                "id": "3d7d15cd-2609-4965-9602-212ef52854ab"
+              }
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "A.0.1 - Atlas Preamble - Definitions - Activation",
+            "href": "https://www.notion.so/3d7d15cd260949659602212ef52854ab"
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": ")\n• SKY Seal users (see ",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": ")\n• SKY Seal users (see ",
+            "href": null
+          },
+          {
+            "type": "mention",
+            "mention": {
+              "type": "page",
+              "page": {
+                "id": "18cce050-a0ed-4639-9385-21e578539738"
+              }
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "A.0.1 - Atlas Preamble - Definitions - Sealing",
+            "href": "https://www.notion.so/18cce050a0ed4639938521e578539738"
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": ")\n\nThe percentage of each token distributed to each of these stakeholders is determined by Sky Governance. In each case, to earn rewards users must opt to earn the token of a specific Agent, as opposed to either (1) the token of any other Agent, (2) the Sky Savings Rate in the case of USDS users, or (3) USDS Rewards in the case of SKY Activation or SKY Seal users.",
+              "link": null
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": ")\n\nThe percentage of each token distributed to each of these stakeholders is determined by Sky Governance. In each case, to earn rewards users must opt to earn the token of a specific Agent, as opposed to either (1) the token of any other Agent, (2) the Sky Savings Rate in the case of USDS users, or (3) USDS Rewards in the case of SKY Activation or SKY Seal users.",
+            "href": null
+          }
+        ]
+      }
+}

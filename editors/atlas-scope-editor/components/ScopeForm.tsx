@@ -20,7 +20,6 @@ import {
 } from "../../../document-models/atlas-scope/index.js";
 import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
-import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js";
 import { ContextDataForm } from "../../shared/components/forms/ContextDataForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import { globalScopeTagsEnumOptions } from "../../shared/utils/common-options.js";
@@ -44,7 +43,7 @@ export function ScopeForm({
 
   // TODO: replace the entire originalNodeState with the actual baseline document
   const [contentValue, setContentValue] = useState<string>(
-    documentState.content || ""
+    documentState.content || "",
   );
 
   // Update contentValue when documentState changes
@@ -118,12 +117,12 @@ export function ScopeForm({
           </div>
 
           <MarkdownEditor
-              value={contentValue}
-              onChange={handleContentChange}
-              onBlur={handleContentBlur}
-              height={350}
-              label="Content"
-            />
+            value={contentValue}
+            onChange={handleContentChange}
+            onBlur={handleContentBlur}
+            height={350}
+            label="Content"
+          />
           {/* <ContentForm
             value={documentState.content}
             baselineValue={""}
@@ -133,15 +132,6 @@ export function ScopeForm({
           /> */}
 
           <div className={cn("flex flex-col gap-4")}>
-            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
-              <ProvenanceForm
-                value={documentState.provenance}
-                baselineValue={""}
-                onSave={(value) => {
-                  dispatch(actions.setProvenance({ provenance: value }));
-                }}
-              />
-            </div>
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <ContextDataForm
                 onAdd={(value) => {

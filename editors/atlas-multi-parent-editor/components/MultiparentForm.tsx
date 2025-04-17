@@ -24,9 +24,7 @@ import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { ContextDataForm } from "../../shared/components/forms/ContextDataForm.js";
-import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
-import ReferencesArray from "../../shared/components/forms/ReferencesArray.js";
 import ParentsArray from "../../shared/components/forms/ParentsArray.js";
 import { useEffect, useState } from "react";
 import {
@@ -52,7 +50,6 @@ export function MultiParentForm({
   const originalDocumentState = document.state.global;
   const documentState = {
     ...originalDocumentState,
-    provenance: originalDocumentState.provenance?.[0] || "",
   };
 
   const [contentValue, setContentValue] = useState(documentState.content || "");
@@ -161,10 +158,10 @@ export function MultiParentForm({
               }}
               onRemove={(value) => {
                 const phid = value.split(":")[1];
-                dispatch(actions.removeReference({ id: phid }));
+                dispatch(actions.removeParent({ id: phid }));
               }}
               onUpdate={() => {
-                // TODO: implement references updates
+                // TODO: implement parents updates
                 throw new Error("Updates not supported yet");
               }}
               parents={documentState.parents}
@@ -182,14 +179,6 @@ export function MultiParentForm({
                 throw new Error("Updates not supported yet");
               }}
               data={documentState.originalContextData}
-            />
-
-            <ProvenanceForm
-              value={documentState.provenance}
-              baselineValue={originalNodeState.hubUrls[0]}
-              onSave={(value) => {
-                dispatch(actions.setProvenance({ provenance: [value] }));
-              }}
             />
 
             <GlobalTagsForm
@@ -220,22 +209,6 @@ export function MultiParentForm({
                   dispatch(actions.removeTags({ tags: tagsToRemove }));
                 }
               }}
-            />
-
-            <ReferencesArray
-              onAdd={(value) => {
-                const phid = value.split(":")[1];
-                dispatch(actions.addReference({ id: phid }));
-              }}
-              onRemove={(value) => {
-                const phid = value.split(":")[1];
-                dispatch(actions.removeReference({ id: phid }));
-              }}
-              onUpdate={() => {
-                // TODO: implement references updates
-                throw new Error("Updates not supported yet");
-              }}
-              references={documentState.references}
             />
           </div>
         </div>

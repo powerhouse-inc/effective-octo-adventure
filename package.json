@@ -1,6 +1,6 @@
 {
   "name": "@sky-ph/atlas",
-  "version": "1.2.32",
+  "version": "1.2.33",
   "license": "AGPL-3.0-only",
   "type": "module",
   "publishConfig": {
@@ -25,6 +25,10 @@
     "./subgraphs": {
       "types": "./dist/subgraphs/index.d.ts",
       "default": "./dist/subgraphs/index.js"
+    },
+    "./processors": {
+      "types": "./dist/processors/index.d.ts",
+      "default": "./dist/processors/index.js"
     },
     "./manifest": {
       "types": "./dist/manifest.d.ts",
@@ -64,9 +68,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
-    "@powerhousedao/common": "1.10.27-staging.0",
-    "@powerhousedao/design-system": "1.39.15-staging.1",
-    "@powerhousedao/reactor-browser": "1.22.23-staging.0",
+    "@powerhousedao/common": "1.10.31-staging.0",
+    "@powerhousedao/design-system": "1.39.17-staging.0",
+    "@powerhousedao/reactor-browser": "1.22.25-staging.0",
     "@radix-ui/react-dialog": "^1.1.7",
     "@radix-ui/react-dropdown-menu": "^2.1.7",
     "@radix-ui/react-label": "^2.1.3",
@@ -77,8 +81,8 @@
     "cmdk": "^1.1.1",
     "date-fns-tz": "^3.2.0",
     "diff": "^7.0.0",
-    "document-drive": "1.29.8-staging.1",
-    "document-model": "2.28.1-staging.1",
+    "document-drive": "1.29.9-staging.0",
+    "document-model": "2.28.1-staging.2",
     "graphql-ts-client": "^10.4.0",
     "lodash": "^4.17.21",
     "lucide-react": "^0.487.0",
@@ -93,13 +97,13 @@
   "devDependencies": {
     "@eslint/js": "^9.24.0",
     "@powerhousedao/analytics-engine-core": "^0.3.2",
-    "@powerhousedao/builder-tools": "0.9.25-staging.0",
-    "@powerhousedao/codegen": "0.49.2-staging.1",
+    "@powerhousedao/builder-tools": "0.9.27-staging.0",
+    "@powerhousedao/codegen": "0.49.2-staging.2",
     "@powerhousedao/mips-parser": "2.2.2-alpha.0",
-    "@powerhousedao/ph-cli": "0.40.38-staging.0",
-    "@powerhousedao/reactor-api": "1.29.18-staging.3",
-    "@powerhousedao/reactor-local": "1.27.30-staging.0",
-    "@powerhousedao/scalars": "1.33.1-staging.1",
+    "@powerhousedao/ph-cli": "0.40.46-staging.0",
+    "@powerhousedao/reactor-api": "1.29.18-staging.6",
+    "@powerhousedao/reactor-local": "1.27.34-staging.0",
+    "@powerhousedao/scalars": "1.33.1-staging.2",
     "@tailwindcss/cli": "^4.1.3",
     "@testing-library/react": "^16.3.0",
     "@types/diff": "^7.0.2",

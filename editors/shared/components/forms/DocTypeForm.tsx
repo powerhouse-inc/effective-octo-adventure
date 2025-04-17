@@ -14,6 +14,7 @@ const DocTypeForm = ({ value, baselineValue, onSave }: DocTypeFormProps) => {
       label="Doc Type"
       placeholder="Doc Type"
       required
+      multiple={false}
       options={[
         {
           value: "ACTIVE_DATA_CONTROLLER",

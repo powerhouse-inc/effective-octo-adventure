@@ -21,7 +21,6 @@ import { ContentForm } from "../../shared/components/forms/ContentForm.js";
 import { FindingsComments } from "./FindingsComments.js";
 import { AdditionalGuidance } from "./AdditionalGuidance.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
-import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js";
 import { ContextDataForm } from "../../shared/components/forms/ContextDataForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
 import { Toggle } from "@powerhousedao/design-system/ui";
@@ -32,7 +31,6 @@ interface ExploratoryFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
   parentPHIDInitialOption?: PHIDOption;
   originalContextDataPHIDInitialOption?: PHIDOption;
-  referencesPHIDInitialOption?: PHIDOption;
   isAligned?: boolean;
   isSplitMode?: boolean;
 }
@@ -43,7 +41,6 @@ export function ExploratoryForm({
   mode,
   parentPHIDInitialOption,
   originalContextDataPHIDInitialOption,
-  referencesPHIDInitialOption,
   isAligned,
   isSplitMode,
 }: ExploratoryFormProps) {
@@ -255,14 +252,6 @@ export function ExploratoryForm({
                 throw new Error("Updates not supported yet");
               }}
               data={documentState.originalContextData}
-            />
-
-            <ProvenanceForm
-              value={documentState.provenance}
-              baselineValue={originalNodeState.provenance}
-              onSave={(value) => {
-                dispatch(actions.setProvenance({ provenance: value }));
-              }}
             />
 
             <GlobalTagsForm

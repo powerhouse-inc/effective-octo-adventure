@@ -13,11 +13,13 @@ export const reducer: AtlasScopeContextOperations = {
       name: action.input.name || null,
       docNo: action.input.docNo || null,
     };
-    state.originalContextData=[newContextData,...state.originalContextData];
+    state.originalContextData = [...state.originalContextData, newContextData];
   },
 
   removeContextDataOperation(state, action, dispatch) {
-    state.originalContextData = []
+    state.originalContextData = state.originalContextData.filter(
+      (contextData) => contextData.id !== action.input.id,
+    );
   },
   setProvenanceOperation(state, action, dispatch) {
     state.provenance = action.input.provenance || null;

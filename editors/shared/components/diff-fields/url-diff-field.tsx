@@ -16,7 +16,8 @@ const UrlDiffField = ({
   diffMode = "words",
   ...urlProps
 }: UrlDiffFieldProps) => {
-  const { getValues } = useFormContext();
+  const { getValues, watch } = useFormContext();
+  const value = watch(urlProps.name!) as string;
 
   if (mode === "Edition" || mode === "Readonly") {
     return <UrlField disabled={mode === "Readonly"} {...urlProps} />;
@@ -30,12 +31,19 @@ const UrlDiffField = ({
         </FormLabel>
       )}
       <FakeInput>
-        <DiffText
-          baseline={baselineValue}
-          value={(getValues(urlProps.name!) as string) || ""}
-          mode={mode}
-          diffMode={diffMode}
-        />
+        <a
+          href={value}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="[&_span]:text-blue-600!"
+        >
+          <DiffText
+            baseline={baselineValue}
+            value={value}
+            mode={mode}
+            diffMode={diffMode}
+          />
+        </a>
       </FakeInput>
     </div>
   );

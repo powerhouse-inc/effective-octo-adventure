@@ -1,5 +1,6 @@
 import type { PropsWithChildren } from "react";
 import TagStatus from "./tags-status.js";
+import { cn } from "@powerhousedao/design-system/scalars";
 interface AtlasCardProps extends PropsWithChildren {
   tagText?: string;
   variant?: "gray" | "green" | "blue";
@@ -16,7 +17,10 @@ const ContentCard = ({
 }: AtlasCardProps) => {
   return (
     <div
-      className={`flex flex-col w-full border border-gray-200 rounded-md  bg-gray-50 ${className}`}
+      className={cn(
+        "flex flex-col w-full mt-2 border border-gray-200 rounded-md bg-gray-50",
+        className,
+      )}
     >
       <div className="relative">
         {showTag && (

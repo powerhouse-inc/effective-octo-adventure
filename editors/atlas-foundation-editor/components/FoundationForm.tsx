@@ -3,7 +3,10 @@ import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchSelectedPHIDOption,
   getCardVariant,
+  getStringValue,
   getTagText,
+  getTitleText,
+  parseTitleText,
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import type { EditorMode } from "../../shared/types.js";
@@ -19,18 +22,19 @@ import {
 import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
-import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
+import { ContextDataForm } from "../../shared/components/forms/ContextDataForm.js";
+import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import ReferencesArray from "../../shared/components/forms/ReferencesArray.js";
 import { useEffect, useState } from "react";
-import { getFlexLayoutClassName, getWidthClassName } from "../../shared/utils/styles.js";
+import {
+  getFlexLayoutClassName,
+  getWidthClassName,
+} from "../../shared/utils/styles.js";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 interface FoundationFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
-  parentPHIDInitialOption?: PHIDOption;
-  originalContextDataPHIDInitialOption?: PHIDOption;
-  referencesPHIDInitialOption?: PHIDOption;
   isSplitMode?: boolean;
 }
 
@@ -38,15 +42,32 @@ export function FoundationForm({
   document,
   dispatch,
   mode,
-  parentPHIDInitialOption,
-  originalContextDataPHIDInitialOption,
-  referencesPHIDInitialOption,
   isSplitMode,
 }: FoundationFormProps) {
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
+
+  const originalDocumentState = document.state.global;
+  const parentId = originalDocumentState.parent?.id
+    ? `phd:${originalDocumentState.parent.id}`
+    : "";
+  const parentDocNo = originalDocumentState.parent?.docNo ?? "";
+  const parentName = originalDocumentState.parent?.name ?? "";
+
+  const parentPHIDInitialOption: PHIDOption = {
+    icon: "File",
+    title: getTitleText(parentDocNo, parentName),
+    value: parentId,
+  };
+
+  const documentState = {
+    ...originalDocumentState,
+    parent: parentId,
+    provenance: originalDocumentState.provenance?.[0] || "",
+  };
+
   const [contentValue, setContentValue] = useState<string>(
-    documentState.content || ""
+    documentState.content || "",
   );
 
   // Update contentValue when documentState changes
@@ -61,45 +82,23 @@ export function FoundationForm({
 
   // Custom handler for content blur
   const handleContentBlur = () => {
-    // Only submit if the content has actually changed
+    // Only save if the content has actually changed
     if (contentValue !== documentState.content) {
-      onSubmit({ content: contentValue });
+      dispatch(actions.setContent({ content: getStringValue(contentValue) }));
     }
-  };
-
-  const stateDocument = document.state.global;
-  const parentId = stateDocument.parent?.id
-    ? `phd:${stateDocument.parent?.id}`
-    : "";
-  const originalContextDataId = stateDocument.originalContextData[0]?.id
-    ? `phd:${stateDocument.originalContextData[0].id}`
-    : "";
-  const referencesId = stateDocument.references[0]?.id
-    ? `phd:${stateDocument.references[0].id}`
-    : "";
-
-  const documentState = {
-    ...stateDocument,
-    parent: parentId,
-    provenance: stateDocument.provenance[0] || "",
-    originalContextData: originalContextDataId,
   };
 
   // baseline node state
   const [originalNodeState] = useState(() =>
     getOriginalNotionDocument(
       (documentState.notionId as string) || "notion-id-not-set",
-      (documentState.atlasType as ParsedNotionDocumentType) || "article"
-    )
+      (documentState.atlasType as ParsedNotionDocumentType) || "article",
+    ),
   );
 
   return (
     <FormModeProvider mode={mode}>
-      <ContentCard
-        tagText={tagText}
-        variant={cardVariant}
-        className={cn("mt-4")}
-      >
+      <ContentCard tagText={tagText} variant={cardVariant}>
         <div className={cn("flex flex-col gap-3")}>
           <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
             <div className={cn("flex-1")}>
@@ -107,7 +106,9 @@ export function FoundationForm({
                 value={documentState.docNo}
                 baselineValue={originalNodeState.docNo}
                 onSave={(value) => {
-                  dispatch(actions.setDocNumber({ docNo: value }));
+                  dispatch(
+                    actions.setDocNumber({ docNo: getStringValue(value) }),
+                  );
                 }}
               />
             </div>
@@ -116,9 +117,12 @@ export function FoundationForm({
                 value={documentState.name}
                 baselineValue={originalNodeState.name}
                 onSave={(value) => {
-                  dispatch(actions.setFoundationName({ name: value }));
+                  dispatch(
+                    actions.setFoundationName({
+                      name: getStringValue(value),
+                    }),
+                  );
                 }}
-                placeholder="Name"
               />
             </div>
           </div>
@@ -173,35 +177,33 @@ export function FoundationForm({
                 } else {
                   const newParentId = value.split(":")[1];
                   const newParentData = fetchSelectedPHIDOption(value);
+                  const { docNo, name } = parseTitleText(
+                    newParentData?.title ?? "",
+                  );
                   dispatch(
                     actions.setParent({
                       id: newParentId,
-                      docNo: newParentData?.title?.split(" - ")[0] ?? "",
-                      name: newParentData?.title?.split(" - ")[1] ?? "",
+                      docNo,
+                      name,
                     }),
                   );
                 }
               }}
+              initialOptions={[parentPHIDInitialOption]}
             />
 
-            <SinglePhIdForm
-              label="Original Context Data"
-              value={documentState.originalContextData}
-              baselineValue={""}
-              onSave={(value) => {
-                if (value === null) {
-                  dispatch(
-                    actions.removeContextData({
-                      id: documentState.originalContextData.split(":")[1],
-                    }),
-                  );
-                } else {
-                  const newOriginalContextDataId = value.split(":")[1];
-                  dispatch(
-                    actions.addContextData({ id: newOriginalContextDataId }),
-                  );
-                }
+            <ContextDataForm
+              onAdd={(value) => {
+                dispatch(actions.addContextData({ id: value }));
               }}
+              onRemove={(value) => {
+                dispatch(actions.removeContextData({ id: value }));
+              }}
+              onUpdate={(value) => {
+                // TODO: implement context data updates
+                throw new Error("Updates not supported yet");
+              }}
+              data={documentState.originalContextData}
             />
 
             <ProvenanceForm

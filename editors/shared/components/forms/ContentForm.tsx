@@ -16,12 +16,12 @@ const ContentForm = ({
 }: ContentFormProps) => {
   return (
     <GenericTextForm
-      label="Content"
       placeholder={placeholder}
       value={value ?? ""}
       baselineValue={baselineValue ?? ""}
       onSave={onSave}
       multiline
+      autoExpand
     />
   );
 };

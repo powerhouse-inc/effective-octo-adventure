@@ -40,6 +40,7 @@ const StringDiffField = ({
           value={value?.toString()}
           mode={mode}
           diffMode={diffMode}
+          className={stringProps.multiline ? "leading-5" : undefined}
         />
       </FakeInput>
     </div>

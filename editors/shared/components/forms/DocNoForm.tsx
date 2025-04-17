@@ -12,7 +12,6 @@ const DocNoForm = ({ value, baselineValue, onSave }: DocNoFormProps) => {
     <GenericTextForm
       label="Doc №"
       placeholder="Doc No"
-      required
       value={value ?? ""}
       baselineValue={baselineValue ?? ""}
       onSave={onSave}

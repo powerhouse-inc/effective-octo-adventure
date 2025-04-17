@@ -1,10 +1,14 @@
-import { useMemo } from "react";
+import { useMemo, useContext } from "react";
 import ToggleSwitch from "./toggle-switch.js";
 import type { Maybe } from "document-model";
 import { useSidebar, type SidebarNode } from "@powerhousedao/design-system/ui";
 import { Breadcrumbs } from "./breadcrumbs.js";
 import { cn } from "@powerhousedao/design-system/scalars";
-import { useViewMode } from "../context/view-mode-context.js";
+import {
+  useViewMode,
+  ViewModeContext,
+  ViewModeProvider,
+} from "../context/view-mode-context.js";
 
 export type ChildrenFn = ({
   isSplitMode,
@@ -22,7 +26,7 @@ interface EditorLayoutProps {
   readOnlyModeEnabled?: boolean;
 }
 
-export const EditorLayout = ({
+const EditorLayoutContent = ({
   children,
   title,
   notionId,
@@ -131,5 +135,21 @@ export const EditorLayout = ({
 
       {children({ isSplitMode, isEditMode })}
     </div>
+  );
+};
+
+export const EditorLayout = (props: EditorLayoutProps) => {
+  const viewModeContext = useContext(ViewModeContext);
+
+  // if there is a ViewModeProvider, use directly EditorLayoutContent
+  if (viewModeContext) {
+    return <EditorLayoutContent {...props} />;
+  }
+
+  // if there is no ViewModeProvider, wrap with a new one
+  return (
+    <ViewModeProvider>
+      <EditorLayoutContent {...props} />
+    </ViewModeProvider>
   );
 };

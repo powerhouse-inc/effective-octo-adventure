@@ -82,7 +82,7 @@ export function MultiParentForm({
   };
 
   return (
-    <ContentCard tagText={tagText} variant={cardVariant} className="mt-4">
+    <ContentCard tagText={tagText} variant={cardVariant}>
       <Form
         onSubmit={onSubmit}
         submitChangesOnly

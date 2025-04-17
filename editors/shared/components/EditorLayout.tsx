@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import ToggleSwitch from "./toggle-switch.js";
 import type { Maybe } from "document-model";
 import { useSidebar, type SidebarNode } from "@powerhousedao/design-system/ui";

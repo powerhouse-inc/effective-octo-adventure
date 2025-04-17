@@ -46,9 +46,13 @@ const PHIDDiffField = ({
       )}
 
       {/* container for the entire fake PHID component */}
-      <div className={cn("relative w-full")}>
+      <div className={cn("relative w-full bg-gray-100 rounded-md")}>
         {/* input absolutely positioned */}
-        <div className={cn("absolute top-0 left-0 right-0 z-10 w-full")}>
+        <div
+          className={cn(
+            "absolute top-0 left-0 right-0 z-10 w-full bg-gray-50 rounded-md",
+          )}
+        >
           <FakeInput>
             <DiffText
               baseline={baselineValue.replace(/phd:|phd:\/\//, "")}
@@ -60,12 +64,7 @@ const PHIDDiffField = ({
         </div>
 
         {/* container for the option info */}
-        <div
-          className={cn(
-            "w-full max-w-full rounded-md px-3 pb-2 pt-3",
-            "border border-gray-300",
-          )}
-        >
+        <div className={cn("w-full max-w-full rounded-md px-3 pb-2 pt-3")}>
           <div className={cn("flex w-full flex-col gap-1 mt-8")}>
             {(phidProps.variant === "withValueAndTitle" ||
               phidProps.variant === "withValueTitleAndDescription") && (

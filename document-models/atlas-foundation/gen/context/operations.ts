@@ -2,8 +2,8 @@ import { type SignalDispatch } from "document-model";
 import {
   type AddContextDataAction,
   type RemoveContextDataAction,
-  type SetProvenanceAction,
   type SetNotionIdAction,
+  type ReplaceContextDataAction,
 } from "./actions.js";
 import { type AtlasFoundationState } from "../types.js";
 
@@ -18,14 +18,14 @@ export interface AtlasFoundationContextOperations {
     action: RemoveContextDataAction,
     dispatch?: SignalDispatch,
   ) => void;
-  setProvenanceOperation: (
-    state: AtlasFoundationState,
-    action: SetProvenanceAction,
-    dispatch?: SignalDispatch,
-  ) => void;
   setNotionIdOperation: (
     state: AtlasFoundationState,
     action: SetNotionIdAction,
+    dispatch?: SignalDispatch,
+  ) => void;
+  replaceContextDataOperation: (
+    state: AtlasFoundationState,
+    action: ReplaceContextDataAction,
     dispatch?: SignalDispatch,
   ) => void;
 }

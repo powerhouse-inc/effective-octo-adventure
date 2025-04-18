@@ -55,16 +55,11 @@ export type Scalars = {
   URL: { input: string; output: string };
 };
 
-export type AddAdditionalGuidanceInput = {
-  /** Add your inputs here */
-  additionalGuidance: Scalars["String"]["input"];
-};
-
 export type AddContextDataInput = {
   docNo?: InputMaybe<Scalars["String"]["input"]>;
   /** Add your inputs here */
   id: Scalars["PHID"]["input"];
-  name?: InputMaybe<Scalars["String"]["input"]>;
+  title?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type AddTagsInput = {
@@ -76,50 +71,46 @@ export type AtlasExploratoryState = {
   /** Additional commentary and context for guidance.  */
   additionalGuidance: Scalars["String"]["output"];
   /**
-   * The type of the Grounding document within Atlas.
+   * The type of the Exploratory document within Atlas.
    * Example: Tenet, Original Context Data, Active Data.
    */
   atlasType: EAtlasType | `${EAtlasType}`;
-  /** Entire content body of the Grounding document within Atlas.   */
+  /** Entire content body of the Exploratory document within Atlas. */
   content: Maybe<Scalars["String"]["output"]>;
-  /** Unique document number assigned to the Grounding document within Atlas.   */
+  /** Unique document number assigned to the Exploratory document within Atlas. */
   docNo: Maybe<Scalars["String"]["output"]>;
   /** Alignmnet boolean findings.  */
   findings: Finding;
   /** Document tags managed by the Atlas Axis facilitator group for classification.   */
   globalTags: Array<EGlobalTag | `${EGlobalTag}`>;
-  /** Master status of the Grounding document as managed by the Atlas Axis facilitator group.   */
+  /** Master status of the Exploratory document as managed by the Atlas Axis facilitator group.   */
   masterStatus: EStatus | `${EStatus}`;
-  /** Full name of the Grounding document entity.   */
+  /** Full name of the Exploratory document entity.   */
   name: Maybe<Scalars["String"]["output"]>;
   /**
-   * Original Notion document ID of the Grounding document.
+   * Original Notion document ID of the Exploratory document.
    * Used for cross-system referencing and linking back to the original Notion source.
    */
   notionId: Maybe<Scalars["String"]["output"]>;
-  /** List of Atlas documents that were relevant for the creation of this Grounding document.   */
+  /** List of Atlas documents that were relevant for the creation of this Exploratory document.   */
   originalContextData: Array<DocumentInfo>;
   /**
-   * Parent entity that this Grounding document belongs to.
+   * Parent entity that this Exploratory document belongs to.
    * This is a reference to another Atlas document.
    */
   parent: Scalars["PHID"]["output"];
-  /** Link to the original P0hub Notion environment where this document was first created or referenced. */
-  provenance: Maybe<Scalars["URL"]["output"]>;
-  /** References to other Atlas entities that are linked to this Grounding document.   */
-  references: Array<Scalars["PHID"]["output"]>;
 };
 
 export type DocumentInfo = {
   docNo: Maybe<Scalars["String"]["output"]>;
   id: Scalars["PHID"]["output"];
-  name: Maybe<Scalars["OLabel"]["output"]>;
+  title: Maybe<Scalars["OLabel"]["output"]>;
 };
 
 /** Domain (i.e., Atlas) specific document types with the same document model global schema.   */
 export type EAtlasType = "SCENARIO" | "SCENARIO_VARIATION";
 
-/** These global tags are used for classification in Grounding documents.   */
+/** These global tags are used for classification in Exploratory documents.   */
 export type EGlobalTag =
   | "AVC"
   | "CAIS"
@@ -136,7 +127,7 @@ export type EGlobalTag =
   | "SCOPE_ADVISOR"
   | "TWO_STAGE_BRIDGE";
 
-/** Defines the lifecycle stage of the Grounding document within Atlas. */
+/** Defines the lifecycle stage of the Exploratory document within Atlas.   */
 export type EStatus =
   | "APPROVED"
   | "ARCHIVED"
@@ -144,15 +135,9 @@ export type EStatus =
   | "PLACEHOLDER"
   | "PROVISIONAL";
 
-/** Reference to a document within Atlas with optional name and document number for display reasons. */
+/** Reference to a document within Atlas with optional name and document number for display reasons.  */
 export type Finding = {
-  comment: Maybe<Scalars["String"]["output"]>;
   isAligned: Scalars["Boolean"]["output"];
-};
-
-export type RemoveAdditionalGuidanceInput = {
-  /** Add your inputs here */
-  additionalGuidance: Scalars["String"]["input"];
 };
 
 export type RemoveContextDataInput = {
@@ -160,19 +145,21 @@ export type RemoveContextDataInput = {
   id: Scalars["PHID"]["input"];
 };
 
-export type RemoveParentInput = {
-  /** Add your inputs here */
-  parent?: InputMaybe<Array<Scalars["PHID"]["input"]>>;
-};
-
-export type RemoveReferenceInput = {
-  /** Add your inputs here */
-  reference?: InputMaybe<Scalars["PHID"]["input"]>;
-};
-
 export type RemoveTagsInput = {
   /** Add your inputs here */
   tags: Array<EGlobalTag | `${EGlobalTag}`>;
+};
+
+export type ReplaceContextDataInput = {
+  docNo?: InputMaybe<Scalars["String"]["input"]>;
+  id: Scalars["PHID"]["input"];
+  prevId: Scalars["PHID"]["input"];
+  title?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type SetAdditionalGuidanceInput = {
+  /** Add your inputs here */
+  additionalGuidance: Scalars["String"]["input"];
 };
 
 export type SetAtlasTypeInput = {
@@ -185,18 +172,11 @@ export type SetContentInput = {
   content: Scalars["String"]["input"];
 };
 
-export type SetDocNumberInput = {
-  /** Add your inputs here */
-  docNo: Scalars["String"]["input"];
-};
-
-export type SetExploratoryNameInput = {
-  /** Add your inputs here */
-  name: Scalars["String"]["input"];
+export type SetDocumentNumberInput = {
+  docNo?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type SetFindingsInput = {
-  comment: Scalars["String"]["input"];
   /** Add your inputs here */
   isAligned: Scalars["Boolean"]["input"];
 };
@@ -206,6 +186,11 @@ export type SetMasterStatusInput = {
   masterStatus: EStatus | `${EStatus}`;
 };
 
+export type SetNameInput = {
+  /** Add your inputs here */
+  name: Scalars["String"]["input"];
+};
+
 export type SetNotionIdInput = {
   /** Add your inputs here */
   notionID?: InputMaybe<Scalars["String"]["input"]>;
@@ -213,15 +198,5 @@ export type SetNotionIdInput = {
 
 export type SetParentInput = {
   /** Add your inputs here */
-  parent?: InputMaybe<Array<Scalars["PHID"]["input"]>>;
-};
-
-export type SetProvenanceInput = {
-  /** Add your inputs here */
-  provenance?: InputMaybe<Scalars["URL"]["input"]>;
-};
-
-export type SetReferenceInput = {
-  /** Add your inputs here */
-  newReference?: InputMaybe<Scalars["PHID"]["input"]>;
+  parent: Scalars["PHID"]["input"];
 };

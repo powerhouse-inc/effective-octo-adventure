@@ -1,39 +1,30 @@
 import { createAction } from "document-model";
 import {
   z,
-  type SetMultiparentNameInput,
-  type SetDocNumberInput,
+  type SetNameInput,
   type SetContentInput,
   type SetMasterStatusInput,
   type AddParentInput,
   type SetAtlasTypeInput,
   type RemoveParentInput,
+  type ReplaceParentInput,
 } from "../types.js";
 import {
-  type SetMultiparentNameAction,
-  type SetDocNumberAction,
+  type SetNameAction,
   type SetContentAction,
   type SetMasterStatusAction,
   type AddParentAction,
   type SetAtlasTypeAction,
   type RemoveParentAction,
+  type ReplaceParentAction,
 } from "./actions.js";
 
-export const setMultiparentName = (input: SetMultiparentNameInput) =>
-  createAction<SetMultiparentNameAction>(
-    "SET_MULTIPARENT_NAME",
+export const setName = (input: SetNameInput) =>
+  createAction<SetNameAction>(
+    "SET_NAME",
     { ...input },
     undefined,
-    z.SetMultiparentNameInputSchema,
-    "global",
-  );
-
-export const setDocNumber = (input: SetDocNumberInput) =>
-  createAction<SetDocNumberAction>(
-    "SET_DOC_NUMBER",
-    { ...input },
-    undefined,
-    z.SetDocNumberInputSchema,
+    z.SetNameInputSchema,
     "global",
   );
 
@@ -79,5 +70,14 @@ export const removeParent = (input: RemoveParentInput) =>
     { ...input },
     undefined,
     z.RemoveParentInputSchema,
+    "global",
+  );
+
+export const replaceParent = (input: ReplaceParentInput) =>
+  createAction<ReplaceParentAction>(
+    "REPLACE_PARENT",
+    { ...input },
+    undefined,
+    z.ReplaceParentInputSchema,
     "global",
   );

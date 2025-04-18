@@ -1,25 +1,18 @@
 import { type SignalDispatch } from "document-model";
 import {
-  type SetFoundationNameAction,
-  type SetDocNumberAction,
+  type SetNameAction,
   type SetContentAction,
   type SetMasterStatusAction,
-  type AddReferenceAction,
   type SetAtlasTypeAction,
-  type RemoveReferenceAction,
   type SetParentAction,
+  type SetDocumentNumberAction,
 } from "./actions.js";
 import { type AtlasFoundationState } from "../types.js";
 
 export interface AtlasFoundationGeneralOperations {
-  setFoundationNameOperation: (
+  setNameOperation: (
     state: AtlasFoundationState,
-    action: SetFoundationNameAction,
-    dispatch?: SignalDispatch,
-  ) => void;
-  setDocNumberOperation: (
-    state: AtlasFoundationState,
-    action: SetDocNumberAction,
+    action: SetNameAction,
     dispatch?: SignalDispatch,
   ) => void;
   setContentOperation: (
@@ -32,24 +25,19 @@ export interface AtlasFoundationGeneralOperations {
     action: SetMasterStatusAction,
     dispatch?: SignalDispatch,
   ) => void;
-  addReferenceOperation: (
-    state: AtlasFoundationState,
-    action: AddReferenceAction,
-    dispatch?: SignalDispatch,
-  ) => void;
   setAtlasTypeOperation: (
     state: AtlasFoundationState,
     action: SetAtlasTypeAction,
     dispatch?: SignalDispatch,
   ) => void;
-  removeReferenceOperation: (
-    state: AtlasFoundationState,
-    action: RemoveReferenceAction,
-    dispatch?: SignalDispatch,
-  ) => void;
   setParentOperation: (
     state: AtlasFoundationState,
     action: SetParentAction,
+    dispatch?: SignalDispatch,
+  ) => void;
+  setDocumentNumberOperation: (
+    state: AtlasFoundationState,
+    action: SetDocumentNumberAction,
     dispatch?: SignalDispatch,
   ) => void;
 }

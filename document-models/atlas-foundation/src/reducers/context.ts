@@ -1,21 +1,32 @@
 import { type AtlasFoundationContextOperations } from "../../gen/context/operations.js";
 
 export const reducer: AtlasFoundationContextOperations = {
-  // TODO: change this when the UI is updated
-  addContextDataOperation(state, action, dispatch) {
+  addContextDataOperation(state, action) {
     const newContextData = {
       id: action.input.id,
-      name: action.input.name || null,
-      docNo: action.input.docNo || null,
+      title: action.input.name || null,
+      docNo: null,
     };
-    state.originalContextData = [newContextData];
-  },
-  removeContextDataOperation(state, action, dispatch) {
-    state.originalContextData = [];
+    state.originalContextData = [...state.originalContextData, newContextData];
   },
 
-  setProvenanceOperation(state, action, dispatch) {
-    state.provenance = action.input.provenance;
+  removeContextDataOperation(state, action) {
+    state.originalContextData = state.originalContextData.filter(
+      (contextData) => contextData.id !== action.input.id,
+    );
+  },
+
+  replaceContextDataOperation(state, action) {
+    state.originalContextData = state.originalContextData.map((contextData) => {
+      if (contextData.id === action.input.prevId) {
+        return {
+          id: action.input.id,
+          title: action.input.title || null,
+          docNo: null,
+        };
+      }
+      return contextData;
+    });
   },
 
   setNotionIdOperation(state, action, dispatch) {

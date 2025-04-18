@@ -1,24 +1,15 @@
 import { type BaseAction } from "document-model";
 import type {
-  SetMultiparentNameInput,
-  SetDocNumberInput,
+  SetNameInput,
   SetContentInput,
   SetMasterStatusInput,
   AddParentInput,
   SetAtlasTypeInput,
   RemoveParentInput,
+  ReplaceParentInput,
 } from "../types.js";
 
-export type SetMultiparentNameAction = BaseAction<
-  "SET_MULTIPARENT_NAME",
-  SetMultiparentNameInput,
-  "global"
->;
-export type SetDocNumberAction = BaseAction<
-  "SET_DOC_NUMBER",
-  SetDocNumberInput,
-  "global"
->;
+export type SetNameAction = BaseAction<"SET_NAME", SetNameInput, "global">;
 export type SetContentAction = BaseAction<
   "SET_CONTENT",
   SetContentInput,
@@ -44,12 +35,17 @@ export type RemoveParentAction = BaseAction<
   RemoveParentInput,
   "global"
 >;
+export type ReplaceParentAction = BaseAction<
+  "REPLACE_PARENT",
+  ReplaceParentInput,
+  "global"
+>;
 
 export type AtlasMultiParentGeneralAction =
-  | SetMultiparentNameAction
-  | SetDocNumberAction
+  | SetNameAction
   | SetContentAction
   | SetMasterStatusAction
   | AddParentAction
   | SetAtlasTypeAction
-  | RemoveParentAction;
+  | RemoveParentAction
+  | ReplaceParentAction;

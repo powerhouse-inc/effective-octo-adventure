@@ -1,25 +1,14 @@
 import { type BaseAction } from "document-model";
 import type {
-  SetFoundationNameInput,
-  SetDocNumberInput,
+  SetNameInput,
   SetContentInput,
   SetMasterStatusInput,
-  AddReferenceInput,
   SetAtlasTypeInput,
-  RemoveReferenceInput,
   SetParentInput,
+  SetDocumentNumberInput,
 } from "../types.js";
 
-export type SetFoundationNameAction = BaseAction<
-  "SET_FOUNDATION_NAME",
-  SetFoundationNameInput,
-  "global"
->;
-export type SetDocNumberAction = BaseAction<
-  "SET_DOC_NUMBER",
-  SetDocNumberInput,
-  "global"
->;
+export type SetNameAction = BaseAction<"SET_NAME", SetNameInput, "global">;
 export type SetContentAction = BaseAction<
   "SET_CONTENT",
   SetContentInput,
@@ -30,19 +19,9 @@ export type SetMasterStatusAction = BaseAction<
   SetMasterStatusInput,
   "global"
 >;
-export type AddReferenceAction = BaseAction<
-  "ADD_REFERENCE",
-  AddReferenceInput,
-  "global"
->;
 export type SetAtlasTypeAction = BaseAction<
   "SET_ATLAS_TYPE",
   SetAtlasTypeInput,
-  "global"
->;
-export type RemoveReferenceAction = BaseAction<
-  "REMOVE_REFERENCE",
-  RemoveReferenceInput,
   "global"
 >;
 export type SetParentAction = BaseAction<
@@ -50,13 +29,16 @@ export type SetParentAction = BaseAction<
   SetParentInput,
   "global"
 >;
+export type SetDocumentNumberAction = BaseAction<
+  "SET_DOCUMENT_NUMBER",
+  SetDocumentNumberInput,
+  "global"
+>;
 
 export type AtlasFoundationGeneralAction =
-  | SetFoundationNameAction
-  | SetDocNumberAction
+  | SetNameAction
   | SetContentAction
   | SetMasterStatusAction
-  | AddReferenceAction
   | SetAtlasTypeAction
-  | RemoveReferenceAction
-  | SetParentAction;
+  | SetParentAction
+  | SetDocumentNumberAction;

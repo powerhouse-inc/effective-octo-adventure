@@ -16,55 +16,43 @@ scalar Amount_Crypto
 scalar Amount
 type AtlasScopeState {
   """
-    Full name of the Scope without the document number. 
-    For example: "The Support Scope" 
-  """
-  name: OLabel
-
-  """
-    Document number of the scope document within Atlas. 
-    For example: "A.1" for the Governance Scope. 
+  Unique document number assigned to the Scope document within Atlas.
   """
   docNo: String
-
   """
-    Entire content body of the scope document within Atlas. 
-    For example: "The Governance Scope regulates the governance processes and balance..."
+  Full name of the Scope without the document number. 
+  For example: "The Support Scope" 
+  """
+  name: OLabel
+  """
+  Document number of the scope document within Atlas. 
+  For example: "A.1" for the Governance Scope. 
   """
   content: String
-
   """
-    Master status as managed by the Atlas Axis facilitator group.
+  Master status as managed by the Atlas Axis facilitator group.
   """
-  masterStatus: Status
-
+  masterStatus: Status!
   """
-    Document tags as managed by the Atlas Axis facilitator group.
+  Document tags as managed by the Atlas Axis facilitator group.
   """
   globalTags: [GlobalTag!]!
-
   """
-    List of Atlas documents that were relevant for the creation of the scope document. 
+  List of Atlas documents that were relevant for the creation of the scope document. 
   """
   originalContextData: [DocumentInfo!]!
-
   """
-    Link to the original P0hub Notion environment.
-  """
-  provenance: URL
-
-  """
-    Original Notion document ID of the scope document.
+  Original Notion document ID of the scope document.
   """
   notionId: String
 }
 
 """
-   Reference to a document within Atlas with optional name and document number for display reasons. 
+Reference to a document within Atlas with optional name and document number for display reasons. 
 """
 type DocumentInfo {
   id: PHID!
-  name: OLabel
+  title: OLabel
   docNo: String
 }
 
@@ -106,14 +94,8 @@ enum GlobalTag {
 
 # general
 
-input SetScopeNameInput {
-  "New name for Scope"
+input SetNameInput {
   name: OLabel!
-}
-
-input SetDocNumberInput {
-  "New document number for the scope document"
-  docNo: String!
 }
 
 input SetContentInput {
@@ -124,6 +106,10 @@ input SetContentInput {
 input SetMasterStatusInput {
   "New master status"
   masterStatus: Status!
+}
+
+input SetDocumentNumberInput {
+  docNo: String
 }
 
 # tags
@@ -142,7 +128,7 @@ input RemoveTagsInput {
 
 input AddContextDataInput {
   id: PHID!
-  name: String
+  title: String
   docNo: String
 }
 
@@ -150,11 +136,14 @@ input RemoveContextDataInput {
   id: PHID!
 }
 
-input SetProvenanceInput {
-  provenance: URL
-}
-
 input SetNotionIdInput {
   "Add your inputs here"
   notionID: String
+}
+
+input ReplaceContextDataInput {
+  prevId: PHID!
+  id:PHID!
+  title: String
+  docNo: String
 }

@@ -7,43 +7,31 @@ export const schema: DocumentNode = gql`
   """
   type AtlasScopeState {
     """
+    Unique document number assigned to the Scope document within Atlas.
+    """
+    docNo: String
+    """
     Full name of the Scope without the document number.
     For example: "The Support Scope"
     """
     name: OLabel
-
     """
     Document number of the scope document within Atlas.
     For example: "A.1" for the Governance Scope.
     """
-    docNo: String
-
-    """
-    Entire content body of the scope document within Atlas.
-    For example: "The Governance Scope regulates the governance processes and balance..."
-    """
     content: String
-
     """
     Master status as managed by the Atlas Axis facilitator group.
     """
-    masterStatus: Status
-
+    masterStatus: Status!
     """
     Document tags as managed by the Atlas Axis facilitator group.
     """
     globalTags: [GlobalTag!]!
-
     """
     List of Atlas documents that were relevant for the creation of the scope document.
     """
     originalContextData: [DocumentInfo!]!
-
-    """
-    Link to the original P0hub Notion environment.
-    """
-    provenance: URL
-
     """
     Original Notion document ID of the scope document.
     """
@@ -55,7 +43,7 @@ export const schema: DocumentNode = gql`
   """
   type DocumentInfo {
     id: PHID!
-    name: OLabel
+    title: OLabel
     docNo: String
   }
 
@@ -111,15 +99,10 @@ export const schema: DocumentNode = gql`
   type Mutation {
     AtlasScope_createDocument(driveId: String, name: String): String
 
-    AtlasScope_setScopeName(
+    AtlasScope_setName(
       driveId: String
       docId: PHID
-      input: AtlasScope_SetScopeNameInput
-    ): Int
-    AtlasScope_setDocNumber(
-      driveId: String
-      docId: PHID
-      input: AtlasScope_SetDocNumberInput
+      input: AtlasScope_SetNameInput
     ): Int
     AtlasScope_setContent(
       driveId: String
@@ -130,6 +113,11 @@ export const schema: DocumentNode = gql`
       driveId: String
       docId: PHID
       input: AtlasScope_SetMasterStatusInput
+    ): Int
+    AtlasScope_setDocumentNumber(
+      driveId: String
+      docId: PHID
+      input: AtlasScope_SetDocumentNumberInput
     ): Int
     AtlasScope_addTags(
       driveId: String
@@ -151,28 +139,23 @@ export const schema: DocumentNode = gql`
       docId: PHID
       input: AtlasScope_RemoveContextDataInput
     ): Int
-    AtlasScope_setProvenance(
-      driveId: String
-      docId: PHID
-      input: AtlasScope_SetProvenanceInput
-    ): Int
     AtlasScope_setNotionId(
       driveId: String
       docId: PHID
       input: AtlasScope_SetNotionIdInput
+    ): Int
+    AtlasScope_replaceContextData(
+      driveId: String
+      docId: PHID
+      input: AtlasScope_ReplaceContextDataInput
     ): Int
   }
 
   """
   Module: General
   """
-  input AtlasScope_SetScopeNameInput {
-    "New name for Scope"
+  input AtlasScope_SetNameInput {
     name: OLabel!
-  }
-  input AtlasScope_SetDocNumberInput {
-    "New document number for the scope document"
-    docNo: String!
   }
   input AtlasScope_SetContentInput {
     "Update the content of the scope document"
@@ -181,6 +164,9 @@ export const schema: DocumentNode = gql`
   input AtlasScope_SetMasterStatusInput {
     "New master status"
     masterStatus: Status!
+  }
+  input AtlasScope_SetDocumentNumberInput {
+    docNo: String
   }
 
   """
@@ -200,18 +186,20 @@ export const schema: DocumentNode = gql`
   """
   input AtlasScope_AddContextDataInput {
     id: PHID!
-    name: String
+    title: String
     docNo: String
   }
   input AtlasScope_RemoveContextDataInput {
     id: PHID!
   }
-  input AtlasScope_SetProvenanceInput {
-    provenance: URL
-  }
   input AtlasScope_SetNotionIdInput {
     "Add your inputs here"
     notionID: String
   }
-
+  input AtlasScope_ReplaceContextDataInput {
+    prevId: PHID!
+    id: PHID!
+    title: String
+    docNo: String
+  }
 `;

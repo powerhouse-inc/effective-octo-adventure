@@ -1,23 +1,23 @@
 import { BaseDocumentClass } from "document-model";
 import {
-  type SetMultiparentNameInput,
-  type SetDocNumberInput,
+  type SetNameInput,
   type SetContentInput,
   type SetMasterStatusInput,
   type AddParentInput,
   type SetAtlasTypeInput,
   type RemoveParentInput,
+  type ReplaceParentInput,
   type AtlasMultiParentState,
   type AtlasMultiParentLocalState,
 } from "../types.js";
 import {
-  setMultiparentName,
-  setDocNumber,
+  setName,
   setContent,
   setMasterStatus,
   addParent,
   setAtlasType,
   removeParent,
+  replaceParent,
 } from "./creators.js";
 import { type AtlasMultiParentAction } from "../actions.js";
 
@@ -26,12 +26,8 @@ export default class AtlasMultiParent_General extends BaseDocumentClass<
   AtlasMultiParentLocalState,
   AtlasMultiParentAction
 > {
-  public setMultiparentName(input: SetMultiparentNameInput) {
-    return this.dispatch(setMultiparentName(input));
-  }
-
-  public setDocNumber(input: SetDocNumberInput) {
-    return this.dispatch(setDocNumber(input));
+  public setName(input: SetNameInput) {
+    return this.dispatch(setName(input));
   }
 
   public setContent(input: SetContentInput) {
@@ -52,5 +48,9 @@ export default class AtlasMultiParent_General extends BaseDocumentClass<
 
   public removeParent(input: RemoveParentInput) {
     return this.dispatch(removeParent(input));
+  }
+
+  public replaceParent(input: ReplaceParentInput) {
+    return this.dispatch(replaceParent(input));
   }
 }

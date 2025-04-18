@@ -3,14 +3,14 @@ import {
   z,
   type AddContextDataInput,
   type RemoveContextDataInput,
-  type SetProvenanceInput,
   type SetNotionIdInput,
+  type ReplaceContextDataInput,
 } from "../types.js";
 import {
   type AddContextDataAction,
   type RemoveContextDataAction,
-  type SetProvenanceAction,
   type SetNotionIdAction,
+  type ReplaceContextDataAction,
 } from "./actions.js";
 
 export const addContextData = (input: AddContextDataInput) =>
@@ -31,20 +31,20 @@ export const removeContextData = (input: RemoveContextDataInput) =>
     "global",
   );
 
-export const setProvenance = (input: SetProvenanceInput) =>
-  createAction<SetProvenanceAction>(
-    "SET_PROVENANCE",
-    { ...input },
-    undefined,
-    z.SetProvenanceInputSchema,
-    "global",
-  );
-
 export const setNotionId = (input: SetNotionIdInput) =>
   createAction<SetNotionIdAction>(
     "SET_NOTION_ID",
     { ...input },
     undefined,
     z.SetNotionIdInputSchema,
+    "global",
+  );
+
+export const replaceContextData = (input: ReplaceContextDataInput) =>
+  createAction<ReplaceContextDataAction>(
+    "REPLACE_CONTEXT_DATA",
+    { ...input },
+    undefined,
+    z.ReplaceContextDataInputSchema,
     "global",
   );

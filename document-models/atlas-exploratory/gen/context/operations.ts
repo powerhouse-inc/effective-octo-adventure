@@ -2,10 +2,9 @@ import { type SignalDispatch } from "document-model";
 import {
   type AddContextDataAction,
   type RemoveContextDataAction,
-  type SetProvenanceAction,
   type SetNotionIdAction,
-  type AddAdditionalGuidanceAction,
-  type RemoveAdditionalGuidanceAction,
+  type SetAdditionalGuidanceAction,
+  type ReplaceContextDataAction,
 } from "./actions.js";
 import { type AtlasExploratoryState } from "../types.js";
 
@@ -20,24 +19,19 @@ export interface AtlasExploratoryContextOperations {
     action: RemoveContextDataAction,
     dispatch?: SignalDispatch,
   ) => void;
-  setProvenanceOperation: (
-    state: AtlasExploratoryState,
-    action: SetProvenanceAction,
-    dispatch?: SignalDispatch,
-  ) => void;
   setNotionIdOperation: (
     state: AtlasExploratoryState,
     action: SetNotionIdAction,
     dispatch?: SignalDispatch,
   ) => void;
-  addAdditionalGuidanceOperation: (
+  setAdditionalGuidanceOperation: (
     state: AtlasExploratoryState,
-    action: AddAdditionalGuidanceAction,
+    action: SetAdditionalGuidanceAction,
     dispatch?: SignalDispatch,
   ) => void;
-  removeAdditionalGuidanceOperation: (
+  replaceContextDataOperation: (
     state: AtlasExploratoryState,
-    action: RemoveAdditionalGuidanceAction,
+    action: ReplaceContextDataAction,
     dispatch?: SignalDispatch,
   ) => void;
 }

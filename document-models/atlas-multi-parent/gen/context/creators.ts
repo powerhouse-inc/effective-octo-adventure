@@ -3,18 +3,14 @@ import {
   z,
   type AddContextDataInput,
   type RemoveContextDataInput,
-  type SetProvenanceInput,
+  type ReplaceContextDataInput,
   type SetNotionIdInput,
-  type AddReferenceInput,
-  type RemoveReferenceInput,
 } from "../types.js";
 import {
   type AddContextDataAction,
   type RemoveContextDataAction,
-  type SetProvenanceAction,
+  type ReplaceContextDataAction,
   type SetNotionIdAction,
-  type AddReferenceAction,
-  type RemoveReferenceAction,
 } from "./actions.js";
 
 export const addContextData = (input: AddContextDataInput) =>
@@ -35,12 +31,12 @@ export const removeContextData = (input: RemoveContextDataInput) =>
     "global",
   );
 
-export const setProvenance = (input: SetProvenanceInput) =>
-  createAction<SetProvenanceAction>(
-    "SET_PROVENANCE",
+export const replaceContextData = (input: ReplaceContextDataInput) =>
+  createAction<ReplaceContextDataAction>(
+    "REPLACE_CONTEXT_DATA",
     { ...input },
     undefined,
-    z.SetProvenanceInputSchema,
+    z.ReplaceContextDataInputSchema,
     "global",
   );
 
@@ -50,23 +46,5 @@ export const setNotionId = (input: SetNotionIdInput) =>
     { ...input },
     undefined,
     z.SetNotionIdInputSchema,
-    "global",
-  );
-
-export const addReference = (input: AddReferenceInput) =>
-  createAction<AddReferenceAction>(
-    "ADD_REFERENCE",
-    { ...input },
-    undefined,
-    z.AddReferenceInputSchema,
-    "global",
-  );
-
-export const removeReference = (input: RemoveReferenceInput) =>
-  createAction<RemoveReferenceAction>(
-    "REMOVE_REFERENCE",
-    { ...input },
-    undefined,
-    z.RemoveReferenceInputSchema,
     "global",
   );

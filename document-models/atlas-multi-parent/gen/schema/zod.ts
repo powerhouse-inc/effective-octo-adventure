@@ -2,7 +2,6 @@ import { z } from "zod";
 import type {
   AddContextDataInput,
   AddParentInput,
-  AddReferenceInput,
   AddTagsInput,
   AtlasMultiParentState,
   MAtlasType,
@@ -11,15 +10,14 @@ import type {
   MStatus,
   RemoveContextDataInput,
   RemoveParentInput,
-  RemoveReferenceInput,
   RemoveTagsInput,
+  ReplaceContextDataInput,
+  ReplaceParentInput,
   SetAtlasTypeInput,
   SetContentInput,
-  SetDocNumberInput,
   SetMasterStatusInput,
-  SetMultiparentNameInput,
+  SetNameInput,
   SetNotionIdInput,
-  SetProvenanceInput,
 } from "./types.js";
 
 type Properties<T> = Required<{
@@ -68,7 +66,7 @@ export function AddContextDataInputSchema(): z.ZodObject<
   return z.object({
     docNo: z.string().nullish(),
     id: z.string(),
-    name: z.string().nullish(),
+    title: z.string().nullish(),
   });
 }
 
@@ -78,17 +76,7 @@ export function AddParentInputSchema(): z.ZodObject<
   return z.object({
     docNo: z.string().nullish(),
     id: z.string(),
-    name: z.string().nullish(),
-  });
-}
-
-export function AddReferenceInputSchema(): z.ZodObject<
-  Properties<AddReferenceInput>
-> {
-  return z.object({
-    docNo: z.string().nullish(),
-    id: z.string(),
-    name: z.string().nullish(),
+    title: z.string().nullish(),
   });
 }
 
@@ -105,15 +93,12 @@ export function AtlasMultiParentStateSchema(): z.ZodObject<
     __typename: z.literal("AtlasMultiParentState").optional(),
     atlasType: MAtlasTypeSchema,
     content: z.string().nullable(),
-    docNo: z.string().nullable(),
     globalTags: z.array(MGlobalTagSchema),
     masterStatus: MStatusSchema,
     name: z.string().nullable(),
     notionId: z.string().nullable(),
     originalContextData: z.array(MDocumentLinkSchema()),
     parents: z.array(MDocumentLinkSchema()),
-    provenance: z.array(z.string().url()),
-    references: z.array(MDocumentLinkSchema()),
   });
 }
 
@@ -122,7 +107,7 @@ export function MDocumentLinkSchema(): z.ZodObject<Properties<MDocumentLink>> {
     __typename: z.literal("MDocumentLink").optional(),
     docNo: z.string().nullable(),
     id: z.string(),
-    name: z.string().nullable(),
+    title: z.string().nullable(),
   });
 }
 
@@ -142,19 +127,33 @@ export function RemoveParentInputSchema(): z.ZodObject<
   });
 }
 
-export function RemoveReferenceInputSchema(): z.ZodObject<
-  Properties<RemoveReferenceInput>
-> {
-  return z.object({
-    id: z.string(),
-  });
-}
-
 export function RemoveTagsInputSchema(): z.ZodObject<
   Properties<RemoveTagsInput>
 > {
   return z.object({
     tags: z.array(MGlobalTagSchema),
+  });
+}
+
+export function ReplaceContextDataInputSchema(): z.ZodObject<
+  Properties<ReplaceContextDataInput>
+> {
+  return z.object({
+    docNo: z.string().nullish(),
+    id: z.string(),
+    prevId: z.string(),
+    title: z.string().nullish(),
+  });
+}
+
+export function ReplaceParentInputSchema(): z.ZodObject<
+  Properties<ReplaceParentInput>
+> {
+  return z.object({
+    docNo: z.string().nullish(),
+    id: z.string(),
+    prevID: z.string(),
+    title: z.string().nullish(),
   });
 }
 
@@ -174,14 +173,6 @@ export function SetContentInputSchema(): z.ZodObject<
   });
 }
 
-export function SetDocNumberInputSchema(): z.ZodObject<
-  Properties<SetDocNumberInput>
-> {
-  return z.object({
-    docNo: z.string(),
-  });
-}
-
 export function SetMasterStatusInputSchema(): z.ZodObject<
   Properties<SetMasterStatusInput>
 > {
@@ -190,9 +181,7 @@ export function SetMasterStatusInputSchema(): z.ZodObject<
   });
 }
 
-export function SetMultiparentNameInputSchema(): z.ZodObject<
-  Properties<SetMultiparentNameInput>
-> {
+export function SetNameInputSchema(): z.ZodObject<Properties<SetNameInput>> {
   return z.object({
     name: z.string(),
   });
@@ -202,14 +191,6 @@ export function SetNotionIdInputSchema(): z.ZodObject<
   Properties<SetNotionIdInput>
 > {
   return z.object({
-    notionID: z.string(),
-  });
-}
-
-export function SetProvenanceInputSchema(): z.ZodObject<
-  Properties<SetProvenanceInput>
-> {
-  return z.object({
-    provenance: z.array(z.string().url()),
+    notionId: z.string(),
   });
 }

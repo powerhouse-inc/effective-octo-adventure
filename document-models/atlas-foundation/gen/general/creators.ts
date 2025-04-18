@@ -1,41 +1,28 @@
 import { createAction } from "document-model";
 import {
   z,
-  type SetFoundationNameInput,
-  type SetDocNumberInput,
+  type SetNameInput,
   type SetContentInput,
   type SetMasterStatusInput,
-  type AddReferenceInput,
   type SetAtlasTypeInput,
-  type RemoveReferenceInput,
   type SetParentInput,
+  type SetDocumentNumberInput,
 } from "../types.js";
 import {
-  type SetFoundationNameAction,
-  type SetDocNumberAction,
+  type SetNameAction,
   type SetContentAction,
   type SetMasterStatusAction,
-  type AddReferenceAction,
   type SetAtlasTypeAction,
-  type RemoveReferenceAction,
   type SetParentAction,
+  type SetDocumentNumberAction,
 } from "./actions.js";
 
-export const setFoundationName = (input: SetFoundationNameInput) =>
-  createAction<SetFoundationNameAction>(
-    "SET_FOUNDATION_NAME",
+export const setName = (input: SetNameInput) =>
+  createAction<SetNameAction>(
+    "SET_NAME",
     { ...input },
     undefined,
-    z.SetFoundationNameInputSchema,
-    "global",
-  );
-
-export const setDocNumber = (input: SetDocNumberInput) =>
-  createAction<SetDocNumberAction>(
-    "SET_DOC_NUMBER",
-    { ...input },
-    undefined,
-    z.SetDocNumberInputSchema,
+    z.SetNameInputSchema,
     "global",
   );
 
@@ -57,15 +44,6 @@ export const setMasterStatus = (input: SetMasterStatusInput) =>
     "global",
   );
 
-export const addReference = (input: AddReferenceInput) =>
-  createAction<AddReferenceAction>(
-    "ADD_REFERENCE",
-    { ...input },
-    undefined,
-    z.AddReferenceInputSchema,
-    "global",
-  );
-
 export const setAtlasType = (input: SetAtlasTypeInput) =>
   createAction<SetAtlasTypeAction>(
     "SET_ATLAS_TYPE",
@@ -75,20 +53,20 @@ export const setAtlasType = (input: SetAtlasTypeInput) =>
     "global",
   );
 
-export const removeReference = (input: RemoveReferenceInput) =>
-  createAction<RemoveReferenceAction>(
-    "REMOVE_REFERENCE",
-    { ...input },
-    undefined,
-    z.RemoveReferenceInputSchema,
-    "global",
-  );
-
 export const setParent = (input: SetParentInput) =>
   createAction<SetParentAction>(
     "SET_PARENT",
     { ...input },
     undefined,
     z.SetParentInputSchema,
+    "global",
+  );
+
+export const setDocumentNumber = (input: SetDocumentNumberInput) =>
+  createAction<SetDocumentNumberAction>(
+    "SET_DOCUMENT_NUMBER",
+    { ...input },
+    undefined,
+    z.SetDocumentNumberInputSchema,
     "global",
   );

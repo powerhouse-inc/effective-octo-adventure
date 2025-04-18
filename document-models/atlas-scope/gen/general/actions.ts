@@ -1,21 +1,12 @@
 import { type BaseAction } from "document-model";
 import type {
-  SetScopeNameInput,
-  SetDocNumberInput,
+  SetNameInput,
   SetContentInput,
   SetMasterStatusInput,
+  SetDocumentNumberInput,
 } from "../types.js";
 
-export type SetScopeNameAction = BaseAction<
-  "SET_SCOPE_NAME",
-  SetScopeNameInput,
-  "global"
->;
-export type SetDocNumberAction = BaseAction<
-  "SET_DOC_NUMBER",
-  SetDocNumberInput,
-  "global"
->;
+export type SetNameAction = BaseAction<"SET_NAME", SetNameInput, "global">;
 export type SetContentAction = BaseAction<
   "SET_CONTENT",
   SetContentInput,
@@ -26,9 +17,14 @@ export type SetMasterStatusAction = BaseAction<
   SetMasterStatusInput,
   "global"
 >;
+export type SetDocumentNumberAction = BaseAction<
+  "SET_DOCUMENT_NUMBER",
+  SetDocumentNumberInput,
+  "global"
+>;
 
 export type AtlasScopeGeneralAction =
-  | SetScopeNameAction
-  | SetDocNumberAction
+  | SetNameAction
   | SetContentAction
-  | SetMasterStatusAction;
+  | SetMasterStatusAction
+  | SetDocumentNumberAction;

@@ -19,22 +19,9 @@ const stateReducer: StateReducer<AtlasFoundationDocument> = (
   }
 
   switch (action.type) {
-    case "SET_FOUNDATION_NAME":
-      z.SetFoundationNameInputSchema().parse(action.input);
-      GeneralReducer.setFoundationNameOperation(
-        state[action.scope],
-        action,
-        dispatch,
-      );
-      break;
-
-    case "SET_DOC_NUMBER":
-      z.SetDocNumberInputSchema().parse(action.input);
-      GeneralReducer.setDocNumberOperation(
-        state[action.scope],
-        action,
-        dispatch,
-      );
+    case "SET_NAME":
+      z.SetNameInputSchema().parse(action.input);
+      GeneralReducer.setNameOperation(state[action.scope], action, dispatch);
       break;
 
     case "SET_CONTENT":
@@ -51,15 +38,6 @@ const stateReducer: StateReducer<AtlasFoundationDocument> = (
       );
       break;
 
-    case "ADD_REFERENCE":
-      z.AddReferenceInputSchema().parse(action.input);
-      GeneralReducer.addReferenceOperation(
-        state[action.scope],
-        action,
-        dispatch,
-      );
-      break;
-
     case "SET_ATLAS_TYPE":
       z.SetAtlasTypeInputSchema().parse(action.input);
       GeneralReducer.setAtlasTypeOperation(
@@ -69,18 +47,18 @@ const stateReducer: StateReducer<AtlasFoundationDocument> = (
       );
       break;
 
-    case "REMOVE_REFERENCE":
-      z.RemoveReferenceInputSchema().parse(action.input);
-      GeneralReducer.removeReferenceOperation(
+    case "SET_PARENT":
+      z.SetParentInputSchema().parse(action.input);
+      GeneralReducer.setParentOperation(state[action.scope], action, dispatch);
+      break;
+
+    case "SET_DOCUMENT_NUMBER":
+      z.SetDocumentNumberInputSchema().parse(action.input);
+      GeneralReducer.setDocumentNumberOperation(
         state[action.scope],
         action,
         dispatch,
       );
-      break;
-
-    case "SET_PARENT":
-      z.SetParentInputSchema().parse(action.input);
-      GeneralReducer.setParentOperation(state[action.scope], action, dispatch);
       break;
 
     case "ADD_TAGS":
@@ -111,18 +89,18 @@ const stateReducer: StateReducer<AtlasFoundationDocument> = (
       );
       break;
 
-    case "SET_PROVENANCE":
-      z.SetProvenanceInputSchema().parse(action.input);
-      ContextReducer.setProvenanceOperation(
+    case "SET_NOTION_ID":
+      z.SetNotionIdInputSchema().parse(action.input);
+      ContextReducer.setNotionIdOperation(
         state[action.scope],
         action,
         dispatch,
       );
       break;
 
-    case "SET_NOTION_ID":
-      z.SetNotionIdInputSchema().parse(action.input);
-      ContextReducer.setNotionIdOperation(
+    case "REPLACE_CONTEXT_DATA":
+      z.ReplaceContextDataInputSchema().parse(action.input);
+      ContextReducer.replaceContextDataOperation(
         state[action.scope],
         action,
         dispatch,

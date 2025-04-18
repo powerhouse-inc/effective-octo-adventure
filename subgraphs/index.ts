@@ -5,3 +5,4 @@ export * as AtlasGroundingSubgraph from "./atlas-grounding/index.js";
 export * as AtlasMultiparentSubgraph from "./atlas-multiparent/index.js";
 export * as AtlasScopeSubgraph from "./atlas-scope/index.js";
 export * as ForkSubgraph from "./fork-scope/index.js";
+export * as AtlasMultiParentSubgraph from "./atlas-multi-parent/index.js";

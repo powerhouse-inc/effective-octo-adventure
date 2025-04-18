@@ -1,6 +1,5 @@
 import { z } from "zod";
 import type {
-  AddAdditionalGuidanceInput,
   AddContextDataInput,
   AddTagsInput,
   AtlasExploratoryState,
@@ -9,21 +8,18 @@ import type {
   EGlobalTag,
   EStatus,
   Finding,
-  RemoveAdditionalGuidanceInput,
   RemoveContextDataInput,
-  RemoveParentInput,
-  RemoveReferenceInput,
   RemoveTagsInput,
+  ReplaceContextDataInput,
+  SetAdditionalGuidanceInput,
   SetAtlasTypeInput,
   SetContentInput,
-  SetDocNumberInput,
-  SetExploratoryNameInput,
+  SetDocumentNumberInput,
   SetFindingsInput,
   SetMasterStatusInput,
+  SetNameInput,
   SetNotionIdInput,
   SetParentInput,
-  SetProvenanceInput,
-  SetReferenceInput,
 } from "./types.js";
 
 type Properties<T> = Required<{
@@ -66,21 +62,13 @@ export const EStatusSchema = z.enum([
   "PROVISIONAL",
 ]);
 
-export function AddAdditionalGuidanceInputSchema(): z.ZodObject<
-  Properties<AddAdditionalGuidanceInput>
-> {
-  return z.object({
-    additionalGuidance: z.string(),
-  });
-}
-
 export function AddContextDataInputSchema(): z.ZodObject<
   Properties<AddContextDataInput>
 > {
   return z.object({
     docNo: z.string().nullish(),
     id: z.string(),
-    name: z.string().nullish(),
+    title: z.string().nullish(),
   });
 }
 
@@ -106,8 +94,6 @@ export function AtlasExploratoryStateSchema(): z.ZodObject<
     notionId: z.string().nullable(),
     originalContextData: z.array(DocumentInfoSchema()),
     parent: z.string(),
-    provenance: z.string().url().nullable(),
-    references: z.array(z.string()),
   });
 }
 
@@ -116,23 +102,14 @@ export function DocumentInfoSchema(): z.ZodObject<Properties<DocumentInfo>> {
     __typename: z.literal("DocumentInfo").optional(),
     docNo: z.string().nullable(),
     id: z.string(),
-    name: z.string().nullable(),
+    title: z.string().nullable(),
   });
 }
 
 export function FindingSchema(): z.ZodObject<Properties<Finding>> {
   return z.object({
     __typename: z.literal("Finding").optional(),
-    comment: z.string().nullable(),
     isAligned: z.boolean(),
-  });
-}
-
-export function RemoveAdditionalGuidanceInputSchema(): z.ZodObject<
-  Properties<RemoveAdditionalGuidanceInput>
-> {
-  return z.object({
-    additionalGuidance: z.string(),
   });
 }
 
@@ -144,27 +121,30 @@ export function RemoveContextDataInputSchema(): z.ZodObject<
   });
 }
 
-export function RemoveParentInputSchema(): z.ZodObject<
-  Properties<RemoveParentInput>
-> {
-  return z.object({
-    parent: z.array(z.string()).nullish(),
-  });
-}
-
-export function RemoveReferenceInputSchema(): z.ZodObject<
-  Properties<RemoveReferenceInput>
-> {
-  return z.object({
-    reference: z.string().nullish(),
-  });
-}
-
 export function RemoveTagsInputSchema(): z.ZodObject<
   Properties<RemoveTagsInput>
 > {
   return z.object({
     tags: z.array(EGlobalTagSchema),
+  });
+}
+
+export function ReplaceContextDataInputSchema(): z.ZodObject<
+  Properties<ReplaceContextDataInput>
+> {
+  return z.object({
+    docNo: z.string().nullish(),
+    id: z.string(),
+    prevId: z.string(),
+    title: z.string().nullish(),
+  });
+}
+
+export function SetAdditionalGuidanceInputSchema(): z.ZodObject<
+  Properties<SetAdditionalGuidanceInput>
+> {
+  return z.object({
+    additionalGuidance: z.string(),
   });
 }
 
@@ -184,19 +164,11 @@ export function SetContentInputSchema(): z.ZodObject<
   });
 }
 
-export function SetDocNumberInputSchema(): z.ZodObject<
-  Properties<SetDocNumberInput>
+export function SetDocumentNumberInputSchema(): z.ZodObject<
+  Properties<SetDocumentNumberInput>
 > {
   return z.object({
-    docNo: z.string(),
-  });
-}
-
-export function SetExploratoryNameInputSchema(): z.ZodObject<
-  Properties<SetExploratoryNameInput>
-> {
-  return z.object({
-    name: z.string(),
+    docNo: z.string().nullish(),
   });
 }
 
@@ -204,7 +176,6 @@ export function SetFindingsInputSchema(): z.ZodObject<
   Properties<SetFindingsInput>
 > {
   return z.object({
-    comment: z.string(),
     isAligned: z.boolean(),
   });
 }
@@ -214,6 +185,12 @@ export function SetMasterStatusInputSchema(): z.ZodObject<
 > {
   return z.object({
     masterStatus: EStatusSchema,
+  });
+}
+
+export function SetNameInputSchema(): z.ZodObject<Properties<SetNameInput>> {
+  return z.object({
+    name: z.string(),
   });
 }
 
@@ -229,22 +206,6 @@ export function SetParentInputSchema(): z.ZodObject<
   Properties<SetParentInput>
 > {
   return z.object({
-    parent: z.array(z.string()).nullish(),
-  });
-}
-
-export function SetProvenanceInputSchema(): z.ZodObject<
-  Properties<SetProvenanceInput>
-> {
-  return z.object({
-    provenance: z.string().url().nullish(),
-  });
-}
-
-export function SetReferenceInputSchema(): z.ZodObject<
-  Properties<SetReferenceInput>
-> {
-  return z.object({
-    newReference: z.string().nullish(),
+    parent: z.string(),
   });
 }

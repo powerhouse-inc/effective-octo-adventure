@@ -8,7 +8,7 @@ import { generateId, hashKey } from "document-model";
 
 const DEFAULT_DRIVE_ID = "powerhouse";
 
-export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
+export const getResolvers = (subgraph: Subgraph) => {
   const reactor = subgraph.reactor;
 
   return {
@@ -19,14 +19,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
             const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
             const docId: string = args.docId || "";
             const doc = await reactor.getDocument(driveId, docId);
-            return {
-              id: docId,
-              driveId: driveId,
-              ...doc,
-              state: doc.state.global,
-              stateJSON: doc.state.global,
-              revision: doc.revision.global,
-            };
+            return doc;
           },
           getDocuments: async (args: any) => {
             const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
@@ -39,7 +32,6 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
                   driveId: driveId,
                   ...doc,
                   state: doc.state.global,
-                  stateJSON: doc.state.global,
                   revision: doc.revision.global,
                 };
               }),
@@ -79,7 +71,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
         return docId;
       },
 
-      AtlasScope_setScopeName: async (_: any, args: any) => {
+      AtlasScope_setName: async (_: any, args: any) => {
         const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
@@ -87,21 +79,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
         await reactor.addAction(
           driveId,
           docId,
-          actions.setScopeName({ ...args.input }),
-        );
-
-        return doc.revision.global + 1;
-      },
-
-      AtlasScope_setDocNumber: async (_: any, args: any) => {
-        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
-        const docId: string = args.docId || "";
-        const doc = await reactor.getDocument(driveId, docId);
-
-        await reactor.addAction(
-          driveId,
-          docId,
-          actions.setDocNumber({ ...args.input }),
+          actions.setName({ ...args.input }),
         );
 
         return doc.revision.global + 1;
@@ -130,6 +108,20 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           driveId,
           docId,
           actions.setMasterStatus({ ...args.input }),
+        );
+
+        return doc.revision.global + 1;
+      },
+
+      AtlasScope_setDocumentNumber: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
+        const docId: string = args.docId || "";
+        const doc = await reactor.getDocument(driveId, docId);
+
+        await reactor.addAction(
+          driveId,
+          docId,
+          actions.setDocumentNumber({ ...args.input }),
         );
 
         return doc.revision.global + 1;
@@ -191,20 +183,6 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
         return doc.revision.global + 1;
       },
 
-      AtlasScope_setProvenance: async (_: any, args: any) => {
-        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
-        const docId: string = args.docId || "";
-        const doc = await reactor.getDocument(driveId, docId);
-
-        await reactor.addAction(
-          driveId,
-          docId,
-          actions.setProvenance({ ...args.input }),
-        );
-
-        return doc.revision.global + 1;
-      },
-
       AtlasScope_setNotionId: async (_: any, args: any) => {
         const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
@@ -214,6 +192,20 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           driveId,
           docId,
           actions.setNotionId({ ...args.input }),
+        );
+
+        return doc.revision.global + 1;
+      },
+
+      AtlasScope_replaceContextData: async (_: any, args: any) => {
+        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
+        const docId: string = args.docId || "";
+        const doc = await reactor.getDocument(driveId, docId);
+
+        await reactor.addAction(
+          driveId,
+          docId,
+          actions.replaceContextData({ ...args.input }),
         );
 
         return doc.revision.global + 1;

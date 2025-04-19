@@ -19,22 +19,9 @@ const stateReducer: StateReducer<AtlasGroundingDocument> = (
   }
 
   switch (action.type) {
-    case "SET_GROUNDING_NAME":
-      z.SetGroundingNameInputSchema().parse(action.input);
-      GeneralReducer.setGroundingNameOperation(
-        state[action.scope],
-        action,
-        dispatch,
-      );
-      break;
-
-    case "SET_DOC_NUMBER":
-      z.SetDocNumberInputSchema().parse(action.input);
-      GeneralReducer.setDocNumberOperation(
-        state[action.scope],
-        action,
-        dispatch,
-      );
+    case "SET_NAME":
+      z.SetNameInputSchema().parse(action.input);
+      GeneralReducer.setNameOperation(state[action.scope], action, dispatch);
       break;
 
     case "SET_CONTENT":
@@ -65,6 +52,15 @@ const stateReducer: StateReducer<AtlasGroundingDocument> = (
       GeneralReducer.setParentOperation(state[action.scope], action, dispatch);
       break;
 
+    case "SET_DOCUMENT_NUMBER":
+      z.SetDocumentNumberInputSchema().parse(action.input);
+      GeneralReducer.setDocumentNumberOperation(
+        state[action.scope],
+        action,
+        dispatch,
+      );
+      break;
+
     case "ADD_TAGS":
       z.AddTagsInputSchema().parse(action.input);
       TagsReducer.addTagsOperation(state[action.scope], action, dispatch);
@@ -93,15 +89,6 @@ const stateReducer: StateReducer<AtlasGroundingDocument> = (
       );
       break;
 
-    case "SET_PROVENANCE":
-      z.SetProvenanceInputSchema().parse(action.input);
-      ContextReducer.setProvenanceOperation(
-        state[action.scope],
-        action,
-        dispatch,
-      );
-      break;
-
     case "SET_NOTION_ID":
       z.SetNotionIdInputSchema().parse(action.input);
       ContextReducer.setNotionIdOperation(
@@ -111,18 +98,9 @@ const stateReducer: StateReducer<AtlasGroundingDocument> = (
       );
       break;
 
-    case "ADD_REFERENCE":
-      z.AddReferenceInputSchema().parse(action.input);
-      ContextReducer.addReferenceOperation(
-        state[action.scope],
-        action,
-        dispatch,
-      );
-      break;
-
-    case "REMOVE_REFERENCE":
-      z.RemoveReferenceInputSchema().parse(action.input);
-      ContextReducer.removeReferenceOperation(
+    case "REPLACE_CONTEXT_DATA":
+      z.ReplaceContextDataInputSchema().parse(action.input);
+      ContextReducer.replaceContextDataOperation(
         state[action.scope],
         action,
         dispatch,

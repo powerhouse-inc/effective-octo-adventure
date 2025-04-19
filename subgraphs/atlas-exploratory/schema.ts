@@ -7,29 +7,29 @@ export const schema: DocumentNode = gql`
   """
   type AtlasExploratoryState {
     """
-    Full name of the Grounding document entity.
-    """
-    name: String
-    """
-    Unique document number assigned to the Grounding document within Atlas.
+    Unique document number assigned to the Exploratory document within Atlas.
     """
     docNo: String
     """
-    Parent entity that this Grounding document belongs to.
+    Full name of the Exploratory document entity.
+    """
+    name: String
+    """
+    Parent entity that this Exploratory document belongs to.
     This is a reference to another Atlas document.
     """
     parent: PHID!
     """
-    The type of the Grounding document within Atlas.
+    The type of the Exploratory document within Atlas.
     Example: Tenet, Original Context Data, Active Data.
     """
     atlasType: EAtlasType!
     """
-    Entire content body of the Grounding document within Atlas.
+    Entire content body of the Exploratory document within Atlas.
     """
     content: String
     """
-    Master status of the Grounding document as managed by the Atlas Axis facilitator group.
+    Master status of the Exploratory document as managed by the Atlas Axis facilitator group.
     """
     masterStatus: EStatus!
     """
@@ -37,28 +37,18 @@ export const schema: DocumentNode = gql`
     """
     globalTags: [EGlobalTag!]!
     """
-    References to other Atlas entities that are linked to this Grounding document.
-    """
-    references: [PHID!]!
-    """
-    List of Atlas documents that were relevant for the creation of this Grounding document.
+    List of Atlas documents that were relevant for the creation of this Exploratory document.
     """
     originalContextData: [DocumentInfo!]!
     """
-    Link to the original P0hub Notion environment where this document was first created or referenced.
-    """
-    provenance: URL
-    """
-    Original Notion document ID of the Grounding document.
+    Original Notion document ID of the Exploratory document.
     Used for cross-system referencing and linking back to the original Notion source.
     """
     notionId: String
-
     """
     Alignmnet boolean findings.
     """
     findings: Finding!
-
     """
     Additional commentary and context for guidance.
     """
@@ -70,12 +60,11 @@ export const schema: DocumentNode = gql`
   """
   type Finding {
     isAligned: Boolean!
-    comment: String
   }
 
   type DocumentInfo {
     id: PHID!
-    name: OLabel
+    title: OLabel
     docNo: String
   }
 
@@ -88,7 +77,7 @@ export const schema: DocumentNode = gql`
   }
 
   """
-  Defines the lifecycle stage of the Grounding document within Atlas.
+  Defines the lifecycle stage of the Exploratory document within Atlas.
   """
   enum EStatus {
     PLACEHOLDER
@@ -99,7 +88,7 @@ export const schema: DocumentNode = gql`
   }
 
   """
-  These global tags are used for classification in Grounding documents.
+  These global tags are used for classification in Exploratory documents.
   """
   enum EGlobalTag {
     SCOPE_ADVISOR
@@ -136,15 +125,10 @@ export const schema: DocumentNode = gql`
   type Mutation {
     AtlasExploratory_createDocument(driveId: String, name: String): String
 
-    AtlasExploratory_setExploratoryName(
+    AtlasExploratory_setName(
       driveId: String
       docId: PHID
-      input: AtlasExploratory_SetExploratoryNameInput
-    ): Int
-    AtlasExploratory_setDocNumber(
-      driveId: String
-      docId: PHID
-      input: AtlasExploratory_SetDocNumberInput
+      input: AtlasExploratory_SetNameInput
     ): Int
     AtlasExploratory_setContent(
       driveId: String
@@ -161,11 +145,6 @@ export const schema: DocumentNode = gql`
       docId: PHID
       input: AtlasExploratory_SetParentInput
     ): Int
-    AtlasExploratory_removeParent(
-      driveId: String
-      docId: PHID
-      input: AtlasExploratory_RemoveParentInput
-    ): Int
     AtlasExploratory_setAtlasType(
       driveId: String
       docId: PHID
@@ -176,15 +155,10 @@ export const schema: DocumentNode = gql`
       docId: PHID
       input: AtlasExploratory_SetFindingsInput
     ): Int
-    AtlasExploratory_setReference(
+    AtlasExploratory_setDocumentNumber(
       driveId: String
       docId: PHID
-      input: AtlasExploratory_SetReferenceInput
-    ): Int
-    AtlasExploratory_removeReference(
-      driveId: String
-      docId: PHID
-      input: AtlasExploratory_RemoveReferenceInput
+      input: AtlasExploratory_SetDocumentNumberInput
     ): Int
     AtlasExploratory_addTags(
       driveId: String
@@ -206,38 +180,29 @@ export const schema: DocumentNode = gql`
       docId: PHID
       input: AtlasExploratory_RemoveContextDataInput
     ): Int
-    AtlasExploratory_setProvenance(
-      driveId: String
-      docId: PHID
-      input: AtlasExploratory_SetProvenanceInput
-    ): Int
     AtlasExploratory_setNotionId(
       driveId: String
       docId: PHID
       input: AtlasExploratory_SetNotionIdInput
     ): Int
-    AtlasExploratory_addAdditionalGuidance(
+    AtlasExploratory_setAdditionalGuidance(
       driveId: String
       docId: PHID
-      input: AtlasExploratory_AddAdditionalGuidanceInput
+      input: AtlasExploratory_SetAdditionalGuidanceInput
     ): Int
-    AtlasExploratory_removeAdditionalGuidance(
+    AtlasExploratory_replaceContextData(
       driveId: String
       docId: PHID
-      input: AtlasExploratory_RemoveAdditionalGuidanceInput
+      input: AtlasExploratory_ReplaceContextDataInput
     ): Int
   }
 
   """
   Module: General
   """
-  input AtlasExploratory_SetExploratoryNameInput {
+  input AtlasExploratory_SetNameInput {
     "Add your inputs here"
     name: String!
-  }
-  input AtlasExploratory_SetDocNumberInput {
-    "Add your inputs here"
-    docNo: String!
   }
   input AtlasExploratory_SetContentInput {
     "Add your inputs here"
@@ -249,11 +214,7 @@ export const schema: DocumentNode = gql`
   }
   input AtlasExploratory_SetParentInput {
     "Add your inputs here"
-    parent: [PHID!]
-  }
-  input AtlasExploratory_RemoveParentInput {
-    "Add your inputs here"
-    parent: [PHID!]
+    parent: PHID!
   }
   input AtlasExploratory_SetAtlasTypeInput {
     "Add your inputs here"
@@ -262,15 +223,9 @@ export const schema: DocumentNode = gql`
   input AtlasExploratory_SetFindingsInput {
     "Add your inputs here"
     isAligned: Boolean!
-    comment: String!
   }
-  input AtlasExploratory_SetReferenceInput {
-    "Add your inputs here"
-    newReference: PHID
-  }
-  input AtlasExploratory_RemoveReferenceInput {
-    "Add your inputs here"
-    reference: PHID
+  input AtlasExploratory_SetDocumentNumberInput {
+    docNo: String
   }
 
   """
@@ -291,27 +246,25 @@ export const schema: DocumentNode = gql`
   input AtlasExploratory_AddContextDataInput {
     "Add your inputs here"
     id: PHID!
-    name: String
+    title: String
     docNo: String
   }
   input AtlasExploratory_RemoveContextDataInput {
     "Add your inputs here"
     id: PHID!
   }
-  input AtlasExploratory_SetProvenanceInput {
-    "Add your inputs here"
-    provenance: URL
-  }
   input AtlasExploratory_SetNotionIdInput {
     "Add your inputs here"
     notionID: String
   }
-  input AtlasExploratory_AddAdditionalGuidanceInput {
+  input AtlasExploratory_SetAdditionalGuidanceInput {
     "Add your inputs here"
     additionalGuidance: String!
   }
-  input AtlasExploratory_RemoveAdditionalGuidanceInput {
-    "Add your inputs here"
-    additionalGuidance: String!
+  input AtlasExploratory_ReplaceContextDataInput {
+    prevId: PHID!
+    id: PHID!
+    title: String
+    docNo: String
   }
 `;

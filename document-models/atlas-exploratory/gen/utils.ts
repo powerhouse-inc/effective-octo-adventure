@@ -15,20 +15,17 @@ import {
 import { reducer } from "./reducer.js";
 
 export const initialGlobalState: AtlasExploratoryState = {
-  name: "",
   docNo: "",
+  name: "",
   parent: "",
   atlasType: "SCENARIO",
   content: "",
   masterStatus: "PLACEHOLDER",
   globalTags: [],
-  references: [],
   originalContextData: [],
-  provenance: "",
   notionId: "",
   findings: {
     isAligned: false,
-    comment: "",
   },
   additionalGuidance: "",
 };

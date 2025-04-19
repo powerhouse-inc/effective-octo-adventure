@@ -58,13 +58,7 @@ export type Scalars = {
 export type AddContextDataInput = {
   docNo?: InputMaybe<Scalars["String"]["input"]>;
   id: Scalars["PHID"]["input"];
-  name?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type AddReferenceInput = {
-  docNo?: InputMaybe<Scalars["String"]["input"]>;
-  id: Scalars["PHID"]["input"];
-  name?: InputMaybe<Scalars["String"]["input"]>;
+  title?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type AddTagsInput = {
@@ -79,7 +73,7 @@ export type AtlasGroundingState = {
   atlasType: GAtlasType | `${GAtlasType}`;
   /** Entire content body of the Grounding document within Atlas.   */
   content: Maybe<Scalars["String"]["output"]>;
-  /** Unique document number assigned to the Grounding document within Atlas.   */
+  /** Unique document number assigned to the Grounding document within Atlas. */
   docNo: Maybe<Scalars["String"]["output"]>;
   /** Document tags managed by the Atlas Axis facilitator group for classification.   */
   globalTags: Array<GGlobalTag | `${GGlobalTag}`>;
@@ -99,10 +93,6 @@ export type AtlasGroundingState = {
    * This is a reference to another Atlas document.
    */
   parent: GDocumentLink;
-  /** Link to the original P0hub Notion environment where this document was first created or referenced. */
-  provenance: Array<Scalars["URL"]["output"]>;
-  /** References to other Atlas entities that are linked to this Grounding document.   */
-  references: Array<GDocumentLink>;
 };
 
 /** Domain (i.e., Atlas) specific document types with the same document model global schema.   */
@@ -112,7 +102,7 @@ export type GAtlasType = "ACTIVE_DATA" | "ORIGINAL_CONTEXT_DATA" | "TENET";
 export type GDocumentLink = {
   docNo: Maybe<Scalars["String"]["output"]>;
   id: Scalars["PHID"]["output"];
-  name: Maybe<Scalars["OLabel"]["output"]>;
+  title: Maybe<Scalars["OLabel"]["output"]>;
 };
 
 /** These global tags are used for classification in Grounding documents.   */
@@ -144,12 +134,15 @@ export type RemoveContextDataInput = {
   id: Scalars["PHID"]["input"];
 };
 
-export type RemoveReferenceInput = {
-  id: Scalars["PHID"]["input"];
-};
-
 export type RemoveTagsInput = {
   tags: Array<GGlobalTag | `${GGlobalTag}`>;
+};
+
+export type ReplaceContextDataInput = {
+  docNo?: InputMaybe<Scalars["String"]["input"]>;
+  id: Scalars["PHID"]["input"];
+  prevId: Scalars["PHID"]["input"];
+  title?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type SetAtlasTypeInput = {
@@ -160,17 +153,17 @@ export type SetContentInput = {
   content: Scalars["String"]["input"];
 };
 
-export type SetDocNumberInput = {
-  docNo: Scalars["String"]["input"];
-};
-
-export type SetGroundingNameInput = {
-  name: Scalars["String"]["input"];
+export type SetDocumentNumberInput = {
+  docNo?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type SetMasterStatusInput = {
   /** Add your inputs here */
   masterStatus: GStatus | `${GStatus}`;
+};
+
+export type SetNameInput = {
+  name: Scalars["String"]["input"];
 };
 
 export type SetNotionIdInput = {
@@ -180,9 +173,5 @@ export type SetNotionIdInput = {
 export type SetParentInput = {
   docNo?: InputMaybe<Scalars["String"]["input"]>;
   id: Scalars["PHID"]["input"];
-  name?: InputMaybe<Scalars["OLabel"]["input"]>;
-};
-
-export type SetProvenanceInput = {
-  provenance: Array<Scalars["URL"]["input"]>;
+  title?: InputMaybe<Scalars["OLabel"]["input"]>;
 };

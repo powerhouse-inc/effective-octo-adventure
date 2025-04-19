@@ -1,39 +1,46 @@
 import { type AtlasMultiParentGeneralOperations } from "../../gen/general/operations.js";
 
 export const reducer: AtlasMultiParentGeneralOperations = {
-  setMultiparentNameOperation(state, action, dispatch) {
+  setNameOperation(state, action) {
     state.name = action.input.name;
   },
 
-  setDocNumberOperation(state, action, dispatch) {
-    state.docNo = action.input.docNo;
-  },
-
-  setContentOperation(state, action, dispatch) {
+  setContentOperation(state, action) {
     state.content = action.input.content;
   },
 
-  setMasterStatusOperation(state, action, dispatch) {
+  setMasterStatusOperation(state, action) {
     state.masterStatus = action.input.masterStatus;
   },
 
-  setAtlasTypeOperation(state, action, dispatch) {
+  setAtlasTypeOperation(state, action) {
     state.atlasType = action.input.atlasType;
   },
 
-  addParentOperation(state, action, dispatch) {
-    state.parents = state.parents.filter(
-      (parent) => parent.id !== action.input.id,
-    );
-
+  addParentOperation(state, action) {
     state.parents.push({
       id: action.input.id,
-      name: action.input.name || null,
+      title: action.input.title || null,
       docNo: action.input.docNo || null,
     });
   },
 
-  removeParentOperation(state, action, dispatch) {
-    state.parents = state.parents.filter((r) => r.id !== action.input.id);
+  removeParentOperation(state, action) {
+    state.parents = state.parents.filter(
+      (parent) => parent.id !== action.input.id,
+    );
+  },
+
+  replaceParentOperation(state, action) {
+    state.parents = state.parents.map((parent) => {
+      if (parent.id === action.input.prevID) {
+        return {
+          id: action.input.id,
+          title: action.input.title || null,
+          docNo: action.input.docNo || null,
+        };
+      }
+      return parent;
+    });
   },
 };

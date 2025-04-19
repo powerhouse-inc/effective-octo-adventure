@@ -1,49 +1,33 @@
 import { type AtlasExploratoryGeneralOperations } from "../../gen/general/operations.js";
 
 export const reducer: AtlasExploratoryGeneralOperations = {
-  setExploratoryNameOperation(state, action, dispatch) {
-    state.name = action.input.name;
-  },
-  setDocNumberOperation(state, action, dispatch) {
-    state.docNo = action.input.docNo;
-  },
-  setContentOperation(state, action, dispatch) {
-    state.content = action.input.content;
-  },
-  setMasterStatusOperation(state, action, dispatch) {
-    state.masterStatus = action.input.masterStatus;
-  },
-  setParentOperation(state, action, dispatch) {
-    // TODO: change input to singular
-    //state.parent = action.input.parent?
-    state.parent = Array.isArray(action.input.parent)
-      ? action.input.parent[0] || ""
-      : action.input.parent || "";
-  },
-  removeParentOperation(state, action, dispatch) {
-    // TODO: Implement "removeParentOperation" reducer
-    throw new Error('Reducer "removeParentOperation" not yet implemented');
-  },
-  setAtlasTypeOperation(state, action, dispatch) {
-    state.atlasType = action.input.atlasType;
-  },
-  setFindingsOperation(state, action, dispatch) {
-    state.findings = {
-      comment: action.input.comment || "",
-      isAligned: action.input.isAligned,
-    };
+  setDocumentNumberOperation(state, action) {
+    state.docNo = action.input.docNo ?? null;
   },
 
-  setReferenceOperation(state, action, dispatch) {
-    const newReference = action.input.newReference;
-    if (newReference) {
-      state.references = [...state.references, newReference];
-    }
+  setNameOperation(state, action) {
+    state.name = action.input.name;
   },
-  removeReferenceOperation(state, action, dispatch) {
-    const reference = action.input.reference;
-    if (reference) {
-      state.references = state.references.filter((ref) => ref !== reference);
-    }
+
+  setContentOperation(state, action) {
+    state.content = action.input.content;
+  },
+
+  setMasterStatusOperation(state, action) {
+    state.masterStatus = action.input.masterStatus;
+  },
+
+  setParentOperation(state, action) {
+    state.parent = action.input.parent || "";
+  },
+
+  setAtlasTypeOperation(state, action) {
+    state.atlasType = action.input.atlasType;
+  },
+
+  setFindingsOperation(state, action) {
+    state.findings = {
+      isAligned: action.input.isAligned,
+    };
   },
 };

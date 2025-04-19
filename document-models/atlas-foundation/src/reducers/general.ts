@@ -1,48 +1,31 @@
 import { type AtlasFoundationGeneralOperations } from "../../gen/general/operations.js";
 
 export const reducer: AtlasFoundationGeneralOperations = {
-  setFoundationNameOperation(state, action, dispatch) {
+  setDocumentNumberOperation(state, action) {
+    state.docNo = action.input.docNo ?? null;
+  },
+
+  setNameOperation(state, action) {
     state.name = action.input.name;
   },
 
-  setDocNumberOperation(state, action, dispatch) {
-    state.docNo = action.input.docNo;
-  },
-
-  setContentOperation(state, action, dispatch) {
+  setContentOperation(state, action) {
     state.content = action.input.content;
   },
 
-  setMasterStatusOperation(state, action, dispatch) {
+  setMasterStatusOperation(state, action) {
     state.masterStatus = action.input.masterStatus;
   },
 
-  setAtlasTypeOperation(state, action, dispatch) {
+  setAtlasTypeOperation(state, action) {
     state.atlasType = action.input.atlasType;
   },
 
-  setParentOperation(state, action, dispatch) {
+  setParentOperation(state, action) {
     state.parent = {
       id: action.input.id,
-      name: action.input.name || null,
-      docNo: action.input.docNo || null,
+      title: action.input.title || null,
+      docNo: null,
     };
-  },
-
-  addReferenceOperation(state, action, dispatch) {
-    const newReference = {
-      id: action.input.id,
-      name: action.input.name || null,
-      docNo: action.input.docNo || null,
-    };
-    state.references = [...state.references, newReference];
-  },
-
-  removeReferenceOperation(state, action, dispatch) {
-    state.references = [
-      ...state.references.filter(
-        (reference) => reference.id !== action.input.id,
-      ),
-    ];
   },
 };

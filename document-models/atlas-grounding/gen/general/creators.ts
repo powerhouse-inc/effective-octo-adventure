@@ -1,37 +1,28 @@
 import { createAction } from "document-model";
 import {
   z,
-  type SetGroundingNameInput,
-  type SetDocNumberInput,
+  type SetNameInput,
   type SetContentInput,
   type SetMasterStatusInput,
   type SetAtlasTypeInput,
   type SetParentInput,
+  type SetDocumentNumberInput,
 } from "../types.js";
 import {
-  type SetGroundingNameAction,
-  type SetDocNumberAction,
+  type SetNameAction,
   type SetContentAction,
   type SetMasterStatusAction,
   type SetAtlasTypeAction,
   type SetParentAction,
+  type SetDocumentNumberAction,
 } from "./actions.js";
 
-export const setGroundingName = (input: SetGroundingNameInput) =>
-  createAction<SetGroundingNameAction>(
-    "SET_GROUNDING_NAME",
+export const setName = (input: SetNameInput) =>
+  createAction<SetNameAction>(
+    "SET_NAME",
     { ...input },
     undefined,
-    z.SetGroundingNameInputSchema,
-    "global",
-  );
-
-export const setDocNumber = (input: SetDocNumberInput) =>
-  createAction<SetDocNumberAction>(
-    "SET_DOC_NUMBER",
-    { ...input },
-    undefined,
-    z.SetDocNumberInputSchema,
+    z.SetNameInputSchema,
     "global",
   );
 
@@ -68,5 +59,14 @@ export const setParent = (input: SetParentInput) =>
     { ...input },
     undefined,
     z.SetParentInputSchema,
+    "global",
+  );
+
+export const setDocumentNumber = (input: SetDocumentNumberInput) =>
+  createAction<SetDocumentNumberAction>(
+    "SET_DOCUMENT_NUMBER",
+    { ...input },
+    undefined,
+    z.SetDocumentNumberInputSchema,
     "global",
   );

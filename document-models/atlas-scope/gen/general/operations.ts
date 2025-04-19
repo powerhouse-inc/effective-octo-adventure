@@ -1,21 +1,16 @@
 import { type SignalDispatch } from "document-model";
 import {
-  type SetScopeNameAction,
-  type SetDocNumberAction,
+  type SetNameAction,
   type SetContentAction,
   type SetMasterStatusAction,
+  type SetDocumentNumberAction,
 } from "./actions.js";
 import { type AtlasScopeState } from "../types.js";
 
 export interface AtlasScopeGeneralOperations {
-  setScopeNameOperation: (
+  setNameOperation: (
     state: AtlasScopeState,
-    action: SetScopeNameAction,
-    dispatch?: SignalDispatch,
-  ) => void;
-  setDocNumberOperation: (
-    state: AtlasScopeState,
-    action: SetDocNumberAction,
+    action: SetNameAction,
     dispatch?: SignalDispatch,
   ) => void;
   setContentOperation: (
@@ -26,6 +21,11 @@ export interface AtlasScopeGeneralOperations {
   setMasterStatusOperation: (
     state: AtlasScopeState,
     action: SetMasterStatusAction,
+    dispatch?: SignalDispatch,
+  ) => void;
+  setDocumentNumberOperation: (
+    state: AtlasScopeState,
+    action: SetDocumentNumberAction,
     dispatch?: SignalDispatch,
   ) => void;
 }

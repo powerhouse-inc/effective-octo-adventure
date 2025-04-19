@@ -17,15 +17,13 @@ import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
-import { ContentForm } from "../../shared/components/forms/ContentForm.js";
-import { FindingsComments } from "./FindingsComments.js";
 import { AdditionalGuidance } from "./AdditionalGuidance.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
-import { ContextDataForm } from "../../shared/components/forms/ContextDataForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
 import { Toggle } from "@powerhousedao/design-system/ui";
 import { useEffect, useState } from "react";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
+import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
 
 interface ExploratoryFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
@@ -94,7 +92,7 @@ export function ExploratoryForm({
                 value={documentState.docNo}
                 baselineValue={originalNodeState.docNo}
                 onSave={(value) => {
-                  dispatch(actions.setDocNumber({ docNo: value }));
+                  dispatch(actions.setDocumentNumber({ docNo: value }));
                 }}
               />
             </div>
@@ -103,7 +101,7 @@ export function ExploratoryForm({
                 value={documentState.name}
                 baselineValue={originalNodeState.name}
                 onSave={(value) => {
-                  dispatch(actions.setExploratoryName({ name: value }));
+                  dispatch(actions.setName({ name: value }));
                 }}
                 placeholder="Name"
               />
@@ -168,10 +166,10 @@ export function ExploratoryForm({
               baselineValue={""}
               onSave={(value) => {
                 if (value === null) {
-                  dispatch(actions.setParent({ parent: [] }));
+                  dispatch(actions.setParent({ parent: "" }));
                 } else {
                   const newParentId = value.split(":")[1];
-                  dispatch(actions.setParent({ parent: [newParentId] }));
+                  dispatch(actions.setParent({ parent: newParentId }));
                 }
               }}
             />
@@ -194,7 +192,6 @@ export function ExploratoryForm({
                 dispatch(
                   actions.setFindings({
                     isAligned: !documentState.findings.isAligned,
-                    comment: documentState.findings.comment ?? "",
                   }),
                 );
               }}
@@ -209,25 +206,12 @@ export function ExploratoryForm({
             </span>
           </div>
 
-          <FindingsComments
-            value={documentState.findings.comment ?? ""}
-            baselineValue={""} // TODO: add the right baseline value
-            onSave={(value) => {
-              dispatch(
-                actions.setFindings({
-                  isAligned: documentState.findings.isAligned,
-                  comment: value,
-                }),
-              );
-            }}
-          />
-
           <AdditionalGuidance
             value={documentState.additionalGuidance}
             baselineValue={""} // TODO: add the right baseline value
             onSave={(value) => {
               dispatch(
-                actions.addAdditionalGuidance({
+                actions.setAdditionalGuidance({
                   additionalGuidance: value,
                 }),
               );
@@ -240,18 +224,24 @@ export function ExploratoryForm({
               isSplitMode ? "w-full" : "w-1/2",
             )}
           >
-            <ContextDataForm
+            <MultiPhIdForm
+              label="Original Context Data"
+              data={documentState.originalContextData}
               onAdd={(value) => {
                 dispatch(actions.addContextData({ id: value }));
               }}
-              onRemove={(value) => {
+              onRemove={({ value }) => {
                 dispatch(actions.removeContextData({ id: value }));
               }}
-              onUpdate={(value) => {
-                // TODO: implement context data updates
-                throw new Error("Updates not supported yet");
+              onUpdate={({ previousValue, value }) => {
+                dispatch(
+                  actions.replaceContextData({
+                    prevId: previousValue,
+                    id: value,
+                    title: "", // TODO: add the document title
+                  }),
+                );
               }}
-              data={documentState.originalContextData}
             />
 
             <GlobalTagsForm

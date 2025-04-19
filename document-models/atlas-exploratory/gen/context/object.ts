@@ -2,20 +2,18 @@ import { BaseDocumentClass } from "document-model";
 import {
   type AddContextDataInput,
   type RemoveContextDataInput,
-  type SetProvenanceInput,
   type SetNotionIdInput,
-  type AddAdditionalGuidanceInput,
-  type RemoveAdditionalGuidanceInput,
+  type SetAdditionalGuidanceInput,
+  type ReplaceContextDataInput,
   type AtlasExploratoryState,
   type AtlasExploratoryLocalState,
 } from "../types.js";
 import {
   addContextData,
   removeContextData,
-  setProvenance,
   setNotionId,
-  addAdditionalGuidance,
-  removeAdditionalGuidance,
+  setAdditionalGuidance,
+  replaceContextData,
 } from "./creators.js";
 import { type AtlasExploratoryAction } from "../actions.js";
 
@@ -32,19 +30,15 @@ export default class AtlasExploratory_Context extends BaseDocumentClass<
     return this.dispatch(removeContextData(input));
   }
 
-  public setProvenance(input: SetProvenanceInput) {
-    return this.dispatch(setProvenance(input));
-  }
-
   public setNotionId(input: SetNotionIdInput) {
     return this.dispatch(setNotionId(input));
   }
 
-  public addAdditionalGuidance(input: AddAdditionalGuidanceInput) {
-    return this.dispatch(addAdditionalGuidance(input));
+  public setAdditionalGuidance(input: SetAdditionalGuidanceInput) {
+    return this.dispatch(setAdditionalGuidance(input));
   }
 
-  public removeAdditionalGuidance(input: RemoveAdditionalGuidanceInput) {
-    return this.dispatch(removeAdditionalGuidance(input));
+  public replaceContextData(input: ReplaceContextDataInput) {
+    return this.dispatch(replaceContextData(input));
   }
 }

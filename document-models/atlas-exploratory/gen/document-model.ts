@@ -16,9 +16,9 @@ export const documentModel: DocumentModelState = {
       state: {
         global: {
           schema:
-            'type AtlasExploratoryState {\n  \n  """\n  Full name of the Grounding document entity.  \n  """\n  \n  name: String\n  """\n  Unique document number assigned to the Grounding document within Atlas.  \n  """\n  docNo: String\n  """\n  Parent entity that this Grounding document belongs to.  \n  This is a reference to another Atlas document.\n  """\n  parent: PHID!\n  """\n  The type of the Grounding document within Atlas.  \n  Example: Tenet, Original Context Data, Active Data.\n  """\n  atlasType: EAtlasType!\n  """Entire content body of the Grounding document within Atlas.  """\n  content: String\n  """\n  Master status of the Grounding document as managed by the Atlas Axis facilitator group.  \n  """\n  masterStatus: EStatus!\n  """\n  Document tags managed by the Atlas Axis facilitator group for classification.  \n  """\n  globalTags: [EGlobalTag!]!\n  """\n  References to other Atlas entities that are linked to this Grounding document.  \n  """\n  references: [PHID!]!\n  """\n  List of Atlas documents that were relevant for the creation of this Grounding document.  \n  """\n  originalContextData: [DocumentInfo!]!\n  """\n  Link to the original P0hub Notion environment where this document was first created or referenced.\n  """\n  provenance: URL\n  """\n  Original Notion document ID of the Grounding document.  \n  Used for cross-system referencing and linking back to the original Notion source.\n  """\n  notionId: String\n\n"""\nAlignmnet boolean findings. \n"""\n\nfindings: Finding! \n\n\n"""\nAdditional commentary and context for guidance. \n"""\n\nadditionalGuidance: String!\n  \n}\n\n"""\nReference to a document within Atlas with optional name and document number for display reasons. \n"""\ntype Finding {\n  isAligned: Boolean!\n  comment: String\n}\n\ntype DocumentInfo {\n  id: PHID!\n  name: OLabel\n  docNo: String\n}\n\n\n"""\nDomain (i.e., Atlas) specific document types with the same document model global schema.  \n"""\nenum EAtlasType {\n  SCENARIO\n  SCENARIO_VARIATION\n}\n\n"""Defines the lifecycle stage of the Grounding document within Atlas.  """\nenum EStatus {\n  PLACEHOLDER\n  PROVISIONAL\n  APPROVED\n  DEFERRED\n  ARCHIVED\n}\n\n"""\nThese global tags are used for classification in Grounding documents.  \n"""\nenum EGlobalTag {\n  SCOPE_ADVISOR\n  AVC\n  CAIS\n  ML_LOW_PRIORITY\n  EXTERNAL_REFERENCE\n  DAO_TOOLKIT\n  ML_DEFER\n  PURPOSE_SYSTEM\n  NEWCHAIN\n  ML_SUPPORT_DOCS_NEEDED\n  TWO_STAGE_BRIDGE\n  ECOSYSTEM_INTELLIGENCE\n  RECURSIVE_IMPROVEMENT\n  LEGACY_TERM_USE_APPROVED\n}',
+            'type AtlasExploratoryState {\n  """\n  Unique document number assigned to the Exploratory document within Atlas.\n  """\n  docNo: String\n  """\n  Full name of the Exploratory document entity.  \n  """\n  name: String\n  """\n  Parent entity that this Exploratory document belongs to.  \n  This is a reference to another Atlas document.\n  """\n  parent: PHID!\n  """\n  The type of the Exploratory document within Atlas.  \n  Example: Tenet, Original Context Data, Active Data.\n  """\n  atlasType: EAtlasType!\n  """\n  Entire content body of the Exploratory document within Atlas.\n  """\n  content: String\n  """\n  Master status of the Exploratory document as managed by the Atlas Axis facilitator group.  \n  """\n  masterStatus: EStatus!\n  """\n  Document tags managed by the Atlas Axis facilitator group for classification.  \n  """\n  globalTags: [EGlobalTag!]!\n  """\n  List of Atlas documents that were relevant for the creation of this Exploratory document.  \n  """\n  originalContextData: [DocumentInfo!]!\n  """\n  Original Notion document ID of the Exploratory document.  \n  Used for cross-system referencing and linking back to the original Notion source.\n  """\n  notionId: String\n  """\n  Alignmnet boolean findings. \n  """\n  findings: Finding! \n  """\n  Additional commentary and context for guidance. \n  """\n  additionalGuidance: String!\n}\n\n"""\nReference to a document within Atlas with optional name and document number for display reasons. \n"""\ntype Finding {\n  isAligned: Boolean!\n}\n\ntype DocumentInfo {\n  id: PHID!\n  title: OLabel\n  docNo: String\n}\n\n\n"""\nDomain (i.e., Atlas) specific document types with the same document model global schema.  \n"""\nenum EAtlasType {\n  SCENARIO\n  SCENARIO_VARIATION\n}\n\n"""\nDefines the lifecycle stage of the Exploratory document within Atlas.  \n"""\nenum EStatus {\n  PLACEHOLDER\n  PROVISIONAL\n  APPROVED\n  DEFERRED\n  ARCHIVED\n}\n\n"""\nThese global tags are used for classification in Exploratory documents.  \n"""\nenum EGlobalTag {\n  SCOPE_ADVISOR\n  AVC\n  CAIS\n  ML_LOW_PRIORITY\n  EXTERNAL_REFERENCE\n  DAO_TOOLKIT\n  ML_DEFER\n  PURPOSE_SYSTEM\n  NEWCHAIN\n  ML_SUPPORT_DOCS_NEEDED\n  TWO_STAGE_BRIDGE\n  ECOSYSTEM_INTELLIGENCE\n  RECURSIVE_IMPROVEMENT\n  LEGACY_TERM_USE_APPROVED\n}',
           initialValue:
-            '"{\\n  \\"name\\": \\"\\",\\n  \\"docNo\\": \\"\\",\\n  \\"parent\\": \\"\\",\\n  \\"atlasType\\": \\"SCENARIO\\",\\n  \\"content\\": \\"\\",\\n  \\"masterStatus\\": \\"PLACEHOLDER\\",\\n  \\"globalTags\\": [],\\n  \\"references\\": [],\\n  \\"originalContextData\\": [],\\n  \\"provenance\\": \\"\\",\\n  \\"notionId\\": \\"\\",\\n  \\"findings\\": {\\n    \\"isAligned\\": false,\\n    \\"comment\\": \\"\\"\\n  },\\n  \\"additionalGuidance\\": \\"\\"\\n}"',
+            '"{\\n  \\"docNo\\": \\"\\",\\n  \\"name\\": \\"\\",\\n  \\"parent\\": \\"\\",\\n  \\"atlasType\\": \\"SCENARIO\\",\\n  \\"content\\": \\"\\",\\n  \\"masterStatus\\": \\"PLACEHOLDER\\",\\n  \\"globalTags\\": [],\\n  \\"originalContextData\\": [],\\n  \\"notionId\\": \\"\\",\\n  \\"findings\\": {\\n    \\"isAligned\\": false\\n  },\\n  \\"additionalGuidance\\": \\"\\"\\n}"',
           examples: [],
         },
         local: {
@@ -35,22 +35,10 @@ export const documentModel: DocumentModelState = {
           operations: [
             {
               id: "pbTnKZf0S+fzRub/1pWrD5zbNsk=",
-              name: "SET_EXPLORATORY_NAME",
+              name: "SET_NAME",
               description: "",
               schema:
-                'input SetExploratoryNameInput {\n  "Add your inputs here"\n  name: String!\n}',
-              template: "",
-              reducer: "",
-              errors: [],
-              examples: [],
-              scope: "global",
-            },
-            {
-              id: "VyLF4PhtTbRi/adkmeHIo700dzE=",
-              name: "SET_DOC_NUMBER",
-              description: "",
-              schema:
-                'input SetDocNumberInput {\n  "Add your inputs here"\n  docNo: String! \n}',
+                'input SetNameInput {\n  "Add your inputs here"\n  name: String!\n}',
               template: "",
               reducer: "",
               errors: [],
@@ -86,19 +74,7 @@ export const documentModel: DocumentModelState = {
               name: "SET_PARENT",
               description: "",
               schema:
-                'input SetParentInput {\n  "Add your inputs here"\n  parent: [PHID!]\n}',
-              template: "",
-              reducer: "",
-              errors: [],
-              examples: [],
-              scope: "global",
-            },
-            {
-              id: "bseBDZDxycEMsg1Ox2sD8TC7GWU=",
-              name: "REMOVE_PARENT",
-              description: "",
-              schema:
-                'input RemoveParentInput {\n  "Add your inputs here"\n  parent: [PHID!]\n}',
+                'input SetParentInput {\n  "Add your inputs here"\n  parent: PHID!\n}',
               template: "",
               reducer: "",
               errors: [],
@@ -122,7 +98,7 @@ export const documentModel: DocumentModelState = {
               name: "SET_FINDINGS",
               description: "",
               schema:
-                'input SetFindingsInput {\n  "Add your inputs here"\n  isAligned: Boolean!\n  comment: String!\n}',
+                'input SetFindingsInput {\n  "Add your inputs here"\n  isAligned: Boolean!\n}',
               template: "",
               reducer: "",
               errors: [],
@@ -130,23 +106,10 @@ export const documentModel: DocumentModelState = {
               scope: "global",
             },
             {
-              id: "KK6fGHQHMJ+lV+kWARy5KRoYjfE=",
-              name: "SET_REFERENCE",
+              id: "/SkCCJTqoLjkFw74f6VSKD7tLsw=",
+              name: "SET_DOCUMENT_NUMBER",
               description: "",
-              schema:
-                'input SetReferenceInput {\n  "Add your inputs here"\n  newReference: PHID\n}',
-              template: "",
-              reducer: "",
-              errors: [],
-              examples: [],
-              scope: "global",
-            },
-            {
-              id: "TStncORsC/ZFTJTI2slSpHi4avk=",
-              name: "REMOVE_REFERENCE",
-              description: "",
-              schema:
-                'input RemoveReferenceInput {\n  "Add your inputs here"\n  reference: PHID \n}',
+              schema: "input SetDocumentNumberInput {\n  docNo: String\n}",
               template: "",
               reducer: "",
               errors: [],
@@ -196,7 +159,7 @@ export const documentModel: DocumentModelState = {
               name: "ADD_CONTEXT_DATA",
               description: "",
               schema:
-                'input AddContextDataInput {\n  "Add your inputs here"\n  id: PHID!\n  name: String\n  docNo: String\n  \n}',
+                'input AddContextDataInput {\n  "Add your inputs here"\n  id: PHID!\n  title: String\n  docNo: String\n  \n}',
               template: "",
               reducer: "",
               errors: [],
@@ -209,18 +172,6 @@ export const documentModel: DocumentModelState = {
               description: "",
               schema:
                 'input RemoveContextDataInput {\n  "Add your inputs here"\n  id: PHID!\n}',
-              template: "",
-              reducer: "",
-              errors: [],
-              examples: [],
-              scope: "global",
-            },
-            {
-              id: "T9esDJaav0Urn7+xzXMG06+IvyI=",
-              name: "SET_PROVENANCE",
-              description: "",
-              schema:
-                'input SetProvenanceInput {\n  "Add your inputs here"\n  provenance: URL\n  \n}',
               template: "",
               reducer: "",
               errors: [],
@@ -241,10 +192,10 @@ export const documentModel: DocumentModelState = {
             },
             {
               id: "ceBCIgyjUX1fJuBlQ8G+CnRs5uY=",
-              name: "ADD_ADDITIONAL_GUIDANCE",
+              name: "SET_ADDITIONAL_GUIDANCE",
               description: "",
               schema:
-                'input AddAdditionalGuidanceInput {\n  "Add your inputs here"\n  additionalGuidance: String!\n}',
+                'input SetAdditionalGuidanceInput {\n  "Add your inputs here"\n  additionalGuidance: String!\n}',
               template: "",
               reducer: "",
               errors: [],
@@ -252,11 +203,11 @@ export const documentModel: DocumentModelState = {
               scope: "global",
             },
             {
-              id: "UUdJT6pyPYTgaTSbZvk897jwMw4=",
-              name: "REMOVE_ADDITIONAL_GUIDANCE",
+              id: "4/Um8lZqMAsjKktwN0jCu7U5U1M=",
+              name: "REPLACE_CONTEXT_DATA",
               description: "",
               schema:
-                'input RemoveAdditionalGuidanceInput {\n  "Add your inputs here"\n  additionalGuidance: String!\n}',
+                "input ReplaceContextDataInput {\n prevId: PHID!\n  id: PHID!\n  title: String\n  docNo: String\n}",
               template: "",
               reducer: "",
               errors: [],

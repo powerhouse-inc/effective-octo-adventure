@@ -15,20 +15,18 @@ import {
 import { reducer } from "./reducer.js";
 
 export const initialGlobalState: AtlasFoundationState = {
-  name: "",
   docNo: "",
+  name: "",
   parent: {
     id: "",
-    name: "",
+    title: "",
     docNo: "",
   },
   atlasType: "ARTICLE",
   content: "",
   masterStatus: "PLACEHOLDER",
   globalTags: [],
-  references: [],
   originalContextData: [],
-  provenance: [],
   notionId: "",
 };
 export const initialLocalState: AtlasFoundationLocalState = {};

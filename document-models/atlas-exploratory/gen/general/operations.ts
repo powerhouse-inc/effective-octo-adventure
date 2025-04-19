@@ -1,27 +1,19 @@
 import { type SignalDispatch } from "document-model";
 import {
-  type SetExploratoryNameAction,
-  type SetDocNumberAction,
+  type SetNameAction,
   type SetContentAction,
   type SetMasterStatusAction,
   type SetParentAction,
-  type RemoveParentAction,
   type SetAtlasTypeAction,
   type SetFindingsAction,
-  type SetReferenceAction,
-  type RemoveReferenceAction,
+  type SetDocumentNumberAction,
 } from "./actions.js";
 import { type AtlasExploratoryState } from "../types.js";
 
 export interface AtlasExploratoryGeneralOperations {
-  setExploratoryNameOperation: (
+  setNameOperation: (
     state: AtlasExploratoryState,
-    action: SetExploratoryNameAction,
-    dispatch?: SignalDispatch,
-  ) => void;
-  setDocNumberOperation: (
-    state: AtlasExploratoryState,
-    action: SetDocNumberAction,
+    action: SetNameAction,
     dispatch?: SignalDispatch,
   ) => void;
   setContentOperation: (
@@ -39,11 +31,6 @@ export interface AtlasExploratoryGeneralOperations {
     action: SetParentAction,
     dispatch?: SignalDispatch,
   ) => void;
-  removeParentOperation: (
-    state: AtlasExploratoryState,
-    action: RemoveParentAction,
-    dispatch?: SignalDispatch,
-  ) => void;
   setAtlasTypeOperation: (
     state: AtlasExploratoryState,
     action: SetAtlasTypeAction,
@@ -54,14 +41,9 @@ export interface AtlasExploratoryGeneralOperations {
     action: SetFindingsAction,
     dispatch?: SignalDispatch,
   ) => void;
-  setReferenceOperation: (
+  setDocumentNumberOperation: (
     state: AtlasExploratoryState,
-    action: SetReferenceAction,
-    dispatch?: SignalDispatch,
-  ) => void;
-  removeReferenceOperation: (
-    state: AtlasExploratoryState,
-    action: RemoveReferenceAction,
+    action: SetDocumentNumberAction,
     dispatch?: SignalDispatch,
   ) => void;
 }

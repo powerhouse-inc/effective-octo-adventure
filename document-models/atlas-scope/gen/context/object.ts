@@ -2,16 +2,16 @@ import { BaseDocumentClass } from "document-model";
 import {
   type AddContextDataInput,
   type RemoveContextDataInput,
-  type SetProvenanceInput,
   type SetNotionIdInput,
+  type ReplaceContextDataInput,
   type AtlasScopeState,
   type AtlasScopeLocalState,
 } from "../types.js";
 import {
   addContextData,
   removeContextData,
-  setProvenance,
   setNotionId,
+  replaceContextData,
 } from "./creators.js";
 import { type AtlasScopeAction } from "../actions.js";
 
@@ -28,11 +28,11 @@ export default class AtlasScope_Context extends BaseDocumentClass<
     return this.dispatch(removeContextData(input));
   }
 
-  public setProvenance(input: SetProvenanceInput) {
-    return this.dispatch(setProvenance(input));
-  }
-
   public setNotionId(input: SetNotionIdInput) {
     return this.dispatch(setNotionId(input));
+  }
+
+  public replaceContextData(input: ReplaceContextDataInput) {
+    return this.dispatch(replaceContextData(input));
   }
 }

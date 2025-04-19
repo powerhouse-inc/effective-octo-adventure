@@ -16,34 +16,29 @@ scalar Amount_Crypto
 scalar Amount
 type AtlasMultiParentState {
   """
-  Full name of the Grounding document entity.
+  Full name of the MultiParent document entity.
   """
   name: String
   
   """
-  Unique document number assigned to the Grounding document within Atlas.  
-  """
-  docNo: String
-  
-  """
-  Parent entity that this Grounding document belongs to.  
+  Parent entity that this MultiParent document belongs to.  
   This is a reference to another Atlas document.
   """
   parents: [MDocumentLink!]!
   
   """
-  The type of the Grounding document within Atlas.  
+  The type of the MultiParent document within Atlas.  
   Example: Tenet, Original Context Data, Active Data.
   """
   atlasType: MAtlasType!
   
   """
-  Entire content body of the Grounding document within Atlas.
+  Entire content body of the MultiParent document within Atlas.
   """
   content: String
   
   """
-  Master status of the Grounding document as managed by the Atlas Axis facilitator group.  
+  Master status of the MultiParent document as managed by the Atlas Axis facilitator group.  
   """
   masterStatus: MStatus!
   
@@ -53,22 +48,23 @@ type AtlasMultiParentState {
   globalTags: [MGlobalTag!]!
   
   """
-  References to other Atlas entities that are linked to this Grounding document.  
-  """
-  references: [MDocumentLink!]!
+  List of Atlas documents that were relevant for the creation of this MultiParent document.  
+
+  Should the subfields of the MDocumentLink object differ from the subfields of the MDocumentLink for Parent? Potentially we don't need docNo field. 
+
+Change a subfield "name" to "title" in MDocumentLink object. 
+
+
+  type MDocumentCDLink {
+  id: PHID!
+  title: OLabel
+}
   
-  """
-  List of Atlas documents that were relevant for the creation of this Grounding document.  
   """
   originalContextData: [MDocumentLink!]!
   
   """
-  Link to the original P0hub Notion environment where this document was first created or referenced.
-  """
-  provenance: [URL!]!
-  
-  """
-  Original Notion document ID of the Grounding document.  
+  Original Notion document ID of the MultiParent document.  
   Used for cross-system referencing and linking back to the original Notion source.
   """
   notionId: String
@@ -79,7 +75,7 @@ Reference to a document within Atlas with optional name and document number for 
 """
 type MDocumentLink {
   id: PHID!
-  name: OLabel
+  title: OLabel
   docNo: String
 }
 
@@ -92,7 +88,7 @@ enum MAtlasType {
 }
 
 """
-Defines the lifecycle stage of the Grounding document within Atlas.
+Defines the lifecycle stage of the MultiParent document within Atlas.
 """
 enum MStatus {
   PLACEHOLDER
@@ -103,7 +99,7 @@ enum MStatus {
 }
 
 """
-These global tags are used for classification in Grounding documents. 
+These global tags are used for classification in MultiParent documents. 
 """
 enum MGlobalTag {
   SCOPE_ADVISOR
@@ -127,13 +123,12 @@ enum MGlobalTag {
 
 # general
 
-input SetMultiparentNameInput {
-  "Add your inputs here"
-  name: String!
-}
+"""
+Naming convention for operations, where we don't include the specific document type name in the name. 
+"""
 
-input SetDocNumberInput {
-  docNo: String! 
+input SetNameInput {
+  name: String!
 }
 
 input SetContentInput {
@@ -146,7 +141,7 @@ input SetMasterStatusInput {
 
 input AddParentInput {
   id: PHID!
-  name: OLabel
+  title: OLabel
   docNo: String
 }
 
@@ -156,6 +151,13 @@ input SetAtlasTypeInput {
 
 input RemoveParentInput {
   id: PHID!
+}
+
+input ReplaceParentInput {
+  prevID: PHID!
+  id: PHID!
+  title: OLabel
+  docNo: String
 }
 
 # tags
@@ -170,9 +172,13 @@ input RemoveTagsInput {
 
 # context
 
+"""
+docNo field not needed for this?  
+"""
+
 input AddContextDataInput {
   id: PHID!
-  name: OLabel
+  title: OLabel
   docNo: String
 }
 
@@ -180,21 +186,17 @@ input RemoveContextDataInput {
   id: PHID!
 }
 
-input SetProvenanceInput {
-  provenance: [URL!]!
-  
-}
+"""
+docNo field not needed for this?  
+"""
 
-input SetNotionIdInput {
-  notionID: String!
-}
-
-input AddReferenceInput {
+input ReplaceContextDataInput {
+  prevId: PHID!
   id: PHID!
-  name: OLabel
+  title: OLabel
   docNo: String
 }
 
-input RemoveReferenceInput {
-  id: PHID!
+input SetNotionIdInput {
+  notionId: String!
 }

@@ -1,7 +1,6 @@
 import { z } from "zod";
 import type {
   AddContextDataInput,
-  AddReferenceInput,
   AddTagsInput,
   AtlasGroundingState,
   GAtlasType,
@@ -9,16 +8,15 @@ import type {
   GGlobalTag,
   GStatus,
   RemoveContextDataInput,
-  RemoveReferenceInput,
   RemoveTagsInput,
+  ReplaceContextDataInput,
   SetAtlasTypeInput,
   SetContentInput,
-  SetDocNumberInput,
-  SetGroundingNameInput,
+  SetDocumentNumberInput,
   SetMasterStatusInput,
+  SetNameInput,
   SetNotionIdInput,
   SetParentInput,
-  SetProvenanceInput,
 } from "./types.js";
 
 type Properties<T> = Required<{
@@ -71,17 +69,7 @@ export function AddContextDataInputSchema(): z.ZodObject<
   return z.object({
     docNo: z.string().nullish(),
     id: z.string(),
-    name: z.string().nullish(),
-  });
-}
-
-export function AddReferenceInputSchema(): z.ZodObject<
-  Properties<AddReferenceInput>
-> {
-  return z.object({
-    docNo: z.string().nullish(),
-    id: z.string(),
-    name: z.string().nullish(),
+    title: z.string().nullish(),
   });
 }
 
@@ -105,8 +93,6 @@ export function AtlasGroundingStateSchema(): z.ZodObject<
     notionId: z.string().nullable(),
     originalContextData: z.array(GDocumentLinkSchema()),
     parent: GDocumentLinkSchema(),
-    provenance: z.array(z.string().url()),
-    references: z.array(GDocumentLinkSchema()),
   });
 }
 
@@ -115,7 +101,7 @@ export function GDocumentLinkSchema(): z.ZodObject<Properties<GDocumentLink>> {
     __typename: z.literal("GDocumentLink").optional(),
     docNo: z.string().nullable(),
     id: z.string(),
-    name: z.string().nullable(),
+    title: z.string().nullable(),
   });
 }
 
@@ -127,19 +113,22 @@ export function RemoveContextDataInputSchema(): z.ZodObject<
   });
 }
 
-export function RemoveReferenceInputSchema(): z.ZodObject<
-  Properties<RemoveReferenceInput>
-> {
-  return z.object({
-    id: z.string(),
-  });
-}
-
 export function RemoveTagsInputSchema(): z.ZodObject<
   Properties<RemoveTagsInput>
 > {
   return z.object({
     tags: z.array(GGlobalTagSchema),
+  });
+}
+
+export function ReplaceContextDataInputSchema(): z.ZodObject<
+  Properties<ReplaceContextDataInput>
+> {
+  return z.object({
+    docNo: z.string().nullish(),
+    id: z.string(),
+    prevId: z.string(),
+    title: z.string().nullish(),
   });
 }
 
@@ -159,19 +148,11 @@ export function SetContentInputSchema(): z.ZodObject<
   });
 }
 
-export function SetDocNumberInputSchema(): z.ZodObject<
-  Properties<SetDocNumberInput>
+export function SetDocumentNumberInputSchema(): z.ZodObject<
+  Properties<SetDocumentNumberInput>
 > {
   return z.object({
-    docNo: z.string(),
-  });
-}
-
-export function SetGroundingNameInputSchema(): z.ZodObject<
-  Properties<SetGroundingNameInput>
-> {
-  return z.object({
-    name: z.string(),
+    docNo: z.string().nullish(),
   });
 }
 
@@ -180,6 +161,12 @@ export function SetMasterStatusInputSchema(): z.ZodObject<
 > {
   return z.object({
     masterStatus: GStatusSchema,
+  });
+}
+
+export function SetNameInputSchema(): z.ZodObject<Properties<SetNameInput>> {
+  return z.object({
+    name: z.string(),
   });
 }
 
@@ -197,14 +184,6 @@ export function SetParentInputSchema(): z.ZodObject<
   return z.object({
     docNo: z.string().nullish(),
     id: z.string(),
-    name: z.string().nullish(),
-  });
-}
-
-export function SetProvenanceInputSchema(): z.ZodObject<
-  Properties<SetProvenanceInput>
-> {
-  return z.object({
-    provenance: z.array(z.string().url()),
+    title: z.string().nullish(),
   });
 }

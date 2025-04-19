@@ -16,18 +16,16 @@ scalar Amount_Crypto
 scalar Amount
 type AtlasFoundationState {
   """
-    Full name of the Foundation entity.
-  """
-  name: String
-
-  """
-    Unique document number assigned to the Foundation entity within Atlas.
+  Unique document number assigned to the Foundation document within Atlas.
   """
   docNo: String
-
   """
-    Parent entity that this Foundation belongs to.  
-    This is a reference to another Atlas document.
+  Full name of the Foundation entity.
+  """
+  name: String
+  """
+  Parent entity that this Foundation belongs to.  
+  This is a reference to another Atlas document.
   """
   parent: FDocumentLink
 
@@ -53,19 +51,10 @@ type AtlasFoundationState {
   globalTags: [FGlobalTag!]!
 
   """
-    References to other Atlas entities that are linked to this Foundation.
-  """
-  references: [FDocumentLink!]!
-
-  """
     List of Atlas documents that were relevant for the creation of this Foundation document.
   """
   originalContextData: [FDocumentLink!]!
 
-  """
-    Link to the original P0hub Notion environment where this document was first created or referenced.
-  """
-  provenance: [URL!]!
 
   """
     Original Notion document ID of the Foundation document.  
@@ -79,7 +68,7 @@ type AtlasFoundationState {
 
 type FDocumentLink {
   id:PHID!
-  name:OLabel
+  title:OLabel
   docNo: String 
 }
 
@@ -130,12 +119,8 @@ enum FGlobalTag {
 
 # general
 
-input SetFoundationNameInput {
+input SetNameInput {
   name: String!
-}
-
-input SetDocNumberInput {
-  docNo: String!
 }
 
 input SetContentInput {
@@ -146,23 +131,17 @@ input SetMasterStatusInput {
   masterStatus: FStatus! 
 }
 
-input AddReferenceInput {
-  id:PHID!
-  name:OLabel
-  docNo: String
-}
-
 input SetAtlasTypeInput {
   atlasType: FAtlasType!
 }
 
-input RemoveReferenceInput {
-  id:PHID!
-}
-
 input SetParentInput {
   id:PHID!
-  name:OLabel
+  title:OLabel
+  docNo: String
+}
+
+input SetDocumentNumberInput {
   docNo: String
 }
 
@@ -188,10 +167,13 @@ input RemoveContextDataInput {
   id: PHID! 
 }
 
-input SetProvenanceInput {
-  provenance: [URL!]!
-}
-
 input SetNotionIdInput {
   notionID: String!
+}
+
+input ReplaceContextDataInput {
+  prevId: PHID!
+  id: PHID!
+  title: String
+  docNo: String
 }

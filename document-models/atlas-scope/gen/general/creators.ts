@@ -1,33 +1,24 @@
 import { createAction } from "document-model";
 import {
   z,
-  type SetScopeNameInput,
-  type SetDocNumberInput,
+  type SetNameInput,
   type SetContentInput,
   type SetMasterStatusInput,
+  type SetDocumentNumberInput,
 } from "../types.js";
 import {
-  type SetScopeNameAction,
-  type SetDocNumberAction,
+  type SetNameAction,
   type SetContentAction,
   type SetMasterStatusAction,
+  type SetDocumentNumberAction,
 } from "./actions.js";
 
-export const setScopeName = (input: SetScopeNameInput) =>
-  createAction<SetScopeNameAction>(
-    "SET_SCOPE_NAME",
+export const setName = (input: SetNameInput) =>
+  createAction<SetNameAction>(
+    "SET_NAME",
     { ...input },
     undefined,
-    z.SetScopeNameInputSchema,
-    "global",
-  );
-
-export const setDocNumber = (input: SetDocNumberInput) =>
-  createAction<SetDocNumberAction>(
-    "SET_DOC_NUMBER",
-    { ...input },
-    undefined,
-    z.SetDocNumberInputSchema,
+    z.SetNameInputSchema,
     "global",
   );
 
@@ -46,5 +37,14 @@ export const setMasterStatus = (input: SetMasterStatusInput) =>
     { ...input },
     undefined,
     z.SetMasterStatusInputSchema,
+    "global",
+  );
+
+export const setDocumentNumber = (input: SetDocumentNumberInput) =>
+  createAction<SetDocumentNumberAction>(
+    "SET_DOCUMENT_NUMBER",
+    { ...input },
+    undefined,
+    z.SetDocumentNumberInputSchema,
     "global",
   );

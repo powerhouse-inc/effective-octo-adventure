@@ -1,17 +1,17 @@
 import { BaseDocumentClass } from "document-model";
 import {
-  type SetScopeNameInput,
-  type SetDocNumberInput,
+  type SetNameInput,
   type SetContentInput,
   type SetMasterStatusInput,
+  type SetDocumentNumberInput,
   type AtlasScopeState,
   type AtlasScopeLocalState,
 } from "../types.js";
 import {
-  setScopeName,
-  setDocNumber,
+  setName,
   setContent,
   setMasterStatus,
+  setDocumentNumber,
 } from "./creators.js";
 import { type AtlasScopeAction } from "../actions.js";
 
@@ -20,12 +20,8 @@ export default class AtlasScope_General extends BaseDocumentClass<
   AtlasScopeLocalState,
   AtlasScopeAction
 > {
-  public setScopeName(input: SetScopeNameInput) {
-    return this.dispatch(setScopeName(input));
-  }
-
-  public setDocNumber(input: SetDocNumberInput) {
-    return this.dispatch(setDocNumber(input));
+  public setName(input: SetNameInput) {
+    return this.dispatch(setName(input));
   }
 
   public setContent(input: SetContentInput) {
@@ -34,5 +30,9 @@ export default class AtlasScope_General extends BaseDocumentClass<
 
   public setMasterStatus(input: SetMasterStatusInput) {
     return this.dispatch(setMasterStatus(input));
+  }
+
+  public setDocumentNumber(input: SetDocumentNumberInput) {
+    return this.dispatch(setDocumentNumber(input));
   }
 }

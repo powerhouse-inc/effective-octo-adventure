@@ -1,27 +1,15 @@
 import { type BaseAction } from "document-model";
 import type {
-  SetExploratoryNameInput,
-  SetDocNumberInput,
+  SetNameInput,
   SetContentInput,
   SetMasterStatusInput,
   SetParentInput,
-  RemoveParentInput,
   SetAtlasTypeInput,
   SetFindingsInput,
-  SetReferenceInput,
-  RemoveReferenceInput,
+  SetDocumentNumberInput,
 } from "../types.js";
 
-export type SetExploratoryNameAction = BaseAction<
-  "SET_EXPLORATORY_NAME",
-  SetExploratoryNameInput,
-  "global"
->;
-export type SetDocNumberAction = BaseAction<
-  "SET_DOC_NUMBER",
-  SetDocNumberInput,
-  "global"
->;
+export type SetNameAction = BaseAction<"SET_NAME", SetNameInput, "global">;
 export type SetContentAction = BaseAction<
   "SET_CONTENT",
   SetContentInput,
@@ -37,11 +25,6 @@ export type SetParentAction = BaseAction<
   SetParentInput,
   "global"
 >;
-export type RemoveParentAction = BaseAction<
-  "REMOVE_PARENT",
-  RemoveParentInput,
-  "global"
->;
 export type SetAtlasTypeAction = BaseAction<
   "SET_ATLAS_TYPE",
   SetAtlasTypeInput,
@@ -52,25 +35,17 @@ export type SetFindingsAction = BaseAction<
   SetFindingsInput,
   "global"
 >;
-export type SetReferenceAction = BaseAction<
-  "SET_REFERENCE",
-  SetReferenceInput,
-  "global"
->;
-export type RemoveReferenceAction = BaseAction<
-  "REMOVE_REFERENCE",
-  RemoveReferenceInput,
+export type SetDocumentNumberAction = BaseAction<
+  "SET_DOCUMENT_NUMBER",
+  SetDocumentNumberInput,
   "global"
 >;
 
 export type AtlasExploratoryGeneralAction =
-  | SetExploratoryNameAction
-  | SetDocNumberAction
+  | SetNameAction
   | SetContentAction
   | SetMasterStatusAction
   | SetParentAction
-  | RemoveParentAction
   | SetAtlasTypeAction
   | SetFindingsAction
-  | SetReferenceAction
-  | RemoveReferenceAction;
+  | SetDocumentNumberAction;

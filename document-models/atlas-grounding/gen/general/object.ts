@@ -1,21 +1,21 @@
 import { BaseDocumentClass } from "document-model";
 import {
-  type SetGroundingNameInput,
-  type SetDocNumberInput,
+  type SetNameInput,
   type SetContentInput,
   type SetMasterStatusInput,
   type SetAtlasTypeInput,
   type SetParentInput,
+  type SetDocumentNumberInput,
   type AtlasGroundingState,
   type AtlasGroundingLocalState,
 } from "../types.js";
 import {
-  setGroundingName,
-  setDocNumber,
+  setName,
   setContent,
   setMasterStatus,
   setAtlasType,
   setParent,
+  setDocumentNumber,
 } from "./creators.js";
 import { type AtlasGroundingAction } from "../actions.js";
 
@@ -24,12 +24,8 @@ export default class AtlasGrounding_General extends BaseDocumentClass<
   AtlasGroundingLocalState,
   AtlasGroundingAction
 > {
-  public setGroundingName(input: SetGroundingNameInput) {
-    return this.dispatch(setGroundingName(input));
-  }
-
-  public setDocNumber(input: SetDocNumberInput) {
-    return this.dispatch(setDocNumber(input));
+  public setName(input: SetNameInput) {
+    return this.dispatch(setName(input));
   }
 
   public setContent(input: SetContentInput) {
@@ -46,5 +42,9 @@ export default class AtlasGrounding_General extends BaseDocumentClass<
 
   public setParent(input: SetParentInput) {
     return this.dispatch(setParent(input));
+  }
+
+  public setDocumentNumber(input: SetDocumentNumberInput) {
+    return this.dispatch(setDocumentNumber(input));
   }
 }

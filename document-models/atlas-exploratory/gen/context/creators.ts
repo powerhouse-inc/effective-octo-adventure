@@ -3,18 +3,16 @@ import {
   z,
   type AddContextDataInput,
   type RemoveContextDataInput,
-  type SetProvenanceInput,
   type SetNotionIdInput,
-  type AddAdditionalGuidanceInput,
-  type RemoveAdditionalGuidanceInput,
+  type SetAdditionalGuidanceInput,
+  type ReplaceContextDataInput,
 } from "../types.js";
 import {
   type AddContextDataAction,
   type RemoveContextDataAction,
-  type SetProvenanceAction,
   type SetNotionIdAction,
-  type AddAdditionalGuidanceAction,
-  type RemoveAdditionalGuidanceAction,
+  type SetAdditionalGuidanceAction,
+  type ReplaceContextDataAction,
 } from "./actions.js";
 
 export const addContextData = (input: AddContextDataInput) =>
@@ -35,15 +33,6 @@ export const removeContextData = (input: RemoveContextDataInput) =>
     "global",
   );
 
-export const setProvenance = (input: SetProvenanceInput) =>
-  createAction<SetProvenanceAction>(
-    "SET_PROVENANCE",
-    { ...input },
-    undefined,
-    z.SetProvenanceInputSchema,
-    "global",
-  );
-
 export const setNotionId = (input: SetNotionIdInput) =>
   createAction<SetNotionIdAction>(
     "SET_NOTION_ID",
@@ -53,22 +42,20 @@ export const setNotionId = (input: SetNotionIdInput) =>
     "global",
   );
 
-export const addAdditionalGuidance = (input: AddAdditionalGuidanceInput) =>
-  createAction<AddAdditionalGuidanceAction>(
-    "ADD_ADDITIONAL_GUIDANCE",
+export const setAdditionalGuidance = (input: SetAdditionalGuidanceInput) =>
+  createAction<SetAdditionalGuidanceAction>(
+    "SET_ADDITIONAL_GUIDANCE",
     { ...input },
     undefined,
-    z.AddAdditionalGuidanceInputSchema,
+    z.SetAdditionalGuidanceInputSchema,
     "global",
   );
 
-export const removeAdditionalGuidance = (
-  input: RemoveAdditionalGuidanceInput,
-) =>
-  createAction<RemoveAdditionalGuidanceAction>(
-    "REMOVE_ADDITIONAL_GUIDANCE",
+export const replaceContextData = (input: ReplaceContextDataInput) =>
+  createAction<ReplaceContextDataAction>(
+    "REPLACE_CONTEXT_DATA",
     { ...input },
     undefined,
-    z.RemoveAdditionalGuidanceInputSchema,
+    z.ReplaceContextDataInputSchema,
     "global",
   );

@@ -2,20 +2,16 @@ import { BaseDocumentClass } from "document-model";
 import {
   type AddContextDataInput,
   type RemoveContextDataInput,
-  type SetProvenanceInput,
+  type ReplaceContextDataInput,
   type SetNotionIdInput,
-  type AddReferenceInput,
-  type RemoveReferenceInput,
   type AtlasMultiParentState,
   type AtlasMultiParentLocalState,
 } from "../types.js";
 import {
   addContextData,
   removeContextData,
-  setProvenance,
+  replaceContextData,
   setNotionId,
-  addReference,
-  removeReference,
 } from "./creators.js";
 import { type AtlasMultiParentAction } from "../actions.js";
 
@@ -32,19 +28,11 @@ export default class AtlasMultiParent_Context extends BaseDocumentClass<
     return this.dispatch(removeContextData(input));
   }
 
-  public setProvenance(input: SetProvenanceInput) {
-    return this.dispatch(setProvenance(input));
+  public replaceContextData(input: ReplaceContextDataInput) {
+    return this.dispatch(replaceContextData(input));
   }
 
   public setNotionId(input: SetNotionIdInput) {
     return this.dispatch(setNotionId(input));
-  }
-
-  public addReference(input: AddReferenceInput) {
-    return this.dispatch(addReference(input));
-  }
-
-  public removeReference(input: RemoveReferenceInput) {
-    return this.dispatch(removeReference(input));
   }
 }

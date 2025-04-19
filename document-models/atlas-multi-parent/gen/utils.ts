@@ -16,15 +16,12 @@ import { reducer } from "./reducer.js";
 
 export const initialGlobalState: AtlasMultiParentState = {
   name: "",
-  docNo: "",
   parents: [],
   atlasType: "ANNOTATION",
   content: "",
   masterStatus: "PLACEHOLDER",
   globalTags: [],
-  references: [],
   originalContextData: [],
-  provenance: [],
   notionId: "",
 };
 export const initialLocalState: AtlasMultiParentLocalState = {};

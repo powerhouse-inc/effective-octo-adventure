@@ -58,7 +58,7 @@ export type Scalars = {
 export type AddContextDataInput = {
   docNo?: InputMaybe<Scalars["String"]["input"]>;
   id: Scalars["PHID"]["input"];
-  name?: InputMaybe<Scalars["String"]["input"]>;
+  title?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type AddTagsInput = {
@@ -68,19 +68,16 @@ export type AddTagsInput = {
 
 export type AtlasScopeState = {
   /**
-   * Entire content body of the scope document within Atlas.
-   * For example: "The Governance Scope regulates the governance processes and balance..."
-   */
-  content: Maybe<Scalars["String"]["output"]>;
-  /**
    * Document number of the scope document within Atlas.
    * For example: "A.1" for the Governance Scope.
    */
+  content: Maybe<Scalars["String"]["output"]>;
+  /** Unique document number assigned to the Scope document within Atlas. */
   docNo: Maybe<Scalars["String"]["output"]>;
   /** Document tags as managed by the Atlas Axis facilitator group. */
   globalTags: Array<GlobalTag | `${GlobalTag}`>;
   /** Master status as managed by the Atlas Axis facilitator group. */
-  masterStatus: Maybe<Status | `${Status}`>;
+  masterStatus: Status | `${Status}`;
   /**
    * Full name of the Scope without the document number.
    * For example: "The Support Scope"
@@ -90,15 +87,13 @@ export type AtlasScopeState = {
   notionId: Maybe<Scalars["String"]["output"]>;
   /** List of Atlas documents that were relevant for the creation of the scope document.  */
   originalContextData: Array<DocumentInfo>;
-  /** Link to the original P0hub Notion environment. */
-  provenance: Maybe<Scalars["URL"]["output"]>;
 };
 
 /** Reference to a document within Atlas with optional name and document number for display reasons.  */
 export type DocumentInfo = {
   docNo: Maybe<Scalars["String"]["output"]>;
   id: Scalars["PHID"]["output"];
-  name: Maybe<Scalars["OLabel"]["output"]>;
+  title: Maybe<Scalars["OLabel"]["output"]>;
 };
 
 export type GlobalTag =
@@ -135,14 +130,20 @@ export type RemoveTagsInput = {
   tags: Array<GlobalTag | `${GlobalTag}`>;
 };
 
+export type ReplaceContextDataInput = {
+  docNo?: InputMaybe<Scalars["String"]["input"]>;
+  id: Scalars["PHID"]["input"];
+  prevId: Scalars["PHID"]["input"];
+  title?: InputMaybe<Scalars["String"]["input"]>;
+};
+
 export type SetContentInput = {
   /** Update the content of the scope document */
   content: Scalars["String"]["input"];
 };
 
-export type SetDocNumberInput = {
-  /** New document number for the scope document */
-  docNo: Scalars["String"]["input"];
+export type SetDocumentNumberInput = {
+  docNo?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type SetMasterStatusInput = {
@@ -150,18 +151,13 @@ export type SetMasterStatusInput = {
   masterStatus: Status | `${Status}`;
 };
 
+export type SetNameInput = {
+  name: Scalars["OLabel"]["input"];
+};
+
 export type SetNotionIdInput = {
   /** Add your inputs here */
   notionID?: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type SetProvenanceInput = {
-  provenance?: InputMaybe<Scalars["URL"]["input"]>;
-};
-
-export type SetScopeNameInput = {
-  /** New name for Scope */
-  name: Scalars["OLabel"]["input"];
 };
 
 export type Status =

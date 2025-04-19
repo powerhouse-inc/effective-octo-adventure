@@ -7,35 +7,35 @@
 import { type AtlasGroundingContextOperations } from "../../gen/context/operations.js";
 
 export const reducer: AtlasGroundingContextOperations = {
-  // TODO: change this when the UI is updated
-  addContextDataOperation(state, action, dispatch) {
+  addContextDataOperation(state, action) {
     const newContextData = {
       id: action.input.id,
-      name: action.input.name || null,
-      docNo: action.input.docNo || null,
+      title: action.input.title || null,
+      docNo: null,
     };
-    state.originalContextData = [newContextData];
-  },
-  removeContextDataOperation(state, action, dispatch) {
-    state.originalContextData = [];
+    state.originalContextData = [...state.originalContextData, newContextData];
   },
 
-  setProvenanceOperation(state, action, dispatch) {
-    state.provenance = action.input.provenance;
+  removeContextDataOperation(state, action) {
+    state.originalContextData = state.originalContextData.filter(
+      (contextData) => contextData.id !== action.input.id,
+    );
   },
-  setNotionIdOperation(state, action, dispatch) {
+
+  replaceContextDataOperation(state, action) {
+    state.originalContextData = state.originalContextData.map((contextData) => {
+      if (contextData.id === action.input.prevId) {
+        return {
+          id: action.input.id,
+          title: action.input.title || null,
+          docNo: null,
+        };
+      }
+      return contextData;
+    });
+  },
+
+  setNotionIdOperation(state, action) {
     state.notionId = action.input.notionID;
-  },
-  // TODO: change this when the UI is updated
-  addReferenceOperation(state, action, dispatch) {
-    const newReference = {
-      id: action.input.id,
-      name: action.input.name || null,
-      docNo: action.input.docNo || null,
-    };
-    state.references = [newReference];
-  },
-  removeReferenceOperation(state, action, dispatch) {
-    state.references = [];
   },
 };

@@ -7,56 +7,40 @@ export const schema: DocumentNode = gql`
   """
   type AtlasGroundingState {
     """
-    Full name of the Grounding document entity.
-    """
-    name: String
-
-    """
     Unique document number assigned to the Grounding document within Atlas.
     """
     docNo: String
-
+    """
+    Full name of the Grounding document entity.
+    """
+    name: String
     """
     Parent entity that this Grounding document belongs to.
     This is a reference to another Atlas document.
     """
     parent: GDocumentLink!
-
     """
     The type of the Grounding document within Atlas.
     Example: Tenet, Original Context Data, Active Data.
     """
     atlasType: GAtlasType!
-
     """
     Entire content body of the Grounding document within Atlas.
     """
     content: String
-
     """
     Master status of the Grounding document as managed by the Atlas Axis facilitator group.
     """
     masterStatus: GStatus!
-
     """
     Document tags managed by the Atlas Axis facilitator group for classification.
     """
     globalTags: [GGlobalTag!]!
 
     """
-    References to other Atlas entities that are linked to this Grounding document.
-    """
-    references: [GDocumentLink!]!
-
-    """
     List of Atlas documents that were relevant for the creation of this Grounding document.
     """
     originalContextData: [GDocumentLink!]!
-
-    """
-    Link to the original P0hub Notion environment where this document was first created or referenced.
-    """
-    provenance: [URL!]!
 
     """
     Original Notion document ID of the Grounding document.
@@ -70,7 +54,7 @@ export const schema: DocumentNode = gql`
   """
   type GDocumentLink {
     id: PHID!
-    name: OLabel
+    title: OLabel
     docNo: String
   }
 
@@ -132,15 +116,10 @@ export const schema: DocumentNode = gql`
   type Mutation {
     AtlasGrounding_createDocument(driveId: String, name: String): String
 
-    AtlasGrounding_setGroundingName(
+    AtlasGrounding_setName(
       driveId: String
       docId: PHID
-      input: AtlasGrounding_SetGroundingNameInput
-    ): Int
-    AtlasGrounding_setDocNumber(
-      driveId: String
-      docId: PHID
-      input: AtlasGrounding_SetDocNumberInput
+      input: AtlasGrounding_SetNameInput
     ): Int
     AtlasGrounding_setContent(
       driveId: String
@@ -162,6 +141,11 @@ export const schema: DocumentNode = gql`
       docId: PHID
       input: AtlasGrounding_SetParentInput
     ): Int
+    AtlasGrounding_setDocumentNumber(
+      driveId: String
+      docId: PHID
+      input: AtlasGrounding_SetDocumentNumberInput
+    ): Int
     AtlasGrounding_addTags(
       driveId: String
       docId: PHID
@@ -182,36 +166,23 @@ export const schema: DocumentNode = gql`
       docId: PHID
       input: AtlasGrounding_RemoveContextDataInput
     ): Int
-    AtlasGrounding_setProvenance(
-      driveId: String
-      docId: PHID
-      input: AtlasGrounding_SetProvenanceInput
-    ): Int
     AtlasGrounding_setNotionId(
       driveId: String
       docId: PHID
       input: AtlasGrounding_SetNotionIdInput
     ): Int
-    AtlasGrounding_addReference(
+    AtlasGrounding_replaceContextData(
       driveId: String
       docId: PHID
-      input: AtlasGrounding_AddReferenceInput
-    ): Int
-    AtlasGrounding_removeReference(
-      driveId: String
-      docId: PHID
-      input: AtlasGrounding_RemoveReferenceInput
+      input: AtlasGrounding_ReplaceContextDataInput
     ): Int
   }
 
   """
   Module: General
   """
-  input AtlasGrounding_SetGroundingNameInput {
+  input AtlasGrounding_SetNameInput {
     name: String!
-  }
-  input AtlasGrounding_SetDocNumberInput {
-    docNo: String!
   }
   input AtlasGrounding_SetContentInput {
     content: String!
@@ -225,7 +196,10 @@ export const schema: DocumentNode = gql`
   }
   input AtlasGrounding_SetParentInput {
     id: PHID!
-    name: OLabel
+    title: OLabel
+    docNo: String
+  }
+  input AtlasGrounding_SetDocumentNumberInput {
     docNo: String
   }
 
@@ -244,24 +218,19 @@ export const schema: DocumentNode = gql`
   """
   input AtlasGrounding_AddContextDataInput {
     id: PHID!
-    name: String
+    title: String
     docNo: String
   }
   input AtlasGrounding_RemoveContextDataInput {
     id: PHID!
   }
-  input AtlasGrounding_SetProvenanceInput {
-    provenance: [URL!]!
-  }
   input AtlasGrounding_SetNotionIdInput {
     notionID: String!
   }
-  input AtlasGrounding_AddReferenceInput {
+  input AtlasGrounding_ReplaceContextDataInput {
+    prevId: PHID!
     id: PHID!
-    name: String
+    title: String
     docNo: String
-  }
-  input AtlasGrounding_RemoveReferenceInput {
-    id: PHID!
   }
 `;

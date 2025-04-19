@@ -7,42 +7,49 @@
 import { type AtlasExploratoryContextOperations } from "../../gen/context/operations.js";
 
 export const reducer: AtlasExploratoryContextOperations = {
-  addContextDataOperation(state, action, dispatch) {
+  addContextDataOperation(state, action) {
     const newContextData = {
       id: action.input.id,
-      name: action.input.name || null,
-      docNo: action.input.docNo || null,
+      title: action.input.title ?? null,
+      // TODO: should we add docNo? we're assuming it's not needed
+      docNo: null,
     };
     state.originalContextData = [...state.originalContextData, newContextData];
   },
 
-  removeContextDataOperation(state, action, dispatch) {
+  removeContextDataOperation(state, action) {
     state.originalContextData = state.originalContextData.filter(
       (contextData) => contextData.id !== action.input.id,
     );
   },
 
-  setNotionIdOperation(state, action, dispatch) {
+  replaceContextDataOperation(state, action) {
+    state.originalContextData = state.originalContextData.map((contextData) => {
+      if (contextData.id === action.input.prevId) {
+        return {
+          id: action.input.id,
+          title: action.input.title ?? null,
+          // TODO: should we add docNo? we're assuming it's not needed
+          docNo: null,
+        };
+      }
+      return contextData;
+    });
+  },
+
+  setNotionIdOperation(state, action) {
     if (action.input.notionID) {
       state.notionId = action.input.notionID;
     } else {
       throw new Error("Notion ID missing from input.");
     }
   },
-  addAdditionalGuidanceOperation(state, action, dispatch) {
+
+  setAdditionalGuidanceOperation(state, action) {
     if (action.input.additionalGuidance) {
       state.additionalGuidance = action.input.additionalGuidance;
     } else {
       throw new Error("Additional guidance missing from input.");
     }
-  },
-  removeAdditionalGuidanceOperation(state, action, dispatch) {
-    // TODO: Implement "removeAdditionalGuidanceOperation" reducer
-    throw new Error(
-      'Reducer "removeAdditionalGuidanceOperation" not yet implemented',
-    );
-  },
-  setProvenanceOperation(state, action, dispatch) {
-    state.provenance = action.input.provenance || "";
   },
 };

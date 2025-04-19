@@ -17,9 +17,9 @@ export const documentModel: DocumentModelState = {
       state: {
         global: {
           schema:
-            'type AtlasScopeState {\n  """\n    Full name of the Scope without the document number. \n    For example: "The Support Scope" \n  """\n  name: OLabel\n\n  """\n    Document number of the scope document within Atlas. \n    For example: "A.1" for the Governance Scope. \n  """\n  docNo: String\n\n  """\n    Entire content body of the scope document within Atlas. \n    For example: "The Governance Scope regulates the governance processes and balance..."\n  """\n  content: String\n\n  """\n    Master status as managed by the Atlas Axis facilitator group.\n  """\n  masterStatus: Status\n\n  """\n    Document tags as managed by the Atlas Axis facilitator group.\n  """\n  globalTags: [GlobalTag!]!\n\n  """\n    List of Atlas documents that were relevant for the creation of the scope document. \n  """\n  originalContextData: [DocumentInfo!]!\n\n  """\n    Link to the original P0hub Notion environment.\n  """\n  provenance: URL\n\n  """\n    Original Notion document ID of the scope document.\n  """\n  notionId: String\n}\n\n"""\n   Reference to a document within Atlas with optional name and document number for display reasons. \n"""\ntype DocumentInfo {\n  id: PHID!\n  name: OLabel\n  docNo: String\n}\n\nenum Status {\n  PLACEHOLDER\n  PROVISIONAL\n  APPROVED\n  DEFERRED\n  ARCHIVED\n}\n\nenum GlobalTag {\n  RECURSIVE_IMPROVEMENT\n  SCOPE_ADVISOR\n  DAO_TOOLKIT\n  PURPOSE_SYSTEM\n  ML_LOW_PRIORITY\n  EXTERNAL_REFERENCE\n  ML_DEFER\n  SUBDAO_INCUBATION\n  V1_MIP\n  ML_HIGH_PRIORITY\n  ECOSYSTEM_INTELLIGENCE\n  LEGACY_TERM_USE_APPROVED\n  CAIS\n  INTERNAL_REFERENCE\n  FACILITATORDAO\n  ML_MED_PRIORITY\n  AVC\n  P0_HUB_ENTRY_NEEDED\n  ANON_WORKFORCE\n  NEWCHAIN\n  ML_SUPPORT_DOCS_NEEDED\n  SUBDAO_REWARDS\n  TWO_STAGE_BRIDGE\n}',
+            'type AtlasScopeState {\n  """\n  Unique document number assigned to the Scope document within Atlas.\n  """\n  docNo: String\n  """\n  Full name of the Scope without the document number. \n  For example: "The Support Scope" \n  """\n  name: OLabel\n  """\n  Document number of the scope document within Atlas. \n  For example: "A.1" for the Governance Scope. \n  """\n  content: String\n  """\n  Master status as managed by the Atlas Axis facilitator group.\n  """\n  masterStatus: Status!\n  """\n  Document tags as managed by the Atlas Axis facilitator group.\n  """\n  globalTags: [GlobalTag!]!\n  """\n  List of Atlas documents that were relevant for the creation of the scope document. \n  """\n  originalContextData: [DocumentInfo!]!\n  """\n  Original Notion document ID of the scope document.\n  """\n  notionId: String\n}\n\n"""\nReference to a document within Atlas with optional name and document number for display reasons. \n"""\ntype DocumentInfo {\n  id: PHID!\n  title: OLabel\n  docNo: String\n}\n\nenum Status {\n  PLACEHOLDER\n  PROVISIONAL\n  APPROVED\n  DEFERRED\n  ARCHIVED\n}\n\nenum GlobalTag {\n  RECURSIVE_IMPROVEMENT\n  SCOPE_ADVISOR\n  DAO_TOOLKIT\n  PURPOSE_SYSTEM\n  ML_LOW_PRIORITY\n  EXTERNAL_REFERENCE\n  ML_DEFER\n  SUBDAO_INCUBATION\n  V1_MIP\n  ML_HIGH_PRIORITY\n  ECOSYSTEM_INTELLIGENCE\n  LEGACY_TERM_USE_APPROVED\n  CAIS\n  INTERNAL_REFERENCE\n  FACILITATORDAO\n  ML_MED_PRIORITY\n  AVC\n  P0_HUB_ENTRY_NEEDED\n  ANON_WORKFORCE\n  NEWCHAIN\n  ML_SUPPORT_DOCS_NEEDED\n  SUBDAO_REWARDS\n  TWO_STAGE_BRIDGE\n}',
           initialValue:
-            '"{\\n  \\"name\\": \\"\\",\\n  \\"docNo\\": \\"\\",\\n  \\"content\\": \\"\\",\\n  \\"masterStatus\\": \\"PLACEHOLDER\\",\\n  \\"globalTags\\": [],\\n  \\"originalContextData\\": [],\\n  \\"provenance\\": \\"\\",\\n  \\"notionId\\": \\"\\"\\n}"',
+            '"{\\n  \\"docNo\\": \\"\\",\\n  \\"name\\": \\"\\",\\n  \\"content\\": \\"\\",\\n  \\"masterStatus\\": \\"PLACEHOLDER\\",\\n  \\"globalTags\\": [],\\n  \\"originalContextData\\": [],\\n  \\"notionId\\": \\"\\"\\n}"',
           examples: [],
         },
         local: {
@@ -36,22 +36,9 @@ export const documentModel: DocumentModelState = {
           operations: [
             {
               id: "bNPa/jqunWF2jkFK1UfyoiMKSGI=",
-              name: "SET_SCOPE_NAME",
+              name: "SET_NAME",
               description: "",
-              schema:
-                'input SetScopeNameInput {\n  "New name for Scope"\n  name: OLabel!\n}',
-              template: "",
-              reducer: "",
-              errors: [],
-              examples: [],
-              scope: "global",
-            },
-            {
-              id: "mRl4jdA4pltyM31y97oS3KN9B6o=",
-              name: "SET_DOC_NUMBER",
-              description: "",
-              schema:
-                'input SetDocNumberInput {\n  "New document number for the scope document"\n  docNo: String!\n}',
+              schema: "input SetNameInput {\n  name: OLabel!\n}",
               template: "",
               reducer: "",
               errors: [],
@@ -76,6 +63,17 @@ export const documentModel: DocumentModelState = {
               description: "",
               schema:
                 'input SetMasterStatusInput {\n  "New master status"\n  masterStatus: Status!\n}',
+              template: "",
+              reducer: "",
+              errors: [],
+              examples: [],
+              scope: "global",
+            },
+            {
+              id: "8JvDZmAL2qXsaobWaoSL9g3Nras=",
+              name: "SET_DOCUMENT_NUMBER",
+              description: "",
+              schema: "input SetDocumentNumberInput {\n  docNo: String\n}",
               template: "",
               reducer: "",
               errors: [],
@@ -125,7 +123,7 @@ export const documentModel: DocumentModelState = {
               name: "ADD_CONTEXT_DATA",
               description: "",
               schema:
-                "input AddContextDataInput {\n  id: PHID!\n  name: String\n  docNo: String\n}",
+                "input AddContextDataInput {\n  id: PHID!\n  title: String\n  docNo: String\n}",
               template: "",
               reducer: "",
               errors: [],
@@ -144,10 +142,11 @@ export const documentModel: DocumentModelState = {
               scope: "global",
             },
             {
-              id: "mDdi5kNjM0NcO9I4ZVDHgcSekfg=",
-              name: "SET_PROVENANCE",
+              id: "jEu8NeDWny2l9XR2aE9eqRIL9GQ=",
+              name: "SET_NOTION_ID",
               description: "",
-              schema: "input SetProvenanceInput {\n  provenance: URL\n}",
+              schema:
+                'input SetNotionIdInput {\n  "Add your inputs here"\n  notionID: String\n}',
               template: "",
               reducer: "",
               errors: [],
@@ -155,11 +154,11 @@ export const documentModel: DocumentModelState = {
               scope: "global",
             },
             {
-              id: "jEu8NeDWny2l9XR2aE9eqRIL9GQ=",
-              name: "SET_NOTION_ID",
+              id: "gWbHQ0qFBoFLioJfg+Wq3c+XTbE=",
+              name: "REPLACE_CONTEXT_DATA",
               description: "",
               schema:
-                'input SetNotionIdInput {\n  "Add your inputs here"\n  notionID: String\n}',
+                "input ReplaceContextDataInput {\n  prevId: PHID!\n  id:PHID!\n  title: String\n  docNo: String\n}",
               template: "",
               reducer: "",
               errors: [],

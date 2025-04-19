@@ -16,56 +16,40 @@ scalar Amount_Crypto
 scalar Amount
 type AtlasGroundingState {
   """
-    Full name of the Grounding document entity.  
-  """
-  name: String
-
-  """
-    Unique document number assigned to the Grounding document within Atlas.  
+  Unique document number assigned to the Grounding document within Atlas.
   """
   docNo: String
-
   """
-    Parent entity that this Grounding document belongs to.  
-    This is a reference to another Atlas document.
+  Full name of the Grounding document entity.  
+  """
+  name: String
+  """
+  Parent entity that this Grounding document belongs to.  
+  This is a reference to another Atlas document.
   """
   parent: GDocumentLink!
-
   """
-    The type of the Grounding document within Atlas.  
-    Example: Tenet, Original Context Data, Active Data.
+  The type of the Grounding document within Atlas.  
+  Example: Tenet, Original Context Data, Active Data.
   """
   atlasType: GAtlasType!
-
   """
-    Entire content body of the Grounding document within Atlas.  
+  Entire content body of the Grounding document within Atlas.  
   """
   content: String
-
   """
-    Master status of the Grounding document as managed by the Atlas Axis facilitator group.  
+  Master status of the Grounding document as managed by the Atlas Axis facilitator group.  
   """
   masterStatus: GStatus!
-
   """
-    Document tags managed by the Atlas Axis facilitator group for classification.  
+  Document tags managed by the Atlas Axis facilitator group for classification.  
   """
   globalTags: [GGlobalTag!]!
-
-  """
-    References to other Atlas entities that are linked to this Grounding document.  
-  """
-  references: [GDocumentLink!]!
 
   """
     List of Atlas documents that were relevant for the creation of this Grounding document.  
   """
   originalContextData: [GDocumentLink!]!
-
-  """
-    Link to the original P0hub Notion environment where this document was first created or referenced.
-  """
-  provenance: [URL!]!
 
   """
     Original Notion document ID of the Grounding document.  
@@ -80,7 +64,7 @@ type AtlasGroundingState {
 
 type GDocumentLink {
   id: PHID!
-  name: OLabel
+  title: OLabel
   docNo: String 
 }
 
@@ -129,12 +113,8 @@ enum GGlobalTag {
 
 # general
 
-input SetGroundingNameInput {
+input SetNameInput {
   name: String!
-}
-
-input SetDocNumberInput {
-  docNo: String! 
 }
 
 input SetContentInput {
@@ -152,7 +132,11 @@ input SetAtlasTypeInput {
 
 input SetParentInput {
   id: PHID!
-  name: OLabel 
+  title: OLabel 
+  docNo: String
+}
+
+input SetDocumentNumberInput {
   docNo: String
 }
 
@@ -170,7 +154,7 @@ input RemoveTagsInput {
 
 input AddContextDataInput {
   id: PHID!
-  name: String
+  title: String
   docNo: String
 }
 
@@ -178,20 +162,13 @@ input RemoveContextDataInput {
   id: PHID!
 }
 
-input SetProvenanceInput {
-  provenance: [URL!]!
-}
-
 input SetNotionIdInput {
   notionID: String!
 }
 
-input AddReferenceInput {
+input ReplaceContextDataInput {
+  prevId:PHID!
   id: PHID!
-  name: String
+  title: String
   docNo: String
-}
-
-input RemoveReferenceInput {
-  id: PHID!
 }

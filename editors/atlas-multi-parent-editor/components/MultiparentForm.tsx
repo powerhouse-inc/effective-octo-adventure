@@ -152,10 +152,10 @@ export function MultiParentForm({
               }}
               onRemove={(value) => {
                 const phid = value.split(":")[1];
-                dispatch(actions.removeReference({ id: phid }));
+                dispatch(actions.removeParent({ id: phid }));
               }}
               onUpdate={() => {
-                // TODO: implement references updates
+                // TODO: implement parents updates
                 throw new Error("Updates not supported yet");
               }}
               parents={documentState.parents}

@@ -20,7 +20,6 @@ import {
 } from "../../../document-models/atlas-scope/index.js";
 import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
-import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import { globalScopeTagsEnumOptions } from "../../shared/utils/common-options.js";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";

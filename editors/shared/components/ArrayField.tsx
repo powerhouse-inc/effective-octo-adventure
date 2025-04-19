@@ -20,7 +20,7 @@ interface Field<TValue> {
   id: string;
   value: TValue;
 }
-interface ArrayFieldProps<TValue, TProps> {
+export interface ArrayFieldProps<TValue, TProps> {
   onAdd: (value: TValue) => void;
   onRemove: (options: RemoveOptions<TValue>) => void;
   onUpdate: (options: UpdateOptions<TValue>) => void;

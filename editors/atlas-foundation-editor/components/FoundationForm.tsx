@@ -23,16 +23,14 @@ import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
-import { ContextDataForm } from "../../shared/components/forms/ContextDataForm.js";
-import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
-import ReferencesArray from "../../shared/components/forms/ReferencesArray.js";
 import { useEffect, useState } from "react";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
 } from "../../shared/utils/styles.js";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
+import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
 interface FoundationFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
   isSplitMode?: boolean;
@@ -52,7 +50,7 @@ export function FoundationForm({
     ? `phd:${originalDocumentState.parent.id}`
     : "";
   const parentDocNo = originalDocumentState.parent?.docNo ?? "";
-  const parentName = originalDocumentState.parent?.name ?? "";
+  const parentName = originalDocumentState.parent?.title ?? "";
 
   const parentPHIDInitialOption: PHIDOption = {
     icon: "File",
@@ -63,7 +61,6 @@ export function FoundationForm({
   const documentState = {
     ...originalDocumentState,
     parent: parentId,
-    provenance: originalDocumentState.provenance?.[0] || "",
   };
 
   const [contentValue, setContentValue] = useState<string>(
@@ -107,7 +104,8 @@ export function FoundationForm({
                 baselineValue={originalNodeState.docNo}
                 onSave={(value) => {
                   dispatch(
-                    actions.setDocNumber({ docNo: getStringValue(value) }),
+                    // TODO: do we need to getStringValue here?
+                    actions.setDocumentNumber({ docNo: getStringValue(value) }),
                   );
                 }}
               />
@@ -118,7 +116,8 @@ export function FoundationForm({
                 baselineValue={originalNodeState.name}
                 onSave={(value) => {
                   dispatch(
-                    actions.setFoundationName({
+                    actions.setName({
+                      // TODO: do we need to getStringValue here?
                       name: getStringValue(value),
                     }),
                   );
@@ -169,9 +168,10 @@ export function FoundationForm({
                 if (value === null) {
                   dispatch(
                     actions.setParent({
+                      // TODO: is this the correct way?
                       id: "",
                       docNo: undefined,
-                      name: undefined,
+                      title: undefined,
                     }),
                   );
                 } else {
@@ -184,7 +184,7 @@ export function FoundationForm({
                     actions.setParent({
                       id: newParentId,
                       docNo,
-                      name,
+                      title: name,
                     }),
                   );
                 }
@@ -192,25 +192,23 @@ export function FoundationForm({
               initialOptions={[parentPHIDInitialOption]}
             />
 
-            <ContextDataForm
+            <MultiPhIdForm
+              label="Original Context Data"
+              data={documentState.originalContextData}
               onAdd={(value) => {
                 dispatch(actions.addContextData({ id: value }));
               }}
-              onRemove={(value) => {
+              onRemove={({ value }) => {
                 dispatch(actions.removeContextData({ id: value }));
               }}
-              onUpdate={(value) => {
-                // TODO: implement context data updates
-                throw new Error("Updates not supported yet");
-              }}
-              data={documentState.originalContextData}
-            />
-
-            <ProvenanceForm
-              value={documentState.provenance}
-              baselineValue={originalNodeState.hubUrls[0]}
-              onSave={(value) => {
-                dispatch(actions.setProvenance({ provenance: [value] }));
+              onUpdate={({ previousValue, value }) => {
+                dispatch(
+                  actions.replaceContextData({
+                    prevId: previousValue,
+                    id: value,
+                    title: "", // TODO: add the document title
+                  }),
+                );
               }}
             />
 
@@ -242,22 +240,6 @@ export function FoundationForm({
                   dispatch(actions.removeTags({ tags: tagsToRemove }));
                 }
               }}
-            />
-
-            <ReferencesArray
-              onAdd={(value) => {
-                const phid = value.split(":")[1];
-                dispatch(actions.addReference({ id: phid }));
-              }}
-              onRemove={(value) => {
-                const phid = value.split(":")[1];
-                dispatch(actions.removeReference({ id: phid }));
-              }}
-              onUpdate={() => {
-                // TODO: implement references updates
-                throw new Error("Updates not supported yet");
-              }}
-              references={documentState.references}
             />
           </div>
         </div>

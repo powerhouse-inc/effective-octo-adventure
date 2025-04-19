@@ -6,6 +6,7 @@ export const reducer: AtlasScopeGeneralOperations = {
   },
 
   setNameOperation(state, action) {
+    alert(action.input.name);
     state.name = action.input.name;
   },
 

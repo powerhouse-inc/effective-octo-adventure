@@ -18,15 +18,10 @@ export default function Editor(props: IProps) {
   const originalContextDataId = originalDocumentState.originalContextData[0]?.id
     ? `phd:${originalDocumentState.originalContextData[0].id}`
     : "";
-  const referencesId = originalDocumentState.references[0]
-    ? `phd:${originalDocumentState.references[0]}`
-    : "";
 
   const documentState = {
     ...originalDocumentState,
-    provenance: originalDocumentState.provenance || "",
     originalContextData: originalContextDataId,
-    references: referencesId,
     parent: parentId,
   };
 
@@ -34,7 +29,6 @@ export default function Editor(props: IProps) {
   const originalContextDataPHIDInitialOption = fetchSelectedPHIDOption(
     originalContextDataId,
   );
-  const referencesPHIDInitialOption = fetchSelectedPHIDOption(referencesId);
   const isAligned = documentState.findings.isAligned;
 
   return (
@@ -54,7 +48,6 @@ export default function Editor(props: IProps) {
                 originalContextDataPHIDInitialOption={
                   originalContextDataPHIDInitialOption
                 }
-                referencesPHIDInitialOption={referencesPHIDInitialOption}
                 isAligned={isAligned}
                 isSplitMode={isSplitMode}
               />
@@ -68,7 +61,6 @@ export default function Editor(props: IProps) {
                 originalContextDataPHIDInitialOption={
                   originalContextDataPHIDInitialOption
                 }
-                referencesPHIDInitialOption={referencesPHIDInitialOption}
                 isAligned={isAligned}
                 isSplitMode={isSplitMode}
               />
@@ -83,7 +75,6 @@ export default function Editor(props: IProps) {
             originalContextDataPHIDInitialOption={
               originalContextDataPHIDInitialOption
             }
-            referencesPHIDInitialOption={referencesPHIDInitialOption}
             isAligned={isAligned}
           />
         )

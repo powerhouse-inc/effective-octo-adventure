@@ -1,4 +1,4 @@
-import { ArrayField } from "../ArrayField.js";
+import { ArrayField, type ArrayFieldProps } from "../ArrayField.js";
 import {
   PHIDDiffField,
   type PHIDDiffFieldProps,
@@ -9,12 +9,16 @@ import {
   fetchSelectedPHIDOption,
 } from "../../utils/utils.js";
 
-interface MultiPhIdFormProps<RefType = { id: string }> {
-  label: string;
-  onAdd: (value: string) => void;
-  onRemove: (value: string) => void;
-  onUpdate: (value: string) => void;
-  data: RefType[];
+type CommonDataProps = {
+  id: string;
+};
+
+interface MultiPhIdFormProps
+  extends Omit<
+    ArrayFieldProps<string, PHIDDiffFieldProps>,
+    "fields" | "componentProps" | "component"
+  > {
+  data: CommonDataProps[];
 }
 
 const MultiPhIdForm = ({
@@ -28,15 +32,9 @@ const MultiPhIdForm = ({
 
   return (
     <ArrayField<string, PHIDDiffFieldProps>
-      onAdd={(value) => {
-        onAdd(value);
-      }}
-      onRemove={({ value }) => {
-        onRemove(value);
-      }}
-      onUpdate={({ value }) => {
-        onUpdate(value);
-      }}
+      onAdd={onAdd}
+      onRemove={onRemove}
+      onUpdate={onUpdate}
       fields={data.map((element) => ({
         id: element.id,
         value: element.id,

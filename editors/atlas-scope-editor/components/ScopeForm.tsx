@@ -21,10 +21,10 @@ import {
 import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { ProvenanceForm } from "../../shared/components/forms/ProvenanceForm.js";
-import { ContextDataForm } from "../../shared/components/forms/ContextDataForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import { globalScopeTagsEnumOptions } from "../../shared/utils/common-options.js";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
+import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
 
 interface ScopeFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
@@ -44,7 +44,7 @@ export function ScopeForm({
 
   // TODO: replace the entire originalNodeState with the actual baseline document
   const [contentValue, setContentValue] = useState<string>(
-    documentState.content || ""
+    documentState.content || "",
   );
 
   // Update contentValue when documentState changes
@@ -90,7 +90,7 @@ export function ScopeForm({
                 value={documentState.docNo}
                 baselineValue={originalNodeState.docNo}
                 onSave={(value) => {
-                  dispatch(actions.setDocNumber({ docNo: value }));
+                  dispatch(actions.setDocumentNumber({ docNo: value }));
                 }}
               />
             </div>
@@ -99,7 +99,7 @@ export function ScopeForm({
                 value={documentState.name}
                 baselineValue={originalNodeState.name}
                 onSave={(value) => {
-                  dispatch(actions.setScopeName({ name: value }));
+                  dispatch(actions.setName({ name: value }));
                 }}
                 placeholder="The Governance Scope"
               />
@@ -118,43 +118,33 @@ export function ScopeForm({
           </div>
 
           <MarkdownEditor
-              value={contentValue}
-              onChange={handleContentChange}
-              onBlur={handleContentBlur}
-              height={350}
-              label="Content"
-            />
-          {/* <ContentForm
-            value={documentState.content}
-            baselineValue={""}
-            onSave={(value) => {
-              dispatch(actions.setContent({ content: value }));
-            }}
-          /> */}
+            value={contentValue}
+            onChange={handleContentChange}
+            onBlur={handleContentBlur}
+            height={350}
+            label="Content"
+          />
 
           <div className={cn("flex flex-col gap-4")}>
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>
-              <ProvenanceForm
-                value={documentState.provenance}
-                baselineValue={""}
-                onSave={(value) => {
-                  dispatch(actions.setProvenance({ provenance: value }));
-                }}
-              />
-            </div>
-            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
-              <ContextDataForm
+              <MultiPhIdForm
+                label="Original Context Data"
+                data={documentState.originalContextData}
                 onAdd={(value) => {
                   dispatch(actions.addContextData({ id: value }));
                 }}
-                onRemove={(value) => {
+                onRemove={({ value }) => {
                   dispatch(actions.removeContextData({ id: value }));
                 }}
-                onUpdate={(value) => {
-                  // TODO: implement context data updates
-                  throw new Error("Updates not supported yet");
+                onUpdate={({ previousValue, value }) => {
+                  dispatch(
+                    actions.replaceContextData({
+                      prevId: previousValue,
+                      id: value,
+                      title: "", // TODO: add the document title
+                    }),
+                  );
                 }}
-                data={documentState.originalContextData}
               />
             </div>
             <PositionedWrapper isSplitMode={isSplitMode}>

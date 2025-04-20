@@ -2,8 +2,8 @@ import { type BaseAction } from "document-model";
 import type {
   AddContextDataInput,
   RemoveContextDataInput,
-  SetProvenanceInput,
   SetNotionIdInput,
+  ReplaceContextDataInput,
 } from "../types.js";
 
 export type AddContextDataAction = BaseAction<
@@ -16,19 +16,19 @@ export type RemoveContextDataAction = BaseAction<
   RemoveContextDataInput,
   "global"
 >;
-export type SetProvenanceAction = BaseAction<
-  "SET_PROVENANCE",
-  SetProvenanceInput,
-  "global"
->;
 export type SetNotionIdAction = BaseAction<
   "SET_NOTION_ID",
   SetNotionIdInput,
+  "global"
+>;
+export type ReplaceContextDataAction = BaseAction<
+  "REPLACE_CONTEXT_DATA",
+  ReplaceContextDataInput,
   "global"
 >;
 
 export type AtlasScopeContextAction =
   | AddContextDataAction
   | RemoveContextDataAction
-  | SetProvenanceAction
-  | SetNotionIdAction;
+  | SetNotionIdAction
+  | ReplaceContextDataAction;

@@ -17,9 +17,9 @@ export const documentModel: DocumentModelState = {
       state: {
         global: {
           schema:
-            'type AtlasGroundingState {\n  """\n    Full name of the Grounding document entity.  \n  """\n  name: String\n\n  """\n    Unique document number assigned to the Grounding document within Atlas.  \n  """\n  docNo: String\n\n  """\n    Parent entity that this Grounding document belongs to.  \n    This is a reference to another Atlas document.\n  """\n  parent: GDocumentLink!\n\n  """\n    The type of the Grounding document within Atlas.  \n    Example: Tenet, Original Context Data, Active Data.\n  """\n  atlasType: GAtlasType!\n\n  """\n    Entire content body of the Grounding document within Atlas.  \n  """\n  content: String\n\n  """\n    Master status of the Grounding document as managed by the Atlas Axis facilitator group.  \n  """\n  masterStatus: GStatus!\n\n  """\n    Document tags managed by the Atlas Axis facilitator group for classification.  \n  """\n  globalTags: [GGlobalTag!]!\n\n  """\n    References to other Atlas entities that are linked to this Grounding document.  \n  """\n  references: [GDocumentLink!]!\n\n  """\n    List of Atlas documents that were relevant for the creation of this Grounding document.  \n  """\n  originalContextData: [GDocumentLink!]!\n\n  """\n    Link to the original P0hub Notion environment where this document was first created or referenced.\n  """\n  provenance: [URL!]!\n\n  """\n    Original Notion document ID of the Grounding document.  \n    Used for cross-system referencing and linking back to the original Notion source.\n  """\n  notionId: String\n}\n\n"""\n   Reference to a document within Atlas with optional name and document number for display reasons. \n"""\n\ntype GDocumentLink {\n  id: PHID!\n  name: OLabel\n  docNo: String \n}\n\n"""\n  Domain (i.e., Atlas) specific document types with the same document model global schema.  \n"""\nenum GAtlasType {\n  TENET\n  ORIGINAL_CONTEXT_DATA\n  ACTIVE_DATA\n}\n\n"""\n  Defines the lifecycle stage of the Grounding document within Atlas.  \n"""\nenum GStatus {\n  PLACEHOLDER\n  PROVISIONAL\n  APPROVED\n  DEFERRED\n  ARCHIVED\n}\n\n"""\n  These global tags are used for classification in Grounding documents.  \n"""\nenum GGlobalTag {\n  SCOPE_ADVISOR\n  AVC\n  CAIS\n  ML_LOW_PRIORITY\n  EXTERNAL_REFERENCE\n  DAO_TOOLKIT\n  ML_DEFER\n  PURPOSE_SYSTEM\n  NEWCHAIN\n  ML_SUPPORT_DOCS_NEEDED\n  TWO_STAGE_BRIDGE\n  ECOSYSTEM_INTELLIGENCE\n  RECURSIVE_IMPROVEMENT\n  LEGACY_TERM_USE_APPROVED\n}\n',
+            'type AtlasGroundingState {\n  """\n  Unique document number assigned to the Grounding document within Atlas.\n  """\n  docNo: String\n  """\n  Full name of the Grounding document entity.  \n  """\n  name: String\n  """\n  Parent entity that this Grounding document belongs to.  \n  This is a reference to another Atlas document.\n  """\n  parent: GDocumentLink!\n  """\n  The type of the Grounding document within Atlas.  \n  Example: Tenet, Original Context Data, Active Data.\n  """\n  atlasType: GAtlasType!\n  """\n  Entire content body of the Grounding document within Atlas.  \n  """\n  content: String\n  """\n  Master status of the Grounding document as managed by the Atlas Axis facilitator group.  \n  """\n  masterStatus: GStatus!\n  """\n  Document tags managed by the Atlas Axis facilitator group for classification.  \n  """\n  globalTags: [GGlobalTag!]!\n\n  """\n    List of Atlas documents that were relevant for the creation of this Grounding document.  \n  """\n  originalContextData: [GDocumentLink!]!\n\n  """\n    Original Notion document ID of the Grounding document.  \n    Used for cross-system referencing and linking back to the original Notion source.\n  """\n  notionId: String\n}\n\n"""\n   Reference to a document within Atlas with optional name and document number for display reasons. \n"""\n\ntype GDocumentLink {\n  id: PHID!\n  title: OLabel\n  docNo: String \n}\n\n"""\n  Domain (i.e., Atlas) specific document types with the same document model global schema.  \n"""\nenum GAtlasType {\n  TENET\n  ORIGINAL_CONTEXT_DATA\n  ACTIVE_DATA\n}\n\n"""\n  Defines the lifecycle stage of the Grounding document within Atlas.  \n"""\nenum GStatus {\n  PLACEHOLDER\n  PROVISIONAL\n  APPROVED\n  DEFERRED\n  ARCHIVED\n}\n\n"""\n  These global tags are used for classification in Grounding documents.  \n"""\nenum GGlobalTag {\n  SCOPE_ADVISOR\n  AVC\n  CAIS\n  ML_LOW_PRIORITY\n  EXTERNAL_REFERENCE\n  DAO_TOOLKIT\n  ML_DEFER\n  PURPOSE_SYSTEM\n  NEWCHAIN\n  ML_SUPPORT_DOCS_NEEDED\n  TWO_STAGE_BRIDGE\n  ECOSYSTEM_INTELLIGENCE\n  RECURSIVE_IMPROVEMENT\n  LEGACY_TERM_USE_APPROVED\n}\n',
           initialValue:
-            '"{\\n  \\"name\\": \\"\\",\\n  \\"docNo\\": \\"\\",\\n  \\"parent\\": {\\n    \\"id\\": \\"\\",\\n    \\"name\\": \\"\\",\\n    \\"docNo\\": \\"\\"\\n  },\\n  \\"atlasType\\": \\"TENET\\",\\n  \\"content\\": \\"\\",\\n  \\"masterStatus\\": \\"PLACEHOLDER\\",\\n  \\"globalTags\\": [],\\n  \\"references\\": [],\\n  \\"originalContextData\\": [],\\n  \\"provenance\\": [],\\n  \\"notionId\\": \\"\\"\\n}"',
+            '"{\\n  \\"docNo\\": \\"\\",\\n  \\"name\\": \\"\\",\\n  \\"parent\\": {\\n    \\"id\\": \\"\\",\\n    \\"title\\": \\"\\",\\n    \\"docNo\\": \\"\\"\\n  },\\n  \\"atlasType\\": \\"TENET\\",\\n  \\"content\\": \\"\\",\\n  \\"masterStatus\\": \\"PLACEHOLDER\\",\\n  \\"globalTags\\": [],\\n  \\"originalContextData\\": [],\\n  \\"notionId\\": \\"\\"\\n}"',
           examples: [],
         },
         local: {
@@ -36,20 +36,9 @@ export const documentModel: DocumentModelState = {
           operations: [
             {
               id: "pbTnKZf0S+fzRub/1pWrD5zbNsk=",
-              name: "SET_GROUNDING_NAME",
+              name: "SET_NAME",
               description: "",
-              schema: "input SetGroundingNameInput {\n  name: String!\n}",
-              template: "",
-              reducer: "",
-              errors: [],
-              examples: [],
-              scope: "global",
-            },
-            {
-              id: "VyLF4PhtTbRi/adkmeHIo700dzE=",
-              name: "SET_DOC_NUMBER",
-              description: "",
-              schema: "input SetDocNumberInput {\n  docNo: String! \n}",
+              schema: "input SetNameInput {\n  name: String!\n}",
               template: "",
               reducer: "",
               errors: [],
@@ -95,7 +84,18 @@ export const documentModel: DocumentModelState = {
               name: "SET_PARENT",
               description: "",
               schema:
-                "input SetParentInput {\n  id: PHID!\n  name: OLabel \n  docNo: String\n}",
+                "input SetParentInput {\n  id: PHID!\n  title: OLabel \n  docNo: String\n}",
+              template: "",
+              reducer: "",
+              errors: [],
+              examples: [],
+              scope: "global",
+            },
+            {
+              id: "nqmnJdd09VZVI2+JAMxXnBompAs=",
+              name: "SET_DOCUMENT_NUMBER",
+              description: "",
+              schema: "input SetDocumentNumberInput {\n  docNo: String\n}",
               template: "",
               reducer: "",
               errors: [],
@@ -143,7 +143,7 @@ export const documentModel: DocumentModelState = {
               name: "ADD_CONTEXT_DATA",
               description: "",
               schema:
-                "input AddContextDataInput {\n  id: PHID!\n  name: String\n  docNo: String\n}",
+                "input AddContextDataInput {\n  id: PHID!\n  title: String\n  docNo: String\n}",
               template: "",
               reducer: "",
               errors: [],
@@ -162,17 +162,6 @@ export const documentModel: DocumentModelState = {
               scope: "global",
             },
             {
-              id: "T9esDJaav0Urn7+xzXMG06+IvyI=",
-              name: "SET_PROVENANCE",
-              description: "",
-              schema: "input SetProvenanceInput {\n  provenance: [URL!]!\n}",
-              template: "",
-              reducer: "",
-              errors: [],
-              examples: [],
-              scope: "global",
-            },
-            {
               id: "sC5gxkpmz59EDlC1AG5kyfCR/u8=",
               name: "SET_NOTION_ID",
               description: "",
@@ -184,22 +173,11 @@ export const documentModel: DocumentModelState = {
               scope: "global",
             },
             {
-              id: "xvrIoaQIDL1GXht7pF9n+fdkZoM=",
-              name: "ADD_REFERENCE",
+              id: "pgtSuJZf1jPq2NdOci+DlC1pxdw=",
+              name: "REPLACE_CONTEXT_DATA",
               description: "",
               schema:
-                "input AddReferenceInput {\n  id: PHID!\n  name: String\n  docNo: String\n}",
-              template: "",
-              reducer: "",
-              errors: [],
-              examples: [],
-              scope: "global",
-            },
-            {
-              id: "zR3Q9tOd5g2jKfDm0HpMF88zUM4=",
-              name: "REMOVE_REFERENCE",
-              description: "",
-              schema: "input RemoveReferenceInput {\n  id: PHID!\n}",
+                "input ReplaceContextDataInput {\n  prevId:PHID!\n  id: PHID!\n  title: String\n  docNo: String\n}",
               template: "",
               reducer: "",
               errors: [],

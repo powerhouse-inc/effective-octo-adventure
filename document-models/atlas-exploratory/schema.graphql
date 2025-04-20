@@ -15,30 +15,30 @@ scalar Amount_Currency
 scalar Amount_Crypto
 scalar Amount
 type AtlasExploratoryState {
-  
   """
-  Full name of the Grounding document entity.  
-  """
-  
-  name: String
-  """
-  Unique document number assigned to the Grounding document within Atlas.  
+  Unique document number assigned to the Exploratory document within Atlas.
   """
   docNo: String
   """
-  Parent entity that this Grounding document belongs to.  
+  Full name of the Exploratory document entity.  
+  """
+  name: String
+  """
+  Parent entity that this Exploratory document belongs to.  
   This is a reference to another Atlas document.
   """
   parent: PHID!
   """
-  The type of the Grounding document within Atlas.  
+  The type of the Exploratory document within Atlas.  
   Example: Tenet, Original Context Data, Active Data.
   """
   atlasType: EAtlasType!
-  """Entire content body of the Grounding document within Atlas.  """
+  """
+  Entire content body of the Exploratory document within Atlas.
+  """
   content: String
   """
-  Master status of the Grounding document as managed by the Atlas Axis facilitator group.  
+  Master status of the Exploratory document as managed by the Atlas Axis facilitator group.  
   """
   masterStatus: EStatus!
   """
@@ -46,36 +46,22 @@ type AtlasExploratoryState {
   """
   globalTags: [EGlobalTag!]!
   """
-  References to other Atlas entities that are linked to this Grounding document.  
-  """
-  references: [PHID!]!
-  """
-  List of Atlas documents that were relevant for the creation of this Grounding document.  
+  List of Atlas documents that were relevant for the creation of this Exploratory document.  
   """
   originalContextData: [DocumentInfo!]!
   """
-  Link to the original P0hub Notion environment where this document was first created or referenced.
-  """
-  provenance: URL
-  """
-  Original Notion document ID of the Grounding document.  
+  Original Notion document ID of the Exploratory document.  
   Used for cross-system referencing and linking back to the original Notion source.
   """
   notionId: String
-
-"""
-Alignmnet boolean findings. 
-"""
-
-findings: Finding! 
-
-
-"""
-Additional commentary and context for guidance. 
-"""
-
-additionalGuidance: String!
-  
+  """
+  Alignmnet boolean findings. 
+  """
+  findings: Finding! 
+  """
+  Additional commentary and context for guidance. 
+  """
+  additionalGuidance: String!
 }
 
 """
@@ -83,12 +69,11 @@ Reference to a document within Atlas with optional name and document number for 
 """
 type Finding {
   isAligned: Boolean!
-  comment: String
 }
 
 type DocumentInfo {
   id: PHID!
-  name: OLabel
+  title: OLabel
   docNo: String
 }
 
@@ -101,7 +86,9 @@ enum EAtlasType {
   SCENARIO_VARIATION
 }
 
-"""Defines the lifecycle stage of the Grounding document within Atlas.  """
+"""
+Defines the lifecycle stage of the Exploratory document within Atlas.  
+"""
 enum EStatus {
   PLACEHOLDER
   PROVISIONAL
@@ -111,7 +98,7 @@ enum EStatus {
 }
 
 """
-These global tags are used for classification in Grounding documents.  
+These global tags are used for classification in Exploratory documents.  
 """
 enum EGlobalTag {
   SCOPE_ADVISOR
@@ -134,14 +121,9 @@ enum EGlobalTag {
 
 # general
 
-input SetExploratoryNameInput {
+input SetNameInput {
   "Add your inputs here"
   name: String!
-}
-
-input SetDocNumberInput {
-  "Add your inputs here"
-  docNo: String! 
 }
 
 input SetContentInput {
@@ -156,12 +138,7 @@ input SetMasterStatusInput {
 
 input SetParentInput {
   "Add your inputs here"
-  parent: [PHID!]
-}
-
-input RemoveParentInput {
-  "Add your inputs here"
-  parent: [PHID!]
+  parent: PHID!
 }
 
 input SetAtlasTypeInput {
@@ -172,17 +149,10 @@ input SetAtlasTypeInput {
 input SetFindingsInput {
   "Add your inputs here"
   isAligned: Boolean!
-  comment: String!
 }
 
-input SetReferenceInput {
-  "Add your inputs here"
-  newReference: PHID
-}
-
-input RemoveReferenceInput {
-  "Add your inputs here"
-  reference: PHID 
+input SetDocumentNumberInput {
+  docNo: String
 }
 
 # tags
@@ -202,7 +172,7 @@ input RemoveTagsInput {
 input AddContextDataInput {
   "Add your inputs here"
   id: PHID!
-  name: String
+  title: String
   docNo: String
   
 }
@@ -212,23 +182,19 @@ input RemoveContextDataInput {
   id: PHID!
 }
 
-input SetProvenanceInput {
-  "Add your inputs here"
-  provenance: URL
-  
-}
-
 input SetNotionIdInput {
   "Add your inputs here"
   notionID: String
 }
 
-input AddAdditionalGuidanceInput {
+input SetAdditionalGuidanceInput {
   "Add your inputs here"
   additionalGuidance: String!
 }
 
-input RemoveAdditionalGuidanceInput {
-  "Add your inputs here"
-  additionalGuidance: String!
+input ReplaceContextDataInput {
+ prevId: PHID!
+  id: PHID!
+  title: String
+  docNo: String
 }

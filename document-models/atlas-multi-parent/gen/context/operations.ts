@@ -2,10 +2,8 @@ import { type SignalDispatch } from "document-model";
 import {
   type AddContextDataAction,
   type RemoveContextDataAction,
-  type SetProvenanceAction,
+  type ReplaceContextDataAction,
   type SetNotionIdAction,
-  type AddReferenceAction,
-  type RemoveReferenceAction,
 } from "./actions.js";
 import { type AtlasMultiParentState } from "../types.js";
 
@@ -20,24 +18,14 @@ export interface AtlasMultiParentContextOperations {
     action: RemoveContextDataAction,
     dispatch?: SignalDispatch,
   ) => void;
-  setProvenanceOperation: (
+  replaceContextDataOperation: (
     state: AtlasMultiParentState,
-    action: SetProvenanceAction,
+    action: ReplaceContextDataAction,
     dispatch?: SignalDispatch,
   ) => void;
   setNotionIdOperation: (
     state: AtlasMultiParentState,
     action: SetNotionIdAction,
-    dispatch?: SignalDispatch,
-  ) => void;
-  addReferenceOperation: (
-    state: AtlasMultiParentState,
-    action: AddReferenceAction,
-    dispatch?: SignalDispatch,
-  ) => void;
-  removeReferenceOperation: (
-    state: AtlasMultiParentState,
-    action: RemoveReferenceAction,
     dispatch?: SignalDispatch,
   ) => void;
 }

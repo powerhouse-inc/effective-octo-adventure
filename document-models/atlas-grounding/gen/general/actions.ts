@@ -1,23 +1,14 @@
 import { type BaseAction } from "document-model";
 import type {
-  SetGroundingNameInput,
-  SetDocNumberInput,
+  SetNameInput,
   SetContentInput,
   SetMasterStatusInput,
   SetAtlasTypeInput,
   SetParentInput,
+  SetDocumentNumberInput,
 } from "../types.js";
 
-export type SetGroundingNameAction = BaseAction<
-  "SET_GROUNDING_NAME",
-  SetGroundingNameInput,
-  "global"
->;
-export type SetDocNumberAction = BaseAction<
-  "SET_DOC_NUMBER",
-  SetDocNumberInput,
-  "global"
->;
+export type SetNameAction = BaseAction<"SET_NAME", SetNameInput, "global">;
 export type SetContentAction = BaseAction<
   "SET_CONTENT",
   SetContentInput,
@@ -38,11 +29,16 @@ export type SetParentAction = BaseAction<
   SetParentInput,
   "global"
 >;
+export type SetDocumentNumberAction = BaseAction<
+  "SET_DOCUMENT_NUMBER",
+  SetDocumentNumberInput,
+  "global"
+>;
 
 export type AtlasGroundingGeneralAction =
-  | SetGroundingNameAction
-  | SetDocNumberAction
+  | SetNameAction
   | SetContentAction
   | SetMasterStatusAction
   | SetAtlasTypeAction
-  | SetParentAction;
+  | SetParentAction
+  | SetDocumentNumberAction;

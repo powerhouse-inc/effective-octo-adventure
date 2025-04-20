@@ -2,10 +2,8 @@ import { type SignalDispatch } from "document-model";
 import {
   type AddContextDataAction,
   type RemoveContextDataAction,
-  type SetProvenanceAction,
   type SetNotionIdAction,
-  type AddReferenceAction,
-  type RemoveReferenceAction,
+  type ReplaceContextDataAction,
 } from "./actions.js";
 import { type AtlasGroundingState } from "../types.js";
 
@@ -20,24 +18,14 @@ export interface AtlasGroundingContextOperations {
     action: RemoveContextDataAction,
     dispatch?: SignalDispatch,
   ) => void;
-  setProvenanceOperation: (
-    state: AtlasGroundingState,
-    action: SetProvenanceAction,
-    dispatch?: SignalDispatch,
-  ) => void;
   setNotionIdOperation: (
     state: AtlasGroundingState,
     action: SetNotionIdAction,
     dispatch?: SignalDispatch,
   ) => void;
-  addReferenceOperation: (
+  replaceContextDataOperation: (
     state: AtlasGroundingState,
-    action: AddReferenceAction,
-    dispatch?: SignalDispatch,
-  ) => void;
-  removeReferenceOperation: (
-    state: AtlasGroundingState,
-    action: RemoveReferenceAction,
+    action: ReplaceContextDataAction,
     dispatch?: SignalDispatch,
   ) => void;
 }

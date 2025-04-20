@@ -1,23 +1,18 @@
 import { type SignalDispatch } from "document-model";
 import {
-  type SetGroundingNameAction,
-  type SetDocNumberAction,
+  type SetNameAction,
   type SetContentAction,
   type SetMasterStatusAction,
   type SetAtlasTypeAction,
   type SetParentAction,
+  type SetDocumentNumberAction,
 } from "./actions.js";
 import { type AtlasGroundingState } from "../types.js";
 
 export interface AtlasGroundingGeneralOperations {
-  setGroundingNameOperation: (
+  setNameOperation: (
     state: AtlasGroundingState,
-    action: SetGroundingNameAction,
-    dispatch?: SignalDispatch,
-  ) => void;
-  setDocNumberOperation: (
-    state: AtlasGroundingState,
-    action: SetDocNumberAction,
+    action: SetNameAction,
     dispatch?: SignalDispatch,
   ) => void;
   setContentOperation: (
@@ -38,6 +33,11 @@ export interface AtlasGroundingGeneralOperations {
   setParentOperation: (
     state: AtlasGroundingState,
     action: SetParentAction,
+    dispatch?: SignalDispatch,
+  ) => void;
+  setDocumentNumberOperation: (
+    state: AtlasGroundingState,
+    action: SetDocumentNumberAction,
     dispatch?: SignalDispatch,
   ) => void;
 }

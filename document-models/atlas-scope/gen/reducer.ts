@@ -19,22 +19,9 @@ const stateReducer: StateReducer<AtlasScopeDocument> = (
   }
 
   switch (action.type) {
-    case "SET_SCOPE_NAME":
-      z.SetScopeNameInputSchema().parse(action.input);
-      GeneralReducer.setScopeNameOperation(
-        state[action.scope],
-        action,
-        dispatch,
-      );
-      break;
-
-    case "SET_DOC_NUMBER":
-      z.SetDocNumberInputSchema().parse(action.input);
-      GeneralReducer.setDocNumberOperation(
-        state[action.scope],
-        action,
-        dispatch,
-      );
+    case "SET_NAME":
+      z.SetNameInputSchema().parse(action.input);
+      GeneralReducer.setNameOperation(state[action.scope], action, dispatch);
       break;
 
     case "SET_CONTENT":
@@ -45,6 +32,15 @@ const stateReducer: StateReducer<AtlasScopeDocument> = (
     case "SET_MASTER_STATUS":
       z.SetMasterStatusInputSchema().parse(action.input);
       GeneralReducer.setMasterStatusOperation(
+        state[action.scope],
+        action,
+        dispatch,
+      );
+      break;
+
+    case "SET_DOCUMENT_NUMBER":
+      z.SetDocumentNumberInputSchema().parse(action.input);
+      GeneralReducer.setDocumentNumberOperation(
         state[action.scope],
         action,
         dispatch,
@@ -79,18 +75,18 @@ const stateReducer: StateReducer<AtlasScopeDocument> = (
       );
       break;
 
-    case "SET_PROVENANCE":
-      z.SetProvenanceInputSchema().parse(action.input);
-      ContextReducer.setProvenanceOperation(
+    case "SET_NOTION_ID":
+      z.SetNotionIdInputSchema().parse(action.input);
+      ContextReducer.setNotionIdOperation(
         state[action.scope],
         action,
         dispatch,
       );
       break;
 
-    case "SET_NOTION_ID":
-      z.SetNotionIdInputSchema().parse(action.input);
-      ContextReducer.setNotionIdOperation(
+    case "REPLACE_CONTEXT_DATA":
+      z.ReplaceContextDataInputSchema().parse(action.input);
+      ContextReducer.replaceContextDataOperation(
         state[action.scope],
         action,
         dispatch,

@@ -7,25 +7,35 @@
 import { type AtlasScopeContextOperations } from "../../gen/context/operations.js";
 
 export const reducer: AtlasScopeContextOperations = {
-  addContextDataOperation(state, action, dispatch) {
+  addContextDataOperation(state, action) {
     const newContextData = {
       id: action.input.id,
-      name: action.input.name || null,
-      docNo: action.input.docNo || null,
+      title: action.input.title || null,
+      docNo: null,
     };
     state.originalContextData = [...state.originalContextData, newContextData];
   },
 
-  removeContextDataOperation(state, action, dispatch) {
+  removeContextDataOperation(state, action) {
     state.originalContextData = state.originalContextData.filter(
       (contextData) => contextData.id !== action.input.id,
     );
   },
-  setProvenanceOperation(state, action, dispatch) {
-    state.provenance = action.input.provenance || null;
+
+  replaceContextDataOperation(state, action) {
+    state.originalContextData = state.originalContextData.map((contextData) => {
+      if (contextData.id === action.input.prevId) {
+        return {
+          id: action.input.id,
+          title: action.input.title || null,
+          docNo: null,
+        };
+      }
+      return contextData;
+    });
   },
 
-  setNotionIdOperation(state, action, dispatch) {
+  setNotionIdOperation(state, action) {
     state.notionId = action.input.notionID || null;
   },
 };

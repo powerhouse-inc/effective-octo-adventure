@@ -5,11 +5,10 @@ import { type Subgraph } from "@powerhousedao/reactor-api";
 import { addFile } from "document-drive";
 import { actions } from "../../document-models/atlas-exploratory/index.js";
 import { generateId, hashKey } from "document-model";
-// import { type IResolvers } from "@graphql-tools/utils";
 
 const DEFAULT_DRIVE_ID = "powerhouse";
 
-export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
+export const getResolvers = (subgraph: Subgraph) => {
   const reactor = subgraph.reactor;
 
   return {
@@ -20,14 +19,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
             const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
             const docId: string = args.docId || "";
             const doc = await reactor.getDocument(driveId, docId);
-            return {
-              id: docId,
-              driveId: driveId,
-              ...doc,
-              state: doc.state.global,
-              stateJSON: doc.state.global,
-              revision: doc.revision.global,
-            };
+            return doc;
           },
           getDocuments: async (args: any) => {
             const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
@@ -40,7 +32,6 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
                   driveId: driveId,
                   ...doc,
                   state: doc.state.global,
-                  stateJSON: doc.state.global,
                   revision: doc.revision.global,
                 };
               }),
@@ -82,7 +73,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
         return docId;
       },
 
-      AtlasExploratory_setExploratoryName: async (_: any, args: any) => {
+      AtlasExploratory_setName: async (_: any, args: any) => {
         const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
@@ -90,21 +81,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
         await reactor.addAction(
           driveId,
           docId,
-          actions.setExploratoryName({ ...args.input }),
-        );
-
-        return doc.revision.global + 1;
-      },
-
-      AtlasExploratory_setDocNumber: async (_: any, args: any) => {
-        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
-        const docId: string = args.docId || "";
-        const doc = await reactor.getDocument(driveId, docId);
-
-        await reactor.addAction(
-          driveId,
-          docId,
-          actions.setDocNumber({ ...args.input }),
+          actions.setName({ ...args.input }),
         );
 
         return doc.revision.global + 1;
@@ -152,20 +129,6 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
         return doc.revision.global + 1;
       },
 
-      AtlasExploratory_removeParent: async (_: any, args: any) => {
-        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
-        const docId: string = args.docId || "";
-        const doc = await reactor.getDocument(driveId, docId);
-
-        await reactor.addAction(
-          driveId,
-          docId,
-          actions.removeParent({ ...args.input }),
-        );
-
-        return doc.revision.global + 1;
-      },
-
       AtlasExploratory_setAtlasType: async (_: any, args: any) => {
         const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
@@ -194,7 +157,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
         return doc.revision.global + 1;
       },
 
-      AtlasExploratory_setReference: async (_: any, args: any) => {
+      AtlasExploratory_setDocumentNumber: async (_: any, args: any) => {
         const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
@@ -202,21 +165,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
         await reactor.addAction(
           driveId,
           docId,
-          actions.setReference({ ...args.input }),
-        );
-
-        return doc.revision.global + 1;
-      },
-
-      AtlasExploratory_removeReference: async (_: any, args: any) => {
-        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
-        const docId: string = args.docId || "";
-        const doc = await reactor.getDocument(driveId, docId);
-
-        await reactor.addAction(
-          driveId,
-          docId,
-          actions.removeReference({ ...args.input }),
+          actions.setDocumentNumber({ ...args.input }),
         );
 
         return doc.revision.global + 1;
@@ -278,20 +227,6 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
         return doc.revision.global + 1;
       },
 
-      AtlasExploratory_setProvenance: async (_: any, args: any) => {
-        const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
-        const docId: string = args.docId || "";
-        const doc = await reactor.getDocument(driveId, docId);
-
-        await reactor.addAction(
-          driveId,
-          docId,
-          actions.setProvenance({ ...args.input }),
-        );
-
-        return doc.revision.global + 1;
-      },
-
       AtlasExploratory_setNotionId: async (_: any, args: any) => {
         const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
@@ -306,7 +241,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
         return doc.revision.global + 1;
       },
 
-      AtlasExploratory_addAdditionalGuidance: async (_: any, args: any) => {
+      AtlasExploratory_setAdditionalGuidance: async (_: any, args: any) => {
         const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
@@ -314,13 +249,13 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
         await reactor.addAction(
           driveId,
           docId,
-          actions.addAdditionalGuidance({ ...args.input }),
+          actions.setAdditionalGuidance({ ...args.input }),
         );
 
         return doc.revision.global + 1;
       },
 
-      AtlasExploratory_removeAdditionalGuidance: async (_: any, args: any) => {
+      AtlasExploratory_replaceContextData: async (_: any, args: any) => {
         const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
@@ -328,7 +263,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
         await reactor.addAction(
           driveId,
           docId,
-          actions.removeAdditionalGuidance({ ...args.input }),
+          actions.replaceContextData({ ...args.input }),
         );
 
         return doc.revision.global + 1;

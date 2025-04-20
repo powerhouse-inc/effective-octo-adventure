@@ -7,12 +7,12 @@ import type {
   GlobalTag,
   RemoveContextDataInput,
   RemoveTagsInput,
+  ReplaceContextDataInput,
   SetContentInput,
-  SetDocNumberInput,
+  SetDocumentNumberInput,
   SetMasterStatusInput,
+  SetNameInput,
   SetNotionIdInput,
-  SetProvenanceInput,
-  SetScopeNameInput,
   Status,
 } from "./types.js";
 
@@ -69,7 +69,7 @@ export function AddContextDataInputSchema(): z.ZodObject<
   return z.object({
     docNo: z.string().nullish(),
     id: z.string(),
-    name: z.string().nullish(),
+    title: z.string().nullish(),
   });
 }
 
@@ -87,11 +87,10 @@ export function AtlasScopeStateSchema(): z.ZodObject<
     content: z.string().nullable(),
     docNo: z.string().nullable(),
     globalTags: z.array(GlobalTagSchema),
-    masterStatus: StatusSchema.nullable(),
+    masterStatus: StatusSchema,
     name: z.string().nullable(),
     notionId: z.string().nullable(),
     originalContextData: z.array(DocumentInfoSchema()),
-    provenance: z.string().url().nullable(),
   });
 }
 
@@ -100,7 +99,7 @@ export function DocumentInfoSchema(): z.ZodObject<Properties<DocumentInfo>> {
     __typename: z.literal("DocumentInfo").optional(),
     docNo: z.string().nullable(),
     id: z.string(),
-    name: z.string().nullable(),
+    title: z.string().nullable(),
   });
 }
 
@@ -120,6 +119,17 @@ export function RemoveTagsInputSchema(): z.ZodObject<
   });
 }
 
+export function ReplaceContextDataInputSchema(): z.ZodObject<
+  Properties<ReplaceContextDataInput>
+> {
+  return z.object({
+    docNo: z.string().nullish(),
+    id: z.string(),
+    prevId: z.string(),
+    title: z.string().nullish(),
+  });
+}
+
 export function SetContentInputSchema(): z.ZodObject<
   Properties<SetContentInput>
 > {
@@ -128,11 +138,11 @@ export function SetContentInputSchema(): z.ZodObject<
   });
 }
 
-export function SetDocNumberInputSchema(): z.ZodObject<
-  Properties<SetDocNumberInput>
+export function SetDocumentNumberInputSchema(): z.ZodObject<
+  Properties<SetDocumentNumberInput>
 > {
   return z.object({
-    docNo: z.string(),
+    docNo: z.string().nullish(),
   });
 }
 
@@ -144,26 +154,16 @@ export function SetMasterStatusInputSchema(): z.ZodObject<
   });
 }
 
+export function SetNameInputSchema(): z.ZodObject<Properties<SetNameInput>> {
+  return z.object({
+    name: z.string(),
+  });
+}
+
 export function SetNotionIdInputSchema(): z.ZodObject<
   Properties<SetNotionIdInput>
 > {
   return z.object({
     notionID: z.string().nullish(),
-  });
-}
-
-export function SetProvenanceInputSchema(): z.ZodObject<
-  Properties<SetProvenanceInput>
-> {
-  return z.object({
-    provenance: z.string().url().nullish(),
-  });
-}
-
-export function SetScopeNameInputSchema(): z.ZodObject<
-  Properties<SetScopeNameInput>
-> {
-  return z.object({
-    name: z.string(),
   });
 }

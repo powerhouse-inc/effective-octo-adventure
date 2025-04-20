@@ -55,22 +55,17 @@ export type Scalars = {
   URL: { input: string; output: string };
 };
 
+/** docNo field not needed for this?   */
 export type AddContextDataInput = {
   docNo?: InputMaybe<Scalars["String"]["input"]>;
   id: Scalars["PHID"]["input"];
-  name?: InputMaybe<Scalars["OLabel"]["input"]>;
+  title?: InputMaybe<Scalars["OLabel"]["input"]>;
 };
 
 export type AddParentInput = {
   docNo?: InputMaybe<Scalars["String"]["input"]>;
   id: Scalars["PHID"]["input"];
-  name?: InputMaybe<Scalars["OLabel"]["input"]>;
-};
-
-export type AddReferenceInput = {
-  docNo?: InputMaybe<Scalars["String"]["input"]>;
-  id: Scalars["PHID"]["input"];
-  name?: InputMaybe<Scalars["OLabel"]["input"]>;
+  title?: InputMaybe<Scalars["OLabel"]["input"]>;
 };
 
 export type AddTagsInput = {
@@ -79,36 +74,42 @@ export type AddTagsInput = {
 
 export type AtlasMultiParentState = {
   /**
-   * The type of the Grounding document within Atlas.
+   * The type of the MultiParent document within Atlas.
    * Example: Tenet, Original Context Data, Active Data.
    */
   atlasType: MAtlasType | `${MAtlasType}`;
-  /** Entire content body of the Grounding document within Atlas. */
+  /** Entire content body of the MultiParent document within Atlas. */
   content: Maybe<Scalars["String"]["output"]>;
-  /** Unique document number assigned to the Grounding document within Atlas.   */
-  docNo: Maybe<Scalars["String"]["output"]>;
   /** Document tags managed by the Atlas Axis facilitator group for classification.   */
   globalTags: Array<MGlobalTag | `${MGlobalTag}`>;
-  /** Master status of the Grounding document as managed by the Atlas Axis facilitator group.   */
+  /** Master status of the MultiParent document as managed by the Atlas Axis facilitator group.   */
   masterStatus: MStatus | `${MStatus}`;
-  /** Full name of the Grounding document entity. */
+  /** Full name of the MultiParent document entity. */
   name: Maybe<Scalars["String"]["output"]>;
   /**
-   * Original Notion document ID of the Grounding document.
+   * Original Notion document ID of the MultiParent document.
    * Used for cross-system referencing and linking back to the original Notion source.
    */
   notionId: Maybe<Scalars["String"]["output"]>;
-  /** List of Atlas documents that were relevant for the creation of this Grounding document.   */
+  /**
+   *   List of Atlas documents that were relevant for the creation of this MultiParent document.
+   *
+   *   Should the subfields of the MDocumentLink object differ from the subfields of the MDocumentLink for Parent? Potentially we don't need docNo field.
+   *
+   * Change a subfield "name" to "title" in MDocumentLink object.
+   *
+   *
+   *   type MDocumentCDLink {
+   *   id: PHID!
+   *   title: OLabel
+   * }
+   */
   originalContextData: Array<MDocumentLink>;
   /**
-   * Parent entity that this Grounding document belongs to.
+   * Parent entity that this MultiParent document belongs to.
    * This is a reference to another Atlas document.
    */
   parents: Array<MDocumentLink>;
-  /** Link to the original P0hub Notion environment where this document was first created or referenced. */
-  provenance: Array<Scalars["URL"]["output"]>;
-  /** References to other Atlas entities that are linked to this Grounding document.   */
-  references: Array<MDocumentLink>;
 };
 
 /** Domain (i.e., Atlas) specific document types with the same document model global schema.   */
@@ -118,10 +119,10 @@ export type MAtlasType = "ANNOTATION" | "NEEDED_RESEARCH";
 export type MDocumentLink = {
   docNo: Maybe<Scalars["String"]["output"]>;
   id: Scalars["PHID"]["output"];
-  name: Maybe<Scalars["OLabel"]["output"]>;
+  title: Maybe<Scalars["OLabel"]["output"]>;
 };
 
-/** These global tags are used for classification in Grounding documents.  */
+/** These global tags are used for classification in MultiParent documents.  */
 export type MGlobalTag =
   | "AVC"
   | "CAIS"
@@ -138,7 +139,7 @@ export type MGlobalTag =
   | "SCOPE_ADVISOR"
   | "TWO_STAGE_BRIDGE";
 
-/** Defines the lifecycle stage of the Grounding document within Atlas. */
+/** Defines the lifecycle stage of the MultiParent document within Atlas. */
 export type MStatus =
   | "APPROVED"
   | "ARCHIVED"
@@ -154,12 +155,23 @@ export type RemoveParentInput = {
   id: Scalars["PHID"]["input"];
 };
 
-export type RemoveReferenceInput = {
-  id: Scalars["PHID"]["input"];
-};
-
 export type RemoveTagsInput = {
   tags: Array<MGlobalTag | `${MGlobalTag}`>;
+};
+
+/** docNo field not needed for this?   */
+export type ReplaceContextDataInput = {
+  docNo?: InputMaybe<Scalars["String"]["input"]>;
+  id: Scalars["PHID"]["input"];
+  prevId: Scalars["PHID"]["input"];
+  title?: InputMaybe<Scalars["OLabel"]["input"]>;
+};
+
+export type ReplaceParentInput = {
+  docNo?: InputMaybe<Scalars["String"]["input"]>;
+  id: Scalars["PHID"]["input"];
+  prevID: Scalars["PHID"]["input"];
+  title?: InputMaybe<Scalars["OLabel"]["input"]>;
 };
 
 export type SetAtlasTypeInput = {
@@ -170,23 +182,15 @@ export type SetContentInput = {
   content: Scalars["String"]["input"];
 };
 
-export type SetDocNumberInput = {
-  docNo: Scalars["String"]["input"];
-};
-
 export type SetMasterStatusInput = {
   masterStatus: MStatus | `${MStatus}`;
 };
 
-export type SetMultiparentNameInput = {
-  /** Add your inputs here */
+/** Naming convention for operations, where we don't include the specific document type name in the name.  */
+export type SetNameInput = {
   name: Scalars["String"]["input"];
 };
 
 export type SetNotionIdInput = {
-  notionID: Scalars["String"]["input"];
-};
-
-export type SetProvenanceInput = {
-  provenance: Array<Scalars["URL"]["input"]>;
+  notionId: Scalars["String"]["input"];
 };

@@ -1,45 +1,30 @@
 import { createAction } from "document-model";
 import {
   z,
-  type SetExploratoryNameInput,
-  type SetDocNumberInput,
+  type SetNameInput,
   type SetContentInput,
   type SetMasterStatusInput,
   type SetParentInput,
-  type RemoveParentInput,
   type SetAtlasTypeInput,
   type SetFindingsInput,
-  type SetReferenceInput,
-  type RemoveReferenceInput,
+  type SetDocumentNumberInput,
 } from "../types.js";
 import {
-  type SetExploratoryNameAction,
-  type SetDocNumberAction,
+  type SetNameAction,
   type SetContentAction,
   type SetMasterStatusAction,
   type SetParentAction,
-  type RemoveParentAction,
   type SetAtlasTypeAction,
   type SetFindingsAction,
-  type SetReferenceAction,
-  type RemoveReferenceAction,
+  type SetDocumentNumberAction,
 } from "./actions.js";
 
-export const setExploratoryName = (input: SetExploratoryNameInput) =>
-  createAction<SetExploratoryNameAction>(
-    "SET_EXPLORATORY_NAME",
+export const setName = (input: SetNameInput) =>
+  createAction<SetNameAction>(
+    "SET_NAME",
     { ...input },
     undefined,
-    z.SetExploratoryNameInputSchema,
-    "global",
-  );
-
-export const setDocNumber = (input: SetDocNumberInput) =>
-  createAction<SetDocNumberAction>(
-    "SET_DOC_NUMBER",
-    { ...input },
-    undefined,
-    z.SetDocNumberInputSchema,
+    z.SetNameInputSchema,
     "global",
   );
 
@@ -70,15 +55,6 @@ export const setParent = (input: SetParentInput) =>
     "global",
   );
 
-export const removeParent = (input: RemoveParentInput) =>
-  createAction<RemoveParentAction>(
-    "REMOVE_PARENT",
-    { ...input },
-    undefined,
-    z.RemoveParentInputSchema,
-    "global",
-  );
-
 export const setAtlasType = (input: SetAtlasTypeInput) =>
   createAction<SetAtlasTypeAction>(
     "SET_ATLAS_TYPE",
@@ -97,20 +73,11 @@ export const setFindings = (input: SetFindingsInput) =>
     "global",
   );
 
-export const setReference = (input: SetReferenceInput) =>
-  createAction<SetReferenceAction>(
-    "SET_REFERENCE",
+export const setDocumentNumber = (input: SetDocumentNumberInput) =>
+  createAction<SetDocumentNumberAction>(
+    "SET_DOCUMENT_NUMBER",
     { ...input },
     undefined,
-    z.SetReferenceInputSchema,
-    "global",
-  );
-
-export const removeReference = (input: RemoveReferenceInput) =>
-  createAction<RemoveReferenceAction>(
-    "REMOVE_REFERENCE",
-    { ...input },
-    undefined,
-    z.RemoveReferenceInputSchema,
+    z.SetDocumentNumberInputSchema,
     "global",
   );

@@ -61,12 +61,6 @@ export type AddContextDataInput = {
   name?: InputMaybe<Scalars["String"]["input"]>;
 };
 
-export type AddReferenceInput = {
-  docNo?: InputMaybe<Scalars["String"]["input"]>;
-  id: Scalars["PHID"]["input"];
-  name?: InputMaybe<Scalars["OLabel"]["input"]>;
-};
-
 export type AddTagsInput = {
   tags: Array<FGlobalTag | `${FGlobalTag}`>;
 };
@@ -79,7 +73,7 @@ export type AtlasFoundationState = {
   atlasType: FAtlasType | `${FAtlasType}`;
   /** Entire content body of the Foundation document within Atlas.  */
   content: Maybe<Scalars["String"]["output"]>;
-  /** Unique document number assigned to the Foundation entity within Atlas. */
+  /** Unique document number assigned to the Foundation document within Atlas. */
   docNo: Maybe<Scalars["String"]["output"]>;
   /** Document tags managed by the Atlas Axis facilitator group for classification. */
   globalTags: Array<FGlobalTag | `${FGlobalTag}`>;
@@ -99,10 +93,6 @@ export type AtlasFoundationState = {
    * This is a reference to another Atlas document.
    */
   parent: Maybe<FDocumentLink>;
-  /** Link to the original P0hub Notion environment where this document was first created or referenced. */
-  provenance: Array<Scalars["URL"]["output"]>;
-  /** References to other Atlas entities that are linked to this Foundation. */
-  references: Array<FDocumentLink>;
 };
 
 /** Domain (i.e., Atlas) specific document types with the same document model global schema.  */
@@ -116,7 +106,7 @@ export type FAtlasType =
 export type FDocumentLink = {
   docNo: Maybe<Scalars["String"]["output"]>;
   id: Scalars["PHID"]["output"];
-  name: Maybe<Scalars["OLabel"]["output"]>;
+  title: Maybe<Scalars["OLabel"]["output"]>;
 };
 
 /** These global tags differ from the ones in Scopes.  */
@@ -147,12 +137,15 @@ export type RemoveContextDataInput = {
   id: Scalars["PHID"]["input"];
 };
 
-export type RemoveReferenceInput = {
-  id: Scalars["PHID"]["input"];
-};
-
 export type RemoveTagsInput = {
   tags: Array<FGlobalTag | `${FGlobalTag}`>;
+};
+
+export type ReplaceContextDataInput = {
+  docNo?: InputMaybe<Scalars["String"]["input"]>;
+  id: Scalars["PHID"]["input"];
+  prevId: Scalars["PHID"]["input"];
+  title?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type SetAtlasTypeInput = {
@@ -163,16 +156,16 @@ export type SetContentInput = {
   content: Scalars["String"]["input"];
 };
 
-export type SetDocNumberInput = {
-  docNo: Scalars["String"]["input"];
-};
-
-export type SetFoundationNameInput = {
-  name: Scalars["String"]["input"];
+export type SetDocumentNumberInput = {
+  docNo?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type SetMasterStatusInput = {
   masterStatus: FStatus | `${FStatus}`;
+};
+
+export type SetNameInput = {
+  name: Scalars["String"]["input"];
 };
 
 export type SetNotionIdInput = {
@@ -182,9 +175,5 @@ export type SetNotionIdInput = {
 export type SetParentInput = {
   docNo?: InputMaybe<Scalars["String"]["input"]>;
   id: Scalars["PHID"]["input"];
-  name?: InputMaybe<Scalars["OLabel"]["input"]>;
-};
-
-export type SetProvenanceInput = {
-  provenance: Array<Scalars["URL"]["input"]>;
+  title?: InputMaybe<Scalars["OLabel"]["input"]>;
 };

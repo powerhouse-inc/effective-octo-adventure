@@ -15,13 +15,12 @@ import {
 import { reducer } from "./reducer.js";
 
 export const initialGlobalState: AtlasScopeState = {
-  name: "",
   docNo: "",
+  name: "",
   content: "",
   masterStatus: "PLACEHOLDER",
   globalTags: [],
   originalContextData: [],
-  provenance: "",
   notionId: "",
 };
 export const initialLocalState: AtlasScopeLocalState = {};

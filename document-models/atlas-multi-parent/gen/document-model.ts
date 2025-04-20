@@ -16,9 +16,9 @@ export const documentModel: DocumentModelState = {
       state: {
         global: {
           schema:
-            'type AtlasMultiParentState {\n  """\n  Full name of the Grounding document entity.\n  """\n  name: String\n  \n  """\n  Unique document number assigned to the Grounding document within Atlas.  \n  """\n  docNo: String\n  \n  """\n  Parent entity that this Grounding document belongs to.  \n  This is a reference to another Atlas document.\n  """\n  parents: [MDocumentLink!]!\n  \n  """\n  The type of the Grounding document within Atlas.  \n  Example: Tenet, Original Context Data, Active Data.\n  """\n  atlasType: MAtlasType!\n  \n  """\n  Entire content body of the Grounding document within Atlas.\n  """\n  content: String\n  \n  """\n  Master status of the Grounding document as managed by the Atlas Axis facilitator group.  \n  """\n  masterStatus: MStatus!\n  \n  """\n  Document tags managed by the Atlas Axis facilitator group for classification.  \n  """\n  globalTags: [MGlobalTag!]!\n  \n  """\n  References to other Atlas entities that are linked to this Grounding document.  \n  """\n  references: [MDocumentLink!]!\n  \n  """\n  List of Atlas documents that were relevant for the creation of this Grounding document.  \n  """\n  originalContextData: [MDocumentLink!]!\n  \n  """\n  Link to the original P0hub Notion environment where this document was first created or referenced.\n  """\n  provenance: [URL!]!\n  \n  """\n  Original Notion document ID of the Grounding document.  \n  Used for cross-system referencing and linking back to the original Notion source.\n  """\n  notionId: String\n}\n\n"""\nReference to a document within Atlas with optional name and document number for display reasons. \n"""\ntype MDocumentLink {\n  id: PHID!\n  name: OLabel\n  docNo: String\n}\n\n"""\nDomain (i.e., Atlas) specific document types with the same document model global schema.  \n"""\nenum MAtlasType {\n  ANNOTATION\n  NEEDED_RESEARCH \n}\n\n"""\nDefines the lifecycle stage of the Grounding document within Atlas.\n"""\nenum MStatus {\n  PLACEHOLDER\n  PROVISIONAL\n  APPROVED\n  DEFERRED\n  ARCHIVED\n}\n\n"""\nThese global tags are used for classification in Grounding documents. \n"""\nenum MGlobalTag {\n  SCOPE_ADVISOR\n  AVC\n  CAIS\n  ML_LOW_PRIORITY\n  EXTERNAL_REFERENCE\n  DAO_TOOLKIT\n  ML_DEFER\n  PURPOSE_SYSTEM\n  NEWCHAIN\n  ML_SUPPORT_DOCS_NEEDED\n  TWO_STAGE_BRIDGE\n  ECOSYSTEM_INTELLIGENCE\n  RECURSIVE_IMPROVEMENT\n  LEGACY_TERM_USE_APPROVED\n}\n',
+            'type AtlasMultiParentState {\n  """\n  Full name of the MultiParent document entity.\n  """\n  name: String\n  \n  """\n  Parent entity that this MultiParent document belongs to.  \n  This is a reference to another Atlas document.\n  """\n  parents: [MDocumentLink!]!\n  \n  """\n  The type of the MultiParent document within Atlas.  \n  Example: Tenet, Original Context Data, Active Data.\n  """\n  atlasType: MAtlasType!\n  \n  """\n  Entire content body of the MultiParent document within Atlas.\n  """\n  content: String\n  \n  """\n  Master status of the MultiParent document as managed by the Atlas Axis facilitator group.  \n  """\n  masterStatus: MStatus!\n  \n  """\n  Document tags managed by the Atlas Axis facilitator group for classification.  \n  """\n  globalTags: [MGlobalTag!]!\n  \n  """\n  List of Atlas documents that were relevant for the creation of this MultiParent document.  \n\n  Should the subfields of the MDocumentLink object differ from the subfields of the MDocumentLink for Parent? Potentially we don\'t need docNo field. \n\nChange a subfield "name" to "title" in MDocumentLink object. \n\n\n  type MDocumentCDLink {\n  id: PHID!\n  title: OLabel\n}\n  \n  """\n  originalContextData: [MDocumentLink!]!\n  \n  """\n  Original Notion document ID of the MultiParent document.  \n  Used for cross-system referencing and linking back to the original Notion source.\n  """\n  notionId: String\n}\n\n"""\nReference to a document within Atlas with optional name and document number for display reasons. \n"""\ntype MDocumentLink {\n  id: PHID!\n  title: OLabel\n  docNo: String\n}\n\n"""\nDomain (i.e., Atlas) specific document types with the same document model global schema.  \n"""\nenum MAtlasType {\n  ANNOTATION\n  NEEDED_RESEARCH \n}\n\n"""\nDefines the lifecycle stage of the MultiParent document within Atlas.\n"""\nenum MStatus {\n  PLACEHOLDER\n  PROVISIONAL\n  APPROVED\n  DEFERRED\n  ARCHIVED\n}\n\n"""\nThese global tags are used for classification in MultiParent documents. \n"""\nenum MGlobalTag {\n  SCOPE_ADVISOR\n  AVC\n  CAIS\n  ML_LOW_PRIORITY\n  EXTERNAL_REFERENCE\n  DAO_TOOLKIT\n  ML_DEFER\n  PURPOSE_SYSTEM\n  NEWCHAIN\n  ML_SUPPORT_DOCS_NEEDED\n  TWO_STAGE_BRIDGE\n  ECOSYSTEM_INTELLIGENCE\n  RECURSIVE_IMPROVEMENT\n  LEGACY_TERM_USE_APPROVED\n}\n',
           initialValue:
-            '"{\\n  \\"name\\": \\"\\",\\n  \\"docNo\\": \\"\\",\\n  \\"parents\\": [],\\n  \\"atlasType\\": \\"ANNOTATION\\",\\n  \\"content\\": \\"\\",\\n  \\"masterStatus\\": \\"PLACEHOLDER\\",\\n  \\"globalTags\\": [],\\n  \\"references\\": [],\\n  \\"originalContextData\\": [],\\n  \\"provenance\\": [],\\n  \\"notionId\\": \\"\\"\\n}"',
+            '"{\\n  \\"name\\": \\"\\",\\n  \\"parents\\": [],\\n  \\"atlasType\\": \\"ANNOTATION\\",\\n  \\"content\\": \\"\\",\\n  \\"masterStatus\\": \\"PLACEHOLDER\\",\\n  \\"globalTags\\": [],\\n  \\"originalContextData\\": [],\\n  \\"notionId\\": \\"\\"\\n}"',
           examples: [],
         },
         local: {
@@ -35,35 +35,41 @@ export const documentModel: DocumentModelState = {
           operations: [
             {
               id: "pbTnKZf0S+fzRub/1pWrD5zbNsk=",
-              name: "SET_MULTIPARENT_NAME",
-              description: "",
+              name: "SET_NAME",
+              description: "Sets the name field of a MultiParent document.",
               schema:
-                'input SetMultiparentNameInput {\n  "Add your inputs here"\n  name: String!\n}',
+                '"""\nNaming convention for operations, where we don\'t include the specific document type name in the name. \n"""\n\ninput SetNameInput {\n  name: String!\n}',
               template: "",
               reducer: "",
-              errors: [],
-              examples: [],
-              scope: "global",
-            },
-            {
-              id: "VyLF4PhtTbRi/adkmeHIo700dzE=",
-              name: "SET_DOC_NUMBER",
-              description: "",
-              schema: "input SetDocNumberInput {\n  docNo: String! \n}",
-              template: "",
-              reducer: "",
-              errors: [],
+              errors: [
+                {
+                  id: "zbmm7ThAjMLWzaLfQf9N8IQr+tA=",
+                  name: "ValidateThatNameIsNotNullOrAnEmptyString",
+                  code: "",
+                  description: "",
+                  template: "",
+                },
+              ],
               examples: [],
               scope: "global",
             },
             {
               id: "/kGF0lna2d/9PuAjxhcQMBuIY1g=",
               name: "SET_CONTENT",
-              description: "",
+              description:
+                "Updates the content body of the MultiParent document.",
               schema: "input SetContentInput {\n  content: String! \n}",
               template: "",
               reducer: "",
-              errors: [],
+              errors: [
+                {
+                  id: "RSjCUaihZKGATFfK5MrN/8xHbRY=",
+                  name: "ValidateThatContentIsNotNullOrEmpty",
+                  code: "",
+                  description: "",
+                  template: "",
+                },
+              ],
               examples: [],
               scope: "global",
             },
@@ -84,7 +90,7 @@ export const documentModel: DocumentModelState = {
               name: "ADD_PARENT",
               description: "",
               schema:
-                "input AddParentInput {\n  id: PHID!\n  name: OLabel\n  docNo: String\n}",
+                "input AddParentInput {\n  id: PHID!\n  title: OLabel\n  docNo: String\n}",
               template: "",
               reducer: "",
               errors: [],
@@ -94,19 +100,49 @@ export const documentModel: DocumentModelState = {
             {
               id: "b0K5N9G6UAxV/K0LefW2jMtViL4=",
               name: "SET_ATLAS_TYPE",
-              description: "",
+              description:
+                "Sets the atlasType of the MultiParentl document (e.g., Annotation, NeededResearch).",
               schema: "input SetAtlasTypeInput {\n  atlasType: MAtlasType!\n}",
               template: "",
               reducer: "",
-              errors: [],
+              errors: [
+                {
+                  id: "++0Li3uyLKtaBczYLmh+16eU7vY=",
+                  name: "ValidateThatAtlasTypeMatchesAnAllowedEnum",
+                  code: "",
+                  description: "",
+                  template: "",
+                },
+              ],
               examples: [],
               scope: "global",
             },
             {
               id: "+99FSC+W+VxkGb2Pl/zMzDzEwdQ=",
               name: "REMOVE_PARENT",
-              description: "",
+              description: "Removes specified PHIDs from the parents list.",
               schema: "input RemoveParentInput {\n  id: PHID!\n}",
+              template: "",
+              reducer: "",
+              errors: [
+                {
+                  id: "WK8eq1PM8087BR5bj4qPErJTUb4=",
+                  name: "OnlyAllowRemovalOfPhiDsThatCurrentlyExistInTheArray",
+                  code: "",
+                  description: "",
+                  template: "",
+                },
+              ],
+              examples: [],
+              scope: "global",
+            },
+            {
+              id: "D9oAsCxEi3jIHTIF+vwLjLq1t6s=",
+              name: "REPLACE_PARENT",
+              description:
+                "Replaces a single parent item in the parents array at the specified position.",
+              schema:
+                "input ReplaceParentInput {\n  prevID: PHID!\n  id: PHID!\n  title: OLabel\n  docNo: String\n}",
               template: "",
               reducer: "",
               errors: [],
@@ -154,7 +190,7 @@ export const documentModel: DocumentModelState = {
               name: "ADD_CONTEXT_DATA",
               description: "",
               schema:
-                "input AddContextDataInput {\n  id: PHID!\n  name: OLabel\n  docNo: String\n}",
+                '"""\ndocNo field not needed for this?  \n"""\n\ninput AddContextDataInput {\n  id: PHID!\n  title: OLabel\n  docNo: String\n}',
               template: "",
               reducer: "",
               errors: [],
@@ -173,11 +209,11 @@ export const documentModel: DocumentModelState = {
               scope: "global",
             },
             {
-              id: "T9esDJaav0Urn7+xzXMG06+IvyI=",
-              name: "SET_PROVENANCE",
+              id: "phYuc2LsGKMU15y5kbG3VKJzr1A=",
+              name: "REPLACE_CONTEXT_DATA",
               description: "",
               schema:
-                "input SetProvenanceInput {\n  provenance: [URL!]!\n  \n}",
+                '"""\ndocNo field not needed for this?  \n"""\n\ninput ReplaceContextDataInput {\n  prevId: PHID!\n  id: PHID!\n  title: OLabel\n  docNo: String\n}',
               template: "",
               reducer: "",
               errors: [],
@@ -185,33 +221,10 @@ export const documentModel: DocumentModelState = {
               scope: "global",
             },
             {
-              id: "sC5gxkpmz59EDlC1AG5kyfCR/u8=",
+              id: "WE3orf+vT/ipHR3Btsgks4PjUCM=",
               name: "SET_NOTION_ID",
               description: "",
-              schema: "input SetNotionIdInput {\n  notionID: String!\n}",
-              template: "",
-              reducer: "",
-              errors: [],
-              examples: [],
-              scope: "global",
-            },
-            {
-              id: "xgx/D6n7laJhdtMA0mJc3CEP9xw=",
-              name: "ADD_REFERENCE",
-              description: "",
-              schema:
-                "input AddReferenceInput {\n  id: PHID!\n  name: OLabel\n  docNo: String\n}",
-              template: "",
-              reducer: "",
-              errors: [],
-              examples: [],
-              scope: "global",
-            },
-            {
-              id: "E4N+7hHSHXSYNQCkHk9Chfmnkj8=",
-              name: "REMOVE_REFERENCE",
-              description: "",
-              schema: "input RemoveReferenceInput {\n  id: PHID!\n}",
+              schema: "input SetNotionIdInput {\n  notionId: String!\n}",
               template: "",
               reducer: "",
               errors: [],

@@ -2,10 +2,8 @@ import { type BaseAction } from "document-model";
 import type {
   AddContextDataInput,
   RemoveContextDataInput,
-  SetProvenanceInput,
+  ReplaceContextDataInput,
   SetNotionIdInput,
-  AddReferenceInput,
-  RemoveReferenceInput,
 } from "../types.js";
 
 export type AddContextDataAction = BaseAction<
@@ -18,9 +16,9 @@ export type RemoveContextDataAction = BaseAction<
   RemoveContextDataInput,
   "global"
 >;
-export type SetProvenanceAction = BaseAction<
-  "SET_PROVENANCE",
-  SetProvenanceInput,
+export type ReplaceContextDataAction = BaseAction<
+  "REPLACE_CONTEXT_DATA",
+  ReplaceContextDataInput,
   "global"
 >;
 export type SetNotionIdAction = BaseAction<
@@ -28,21 +26,9 @@ export type SetNotionIdAction = BaseAction<
   SetNotionIdInput,
   "global"
 >;
-export type AddReferenceAction = BaseAction<
-  "ADD_REFERENCE",
-  AddReferenceInput,
-  "global"
->;
-export type RemoveReferenceAction = BaseAction<
-  "REMOVE_REFERENCE",
-  RemoveReferenceInput,
-  "global"
->;
 
 export type AtlasMultiParentContextAction =
   | AddContextDataAction
   | RemoveContextDataAction
-  | SetProvenanceAction
-  | SetNotionIdAction
-  | AddReferenceAction
-  | RemoveReferenceAction;
+  | ReplaceContextDataAction
+  | SetNotionIdAction;

@@ -37,8 +37,7 @@ export const documentModel: DocumentModelState = {
               id: "pbTnKZf0S+fzRub/1pWrD5zbNsk=",
               name: "SET_NAME",
               description: "Sets the name field of a MultiParent document.",
-              schema:
-                '"""\nNaming convention for operations, where we don\'t include the specific document type name in the name. \n"""\n\ninput SetNameInput {\n  name: String!\n}',
+              schema: "input SetNameInput {\n  name: String!\n}",
               template: "",
               reducer: "",
               errors: [
@@ -190,7 +189,7 @@ export const documentModel: DocumentModelState = {
               name: "ADD_CONTEXT_DATA",
               description: "",
               schema:
-                '"""\ndocNo field not needed for this?  \n"""\n\ninput AddContextDataInput {\n  id: PHID!\n  title: OLabel\n  docNo: String\n}',
+                "input AddContextDataInput {\n  id: PHID!\n  title: OLabel\n  docNo: String\n}",
               template: "",
               reducer: "",
               errors: [],
@@ -213,7 +212,7 @@ export const documentModel: DocumentModelState = {
               name: "REPLACE_CONTEXT_DATA",
               description: "",
               schema:
-                '"""\ndocNo field not needed for this?  \n"""\n\ninput ReplaceContextDataInput {\n  prevId: PHID!\n  id: PHID!\n  title: OLabel\n  docNo: String\n}',
+                "input ReplaceContextDataInput {\n  prevId: PHID!\n  id: PHID!\n  title: OLabel\n  docNo: String\n}",
               template: "",
               reducer: "",
               errors: [],

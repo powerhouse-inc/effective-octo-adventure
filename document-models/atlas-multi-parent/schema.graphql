@@ -123,10 +123,6 @@ enum MGlobalTag {
 
 # general
 
-"""
-Naming convention for operations, where we don't include the specific document type name in the name. 
-"""
-
 input SetNameInput {
   name: String!
 }
@@ -172,10 +168,6 @@ input RemoveTagsInput {
 
 # context
 
-"""
-docNo field not needed for this?  
-"""
-
 input AddContextDataInput {
   id: PHID!
   title: OLabel
@@ -185,10 +177,6 @@ input AddContextDataInput {
 input RemoveContextDataInput {
   id: PHID!
 }
-
-"""
-docNo field not needed for this?  
-"""
 
 input ReplaceContextDataInput {
   prevId: PHID!

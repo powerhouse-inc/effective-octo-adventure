@@ -55,7 +55,6 @@ export type Scalars = {
   URL: { input: string; output: string };
 };
 
-/** docNo field not needed for this?   */
 export type AddContextDataInput = {
   docNo?: InputMaybe<Scalars["String"]["input"]>;
   id: Scalars["PHID"]["input"];
@@ -159,7 +158,6 @@ export type RemoveTagsInput = {
   tags: Array<MGlobalTag | `${MGlobalTag}`>;
 };
 
-/** docNo field not needed for this?   */
 export type ReplaceContextDataInput = {
   docNo?: InputMaybe<Scalars["String"]["input"]>;
   id: Scalars["PHID"]["input"];
@@ -186,7 +184,6 @@ export type SetMasterStatusInput = {
   masterStatus: MStatus | `${MStatus}`;
 };
 
-/** Naming convention for operations, where we don't include the specific document type name in the name.  */
 export type SetNameInput = {
   name: Scalars["String"]["input"];
 };

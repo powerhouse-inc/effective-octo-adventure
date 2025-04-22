@@ -173,7 +173,7 @@ export function ScopeForm({
                 }}
               />
             </div>
-            <PositionedWrapper isSplitMode={isSplitMode}>
+            <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <GlobalTagsForm
                 options={globalScopeTagsEnumOptions}
                 value={documentState.globalTags}
@@ -204,7 +204,7 @@ export function ScopeForm({
                   }
                 }}
               />
-            </PositionedWrapper>
+            </div>
           </div>
         </div>
       </ContentCard>

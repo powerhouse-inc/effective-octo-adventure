@@ -1,4 +1,3 @@
- 
 import { Form } from "@powerhousedao/design-system/scalars";
 
 type Props = {};

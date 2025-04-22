@@ -113,7 +113,7 @@ export class AtlasScopeClient extends AtlasBaseClient<
 
     switch (fieldName) {
       case "docNo":
-        await patch.AtlasScope_setDocumentNumber(
+        await patch.AtlasScope_setDocNumber(
           arg<SetDocNumberInput>({ docNo: target as string }),
         );
         break;

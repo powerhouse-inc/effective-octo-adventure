@@ -12,7 +12,7 @@ const DocNameForm = ({
   value,
   baselineValue,
   onSave,
-  placeholder = "Document Name",
+  placeholder = "Name",
 }: DocNameFormProps) => {
   return (
     <GenericTextForm

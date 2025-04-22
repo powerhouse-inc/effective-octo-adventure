@@ -19,7 +19,7 @@ const GlobalTagsForm = ({
   return (
     <GenericEnumForm
       label="Tags"
-      placeholder="Select Tags"
+      placeholder="Tags"
       multiple
       options={options}
       value={value ?? []}

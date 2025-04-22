@@ -2,7 +2,7 @@ import { type AtlasGroundingGeneralOperations } from "../../gen/general/operatio
 
 export const reducer: AtlasGroundingGeneralOperations = {
   setDocumentNumberOperation(state, action) {
-    state.docNo = action.input.docNo ?? null;
+    state.docNo = action.input.docNo ?? "";
   },
 
   setNameOperation(state, action) {
@@ -24,7 +24,7 @@ export const reducer: AtlasGroundingGeneralOperations = {
   setParentOperation(state, action) {
     state.parent = {
       id: action.input.id,
-      title: action.input.title || null,
+      title: action.input.title ?? "",
       docNo: null,
     };
   },

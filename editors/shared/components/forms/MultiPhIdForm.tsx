@@ -8,9 +8,11 @@ import {
   fetchPHIDOptions,
   fetchSelectedPHIDOption,
 } from "../../utils/utils.js";
+import type { PHIDOption } from "@powerhousedao/design-system/ui";
 
 type CommonDataProps = {
   id: string;
+  initialOptions?: PHIDOption[];
 };
 
 interface MultiPhIdFormProps
@@ -40,7 +42,20 @@ const MultiPhIdForm = ({
         value: element.id,
       }))}
       label={label}
-      component={PHIDDiffField}
+      component={(props) => {
+        // the new item not have initialOptions
+        if (props.name === "item-new") {
+          return <PHIDDiffField {...props} />;
+        }
+
+        // for existing fields, use the initialOptions of the corresponding element
+        const fieldId = props.name?.replace("item-", "");
+        const element = data.find((d) => d.id === fieldId);
+
+        return (
+          <PHIDDiffField {...props} initialOptions={element?.initialOptions} />
+        );
+      }}
       componentProps={{
         placeholder: "phd:",
         variant: "withValueAndTitle",
@@ -50,19 +65,17 @@ const MultiPhIdForm = ({
         mode: formMode,
         validators: [
           (value: string, formState) => {
-            if (!value) {
-              return true;
+            if (!value) return true;
+
+            // Check for duplicates in the current form
+            const values = Object.values(formState);
+            const isDuplicateInForm =
+              values.filter((v) => v === value).length > 1;
+
+            if (isDuplicateInForm) {
+              return "This value is already being used in the form";
             }
-            const itemNew = formState["item-new"] as string;
-            if (itemNew === value) {
-              // it is the new or the duplicated
-              const phid = itemNew.startsWith("phd:")
-                ? itemNew.split(":")[1]
-                : itemNew;
-              if (data.some((element) => element.id === phid)) {
-                return "Duplicate context data";
-              }
-            }
+
             return true;
           },
         ],

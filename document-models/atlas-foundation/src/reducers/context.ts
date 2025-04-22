@@ -4,7 +4,7 @@ export const reducer: AtlasFoundationContextOperations = {
   addContextDataOperation(state, action) {
     const newContextData = {
       id: action.input.id,
-      title: action.input.name || null,
+      title: action.input.name ?? "",
       docNo: null,
     };
     state.originalContextData = [...state.originalContextData, newContextData];
@@ -21,7 +21,7 @@ export const reducer: AtlasFoundationContextOperations = {
       if (contextData.id === action.input.prevId) {
         return {
           id: action.input.id,
-          title: action.input.title || null,
+          title: action.input.title ?? "",
           docNo: null,
         };
       }
@@ -29,7 +29,7 @@ export const reducer: AtlasFoundationContextOperations = {
     });
   },
 
-  setNotionIdOperation(state, action, dispatch) {
+  setNotionIdOperation(state, action) {
     state.notionId = action.input.notionID;
   },
 };

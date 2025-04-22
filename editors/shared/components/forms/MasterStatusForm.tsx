@@ -16,7 +16,7 @@ const MasterStatusForm = ({
   return (
     <GenericEnumForm
       label="Status"
-      placeholder="Select Status"
+      placeholder="Status"
       required
       options={[
         { value: "APPROVED", label: "APPROVED " },

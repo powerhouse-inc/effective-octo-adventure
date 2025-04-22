@@ -117,10 +117,10 @@ export const schema: DocumentNode = gql`
   type Mutation {
     AtlasFoundation_createDocument(driveId: String, name: String): String
 
-    AtlasFoundation_setName(
+    AtlasFoundation_setFoundationName(
       driveId: String
       docId: PHID
-      input: AtlasFoundation_SetNameInput
+      input: AtlasFoundation_SetFoundationNameInput
     ): Int
     AtlasFoundation_setContent(
       driveId: String
@@ -142,10 +142,10 @@ export const schema: DocumentNode = gql`
       docId: PHID
       input: AtlasFoundation_SetParentInput
     ): Int
-    AtlasFoundation_setDocumentNumber(
+    AtlasFoundation_setDocNumber(
       driveId: String
       docId: PHID
-      input: AtlasFoundation_SetDocumentNumberInput
+      input: AtlasFoundation_SetDocNumberInput
     ): Int
     AtlasFoundation_addTags(
       driveId: String
@@ -182,7 +182,7 @@ export const schema: DocumentNode = gql`
   """
   Module: General
   """
-  input AtlasFoundation_SetNameInput {
+  input AtlasFoundation_SetFoundationNameInput {
     name: String!
   }
   input AtlasFoundation_SetContentInput {
@@ -199,7 +199,7 @@ export const schema: DocumentNode = gql`
     title: OLabel
     docNo: String
   }
-  input AtlasFoundation_SetDocumentNumberInput {
+  input AtlasFoundation_SetDocNumberInput {
     docNo: String
   }
 
@@ -218,7 +218,7 @@ export const schema: DocumentNode = gql`
   """
   input AtlasFoundation_AddContextDataInput {
     id: PHID!
-    name: String
+    title: String
     docNo: String
   }
   input AtlasFoundation_RemoveContextDataInput {

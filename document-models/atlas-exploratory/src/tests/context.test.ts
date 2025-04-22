@@ -11,10 +11,8 @@ import {
   z,
   type AddContextDataInput,
   type RemoveContextDataInput,
-  type SetProvenanceInput,
   type SetNotionIdInput,
-  type AddAdditionalGuidanceInput,
-  type RemoveAdditionalGuidanceInput,
+  type SetAdditionalGuidanceInput,
 } from "../../gen/schema/index.js";
 import { reducer } from "../../gen/reducer.js";
 import * as creators from "../../gen/context/creators.js";
@@ -62,21 +60,6 @@ describe("Context Operations", () => {
     expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
-  it("should handle setProvenance operation", () => {
-    // generate a random id
-    // const id = hashKey();
-
-    const input: SetProvenanceInput = generateMock(
-      z.SetProvenanceInputSchema(),
-    );
-
-    const updatedDocument = reducer(document, creators.setProvenance(input));
-
-    expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("SET_PROVENANCE");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
-    expect(updatedDocument.operations.global[0].index).toEqual(0);
-  });
   it("should handle setNotionId operation", () => {
     // generate a random id
     // const id = hashKey();
@@ -90,42 +73,22 @@ describe("Context Operations", () => {
     expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
-  it("should handle addAdditionalGuidance operation", () => {
+  it("should handle setAdditionalGuidance operation", () => {
     // generate a random id
     // const id = hashKey();
 
-    const input: AddAdditionalGuidanceInput = generateMock(
-      z.AddAdditionalGuidanceInputSchema(),
+    const input: SetAdditionalGuidanceInput = generateMock(
+      z.SetAdditionalGuidanceInputSchema(),
     );
 
     const updatedDocument = reducer(
       document,
-      creators.addAdditionalGuidance(input),
+      creators.setAdditionalGuidance(input),
     );
 
     expect(updatedDocument.operations.global).toHaveLength(1);
     expect(updatedDocument.operations.global[0].type).toBe(
-      "ADD_ADDITIONAL_GUIDANCE",
-    );
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
-    expect(updatedDocument.operations.global[0].index).toEqual(0);
-  });
-  it("should handle removeAdditionalGuidance operation", () => {
-    // generate a random id
-    // const id = hashKey();
-
-    const input: RemoveAdditionalGuidanceInput = generateMock(
-      z.RemoveAdditionalGuidanceInputSchema(),
-    );
-
-    const updatedDocument = reducer(
-      document,
-      creators.removeAdditionalGuidance(input),
-    );
-
-    expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe(
-      "REMOVE_ADDITIONAL_GUIDANCE",
+      "SET_ADDITIONAL_GUIDANCE",
     );
     expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);

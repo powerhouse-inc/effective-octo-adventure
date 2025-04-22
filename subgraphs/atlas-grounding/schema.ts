@@ -116,10 +116,10 @@ export const schema: DocumentNode = gql`
   type Mutation {
     AtlasGrounding_createDocument(driveId: String, name: String): String
 
-    AtlasGrounding_setName(
+    AtlasGrounding_setGroundingName(
       driveId: String
       docId: PHID
-      input: AtlasGrounding_SetNameInput
+      input: AtlasGrounding_SetGroundingNameInput
     ): Int
     AtlasGrounding_setContent(
       driveId: String
@@ -141,10 +141,10 @@ export const schema: DocumentNode = gql`
       docId: PHID
       input: AtlasGrounding_SetParentInput
     ): Int
-    AtlasGrounding_setDocumentNumber(
+    AtlasGrounding_setDocNumber(
       driveId: String
       docId: PHID
-      input: AtlasGrounding_SetDocumentNumberInput
+      input: AtlasGrounding_SetDocNumberInput
     ): Int
     AtlasGrounding_addTags(
       driveId: String
@@ -181,7 +181,7 @@ export const schema: DocumentNode = gql`
   """
   Module: General
   """
-  input AtlasGrounding_SetNameInput {
+  input AtlasGrounding_SetGroundingNameInput {
     name: String!
   }
   input AtlasGrounding_SetContentInput {
@@ -199,7 +199,7 @@ export const schema: DocumentNode = gql`
     title: OLabel
     docNo: String
   }
-  input AtlasGrounding_SetDocumentNumberInput {
+  input AtlasGrounding_SetDocNumberInput {
     docNo: String
   }
 

@@ -9,8 +9,7 @@ import { hashKey } from "document-model";
 import utils from "../../gen/utils.js";
 import {
   z,
-  type SetMultiparentNameInput,
-  type SetDocNumberInput,
+  type SetExploratoryNameInput,
   type SetContentInput,
   type SetMasterStatusInput,
   type SetAtlasTypeInput,
@@ -26,36 +25,23 @@ describe("General Operations", () => {
     document = utils.createDocument();
   });
 
-  it("should handle setMultiparentName operation", () => {
+  it("should handle setExploratoryName operation", () => {
     // generate a random id
     // const id = hashKey();
 
-    const input: SetMultiparentNameInput = generateMock(
-      z.SetMultiparentNameInputSchema(),
+    const input: SetExploratoryNameInput = generateMock(
+      z.SetExploratoryNameInputSchema(),
     );
 
     const updatedDocument = reducer(
       document,
-      creators.setMultiparentName(input),
+      creators.setExploratoryName(input),
     );
 
     expect(updatedDocument.operations.global).toHaveLength(1);
     expect(updatedDocument.operations.global[0].type).toBe(
-      "SET_MULTIPARENT_NAME",
+      "SET_EXPLORATORY_NAME",
     );
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
-    expect(updatedDocument.operations.global[0].index).toEqual(0);
-  });
-  it("should handle setDocNumber operation", () => {
-    // generate a random id
-    // const id = hashKey();
-
-    const input: SetDocNumberInput = generateMock(z.SetDocNumberInputSchema());
-
-    const updatedDocument = reducer(document, creators.setDocNumber(input));
-
-    expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("SET_DOC_NUMBER");
     expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
@@ -87,19 +73,6 @@ describe("General Operations", () => {
     expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
-  // it("should handle setParent operation", () => {
-  //   // generate a random id
-  //   // const id = hashKey();
-
-  //   const input: SetParentInput = generateMock(z.SetParentInputSchema());
-
-  //   const updatedDocument = reducer(document, creators.setParent(input));
-
-  //   expect(updatedDocument.operations.global).toHaveLength(1);
-  //   expect(updatedDocument.operations.global[0].type).toBe("SET_PARENT");
-  //   expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
-  //   expect(updatedDocument.operations.global[0].index).toEqual(0);
-  // });
   it("should handle setAtlasType operation", () => {
     // generate a random id
     // const id = hashKey();

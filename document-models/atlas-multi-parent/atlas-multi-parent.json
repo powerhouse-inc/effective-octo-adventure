@@ -31,9 +31,9 @@
                     "operations": [
                         {
                             "id": "pbTnKZf0S+fzRub/1pWrD5zbNsk=",
-                            "name": "SET_NAME",
+                            "name": "SET_EXPLORATORY_NAME",
                             "description": "Sets the name field of a MultiParent document.",
-                            "schema": "input SetNameInput {\n  name: String!\n}",
+                            "schema": "input SetExploratoryNameInput {\n  name: String!\n}",
                             "template": "",
                             "reducer": "",
                             "errors": [

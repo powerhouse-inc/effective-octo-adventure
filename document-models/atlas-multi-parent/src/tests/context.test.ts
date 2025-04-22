@@ -11,7 +11,6 @@ import {
   z,
   type AddContextDataInput,
   type RemoveContextDataInput,
-  type SetProvenanceInput,
   type SetNotionIdInput,
 } from "../../gen/schema/index.js";
 import { reducer } from "../../gen/reducer.js";
@@ -57,21 +56,6 @@ describe("Context Operations", () => {
     expect(updatedDocument.operations.global[0].type).toBe(
       "REMOVE_CONTEXT_DATA",
     );
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
-    expect(updatedDocument.operations.global[0].index).toEqual(0);
-  });
-  it("should handle setProvenance operation", () => {
-    // generate a random id
-    // const id = hashKey();
-
-    const input: SetProvenanceInput = generateMock(
-      z.SetProvenanceInputSchema(),
-    );
-
-    const updatedDocument = reducer(document, creators.setProvenance(input));
-
-    expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("SET_PROVENANCE");
     expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });

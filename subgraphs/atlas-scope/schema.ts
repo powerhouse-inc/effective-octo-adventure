@@ -99,10 +99,10 @@ export const schema: DocumentNode = gql`
   type Mutation {
     AtlasScope_createDocument(driveId: String, name: String): String
 
-    AtlasScope_setName(
+    AtlasScope_setScopeName(
       driveId: String
       docId: PHID
-      input: AtlasScope_SetNameInput
+      input: AtlasScope_SetScopeNameInput
     ): Int
     AtlasScope_setContent(
       driveId: String
@@ -114,10 +114,10 @@ export const schema: DocumentNode = gql`
       docId: PHID
       input: AtlasScope_SetMasterStatusInput
     ): Int
-    AtlasScope_setDocumentNumber(
+    AtlasScope_setDocNumber(
       driveId: String
       docId: PHID
-      input: AtlasScope_SetDocumentNumberInput
+      input: AtlasScope_SetDocNumberInput
     ): Int
     AtlasScope_addTags(
       driveId: String
@@ -154,7 +154,7 @@ export const schema: DocumentNode = gql`
   """
   Module: General
   """
-  input AtlasScope_SetNameInput {
+  input AtlasScope_SetScopeNameInput {
     name: OLabel!
   }
   input AtlasScope_SetContentInput {
@@ -165,7 +165,7 @@ export const schema: DocumentNode = gql`
     "New master status"
     masterStatus: Status!
   }
-  input AtlasScope_SetDocumentNumberInput {
+  input AtlasScope_SetDocNumberInput {
     docNo: String
   }
 

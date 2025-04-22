@@ -1,12 +1,11 @@
 import { type AtlasScopeGeneralOperations } from "../../gen/general/operations.js";
 
 export const reducer: AtlasScopeGeneralOperations = {
-  setDocumentNumberOperation(state, action) {
-    state.docNo = action.input.docNo ?? null;
+  setDocNumberOperation(state, action) {
+    state.docNo = action.input.docNo ?? "";
   },
 
-  setNameOperation(state, action) {
-    alert(action.input.name);
+  setScopeNameOperation(state, action) {
     state.name = action.input.name;
   },
 

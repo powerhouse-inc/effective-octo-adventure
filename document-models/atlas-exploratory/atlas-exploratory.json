@@ -31,9 +31,9 @@
                     "operations": [
                         {
                             "id": "pbTnKZf0S+fzRub/1pWrD5zbNsk=",
-                            "name": "SET_NAME",
+                            "name": "SET_EXPLORATORY_NAME",
                             "description": "",
-                            "schema": "input SetNameInput {\n  \"Add your inputs here\"\n  name: String!\n}",
+                            "schema": "input SetExploratoryNameInput {\n  \"Add your inputs here\"\n  name: String!\n}",
                             "template": "",
                             "reducer": "",
                             "errors": [],
@@ -97,9 +97,9 @@
                         },
                         {
                             "id": "/SkCCJTqoLjkFw74f6VSKD7tLsw=",
-                            "name": "SET_DOCUMENT_NUMBER",
+                            "name": "SET_DOC_NUMBER",
                             "description": "",
-                            "schema": "input SetDocumentNumberInput {\n  docNo: String\n}",
+                            "schema": "input SetDocNumberInput {\n  docNo: String\n}",
                             "template": "",
                             "reducer": "",
                             "errors": [],

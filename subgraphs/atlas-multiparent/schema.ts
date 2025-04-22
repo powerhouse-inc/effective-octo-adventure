@@ -126,10 +126,10 @@ export const schema: DocumentNode = gql`
   type Mutation {
     AtlasMultiParent_createDocument(driveId: String, name: String): String
 
-    AtlasMultiParent_setName(
+    AtlasMultiParent_setExploratoryName(
       driveId: String
       docId: PHID
-      input: AtlasMultiParent_SetNameInput
+      input: AtlasMultiParent_SetExploratoryNameInput
     ): Int
     AtlasMultiParent_setContent(
       driveId: String
@@ -196,7 +196,7 @@ export const schema: DocumentNode = gql`
   """
   Module: General
   """
-  input AtlasMultiParent_SetNameInput {
+  input AtlasMultiParent_SetExploratoryNameInput {
     name: String!
   }
   input AtlasMultiParent_SetContentInput {

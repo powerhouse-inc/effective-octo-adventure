@@ -3,10 +3,7 @@ import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchSelectedPHIDOption,
   getCardVariant,
-  getStringValue,
   getTagText,
-  getTitleText,
-  parseTitleText,
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import type { EditorMode } from "../../shared/types.js";
@@ -24,13 +21,15 @@ import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
 } from "../../shared/utils/styles.js";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
+import type { UseFormReturn } from "react-hook-form";
+
 interface FoundationFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
   isSplitMode?: boolean;
@@ -49,12 +48,11 @@ export function FoundationForm({
   const parentId = originalDocumentState.parent?.id
     ? `phd:${originalDocumentState.parent.id}`
     : "";
-  const parentDocNo = originalDocumentState.parent?.docNo ?? "";
-  const parentName = originalDocumentState.parent?.title ?? "";
+  const parentTitle = originalDocumentState.parent?.title ?? "";
 
   const parentPHIDInitialOption: PHIDOption = {
     icon: "File",
-    title: getTitleText(parentDocNo, parentName),
+    title: parentTitle,
     value: parentId,
   };
 
@@ -63,13 +61,20 @@ export function FoundationForm({
     parent: parentId,
   };
 
-  const [contentValue, setContentValue] = useState<string>(
-    documentState.content || "",
-  );
+  // TODO: use a better solution
+  // keep the form state in sync with the document state
+  const formRef = useRef<UseFormReturn>(null);
+  useEffect(() => {
+    if (formRef.current) {
+      formRef.current.reset({ ...documentState });
+    }
+  }, [documentState]);
+
+  const [contentValue, setContentValue] = useState(documentState.content ?? "");
 
   // Update contentValue when documentState changes
   useEffect(() => {
-    setContentValue(documentState.content || "");
+    setContentValue(documentState.content ?? "");
   }, [documentState.content]);
 
   // Custom handler for content changes
@@ -81,7 +86,7 @@ export function FoundationForm({
   const handleContentBlur = () => {
     // Only save if the content has actually changed
     if (contentValue !== documentState.content) {
-      dispatch(actions.setContent({ content: getStringValue(contentValue) }));
+      dispatch(actions.setContent({ content: contentValue }));
     }
   };
 
@@ -103,10 +108,7 @@ export function FoundationForm({
                 value={documentState.docNo}
                 baselineValue={originalNodeState.docNo}
                 onSave={(value) => {
-                  dispatch(
-                    // TODO: do we need to getStringValue here?
-                    actions.setDocumentNumber({ docNo: getStringValue(value) }),
-                  );
+                  dispatch(actions.setDocumentNumber({ docNo: value }));
                 }}
               />
             </div>
@@ -115,12 +117,7 @@ export function FoundationForm({
                 value={documentState.name}
                 baselineValue={originalNodeState.name}
                 onSave={(value) => {
-                  dispatch(
-                    actions.setName({
-                      // TODO: do we need to getStringValue here?
-                      name: getStringValue(value),
-                    }),
-                  );
+                  dispatch(actions.setName({ name: value }));
                 }}
               />
             </div>
@@ -168,23 +165,16 @@ export function FoundationForm({
                 if (value === null) {
                   dispatch(
                     actions.setParent({
-                      // TODO: is this the correct way?
                       id: "",
-                      docNo: undefined,
-                      title: undefined,
                     }),
                   );
                 } else {
                   const newParentId = value.split(":")[1];
                   const newParentData = fetchSelectedPHIDOption(value);
-                  const { docNo, name } = parseTitleText(
-                    newParentData?.title ?? "",
-                  );
                   dispatch(
                     actions.setParent({
                       id: newParentId,
-                      docNo,
-                      title: name,
+                      title: newParentData?.title ?? "",
                     }),
                   );
                 }
@@ -194,19 +184,41 @@ export function FoundationForm({
 
             <MultiPhIdForm
               label="Original Context Data"
-              data={documentState.originalContextData}
+              data={documentState.originalContextData.map((element) => {
+                const initialOption: PHIDOption = {
+                  icon: "File",
+                  title: element.title ?? "",
+                  value: `phd:${element.id}`,
+                };
+
+                return {
+                  id: `phd:${element.id}`,
+                  initialOptions: [initialOption],
+                };
+              })}
               onAdd={(value) => {
-                dispatch(actions.addContextData({ id: value }));
+                const newData = fetchSelectedPHIDOption(value);
+                const newId = value.split(":")[1];
+                dispatch(
+                  actions.addContextData({
+                    id: newId,
+                    name: newData?.title ?? "",
+                  }),
+                );
               }}
               onRemove={({ value }) => {
-                dispatch(actions.removeContextData({ id: value }));
+                const id = value.split(":")[1];
+                dispatch(actions.removeContextData({ id }));
               }}
               onUpdate={({ previousValue, value }) => {
+                const newData = fetchSelectedPHIDOption(value);
+                const prevId = previousValue.split(":")[1];
+                const newId = value.split(":")[1];
                 dispatch(
                   actions.replaceContextData({
-                    prevId: previousValue,
-                    id: value,
-                    title: "", // TODO: add the document title
+                    prevId,
+                    id: newId,
+                    title: newData?.title ?? "",
                   }),
                 );
               }}
@@ -214,7 +226,7 @@ export function FoundationForm({
 
             <GlobalTagsForm
               value={documentState.globalTags}
-              baselineValue={[]}
+              baselineValue={[]} // TODO: add the baseline value
               onSave={(value) => {
                 const newTags = value as FGlobalTag[];
                 const currentTags = documentState.globalTags;

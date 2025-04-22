@@ -28,7 +28,9 @@ jobs:
       run: pnpm install
 
     - name: Generate document models
-      run: pnpm script:generate-all
+      run: |
+        pnpm script:generate-all
+        pnpm generate ./docmodel-zips/AtlasFeedbackIssues.phdm.zip
       
     - name: Run tests
       run: pnpm test

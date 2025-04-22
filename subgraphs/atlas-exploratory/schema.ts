@@ -125,10 +125,10 @@ export const schema: DocumentNode = gql`
   type Mutation {
     AtlasExploratory_createDocument(driveId: String, name: String): String
 
-    AtlasExploratory_setName(
+    AtlasExploratory_setExploratoryName(
       driveId: String
       docId: PHID
-      input: AtlasExploratory_SetNameInput
+      input: AtlasExploratory_SetExploratoryNameInput
     ): Int
     AtlasExploratory_setContent(
       driveId: String
@@ -155,10 +155,10 @@ export const schema: DocumentNode = gql`
       docId: PHID
       input: AtlasExploratory_SetFindingsInput
     ): Int
-    AtlasExploratory_setDocumentNumber(
+    AtlasExploratory_setDocNumber(
       driveId: String
       docId: PHID
-      input: AtlasExploratory_SetDocumentNumberInput
+      input: AtlasExploratory_SetDocNumberInput
     ): Int
     AtlasExploratory_addTags(
       driveId: String
@@ -200,7 +200,7 @@ export const schema: DocumentNode = gql`
   """
   Module: General
   """
-  input AtlasExploratory_SetNameInput {
+  input AtlasExploratory_SetExploratoryNameInput {
     "Add your inputs here"
     name: String!
   }
@@ -224,7 +224,7 @@ export const schema: DocumentNode = gql`
     "Add your inputs here"
     isAligned: Boolean!
   }
-  input AtlasExploratory_SetDocumentNumberInput {
+  input AtlasExploratory_SetDocNumberInput {
     docNo: String
   }
 

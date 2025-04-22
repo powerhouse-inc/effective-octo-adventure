@@ -1,7 +1,7 @@
 import { type AtlasMultiParentGeneralOperations } from "../../gen/general/operations.js";
 
 export const reducer: AtlasMultiParentGeneralOperations = {
-  setNameOperation(state, action) {
+  setExploratoryNameOperation(state, action) {
     state.name = action.input.name;
   },
 

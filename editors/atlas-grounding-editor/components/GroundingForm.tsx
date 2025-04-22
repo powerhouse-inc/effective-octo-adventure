@@ -109,7 +109,7 @@ export function GroundingForm({
                 value={documentState.docNo}
                 baselineValue={originalNodeState.docNo}
                 onSave={(value) => {
-                  dispatch(actions.setDocumentNumber({ docNo: value }));
+                  dispatch(actions.setDocNumber({ docNo: value }));
                 }}
               />
             </div>
@@ -118,7 +118,7 @@ export function GroundingForm({
                 value={documentState.name}
                 baselineValue={originalNodeState.name}
                 onSave={(value) => {
-                  dispatch(actions.setName({ name: value }));
+                  dispatch(actions.setGroundingName({ name: value }));
                 }}
               />
             </div>

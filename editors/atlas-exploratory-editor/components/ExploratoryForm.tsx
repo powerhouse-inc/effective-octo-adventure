@@ -92,7 +92,7 @@ export function ExploratoryForm({
                 value={documentState.docNo}
                 baselineValue={originalNodeState.docNo}
                 onSave={(value) => {
-                  dispatch(actions.setDocumentNumber({ docNo: value }));
+                  dispatch(actions.setDocNumber({ docNo: value }));
                 }}
               />
             </div>
@@ -101,7 +101,7 @@ export function ExploratoryForm({
                 value={documentState.name}
                 baselineValue={originalNodeState.name}
                 onSave={(value) => {
-                  dispatch(actions.setName({ name: value }));
+                  dispatch(actions.setExploratoryName({ name: value }));
                 }}
                 placeholder="Name"
               />

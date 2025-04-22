@@ -123,7 +123,7 @@ enum MGlobalTag {
 
 # general
 
-input SetNameInput {
+input SetExploratoryNameInput {
   name: String!
 }
 

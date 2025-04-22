@@ -14,7 +14,6 @@ import {
   type SetContentInput,
   type SetMasterStatusInput,
   type SetParentInput,
-  type RemoveParentInput,
   type SetAtlasTypeInput,
   type SetFindingsInput,
 } from "../../gen/schema/index.js";
@@ -100,19 +99,6 @@ describe("General Operations", () => {
 
     expect(updatedDocument.operations.global).toHaveLength(1);
     expect(updatedDocument.operations.global[0].type).toBe("SET_PARENT");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
-    expect(updatedDocument.operations.global[0].index).toEqual(0);
-  });
-  it("should handle removeParent operation", () => {
-    // generate a random id
-    // const id = hashKey();
-
-    const input: RemoveParentInput = generateMock(z.RemoveParentInputSchema());
-
-    const updatedDocument = reducer(document, creators.removeParent(input));
-
-    expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("REMOVE_PARENT");
     expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });

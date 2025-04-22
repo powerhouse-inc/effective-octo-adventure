@@ -108,7 +108,7 @@ export function FoundationForm({
                 value={documentState.docNo}
                 baselineValue={originalNodeState.docNo}
                 onSave={(value) => {
-                  dispatch(actions.setDocumentNumber({ docNo: value }));
+                  dispatch(actions.setDocNumber({ docNo: value }));
                 }}
               />
             </div>
@@ -117,7 +117,7 @@ export function FoundationForm({
                 value={documentState.name}
                 baselineValue={originalNodeState.name}
                 onSave={(value) => {
-                  dispatch(actions.setName({ name: value }));
+                  dispatch(actions.setFoundationName({ name: value }));
                 }}
               />
             </div>
@@ -202,7 +202,7 @@ export function FoundationForm({
                 dispatch(
                   actions.addContextData({
                     id: newId,
-                    name: newData?.title ?? "",
+                    title: newData?.title ?? "",
                   }),
                 );
               }}

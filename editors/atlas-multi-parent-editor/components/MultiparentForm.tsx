@@ -94,8 +94,7 @@ export function MultiParentForm({
                 baselineValue={originalNodeState.name}
                 onSave={(value) => {
                   dispatch(
-                    actions.setName({
-                      // TODO: do we need to getStringValue here?
+                    actions.setExploratoryName({
                       name: getStringValue(value),
                     }),
                   );

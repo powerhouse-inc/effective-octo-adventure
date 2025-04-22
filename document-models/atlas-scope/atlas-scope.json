@@ -31,9 +31,9 @@
                     "operations": [
                         {
                             "id": "bNPa/jqunWF2jkFK1UfyoiMKSGI=",
-                            "name": "SET_NAME",
+                            "name": "SET_SCOPE_NAME",
                             "description": "",
-                            "schema": "input SetNameInput {\n  name: OLabel!\n}",
+                            "schema": "input SetScopeNameInput {\n  name: OLabel!\n}",
                             "template": "",
                             "reducer": "",
                             "errors": [],
@@ -64,9 +64,9 @@
                         },
                         {
                             "id": "8JvDZmAL2qXsaobWaoSL9g3Nras=",
-                            "name": "SET_DOCUMENT_NUMBER",
+                            "name": "SET_DOC_NUMBER",
                             "description": "",
-                            "schema": "input SetDocumentNumberInput {\n  docNo: String\n}",
+                            "schema": "input SetDocNumberInput {\n  docNo: String\n}",
                             "template": "",
                             "reducer": "",
                             "errors": [],

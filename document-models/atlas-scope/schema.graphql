@@ -94,7 +94,7 @@ enum GlobalTag {
 
 # general
 
-input SetNameInput {
+input SetScopeNameInput {
   name: OLabel!
 }
 
@@ -108,7 +108,7 @@ input SetMasterStatusInput {
   masterStatus: Status!
 }
 
-input SetDocumentNumberInput {
+input SetDocNumberInput {
   docNo: String
 }
 

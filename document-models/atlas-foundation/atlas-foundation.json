@@ -31,9 +31,9 @@
                     "operations": [
                         {
                             "id": "susTeqrRl45S8oQ1G1ncC+qMxYk=",
-                            "name": "SET_NAME",
+                            "name": "SET_FOUNDATION_NAME",
                             "description": "",
-                            "schema": "input SetNameInput {\n  name: String!\n}",
+                            "schema": "input SetFoundationNameInput {\n  name: String!\n}",
                             "template": "",
                             "reducer": "",
                             "errors": [],
@@ -86,9 +86,9 @@
                         },
                         {
                             "id": "EQNF0EEe00Rls1JLKurARsJikoA=",
-                            "name": "SET_DOCUMENT_NUMBER",
+                            "name": "SET_DOC_NUMBER",
                             "description": "",
-                            "schema": "input SetDocumentNumberInput {\n  docNo: String\n}",
+                            "schema": "input SetDocNumberInput {\n  docNo: String\n}",
                             "template": "",
                             "reducer": "",
                             "errors": [],
@@ -135,7 +135,7 @@
                             "id": "qTnjXgF1LBIomkVwKeqrM9aiPNk=",
                             "name": "ADD_CONTEXT_DATA",
                             "description": "",
-                            "schema": "input AddContextDataInput {\n  id: PHID!\n  name: String\n  docNo: String\n}",
+                            "schema": "input AddContextDataInput {\n  id: PHID!\n  title: String\n  docNo: String\n}",
                             "template": "",
                             "reducer": "",
                             "errors": [],

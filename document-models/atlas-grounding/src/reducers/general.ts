@@ -1,11 +1,11 @@
 import { type AtlasGroundingGeneralOperations } from "../../gen/general/operations.js";
 
 export const reducer: AtlasGroundingGeneralOperations = {
-  setDocumentNumberOperation(state, action) {
+  setDocNumberOperation(state, action) {
     state.docNo = action.input.docNo ?? "";
   },
 
-  setNameOperation(state, action) {
+  setGroundingNameOperation(state, action) {
     state.name = action.input.name;
   },
 

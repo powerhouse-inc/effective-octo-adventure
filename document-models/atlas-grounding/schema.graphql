@@ -113,7 +113,7 @@ enum GGlobalTag {
 
 # general
 
-input SetNameInput {
+input SetGroundingNameInput {
   name: String!
 }
 
@@ -136,7 +136,7 @@ input SetParentInput {
   docNo: String
 }
 
-input SetDocumentNumberInput {
+input SetDocNumberInput {
   docNo: String
 }
 

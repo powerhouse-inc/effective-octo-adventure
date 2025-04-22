@@ -19,7 +19,14 @@ export const getResolvers = (subgraph: Subgraph) => {
             const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
             const docId: string = args.docId || "";
             const doc = await reactor.getDocument(driveId, docId);
-            return doc;
+            return {
+              id: docId,
+              driveId: driveId,
+              ...doc,
+              state: doc.state.global,
+              stateJSON: doc.state.global,
+              revision: doc.revision.global,
+            };
           },
           getDocuments: async (args: any) => {
             const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
@@ -32,6 +39,7 @@ export const getResolvers = (subgraph: Subgraph) => {
                   driveId: driveId,
                   ...doc,
                   state: doc.state.global,
+                  stateJSON: doc.state.global,
                   revision: doc.revision.global,
                 };
               }),
@@ -73,7 +81,7 @@ export const getResolvers = (subgraph: Subgraph) => {
         return docId;
       },
 
-      AtlasGrounding_setName: async (_: any, args: any) => {
+      AtlasGrounding_setGroundingName: async (_: any, args: any) => {
         const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
@@ -81,7 +89,7 @@ export const getResolvers = (subgraph: Subgraph) => {
         await reactor.addAction(
           driveId,
           docId,
-          actions.setName({ ...args.input }),
+          actions.setGroundingName({ ...args.input }),
         );
 
         return doc.revision.global + 1;
@@ -143,7 +151,7 @@ export const getResolvers = (subgraph: Subgraph) => {
         return doc.revision.global + 1;
       },
 
-      AtlasGrounding_setDocumentNumber: async (_: any, args: any) => {
+      AtlasGrounding_setDocNumber: async (_: any, args: any) => {
         const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
         const docId: string = args.docId || "";
         const doc = await reactor.getDocument(driveId, docId);
@@ -151,7 +159,7 @@ export const getResolvers = (subgraph: Subgraph) => {
         await reactor.addAction(
           driveId,
           docId,
-          actions.setDocumentNumber({ ...args.input }),
+          actions.setDocNumber({ ...args.input }),
         );
 
         return doc.revision.global + 1;

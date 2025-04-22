@@ -1,11 +1,11 @@
 import { type AtlasExploratoryGeneralOperations } from "../../gen/general/operations.js";
 
 export const reducer: AtlasExploratoryGeneralOperations = {
-  setDocumentNumberOperation(state, action) {
+  setDocNumberOperation(state, action) {
     state.docNo = action.input.docNo ?? null;
   },
 
-  setNameOperation(state, action) {
+  setExploratoryNameOperation(state, action) {
     state.name = action.input.name;
   },
 

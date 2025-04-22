@@ -4,7 +4,7 @@ export const reducer: AtlasFoundationContextOperations = {
   addContextDataOperation(state, action) {
     const newContextData = {
       id: action.input.id,
-      title: action.input.name ?? "",
+      title: action.input.title ?? "",
       docNo: null,
     };
     state.originalContextData = [...state.originalContextData, newContextData];

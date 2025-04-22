@@ -121,7 +121,7 @@ enum EGlobalTag {
 
 # general
 
-input SetNameInput {
+input SetExploratoryNameInput {
   "Add your inputs here"
   name: String!
 }
@@ -151,7 +151,7 @@ input SetFindingsInput {
   isAligned: Boolean!
 }
 
-input SetDocumentNumberInput {
+input SetDocNumberInput {
   docNo: String
 }
 

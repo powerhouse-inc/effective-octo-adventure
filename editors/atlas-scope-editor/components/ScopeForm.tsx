@@ -94,7 +94,7 @@ export function ScopeForm({
                 value={documentState.docNo}
                 baselineValue={originalNodeState.docNo}
                 onSave={(value) => {
-                  dispatch(actions.setDocumentNumber({ docNo: value }));
+                  dispatch(actions.setDocNumber({ docNo: value }));
                 }}
               />
             </div>
@@ -103,7 +103,7 @@ export function ScopeForm({
                 value={documentState.name}
                 baselineValue={originalNodeState.name}
                 onSave={(value) => {
-                  dispatch(actions.setName({ name: value }));
+                  dispatch(actions.setScopeName({ name: value }));
                 }}
                 placeholder="The Governance Scope"
               />

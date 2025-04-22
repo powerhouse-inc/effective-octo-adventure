@@ -54,7 +54,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<
           name
           parent {
             id
-            name
+            title
             docNo
           }
           masterStatus
@@ -62,17 +62,11 @@ export class AtlasFoundationClient extends AtlasBaseClient<
           content
           globalTags
           notionId
-          references {
-            id
-            name
-            docNo
-          }
           originalContextData {
             id
-            name
+            title
             docNo
           }
-          provenance
         }
         revision
       }

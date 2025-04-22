@@ -172,25 +172,6 @@ export function ScopeForm({
                   );
                 }}
               />
-              {/* <MultiPhIdForm
-                label="Original Context Data"
-                data={documentState.originalContextData}
-                onAdd={(value) => {
-                  dispatch(actions.addContextData({ id: value }));
-                }}
-                onRemove={({ value }) => {
-                  dispatch(actions.removeContextData({ id: value }));
-                }}
-                onUpdate={({ previousValue, value }) => {
-                  dispatch(
-                    actions.replaceContextData({
-                      prevId: previousValue,
-                      id: value,
-                      title: "", // TODO: add the document title
-                    }),
-                  );
-                }}
-              /> */}
             </div>
             <PositionedWrapper isSplitMode={isSplitMode}>
               <GlobalTagsForm

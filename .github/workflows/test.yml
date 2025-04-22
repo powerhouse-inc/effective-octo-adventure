@@ -23,9 +23,12 @@ jobs:
       with:
         node-version: 22
         cache: 'pnpm'
-        
+
     - name: Install dependencies
       run: pnpm install
+
+    - name: Generate document models
+      run: pnpm script:generate-all
       
     - name: Run tests
       run: pnpm test

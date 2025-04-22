@@ -7,7 +7,6 @@ import {
   type SetDocNumberInput,
   type SetFoundationNameInput,
   type SetParentInput,
-  type SetProvenanceInput,
 } from "document-models/atlas-foundation/index.js";
 import { gql } from "graphql-request";
 import {
@@ -154,12 +153,6 @@ export class AtlasFoundationClient extends AtlasBaseClient<
         break;
       case "originalContextData":
         throw new Error("originalContextData patcher is not implemented yet.");
-        break;
-      case "provenance":
-        await patch.AtlasFoundation_setProvenance(
-          /* @ts-expect-error */
-          arg<SetProvenanceInput>({ provenance: target }),
-        );
         break;
       case "parent":
         await patch.AtlasFoundation_setParent(

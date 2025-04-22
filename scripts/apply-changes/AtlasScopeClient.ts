@@ -113,7 +113,7 @@ export class AtlasScopeClient extends AtlasBaseClient<
 
     switch (fieldName) {
       case "docNo":
-        await patch.AtlasScope_setDocNumber(
+        await patch.AtlasScope_setDocumentNumber(
           arg<SetDocNumberInput>({ docNo: target as string }),
         );
         break;
@@ -142,9 +142,6 @@ export class AtlasScopeClient extends AtlasBaseClient<
         break;
       case "originalContextData":
         throw new Error("originalContextData patcher is not implemented yet.");
-        break;
-      case "provenance":
-        throw new Error("provenance patcher is not implemented yet.");
         break;
     }
   }

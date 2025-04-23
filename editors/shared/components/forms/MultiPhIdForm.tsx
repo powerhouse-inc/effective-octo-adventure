@@ -66,28 +66,21 @@ const MultiPhIdForm = ({
           const element = data.find((d) => d.id === val);
           const elementIndex = data.findIndex((d) => d.id === val);
 
-          if (element !== undefined) {
-            if (result !== undefined) {
-              if (
-                result.value !== element.id ||
-                result.title !== element.initialOptions?.[0]?.title
-              ) {
-                onUpdate({
-                  previousValue: element.id,
-                  value: result.value,
-                  id: element.id,
-                  index: elementIndex,
-                });
-              }
-            } else if (element.id !== "") {
-              onRemove({
-                value: element.id,
-                id: element.id,
-                index: elementIndex,
-              });
-            }
+          if (
+            result !== undefined &&
+            element !== undefined &&
+            (result.value !== element.id ||
+              result.title !== element.initialOptions?.[0]?.title)
+          ) {
+            onUpdate({
+              previousValue: element.id,
+              value: result.value,
+              id: element.id,
+              index: elementIndex,
+            });
+            return result;
           }
-          return result;
+          return element?.initialOptions?.[0];
         },
         mode: formMode,
         validators: [

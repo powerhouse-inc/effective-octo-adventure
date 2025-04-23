@@ -173,7 +173,7 @@ export function GroundingForm({
               value={documentState.parent}
               baselineValue={originalNodeState.parents?.[0] ?? ""}
               onSave={(value) => {
-                if (value === null) {
+                if (value === null || value === "") {
                   dispatch(
                     actions.setParent({
                       id: "",

@@ -165,7 +165,7 @@ export function ExploratoryForm({
               value={documentState.parent}
               baselineValue={""}
               onSave={(value) => {
-                if (value === null) {
+                if (value === null || value === "") {
                   dispatch(actions.setParent({ parent: "" }));
                 } else {
                   const newParentId = value.split(":")[1];

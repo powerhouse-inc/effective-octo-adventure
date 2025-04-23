@@ -1,6 +1,7 @@
 import { cn } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
+  fetchSelectedPHIDOption,
   getCardVariant,
   getStringValue,
   getTagText,
@@ -26,6 +27,7 @@ import {
 } from "../../shared/utils/styles.js";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
+import type { PHIDOption } from "@powerhousedao/design-system/ui";
 
 interface MultiParentFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
@@ -77,18 +79,6 @@ export function MultiParentForm({
         <div className={cn("flex flex-col gap-3")}>
           <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
             <div className={cn("flex-1")}>
-              {/* TODO: remove this and fix the layout if needed */}
-              {/* <DocNoForm
-                value={documentState.}
-                baselineValue={originalNodeState.docNo}
-                onSave={(value) => {
-                  dispatch(
-                    actions.setDocNumber({ docNo: getStringValue(value) }),
-                  );
-                }}
-              /> */}
-            </div>
-            <div className={cn("flex-1")}>
               <DocNameForm
                 value={documentState.name}
                 baselineValue={originalNodeState.name}
@@ -101,8 +91,6 @@ export function MultiParentForm({
                 }}
               />
             </div>
-          </div>
-          <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
             <div className={cn("flex-1")}>
               <DocTypeForm
                 value={documentState.atlasType}
@@ -118,6 +106,8 @@ export function MultiParentForm({
                 }}
               />
             </div>
+          </div>
+          <div className={getWidthClassName(isSplitMode ?? false, "flex-1/2")}>
             <div className={cn("flex-1")}>
               <MasterStatusForm
                 value={documentState.masterStatus}
@@ -143,38 +133,87 @@ export function MultiParentForm({
               getWidthClassName(!!isSplitMode),
             )}
           >
-            {/* TODO: fix parents array */}
-            {/* <ParentsArray
+            <MultiPhIdForm
+              label="Parent Documents"
+              data={documentState.parents.map((element) => {
+                const initialOption: PHIDOption = {
+                  icon: "BarChart",
+                  title: element.title ?? "",
+                  value: `phd:${element.id}`,
+                };
+
+                return {
+                  id: `phd:${element.id}`,
+                  initialOptions: [initialOption],
+                };
+              })}
               onAdd={(value) => {
                 const phid = value.split(":")[1];
                 dispatch(actions.addParent({ id: phid }));
+                const newData = fetchSelectedPHIDOption(value);
+                const newId = value.split(":")[1];
+                dispatch(
+                  actions.addParent({
+                    id: newId,
+                    title: newData?.title ?? "",
+                  }),
+                );
               }}
-              onRemove={(value) => {
-                const phid = value.split(":")[1];
-                dispatch(actions.removeParent({ id: phid }));
+              onRemove={({ value }) => {
+                const id = value.split(":")[1];
+                dispatch(actions.removeParent({ id }));
               }}
-              onUpdate={() => {
-                // TODO: implement parents updates
-                throw new Error("Updates not supported yet");
+              onUpdate={({ previousValue, value }) => {
+                const newData = fetchSelectedPHIDOption(value);
+                const prevId = previousValue.split(":")[1];
+                const newId = value.split(":")[1];
+                dispatch(
+                  actions.replaceParent({
+                    prevID: prevId,
+                    id: newId,
+                    title: newData?.title ?? "",
+                  }),
+                );
               }}
-              parents={documentState.parents}
-            /> */}
+            />
 
             <MultiPhIdForm
               label="Original Context Data"
-              data={documentState.originalContextData}
+              data={documentState.originalContextData.map((element) => {
+                const initialOption: PHIDOption = {
+                  icon: "File",
+                  title: element.title ?? "",
+                  value: `phd:${element.id}`,
+                };
+
+                return {
+                  id: `phd:${element.id}`,
+                  initialOptions: [initialOption],
+                };
+              })}
               onAdd={(value) => {
-                dispatch(actions.addContextData({ id: value }));
+                const newData = fetchSelectedPHIDOption(value);
+                const newId = value.split(":")[1];
+                dispatch(
+                  actions.addContextData({
+                    id: newId,
+                    title: newData?.title ?? "",
+                  }),
+                );
               }}
               onRemove={({ value }) => {
-                dispatch(actions.removeContextData({ id: value }));
+                const id = value.split(":")[1];
+                dispatch(actions.removeContextData({ id }));
               }}
               onUpdate={({ previousValue, value }) => {
+                const newData = fetchSelectedPHIDOption(value);
+                const prevId = previousValue.split(":")[1];
+                const newId = value.split(":")[1];
                 dispatch(
                   actions.replaceContextData({
-                    prevId: previousValue,
-                    id: value,
-                    title: "", // TODO: add the document title
+                    prevId,
+                    id: newId,
+                    title: newData?.title ?? "",
                   }),
                 );
               }}

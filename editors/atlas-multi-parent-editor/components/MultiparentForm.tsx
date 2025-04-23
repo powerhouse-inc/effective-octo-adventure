@@ -148,8 +148,6 @@ export function MultiParentForm({
                 };
               })}
               onAdd={(value) => {
-                const phid = value.split(":")[1];
-                dispatch(actions.addParent({ id: phid }));
                 const newData = fetchSelectedPHIDOption(value);
                 const newId = value.split(":")[1];
                 dispatch(

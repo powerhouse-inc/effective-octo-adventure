@@ -61,7 +61,34 @@ const MultiPhIdForm = ({
         variant: "withValueAndTitle",
         allowUris: true,
         fetchOptionsCallback: fetchPHIDOptions,
-        fetchSelectedOptionCallback: fetchSelectedPHIDOption,
+        fetchSelectedOptionCallback: (val) => {
+          const result = fetchSelectedPHIDOption(val);
+          const element = data.find((d) => d.id === val);
+          const elementIndex = data.findIndex((d) => d.id === val);
+
+          if (element !== undefined) {
+            if (result !== undefined) {
+              if (
+                result.value !== element.id ||
+                result.title !== element.initialOptions?.[0]?.title
+              ) {
+                onUpdate({
+                  previousValue: element.id,
+                  value: result.value,
+                  id: element.id,
+                  index: elementIndex,
+                });
+              }
+            } else if (element.id !== "") {
+              onRemove({
+                value: element.id,
+                id: element.id,
+                index: elementIndex,
+              });
+            }
+          }
+          return result;
+        },
         mode: formMode,
         validators: [
           (value: string, formState) => {

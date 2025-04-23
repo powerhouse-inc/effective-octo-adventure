@@ -137,7 +137,7 @@ export function MultiParentForm({
               label="Parent Documents"
               data={documentState.parents.map((element) => {
                 const initialOption: PHIDOption = {
-                  icon: "BarChart",
+                  icon: "File",
                   title: element.title ?? "",
                   value: `phd:${element.id}`,
                 };

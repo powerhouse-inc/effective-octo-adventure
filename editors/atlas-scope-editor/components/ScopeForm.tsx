@@ -1,6 +1,10 @@
 import { cn } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
-import { getCardVariant, getTagText } from "../../shared/utils/utils.js";
+import {
+  fetchSelectedPHIDOption,
+  getCardVariant,
+  getTagText,
+} from "../../shared/utils/utils.js";
 import type { EditorMode } from "../../shared/types.js";
 import { useEffect, useRef, useState } from "react";
 import { type UseFormReturn } from "react-hook-form";
@@ -24,6 +28,7 @@ import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js"
 import { globalScopeTagsEnumOptions } from "../../shared/utils/common-options.js";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
+import { type PHIDOption } from "@powerhousedao/design-system/ui";
 
 interface ScopeFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
@@ -128,19 +133,41 @@ export function ScopeForm({
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <MultiPhIdForm
                 label="Original Context Data"
-                data={documentState.originalContextData}
+                data={documentState.originalContextData.map((element) => {
+                  const initialOption: PHIDOption = {
+                    icon: "File",
+                    title: element.title ?? "",
+                    value: `phd:${element.id}`,
+                  };
+
+                  return {
+                    id: `phd:${element.id}`,
+                    initialOptions: [initialOption],
+                  };
+                })}
                 onAdd={(value) => {
-                  dispatch(actions.addContextData({ id: value }));
+                  const newData = fetchSelectedPHIDOption(value);
+                  const newId = value.split(":")[1];
+                  dispatch(
+                    actions.addContextData({
+                      id: newId,
+                      title: newData?.title ?? "",
+                    }),
+                  );
                 }}
                 onRemove={({ value }) => {
-                  dispatch(actions.removeContextData({ id: value }));
+                  const id = value.split(":")[1];
+                  dispatch(actions.removeContextData({ id }));
                 }}
                 onUpdate={({ previousValue, value }) => {
+                  const newData = fetchSelectedPHIDOption(value);
+                  const prevId = previousValue.split(":")[1];
+                  const newId = value.split(":")[1];
                   dispatch(
                     actions.replaceContextData({
-                      prevId: previousValue,
-                      id: value,
-                      title: "", // TODO: add the document title
+                      prevId,
+                      id: newId,
+                      title: newData?.title ?? "",
                     }),
                   );
                 }}

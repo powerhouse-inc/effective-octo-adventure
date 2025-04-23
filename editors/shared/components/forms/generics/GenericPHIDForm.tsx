@@ -1,6 +1,5 @@
 import { Form } from "@powerhousedao/design-system/scalars";
 import { useFormMode } from "../../../providers/FormModeProvider.js";
-import { StringDiffField } from "../../diff-fields/string-diff-field.js";
 import { PHIDDiffField } from "../../diff-fields/phid-diff-field.js";
 import {
   fetchPHIDOptions,
@@ -50,7 +49,20 @@ const GenericPHIDForm = ({
           allowUris
           initialOptions={initialOptions}
           fetchOptionsCallback={fetchPHIDOptions}
-          fetchSelectedOptionCallback={fetchSelectedPHIDOption}
+          fetchSelectedOptionCallback={(val) => {
+            const result = fetchSelectedPHIDOption(val);
+            if (result !== undefined) {
+              if (
+                result.value !== value ||
+                result.title !== initialOptions?.[0].title
+              ) {
+                onSave(result.value);
+              }
+            } else if (value !== "") {
+              onSave("");
+            }
+            return result;
+          }}
           onBlur={triggerSubmit}
           mode={formMode}
           baselineValue={baselineValue}

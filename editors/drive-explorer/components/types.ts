@@ -11,18 +11,20 @@ export type AtlasArticle = {
     docNo: string;
     parent: {
       id: string;
-      name: string | null;
+      title: string | null;
       docNo: string | null;
     };
     atlasType: string;
     content: string;
     masterStatus: string;
     globalTags: string[];
-    references: string[];
     originalContextData: any[];
-    provenance: string[];
     notionId: string;
   };
 };
 
-export type AtlasFeedbackIssue = AtlasFeedbackIssuesDocument["state"] & Pick<AtlasFeedbackIssuesDocument, "documentType" | "revision" | "created" | "lastModified">;
+export type AtlasFeedbackIssue = AtlasFeedbackIssuesDocument["state"] &
+  Pick<
+    AtlasFeedbackIssuesDocument,
+    "documentType" | "created" | "lastModified"
+  >;

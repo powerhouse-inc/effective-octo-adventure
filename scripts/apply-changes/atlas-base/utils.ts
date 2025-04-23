@@ -21,7 +21,7 @@ export const extractDocNoAndTitle = (docNo: string, name: string) => {
 type Link = {
   id: string;
   docNo: Maybe<string>;
-  name: Maybe<string>;
+  title: Maybe<string>;
 };
 
 export const findAtlasParentInCache = (
@@ -37,7 +37,7 @@ export const findAtlasParentInCache = (
       if (parentDoc) {
         parent = {
           id: parentDoc.id,
-          name: parentDoc.name || null,
+          title: parentDoc.name || null,
           docNo: (parentDoc.state as any)?.docNo || null,
         };
       }

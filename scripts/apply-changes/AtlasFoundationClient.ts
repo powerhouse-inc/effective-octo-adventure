@@ -89,7 +89,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<
       input,
       this.documentsCache,
     );
-
+    
     return {
       ...currentState,
       docNo,
@@ -101,7 +101,6 @@ export class AtlasFoundationClient extends AtlasBaseClient<
         .join("\n")
         .trim(),
       notionId: input.id,
-      provenance: input.hubUrls,
       parent,
     };
   }
@@ -149,9 +148,12 @@ export class AtlasFoundationClient extends AtlasBaseClient<
         throw new Error("originalContextData patcher is not implemented yet.");
         break;
       case "parent":
+        if (!target) {
+          throw new Error("Parent is not found");
+        }
+        const parsedTarget = target as FDocumentLink;
         await patch.AtlasFoundation_setParent(
-          /* @ts-expect-error */
-          arg<SetParentInput>({ ...target }),
+          arg<SetParentInput>(parsedTarget),
         );
         break;
       default:

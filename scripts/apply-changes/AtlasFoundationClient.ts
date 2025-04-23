@@ -10,6 +10,9 @@ import {
 } from "document-models/atlas-foundation/index.js";
 import { gql } from "graphql-request";
 import {
+  getNodeDocNo,
+  getNodeName,
+  getNodeTitle,
   getPNDTitle,
   pndContentToString,
 } from "../../document-models/utils.js";
@@ -22,6 +25,7 @@ import {
 } from "./atlas-base/utils.js";
 import { type DocumentsCache } from "./common/DocumentsCache.js";
 import { type ReactorClient } from "./common/ReactorClient.js";
+import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
 
 const DOCUMENT_TYPE = "sky/atlas-foundation";
 
@@ -73,17 +77,17 @@ export class AtlasFoundationClient extends AtlasBaseClient<
     `);
   }
 
-  protected createDocumentFromInput(notionDoc: ParsedNotionDocument) {
+  protected createDocumentFromInput(documentNode: ViewNode) {
     return this.writeClient.mutations.AtlasFoundation_createDocument({
-      __args: { driveId: this.driveId, name: getPNDTitle(notionDoc) },
+      __args: { driveId: this.driveId, name: getNodeTitle(documentNode) },
     });
   }
 
   protected getTargetState(
-    input: ParsedNotionDocument,
+    input: ViewNode,
     currentState: AtlasFoundationState,
   ): AtlasFoundationState {
-    const [docNo, title] = extractDocNoAndTitle(input.docNo, input.name);
+    const [docNo, title] = extractDocNoAndTitle(getNodeDocNo(input), getNodeName(input));
     // @ts-expect-error
     const parent: Maybe<FDocumentLink> = findAtlasParentInCache(
       input,
@@ -94,12 +98,13 @@ export class AtlasFoundationClient extends AtlasBaseClient<
       ...currentState,
       docNo,
       name: title,
-      /* @ts-expect-error */
-      masterStatus: input.masterStatusNames[0]?.toUpperCase() || "PLACEHOLDER",
-      content: input.content
-        .map((c) => pndContentToString(c))
-        .join("\n")
-        .trim(),
+      // TODO: extract masterStatus from the view node
+      // masterStatus: input.masterStatusNames[0]?.toUpperCase() || "PLACEHOLDER",
+      // TODO: implement content converting the notion content to markdown
+      // content: input.content
+      //   .map((c) => pndContentToString(c))
+      //   .join("\n")
+      //   .trim(),
       notionId: input.id,
       parent,
     };

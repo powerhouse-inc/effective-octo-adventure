@@ -1,6 +1,5 @@
 import { gql } from "graphql-request";
 import { graphqlClient as writeClient } from "../clients/index.js";
-import { type ParsedNotionDocument } from "./atlas-base/NotionTypes.js";
 import { type DocumentsCache } from "./common/DocumentsCache.js";
 import { type ReactorClient } from "./common/ReactorClient.js";
 
@@ -10,11 +9,15 @@ import {
   type SetScopeNameInput,
 } from "../../document-models/atlas-scope/index.js";
 import {
+  getNodeDocNo,
+  getNodeName,
+  getNodeTitle,
   getPNDTitle,
   pndContentToString,
 } from "../../document-models/utils.js";
 import { type AtlasScopeState } from "../clients/graphql.js";
 import { AtlasBaseClient, mutationArg } from "./atlas-base/AtlasBaseClient.js";
+import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
 
 const DOCUMENT_TYPE = "sky/atlas-scope";
 
@@ -73,28 +76,30 @@ export class AtlasScopeClient extends AtlasBaseClient<
     `);
   }
 
-  protected createDocumentFromInput(notionDoc: ParsedNotionDocument) {
+  protected createDocumentFromInput(documentNode: ViewNode) {
     return this.writeClient.mutations.AtlasScope_createDocument({
-      __args: { driveId: this.driveId, name: getPNDTitle(notionDoc) },
+      __args: { driveId: this.driveId, name: getNodeTitle(documentNode) },
     });
   }
 
   protected getTargetState(
-    input: ParsedNotionDocument,
+    input: ViewNode,
     currentState: AtlasScopeState,
   ): AtlasScopeState {
     return {
       ...currentState,
-      docNo: input.docNo,
-      name: getPNDTitle(input, false),
-      /* @ts-expect-error */
-      masterStatus: statusStringToEnum(
-        input.masterStatusNames[0] || "PLACEHOLDER",
-      ),
-      content: input.content
-        .map((c) => pndContentToString(c))
-        .join("\n")
-        .trim(),
+      docNo: getNodeDocNo(input),
+      name: getNodeName(input),
+      // TODO: extract masterStatus from the view node
+      // masterStatus: statusStringToEnum(
+      //   input.masterStatusNames[0] || "PLACEHOLDER",
+      // ),
+      // TODO: implement content converting the notion content to markdown
+      content: "",
+      // content: input.content
+      //   .map((c) => pndContentToString(c))
+      //   .join("\n")
+      //   .trim(),
       notionId: input.id,
       //globalTags: [],
     };

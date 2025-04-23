@@ -1,6 +1,6 @@
 import { type Maybe } from "graphql-ts-client";
-import { type ParsedNotionDocument } from "./NotionTypes.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
+import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
 
 export const extractDocNoAndTitle = (docNo: string, name: string) => {
   if (name.length > 0) {
@@ -25,11 +25,14 @@ type Link = {
 };
 
 export const findAtlasParentInCache = (
-  input: ParsedNotionDocument,
+  input: ViewNode,
   cache: DocumentsCache,
 ) => {
+  // "id": "4281ab93-ef4f-4974-988d-7dad149a693d",
+
+
   let parent: Maybe<Link> = null;
-  const parents = input.parents ?? [];
+  const parents = input.ancestorSlugSuffixes?.map(slugSuffix => slugSuffix.split("|")[0])?.filter(id => !!id) ?? [];
   for (let i = 0; (parent === null && i < parents.length); i++) {
     const parentDocIds = cache.resolveInputId(parents[i]);
     if (parentDocIds.length) {
@@ -46,7 +49,7 @@ export const findAtlasParentInCache = (
 
   if (parent === null) {
     console.log(
-      `Can't find the parent in document cache: ${input.parents?.join(",")}`,
+      `Can't find the parent in document cache: ${input.ancestorSlugSuffixes?.join(",")}`,
     );
   }
 

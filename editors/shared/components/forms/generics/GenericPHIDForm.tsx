@@ -51,17 +51,15 @@ const GenericPHIDForm = ({
           fetchOptionsCallback={fetchPHIDOptions}
           fetchSelectedOptionCallback={(val) => {
             const result = fetchSelectedPHIDOption(val);
-            if (result !== undefined) {
-              if (
-                result.value !== value ||
-                result.title !== initialOptions?.[0].title
-              ) {
-                onSave(result.value);
-              }
-            } else if (value !== "") {
-              onSave("");
+            if (
+              result !== undefined &&
+              (result.value !== value ||
+                result.title !== initialOptions?.[0].title)
+            ) {
+              onSave(result.value);
+              return result;
             }
-            return result;
+            return initialOptions?.[0];
           }}
           onBlur={triggerSubmit}
           mode={formMode}

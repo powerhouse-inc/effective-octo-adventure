@@ -18,7 +18,11 @@ export const reducer: AtlasExploratoryGeneralOperations = {
   },
 
   setParentOperation(state, action) {
-    state.parent = action.input.parent || "";
+    state.parent = {
+      id: action.input.id,
+      title: action.input.title ?? "",
+      docNo: null,
+    };
   },
 
   setAtlasTypeOperation(state, action) {

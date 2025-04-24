@@ -8,7 +8,7 @@ import {
   useViewMode,
   ViewModeContext,
   ViewModeProvider,
-} from "../context/view-mode-context.js";
+} from "../providers/ViewModeProvider.js";
 
 export type ChildrenFn = ({
   isSplitMode,

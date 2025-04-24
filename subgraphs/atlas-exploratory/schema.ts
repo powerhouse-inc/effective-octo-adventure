@@ -18,7 +18,7 @@ export const schema: DocumentNode = gql`
     Parent entity that this Exploratory document belongs to.
     This is a reference to another Atlas document.
     """
-    parent: PHID!
+    parent: EDocumentLink!
     """
     The type of the Exploratory document within Atlas.
     Example: Tenet, Original Context Data, Active Data.
@@ -39,7 +39,7 @@ export const schema: DocumentNode = gql`
     """
     List of Atlas documents that were relevant for the creation of this Exploratory document.
     """
-    originalContextData: [DocumentInfo!]!
+    originalContextData: [EDocumentLink!]!
     """
     Original Notion document ID of the Exploratory document.
     Used for cross-system referencing and linking back to the original Notion source.
@@ -62,7 +62,7 @@ export const schema: DocumentNode = gql`
     isAligned: Boolean!
   }
 
-  type DocumentInfo {
+  type EDocumentLink {
     id: PHID!
     title: OLabel
     docNo: String
@@ -214,7 +214,9 @@ export const schema: DocumentNode = gql`
   }
   input AtlasExploratory_SetParentInput {
     "Add your inputs here"
-    parent: PHID!
+    id: PHID!
+    title: OLabel
+    docNo: String
   }
   input AtlasExploratory_SetAtlasTypeInput {
     "Add your inputs here"

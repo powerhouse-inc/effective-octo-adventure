@@ -66,18 +66,15 @@ const MultiPhIdForm = ({
           const element = data.find((d) => d.id === val);
           const elementIndex = data.findIndex((d) => d.id === val);
 
-          if (
-            result !== undefined &&
-            element !== undefined &&
-            (result.value !== element.id ||
-              result.title !== element.initialOptions?.[0]?.title)
-          ) {
-            onUpdate({
-              previousValue: element.id,
-              value: result.value,
-              id: element.id,
-              index: elementIndex,
-            });
+          if (result !== undefined && element !== undefined) {
+            if (result.title !== element.initialOptions?.[0]?.title) {
+              onUpdate({
+                previousValue: element.id,
+                value: result.value,
+                id: element.id,
+                index: elementIndex,
+              });
+            }
             return result;
           }
           return element?.initialOptions?.[0];

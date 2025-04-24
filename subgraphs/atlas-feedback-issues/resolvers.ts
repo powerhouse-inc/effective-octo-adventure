@@ -8,7 +8,7 @@ import { generateId, hashKey } from "document-model";
 
 const DEFAULT_DRIVE_ID = "powerhouse";
 
-export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
+export const getResolvers = (subgraph: Subgraph) => {
   const reactor = subgraph.reactor;
 
   return {
@@ -45,7 +45,9 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
               }),
             );
 
-            return null;
+            return docs.filter(
+              (doc) => doc.documentType === "makerdao/feedback-issues",
+            );
           },
         };
       },

@@ -1,19 +1,22 @@
 import { cn } from "@powerhousedao/design-system/scalars";
 import ContentCard from "../../shared/components/content-card.js";
-import { getCardVariant, getTagText } from "../../shared/utils/utils.js";
+import {
+  fetchSelectedPHIDOption,
+  getCardVariant,
+  getTagText,
+} from "../../shared/utils/utils.js";
+import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import type { EditorMode } from "../../shared/types.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
-import { type PHIDOption } from "@powerhousedao/design-system/ui";
+import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { DocNoForm } from "../../shared/components/forms/DocNoForm.js";
 import type { IProps } from "../editor.js";
 import {
   actions,
   type EGlobalTag,
-  type AtlasExploratoryState,
   type EAtlasType,
 } from "../../../document-models/atlas-exploratory/index.js";
-import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
@@ -24,35 +27,42 @@ import { Toggle } from "@powerhousedao/design-system/ui";
 import { useEffect, useState } from "react";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
+import {
+  getFlexLayoutClassName,
+  getWidthClassName,
+} from "../../shared/utils/styles.js";
 
 interface ExploratoryFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
-  parentPHIDInitialOption?: PHIDOption;
-  originalContextDataPHIDInitialOption?: PHIDOption;
-  isAligned?: boolean;
   isSplitMode?: boolean;
+  isAligned?: boolean;
 }
 
 export function ExploratoryForm({
   document,
   dispatch,
   mode,
-  parentPHIDInitialOption,
-  originalContextDataPHIDInitialOption,
-  isAligned,
   isSplitMode,
+  isAligned,
 }: ExploratoryFormProps) {
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
 
-  const documentState = document.state.global;
-  const [contentValue, setContentValue] = useState<string>(
-    documentState.content || "",
-  );
+  const originalDocumentState = document.state.global;
+  const parentId = originalDocumentState.parent
+    ? `phd:${originalDocumentState.parent}`
+    : "";
+
+  const documentState = {
+    ...originalDocumentState,
+    parent: parentId,
+  };
+
+  const [contentValue, setContentValue] = useState(documentState.content ?? "");
 
   // Update contentValue when documentState changes
   useEffect(() => {
-    setContentValue(documentState.content || "");
+    setContentValue(documentState.content ?? "");
   }, [documentState.content]);
 
   // Custom handler for content changes
@@ -62,32 +72,26 @@ export function ExploratoryForm({
 
   // Custom handler for content blur
   const handleContentBlur = () => {
-    // Only submit if the content has actually changed
+    // Only save if the content has actually changed
     if (contentValue !== documentState.content) {
       dispatch(actions.setContent({ content: contentValue }));
     }
   };
 
   // baseline node state
-  const [originalNodeState] = useState(
-    () =>
-      getOriginalNotionDocument(
-        (documentState.notionId as string) || "notion-id-not-set",
-        (documentState.atlasType as ParsedNotionDocumentType) || "article",
-      ) as unknown as AtlasExploratoryState,
+  const [originalNodeState] = useState(() =>
+    getOriginalNotionDocument(
+      (documentState.notionId as string) || "notion-id-not-set",
+      (documentState.atlasType as ParsedNotionDocumentType) || "scenario",
+    ),
   );
 
   return (
     <FormModeProvider mode={mode}>
-      <ContentCard tagText={tagText} variant={cardVariant} className="mt-4">
-        <div className="flex flex-col gap-4">
-          <div
-            className={cn(
-              "flex flex-row gap-2",
-              isSplitMode ? "flex-col" : "flex-row",
-            )}
-          >
-            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
+      <ContentCard tagText={tagText} variant={cardVariant}>
+        <div className={cn("flex flex-col gap-3")}>
+          <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
+            <div className={cn("flex-1")}>
               <DocNoForm
                 value={documentState.docNo}
                 baselineValue={originalNodeState.docNo}
@@ -96,29 +100,20 @@ export function ExploratoryForm({
                 }}
               />
             </div>
-            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
+            <div className={cn("flex-1")}>
               <DocNameForm
                 value={documentState.name}
                 baselineValue={originalNodeState.name}
                 onSave={(value) => {
                   dispatch(actions.setExploratoryName({ name: value }));
                 }}
-                placeholder="Name"
               />
             </div>
           </div>
-          <div
-            className={cn(
-              "flex flex-row gap-2",
-              isSplitMode ? "flex-col" : "flex-row",
-            )}
-          >
-            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
+          <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
+            <div className={cn("flex-1")}>
               <DocTypeForm
                 value={documentState.atlasType}
-                // TODO: fix this once we can access the real baseline document
-                // @ts-ignore
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
                 baselineValue={originalNodeState.type?.toUpperCase()}
                 options={[
                   { value: "SCENARIO", label: "SCENARIO" },
@@ -129,14 +124,12 @@ export function ExploratoryForm({
                 ]}
                 onSave={(value) => {
                   dispatch(
-                    actions.setAtlasType({
-                      atlasType: value as EAtlasType,
-                    }),
+                    actions.setAtlasType({ atlasType: value as EAtlasType }),
                   );
                 }}
               />
             </div>
-            <div className={cn(isSplitMode ? "w-full" : "w-1/2")}>
+            <div className={cn("flex-1")}>
               <MasterStatusForm
                 value={documentState.masterStatus}
                 baselineValue={originalNodeState.masterStatus[0]?.toUpperCase()}
@@ -154,16 +147,18 @@ export function ExploratoryForm({
             height={350}
             label="Content"
           />
+
           <div
             className={cn(
-              "flex flex-col gap-4",
-              isSplitMode ? "w-full" : "w-1/2",
+              "flex flex-col gap-3",
+              getWidthClassName(!!isSplitMode),
             )}
           >
             <SinglePhIdForm
               label="Parent Document"
               value={documentState.parent}
-              baselineValue={""}
+              baselineValue={originalNodeState.parents?.[0] ?? ""}
+              // TODO: change this once parent type is updated to DocumentInfo instead of Scalars["PHID"]["output"] in schema
               onSave={(value) => {
                 if (value === null || value === "") {
                   dispatch(actions.setParent({ parent: "" }));
@@ -174,7 +169,8 @@ export function ExploratoryForm({
               }}
             />
           </div>
-          {/* TODO: Improve this in next iteration */}
+
+          {/* TODO: Improve this in the next iteration */}
           <div className="flex flex-row justify-end items-center gap-2">
             <span
               className={cn(
@@ -185,7 +181,7 @@ export function ExploratoryForm({
               Misaligned
             </span>
             <Toggle
-              disabled={mode === "Readonly"}
+              disabled={mode !== "Edition"}
               name="findings.isAligned"
               value={documentState.findings.isAligned}
               onChange={() => {
@@ -220,25 +216,47 @@ export function ExploratoryForm({
 
           <div
             className={cn(
-              "flex flex-col gap-4",
-              isSplitMode ? "w-full" : "w-1/2",
+              "flex flex-col gap-3",
+              getWidthClassName(!!isSplitMode),
             )}
           >
             <MultiPhIdForm
               label="Original Context Data"
-              data={documentState.originalContextData}
+              data={documentState.originalContextData.map((element) => {
+                const initialOption: PHIDOption = {
+                  icon: "File",
+                  title: element.title ?? "",
+                  value: `phd:${element.id}`,
+                };
+
+                return {
+                  id: `phd:${element.id}`,
+                  initialOptions: [initialOption],
+                };
+              })}
               onAdd={(value) => {
-                dispatch(actions.addContextData({ id: value }));
+                const newData = fetchSelectedPHIDOption(value);
+                const newId = value.split(":")[1];
+                dispatch(
+                  actions.addContextData({
+                    id: newId,
+                    title: newData?.title ?? "",
+                  }),
+                );
               }}
               onRemove={({ value }) => {
-                dispatch(actions.removeContextData({ id: value }));
+                const id = value.split(":")[1];
+                dispatch(actions.removeContextData({ id }));
               }}
               onUpdate={({ previousValue, value }) => {
+                const newData = fetchSelectedPHIDOption(value);
+                const prevId = previousValue.split(":")[1];
+                const newId = value.split(":")[1];
                 dispatch(
                   actions.replaceContextData({
-                    prevId: previousValue,
-                    id: value,
-                    title: "", // TODO: add the document title
+                    prevId,
+                    id: newId,
+                    title: newData?.title ?? "",
                   }),
                 );
               }}
@@ -246,7 +264,7 @@ export function ExploratoryForm({
 
             <GlobalTagsForm
               value={documentState.globalTags}
-              baselineValue={[]}
+              baselineValue={[]} // TODO: add the baseline value
               onSave={(value) => {
                 const newTags = value as EGlobalTag[];
                 const currentTags = documentState.globalTags;

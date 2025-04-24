@@ -49,9 +49,16 @@ export function ExploratoryForm({
   const tagText = getTagText(mode);
 
   const originalDocumentState = document.state.global;
-  const parentId = originalDocumentState.parent
-    ? `phd:${originalDocumentState.parent}`
+  const parentId = originalDocumentState.parent?.id
+    ? `phd:${originalDocumentState.parent.id}`
     : "";
+  const parentTitle = originalDocumentState.parent?.title ?? "";
+
+  const parentPHIDInitialOption: PHIDOption = {
+    icon: "File",
+    title: parentTitle,
+    value: parentId,
+  };
 
   const documentState = {
     ...originalDocumentState,
@@ -158,15 +165,25 @@ export function ExploratoryForm({
               label="Parent Document"
               value={documentState.parent}
               baselineValue={originalNodeState.parents?.[0] ?? ""}
-              // TODO: change this once parent type is updated to DocumentInfo instead of Scalars["PHID"]["output"] in schema
               onSave={(value) => {
                 if (value === null || value === "") {
-                  dispatch(actions.setParent({ parent: "" }));
+                  dispatch(
+                    actions.setParent({
+                      id: "",
+                    }),
+                  );
                 } else {
                   const newParentId = value.split(":")[1];
-                  dispatch(actions.setParent({ parent: newParentId }));
+                  const newParentData = fetchSelectedPHIDOption(value);
+                  dispatch(
+                    actions.setParent({
+                      id: newParentId,
+                      title: newParentData?.title ?? "",
+                    }),
+                  );
                 }
               }}
+              initialOptions={[parentPHIDInitialOption]}
             />
           </div>
 

@@ -15,7 +15,7 @@ import {
   DefaultEditorLoader,
 } from "@powerhousedao/design-system";
 import { useState, Suspense, type FC, useCallback, lazy } from "react";
-import { ViewModeProvider } from "../../shared/context/view-mode-context.js";
+import { ViewModeProvider } from "../../shared/providers/ViewModeProvider.js";
 
 import {
   AtlasExploratory,

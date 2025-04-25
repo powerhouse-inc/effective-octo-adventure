@@ -9,6 +9,7 @@ export const schema: DocumentNode = gql`
     id: PHID!
     name: String!
     parent: SetDocumentLink
+    notionId: String
   }
 
   type SetDocumentLink {
@@ -44,16 +45,24 @@ export const schema: DocumentNode = gql`
       docId: PHID
       input: AtlasSet_SetSetParentInput
     ): Int
+    AtlasSet_setNotionId(
+      driveId: String
+      docId: PHID
+      input: AtlasSet_SetNotionIdInput
+    ): Int
   }
 
   """
   Module: General
   """
   input AtlasSet_SetSetNameInput {
-    name: String
+    name: String!
   }
   input AtlasSet_SetSetParentInput {
     id: PHID!
     title: OLabel
+  }
+  input AtlasSet_SetNotionIdInput {
+    notionId: String!
   }
 `;

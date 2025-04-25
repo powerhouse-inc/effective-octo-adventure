@@ -1,6 +1,6 @@
 {
     "id": "sky/atlas-set",
-    "name": "atlas-set",
+    "name": "Atlas Set",
     "extension": "",
     "description": "Navigational containers, like \"categories, which themselves are not numbered, but contain numbered child nodes.",
     "author": {
@@ -13,8 +13,8 @@
             "changeLog": [],
             "state": {
                 "global": {
-                    "schema": "type AtlasSetState {\n  id: PHID!\n  name: String!\n  parent: SetDocumentLink\n}\n\ntype SetDocumentLink {\n  id: PHID!\n  title: OLabel\n}",
-                    "initialValue": "{\n  \"id\": \"\",\n  \"name\": \"\",\n  \"parent\": {\n    \"id\": \"\",\n    \"title\": \"\"\n  }\n}",
+                    "schema": "type AtlasSetState {\n  id: PHID!\n  name: String!\n  parent: SetDocumentLink\n  notionId: String\n}\n\ntype SetDocumentLink {\n  id: PHID!\n  title: OLabel\n}",
+                    "initialValue": "{\n  \"id\": \"\",\n  \"name\": \"\",\n  \"parent\": {\n    \"id\": \"\",\n    \"title\": \"\"\n  },\n  \"notionId\": \"\"\n}",
                     "examples": []
                 },
                 "local": {
@@ -33,7 +33,7 @@
                             "id": "kNXbpv7WFGOpLkpJilvyN9Y7f48=",
                             "name": "SET_SET_NAME",
                             "description": "",
-                            "schema": "input SetSetNameInput {\n  name: String\n}",
+                            "schema": "input SetSetNameInput {\n  name: String!\n}",
                             "template": "",
                             "reducer": "",
                             "errors": [],
@@ -45,6 +45,17 @@
                             "name": "SET_SET_PARENT",
                             "description": "",
                             "schema": "input SetSetParentInput {\n  id: PHID!\n  title: OLabel\n}",
+                            "template": "",
+                            "reducer": "",
+                            "errors": [],
+                            "examples": [],
+                            "scope": "global"
+                        },
+                        {
+                            "id": "3vG1BBRhVRf4I8ZytVGtClWTIYk=",
+                            "name": "SET_NOTION_ID",
+                            "description": "",
+                            "schema": "input SetNotionIdInput {\n  notionId: String!\n}",
                             "template": "",
                             "reducer": "",
                             "errors": [],

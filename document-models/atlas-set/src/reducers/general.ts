@@ -8,12 +8,15 @@ import type { AtlasSetGeneralOperations } from "../../gen/general/operations.js"
 
 export const reducer: AtlasSetGeneralOperations = {
   setSetNameOperation(state, action) {
-    state.name = action.input.name || "";
+    state.name = action.input.name;
   },
   setSetParentOperation(state, action) {
     state.parent = {
       id: action.input.id,
       title: action.input.title || null,
     };
+  },
+  setNotionIdOperation(state, action) {
+    state.notionId = action.input.notionId;
   },
 };

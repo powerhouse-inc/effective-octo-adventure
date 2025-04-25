@@ -4,10 +4,14 @@ import {
   atlasData,
   isScope,
   isFoundation,
-  getNodeDocNo
+  getNodeDocNo,
+  isGrounding,
+  isExploratory,
+  isMultiParent,
+  isSet
 } from "../../document-models/utils.js";
-import { AtlasFoundationClient } from "./AtlasFoundationClient.js";
-import { AtlasScopeClient } from "./AtlasScopeClient.js";
+import { AtlasFoundationClient } from "./clients/AtlasFoundationClient.js";
+import { AtlasScopeClient } from "./clients/AtlasScopeClient.js";
 import { DocumentsCache } from "./common/DocumentsCache.js";
 import { ReactorClient } from "./common/ReactorClient.js";
 import { SystemGraphClient } from "./SystemGraphClient.js";
@@ -101,6 +105,14 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
         const newDocumentId = await clients.scopes.update(documentNode);
       } else if (isFoundation(documentNode)) {
         const newDocumentId = await clients.foundation.update(documentNode);
+      } else if (isGrounding(documentNode)) {
+        console.log("Update for Grounding Document not implemented yet.");
+      } else if (isExploratory(documentNode)) {
+        console.log("Update for Exploratory Document not implemented yet.");
+      } else if (isMultiParent(documentNode)) {
+        console.log("Update for MultiParent Document not implemented yet.");
+      } else if (isSet(documentNode)) {
+        console.log("Update for Set Document not implemented yet.");
       } else {
         console.log(`Update for type ${documentNode.type} not implemented yet.`);
       }

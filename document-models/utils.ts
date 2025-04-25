@@ -115,3 +115,19 @@ export const isFoundation = (node: ViewNode) => {
     node.type,
   );
 };
+
+export const isExploratory = (node: ViewNode) => {
+  return ["scenario", "scenarioVariation"].includes(node.type);
+};
+
+export const isGrounding = (node: ViewNode) => {
+  return ["tenet", "originalContextData", "activeData"].includes(node.type);
+};
+
+export const isMultiParent = (node: ViewNode) => {
+  return ["annotation", "neededResearch"].includes(node.type);
+};
+
+export const isSet = (node: ViewNode) => {
+  return node.type === "category";
+};

@@ -1,22 +1,22 @@
 import { gql } from "graphql-request";
-import { graphqlClient as writeClient } from "../clients/index.js";
-import { type DocumentsCache } from "./common/DocumentsCache.js";
-import { type ReactorClient } from "./common/ReactorClient.js";
+import { graphqlClient as writeClient } from "../../clients/index.js";
+import { type DocumentsCache } from "../common/DocumentsCache.js";
+import { type ReactorClient } from "../common/ReactorClient.js";
 
 import {
   type SetContentInput,
   type SetDocNumberInput,
   type SetScopeNameInput,
-} from "../../document-models/atlas-scope/index.js";
+} from "../../../document-models/atlas-scope/index.js";
 import {
   getNodeDocNo,
   getNodeName,
   getNodeTitle,
   getPNDTitle,
   pndContentToString,
-} from "../../document-models/utils.js";
-import { type AtlasScopeState } from "../clients/graphql.js";
-import { AtlasBaseClient, mutationArg } from "./atlas-base/AtlasBaseClient.js";
+} from "../../../document-models/utils.js";
+import { type AtlasScopeState } from "../../clients/graphql.js";
+import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
 
 const DOCUMENT_TYPE = "sky/atlas-scope";

@@ -13,14 +13,14 @@ import {
   getNodeDocNo,
   getNodeName,
   getNodeTitle,
-} from "../../document-models/utils.js";
-import { graphqlClient as writeClient } from "../clients/index.js";
-import { AtlasBaseClient, mutationArg } from "./atlas-base/AtlasBaseClient.js";
+} from "../../../document-models/utils.js";
+import { graphqlClient as writeClient } from "../../clients/index.js";
+import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import {
   findAtlasParentInCache,
-} from "./atlas-base/utils.js";
-import { type DocumentsCache } from "./common/DocumentsCache.js";
-import { type ReactorClient } from "./common/ReactorClient.js";
+} from "../atlas-base/utils.js";
+import { type DocumentsCache } from "../common/DocumentsCache.js";
+import { type ReactorClient } from "../common/ReactorClient.js";
 import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
 import { NotionConverter } from 'notion-to-md';
 

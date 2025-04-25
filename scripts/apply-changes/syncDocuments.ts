@@ -3,7 +3,8 @@ import {
   getNodeTitle,
   atlasData,
   isScope,
-  isFoundation
+  isFoundation,
+  getNodeDocNo
 } from "../../document-models/utils.js";
 import { AtlasFoundationClient } from "./AtlasFoundationClient.js";
 import { AtlasScopeClient } from "./AtlasScopeClient.js";
@@ -71,14 +72,13 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
   //   .sort((a, b) => (a!.docNo < b!.docNo ? -1 : 1));
 
   // the queue is initialized with the scopes (first level of the atlas)
-  const queue = [...atlasData]
+  const queue: ViewNode[] = [...atlasData]
 
   let processed = 0;
   let skipped = 0;
-  let documentNode: ViewNode;
 
   while (queue.length > 0) {
-    documentNode = queue.shift()!;
+    let documentNode = queue.shift()!;
     if (processed >= config.processLimit) {
       console.log(`\nProcess limit reached.`);
       break;
@@ -109,7 +109,9 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
     }
 
     // add all the sub documents to the queue
-    queue.push(...documentNode.subDocuments);
+    if (documentNode.subDocuments.length > 0) {
+      queue.push(...documentNode.subDocuments);
+    }
 
     processed++;
   }

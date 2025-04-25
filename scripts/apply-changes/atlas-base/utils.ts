@@ -1,22 +1,7 @@
 import { type Maybe } from "graphql-ts-client";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
-
-export const extractDocNoAndTitle = (docNo: string, name: string) => {
-  if (name.length > 0) {
-    return [docNo.trim(), name.trim()];
-  }
-
-  const dashPosition = docNo.indexOf("-");
-  if (dashPosition < 0) {
-    return [docNo.trim(), name.trim()];
-  }
-
-  return [
-    docNo.substring(0, dashPosition).trim(),
-    docNo.substring(dashPosition + 1).trim(),
-  ];
-};
+import { getNodeDocNo, getNodeTitle } from "../../../document-models/utils.js";
 
 type Link = {
   id: string;
@@ -28,24 +13,37 @@ export const findAtlasParentInCache = (
   input: ViewNode,
   cache: DocumentsCache,
 ) => {
-  // "id": "4281ab93-ef4f-4974-988d-7dad149a693d",
-
+  if (!input.parentSlugSuffix) {
+    return null; // no parent, probably a scope
+  }
 
   let parent: Maybe<Link> = null;
-  const parents = input.ancestorSlugSuffixes?.map(slugSuffix => slugSuffix.split("|")[0])?.filter(id => !!id) ?? [];
-  for (let i = 0; (parent === null && i < parents.length); i++) {
-    const parentDocIds = cache.resolveInputId(parents[i]);
-    if (parentDocIds.length) {
-      const parentDoc = cache.searchDocument(parentDocIds[0]);
-      if (parentDoc) {
-        parent = {
-          id: parentDoc.id,
-          title: parentDoc.name || null,
-          docNo: (parentDoc.state as any)?.docNo || null,
-        };
-      }
-    }
+  const parentInputId = input.parentSlugSuffix.split("|")[0];
+
+  const parentDocIds = cache.resolveInputId(parentInputId);
+  const parentDoc = cache.searchDocument(parentDocIds[0]);
+  if (parentDoc) {
+    parent = {
+      id: parentDoc.id,
+      title: parentDoc.name || null,
+      docNo: (parentDoc.state as any)?.docNo || null,
+    };
   }
+  
+  // TODO: previous implementation (not used anymore, but kept for reference)
+  // for (let i = 0; (parent === null && i < parents.length); i++) {
+  //   const parentDocIds = cache.resolveInputId(parents[i]);
+  //   if (parentDocIds.length) {
+  //     const parentDoc = cache.searchDocument(parentDocIds[0]);
+  //     if (parentDoc) {
+  //       parent = {
+  //         id: parentDoc.id,
+  //         title: parentDoc.name || null,
+  //         docNo: (parentDoc.state as any)?.docNo || null,
+  //       };
+  //     }
+  //   }
+  // }
 
   if (parent === null) {
     console.log(

@@ -13,19 +13,16 @@ import {
   getNodeDocNo,
   getNodeName,
   getNodeTitle,
-  getPNDTitle,
-  pndContentToString,
 } from "../../document-models/utils.js";
 import { graphqlClient as writeClient } from "../clients/index.js";
 import { AtlasBaseClient, mutationArg } from "./atlas-base/AtlasBaseClient.js";
-import { type ParsedNotionDocument } from "./atlas-base/NotionTypes.js";
 import {
-  extractDocNoAndTitle,
   findAtlasParentInCache,
 } from "./atlas-base/utils.js";
 import { type DocumentsCache } from "./common/DocumentsCache.js";
 import { type ReactorClient } from "./common/ReactorClient.js";
 import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
+import { NotionConverter } from 'notion-to-md';
 
 const DOCUMENT_TYPE = "sky/atlas-foundation";
 
@@ -87,7 +84,6 @@ export class AtlasFoundationClient extends AtlasBaseClient<
     input: ViewNode,
     currentState: AtlasFoundationState,
   ): AtlasFoundationState {
-    const [docNo, title] = extractDocNoAndTitle(getNodeDocNo(input), getNodeName(input));
     // @ts-expect-error
     const parent: Maybe<FDocumentLink> = findAtlasParentInCache(
       input,
@@ -96,8 +92,8 @@ export class AtlasFoundationClient extends AtlasBaseClient<
     
     return {
       ...currentState,
-      docNo,
-      name: title,
+      docNo: getNodeDocNo(input),
+      name: getNodeName(input),
       // TODO: extract masterStatus from the view node
       // masterStatus: input.masterStatusNames[0]?.toUpperCase() || "PLACEHOLDER",
       // TODO: implement content converting the notion content to markdown
@@ -116,7 +112,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<
     current: AtlasFoundationState[K],
     target: AtlasFoundationState[K],
   ) {
-    console.log(` > ${fieldName}: ${current ? current + " " : ""}> ${target}`);
+    console.log(` > ${fieldName}: ${current ? JSON.stringify(current) : ""} > ${target ? JSON.stringify(target) : ""}`);
     const patch = this.writeClient.mutations,
       arg = mutationArg(this.driveId, id);
 

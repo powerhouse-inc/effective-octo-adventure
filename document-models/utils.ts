@@ -1,5 +1,4 @@
 import atlasDataUntyped from "../data/atlas-data.json" with { type: "json" };
-import documentIndexData from "../data/parsed/all-items.json" with { type: "json" };
 import {
   type ParsedNotionDocumentIndex,
   type ParsedNotionDocumentType,
@@ -11,13 +10,6 @@ import {
 import type { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
 
 export const atlasData = atlasDataUntyped as unknown as ViewNode[];
-
-// TODO: this is not going to be used anymore, use atlas-data or view-node-map instead
-/**
- * @deprecated use atlas-data or view-node-map instead
- */
-export const documentIndex =
-  documentIndexData as unknown as ParsedNotionDocumentIndex;
 
 export const getEmptyNotionDocument = (
   notionId: string,
@@ -41,8 +33,10 @@ export const getOriginalNotionDocument = (
   notionId: string,
   type: ParsedNotionDocumentType,
 ) => {
-  const notionDoc =
-    documentIndex[notionId] || getEmptyNotionDocument(notionId, type);
+  // TODO: get the right original notion document
+  // const notionDoc =
+  //   documentIndex[notionId] || getEmptyNotionDocument(notionId, type);
+  const notionDoc = getEmptyNotionDocument(notionId, type);
 
   return notionDoc;
 };

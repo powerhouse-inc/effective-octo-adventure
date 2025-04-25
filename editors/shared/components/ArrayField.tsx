@@ -20,6 +20,7 @@ interface Field<TValue> {
   id: string;
   value: TValue;
 }
+
 export interface ArrayFieldProps<TValue, TProps> {
   onAdd: (value: TValue) => void;
   onRemove: (options: RemoveOptions<TValue>) => void;
@@ -40,15 +41,11 @@ const ArrayField = <TValue, TProps>({
   componentProps,
 }: ArrayFieldProps<TValue, TProps>) => {
   const formRef = useRef<UseFormReturn>(null);
-  const onSubmit = (data: Record<`item-${number}` | "item-new", TValue>) => {
-    if (data["item-new"]) {
-      // create a new field/item
-      onAdd(data["item-new"]);
-      formRef.current?.reset({ "item-new": "" }); // reset to empty to allow adding another items
-      return;
-    }
 
-    Object.entries(data).forEach(([key, value]) => {
+  const onSubmit = (data: Record<`item-${number}` | "item-new", TValue>) => {
+    for (const [key, value] of Object.entries(data)) {
+      if (key === "item-new") continue;
+
       const id = key.replace("item-", "");
       const field = fields.find((f) => f.id === id)!;
       const fieldIndex = fields.indexOf(field);
@@ -72,9 +69,14 @@ const ArrayField = <TValue, TProps>({
             index: fieldIndex,
           });
         }
-        return;
+        break;
       }
-    });
+    }
+    if (data["item-new"]) {
+      // create a new field/item
+      onAdd(data["item-new"]);
+      formRef.current?.reset({ "item-new": "" }); // reset to empty to allow adding another items
+    }
   };
 
   // create a default values object with the values and the new item

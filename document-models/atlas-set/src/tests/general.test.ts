@@ -9,6 +9,7 @@ import {
   z,
   type SetSetNameInput,
   type SetSetParentInput,
+  type SetNotionIdInput,
 } from "../../gen/schema/index.js";
 import { reducer } from "../../gen/reducer.js";
 import * as creators from "../../gen/general/creators.js";
@@ -44,6 +45,19 @@ describe("General Operations", () => {
 
     expect(updatedDocument.operations.global).toHaveLength(1);
     expect(updatedDocument.operations.global[0].type).toBe("SET_SET_PARENT");
+    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].index).toEqual(0);
+  });
+  it("should handle setNotionId operation", () => {
+    // generate a random id
+    // const id = documentModelUtils.hashKey();
+
+    const input: SetNotionIdInput = generateMock(z.SetNotionIdInputSchema());
+
+    const updatedDocument = reducer(document, creators.setNotionId(input));
+
+    expect(updatedDocument.operations.global).toHaveLength(1);
+    expect(updatedDocument.operations.global[0].type).toBe("SET_NOTION_ID");
     expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });

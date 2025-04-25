@@ -146,14 +146,15 @@ export function ExploratoryForm({
               />
             </div>
           </div>
-
-          <MarkdownEditor
-            value={contentValue}
-            onChange={handleContentChange}
-            onBlur={handleContentBlur}
-            height={350}
-            label="Content"
-          />
+          <div className={cn("flex-1 min-h-[350px]")}>
+            <MarkdownEditor
+              value={contentValue}
+              onChange={handleContentChange}
+              onBlur={handleContentBlur}
+              height={350}
+              label="Content"
+            />
+          </div>
 
           <div
             className={cn(

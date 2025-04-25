@@ -44,7 +44,7 @@ const GenericEnumForm = ({
       onSubmit={onSubmit}
       submitChangesOnly
       defaultValues={{ genericEnum: value }}
-      extraFormProps={{ shouldFocusError: false }}
+      extraFormProps={{ shouldFocusError: true }}
     >
       {({ triggerSubmit }) => (
         <EnumDiffField

@@ -14,7 +14,6 @@ import {
   getFlexLayoutClassName,
   getWidthClassName,
 } from "../../shared/utils/styles.js";
-import { PositionedWrapper } from "../../shared/components/PositionedWrapper.js";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { DocNoForm } from "../../shared/components/forms/DocNoForm.js";
 import type { IProps } from "../editor.js";
@@ -120,14 +119,15 @@ export function ScopeForm({
               />
             </div>
           </div>
-
-          <MarkdownEditor
-            value={contentValue}
-            onChange={handleContentChange}
-            onBlur={handleContentBlur}
-            height={350}
-            label="Content"
-          />
+          <div className={cn("flex-1 min-h-[350px]")}>
+            <MarkdownEditor
+              value={contentValue}
+              onChange={handleContentChange}
+              onBlur={handleContentBlur}
+              height={350}
+              label="Content"
+            />
+          </div>
 
           <div className={cn("flex flex-col gap-4")}>
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>

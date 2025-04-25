@@ -35,7 +35,7 @@ export default function Editor(props: IProps) {
           <ScopeForm
             document={props.document}
             dispatch={props.dispatch}
-            mode={isEditMode ? "Edition" : "Readonly"}
+            mode={isEditMode ? "Edition" : "DiffMixed"}
           />
         )
       }

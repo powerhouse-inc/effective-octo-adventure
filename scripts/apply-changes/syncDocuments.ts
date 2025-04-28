@@ -16,6 +16,7 @@ import { AtlasSetClient } from "./clients/AtlasSetClient.js";
 import { DocumentsCache } from "./common/DocumentsCache.js";
 import { ReactorClient } from "./common/ReactorClient.js";
 import { SystemGraphClient } from "./SystemGraphClient.js";
+import { AtlasGroundingClient } from "./clients/AtlasGroundingClient.js";
 
 export type DocumentSyncConfig = {
   gqlEndpoint: string;
@@ -58,6 +59,12 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
       config.driveName,
     ),
     foundation: new AtlasFoundationClient(
+      new URL("./graphql", config.gqlEndpoint).href,
+      documentsCache,
+      readClient,
+      config.driveName,
+    ),
+    grounding: new AtlasGroundingClient(
       new URL("./graphql", config.gqlEndpoint).href,
       documentsCache,
       readClient,
@@ -109,7 +116,7 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
       } else if (isFoundation(documentNode)) {
         const newDocumentId = await clients.foundation.update(documentNode);
       } else if (isGrounding(documentNode)) {
-        console.log("Update for Grounding Document not implemented yet.");
+        const newDocumentId = await clients.grounding.update(documentNode);
       } else if (isExploratory(documentNode)) {
         console.log("Update for Exploratory Document not implemented yet.");
       } else if (isMultiParent(documentNode)) {

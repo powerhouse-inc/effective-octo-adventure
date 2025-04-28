@@ -17,16 +17,16 @@ const DRIVE_NAME =
 const PREFERRED_EDITOR = "AtlasDriveExplorer";
 
 // Max. number of document to process
-const PROCESS_LIMIT = 200;
+const PROCESS_LIMIT = 500;
 
 // Which scope documents to skip or include
 const SKIP_NODES: { [id: string]: boolean } = {
-  "422bae2b-2aec-4324-ae40-33c544820db3": false,
-  "eca5e587-79e3-480b-b70d-dd25697c9e1f": true,
-  "cde3202c-9073-43db-8405-4094624c57ea": true,
-  "0ba1b2bd-9513-487d-974c-0d08fb04b341": true,
-  "9e3f76e6-3343-4e70-af0b-c914be2e8d5a": true,
-  "4281ab93-ef4f-4974-988d-7dad149a693d": true,
+  "422bae2b-2aec-4324-ae40-33c544820db3": false, // The Governance Scope
+  "eca5e587-79e3-480b-b70d-dd25697c9e1f": true, // The Support Scope
+  "cde3202c-9073-43db-8405-4094624c57ea": true, // The Stability Scope
+  "0ba1b2bd-9513-487d-974c-0d08fb04b341": true, // The Protocol Scope
+  "9e3f76e6-3343-4e70-af0b-c914be2e8d5a": true, // The Accessibility Scope
+  "4281ab93-ef4f-4974-988d-7dad149a693d": true, // Atlas Preamble
 };
 
 // Set to true in order to update the index.json file with

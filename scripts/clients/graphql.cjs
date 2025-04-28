@@ -17,6 +17,7 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var stdin_exports = {};
 __export(stdin_exports, {
+  AnalyticsGranularity: () => AnalyticsGranularity,
   AtlasExploratory_EAtlasType: () => AtlasExploratory_EAtlasType,
   AtlasExploratory_EGlobalTag: () => AtlasExploratory_EGlobalTag,
   AtlasExploratory_EStatus: () => AtlasExploratory_EStatus,
@@ -53,6 +54,16 @@ __export(stdin_exports, {
 module.exports = __toCommonJS(stdin_exports);
 var import_endpoint = require("graphql-ts-client/dist/endpoint");
 const formatGraphQL = (query) => query;
+const AnalyticsGranularity = {
+  annual: "annual",
+  daily: "daily",
+  hourly: "hourly",
+  monthly: "monthly",
+  quarterly: "quarterly",
+  semiAnnual: "semiAnnual",
+  total: "total",
+  weekly: "weekly"
+};
 const AtlasExploratory_EAtlasType = {
   scenario: "SCENARIO",
   scenarioVariation: "SCENARIO_VARIATION"
@@ -349,6 +360,31 @@ const Status = {
   provisional: "PROVISIONAL"
 };
 const typesTree = {
+  AnalyticsQuery: {
+    get series() {
+      return {
+        __fields: typesTree.AnalyticsPeriod,
+        __args: {
+          filter: "AnalyticsFilter"
+        }
+      };
+    },
+    get multiCurrencySeries() {
+      return {
+        __fields: typesTree.AnalyticsPeriod,
+        __args: {
+          filter: "MultiCurrencyConversions"
+        }
+      };
+    },
+    metrics: {},
+    get dimensions() {
+      return {
+        __fields: typesTree.Dimension
+      };
+    },
+    currencies: {}
+  },
   AtlasExploratory: {
     get operations() {
       return {
@@ -571,6 +607,43 @@ const typesTree = {
       };
     }
   },
+  AtlasSet: {
+    get operations() {
+      return {
+        __fields: typesTree.Operation,
+        __args: {
+          skip: "Int",
+          first: "Int"
+        }
+      };
+    },
+    get initialState() {
+      return {
+        __fields: typesTree.AtlasSet_AtlasSetState
+      };
+    },
+    get state() {
+      return {
+        __fields: typesTree.AtlasSet_AtlasSetState
+      };
+    }
+  },
+  AtlasSetQueries: {
+    get getDocument() {
+      return {
+        __fields: typesTree.AtlasSet,
+        __args: {
+          driveId: "String",
+          docId: "PHID"
+        }
+      };
+    },
+    get getDocuments() {
+      return {
+        __fields: typesTree.AtlasSet
+      };
+    }
+  },
   DocumentDrive: {
     get operations() {
       return {
@@ -621,15 +694,6 @@ const typesTree = {
         }
       };
     },
-    get AtlasExploratory_setDocNumber() {
-      return {
-        __args: {
-          driveId: "String",
-          docId: "PHID",
-          input: "AtlasExploratory_SetDocNumberInput"
-        }
-      };
-    },
     get AtlasExploratory_setContent() {
       return {
         __args: {
@@ -657,15 +721,6 @@ const typesTree = {
         }
       };
     },
-    get AtlasExploratory_removeParent() {
-      return {
-        __args: {
-          driveId: "String",
-          docId: "PHID",
-          input: "AtlasExploratory_RemoveParentInput"
-        }
-      };
-    },
     get AtlasExploratory_setAtlasType() {
       return {
         __args: {
@@ -681,6 +736,15 @@ const typesTree = {
           driveId: "String",
           docId: "PHID",
           input: "AtlasExploratory_SetFindingsInput"
+        }
+      };
+    },
+    get AtlasExploratory_setDocNumber() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasExploratory_SetDocNumberInput"
         }
       };
     },
@@ -720,15 +784,6 @@ const typesTree = {
         }
       };
     },
-    get AtlasExploratory_setProvenance() {
-      return {
-        __args: {
-          driveId: "String",
-          docId: "PHID",
-          input: "AtlasExploratory_SetProvenanceInput"
-        }
-      };
-    },
     get AtlasExploratory_setNotionId() {
       return {
         __args: {
@@ -738,21 +793,21 @@ const typesTree = {
         }
       };
     },
-    get AtlasExploratory_addAdditionalGuidance() {
+    get AtlasExploratory_setAdditionalGuidance() {
       return {
         __args: {
           driveId: "String",
           docId: "PHID",
-          input: "AtlasExploratory_AddAdditionalGuidanceInput"
+          input: "AtlasExploratory_SetAdditionalGuidanceInput"
         }
       };
     },
-    get AtlasExploratory_removeAdditionalGuidance() {
+    get AtlasExploratory_replaceContextData() {
       return {
         __args: {
           driveId: "String",
           docId: "PHID",
-          input: "AtlasExploratory_RemoveAdditionalGuidanceInput"
+          input: "AtlasExploratory_ReplaceContextDataInput"
         }
       };
     },
@@ -844,15 +899,6 @@ const typesTree = {
         }
       };
     },
-    get AtlasFoundation_setDocNumber() {
-      return {
-        __args: {
-          driveId: "String",
-          docId: "PHID",
-          input: "AtlasFoundation_SetDocNumberInput"
-        }
-      };
-    },
     get AtlasFoundation_setContent() {
       return {
         __args: {
@@ -871,15 +917,6 @@ const typesTree = {
         }
       };
     },
-    get AtlasFoundation_addReference() {
-      return {
-        __args: {
-          driveId: "String",
-          docId: "PHID",
-          input: "AtlasFoundation_AddReferenceInput"
-        }
-      };
-    },
     get AtlasFoundation_setAtlasType() {
       return {
         __args: {
@@ -889,21 +926,21 @@ const typesTree = {
         }
       };
     },
-    get AtlasFoundation_removeReference() {
-      return {
-        __args: {
-          driveId: "String",
-          docId: "PHID",
-          input: "AtlasFoundation_RemoveReferenceInput"
-        }
-      };
-    },
     get AtlasFoundation_setParent() {
       return {
         __args: {
           driveId: "String",
           docId: "PHID",
           input: "AtlasFoundation_SetParentInput"
+        }
+      };
+    },
+    get AtlasFoundation_setDocNumber() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasFoundation_SetDocNumberInput"
         }
       };
     },
@@ -943,21 +980,21 @@ const typesTree = {
         }
       };
     },
-    get AtlasFoundation_setProvenance() {
-      return {
-        __args: {
-          driveId: "String",
-          docId: "PHID",
-          input: "AtlasFoundation_SetProvenanceInput"
-        }
-      };
-    },
     get AtlasFoundation_setNotionId() {
       return {
         __args: {
           driveId: "String",
           docId: "PHID",
           input: "AtlasFoundation_SetNotionIdInput"
+        }
+      };
+    },
+    get AtlasFoundation_replaceContextData() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasFoundation_ReplaceContextDataInput"
         }
       };
     },
@@ -975,15 +1012,6 @@ const typesTree = {
           driveId: "String",
           docId: "PHID",
           input: "AtlasGrounding_SetGroundingNameInput"
-        }
-      };
-    },
-    get AtlasGrounding_setDocNumber() {
-      return {
-        __args: {
-          driveId: "String",
-          docId: "PHID",
-          input: "AtlasGrounding_SetDocNumberInput"
         }
       };
     },
@@ -1023,6 +1051,15 @@ const typesTree = {
         }
       };
     },
+    get AtlasGrounding_setDocNumber() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasGrounding_SetDocNumberInput"
+        }
+      };
+    },
     get AtlasGrounding_addTags() {
       return {
         __args: {
@@ -1059,15 +1096,6 @@ const typesTree = {
         }
       };
     },
-    get AtlasGrounding_setProvenance() {
-      return {
-        __args: {
-          driveId: "String",
-          docId: "PHID",
-          input: "AtlasGrounding_SetProvenanceInput"
-        }
-      };
-    },
     get AtlasGrounding_setNotionId() {
       return {
         __args: {
@@ -1077,21 +1105,12 @@ const typesTree = {
         }
       };
     },
-    get AtlasGrounding_addReference() {
+    get AtlasGrounding_replaceContextData() {
       return {
         __args: {
           driveId: "String",
           docId: "PHID",
-          input: "AtlasGrounding_AddReferenceInput"
-        }
-      };
-    },
-    get AtlasGrounding_removeReference() {
-      return {
-        __args: {
-          driveId: "String",
-          docId: "PHID",
-          input: "AtlasGrounding_RemoveReferenceInput"
+          input: "AtlasGrounding_ReplaceContextDataInput"
         }
       };
     },
@@ -1103,21 +1122,12 @@ const typesTree = {
         }
       };
     },
-    get AtlasMultiParent_setMultiparentName() {
+    get AtlasMultiParent_setExploratoryName() {
       return {
         __args: {
           driveId: "String",
           docId: "PHID",
-          input: "AtlasMultiParent_SetMultiparentNameInput"
-        }
-      };
-    },
-    get AtlasMultiParent_setDocNumber() {
-      return {
-        __args: {
-          driveId: "String",
-          docId: "PHID",
-          input: "AtlasMultiParent_SetDocNumberInput"
+          input: "AtlasMultiParent_SetExploratoryNameInput"
         }
       };
     },
@@ -1166,6 +1176,15 @@ const typesTree = {
         }
       };
     },
+    get AtlasMultiParent_replaceParent() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasMultiParent_ReplaceParentInput"
+        }
+      };
+    },
     get AtlasMultiParent_addTags() {
       return {
         __args: {
@@ -1202,12 +1221,12 @@ const typesTree = {
         }
       };
     },
-    get AtlasMultiParent_setProvenance() {
+    get AtlasMultiParent_replaceContextData() {
       return {
         __args: {
           driveId: "String",
           docId: "PHID",
-          input: "AtlasMultiParent_SetProvenanceInput"
+          input: "AtlasMultiParent_ReplaceContextDataInput"
         }
       };
     },
@@ -1217,24 +1236,6 @@ const typesTree = {
           driveId: "String",
           docId: "PHID",
           input: "AtlasMultiParent_SetNotionIdInput"
-        }
-      };
-    },
-    get AtlasMultiParent_addReference() {
-      return {
-        __args: {
-          driveId: "String",
-          docId: "PHID",
-          input: "AtlasMultiParent_AddReferenceInput"
-        }
-      };
-    },
-    get AtlasMultiParent_removeReference() {
-      return {
-        __args: {
-          driveId: "String",
-          docId: "PHID",
-          input: "AtlasMultiParent_RemoveReferenceInput"
         }
       };
     },
@@ -1255,15 +1256,6 @@ const typesTree = {
         }
       };
     },
-    get AtlasScope_setDocNumber() {
-      return {
-        __args: {
-          driveId: "String",
-          docId: "PHID",
-          input: "AtlasScope_SetDocNumberInput"
-        }
-      };
-    },
     get AtlasScope_setContent() {
       return {
         __args: {
@@ -1279,6 +1271,15 @@ const typesTree = {
           driveId: "String",
           docId: "PHID",
           input: "AtlasScope_SetMasterStatusInput"
+        }
+      };
+    },
+    get AtlasScope_setDocNumber() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasScope_SetDocNumberInput"
         }
       };
     },
@@ -1318,21 +1319,85 @@ const typesTree = {
         }
       };
     },
-    get AtlasScope_setProvenance() {
-      return {
-        __args: {
-          driveId: "String",
-          docId: "PHID",
-          input: "AtlasScope_SetProvenanceInput"
-        }
-      };
-    },
     get AtlasScope_setNotionId() {
       return {
         __args: {
           driveId: "String",
           docId: "PHID",
           input: "AtlasScope_SetNotionIdInput"
+        }
+      };
+    },
+    get AtlasScope_replaceContextData() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasScope_ReplaceContextDataInput"
+        }
+      };
+    },
+    get AtlasSet_createDocument() {
+      return {
+        __args: {
+          driveId: "String",
+          name: "String"
+        }
+      };
+    },
+    get AtlasSet_setSetName() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasSet_SetSetNameInput"
+        }
+      };
+    },
+    get AtlasSet_setSetParent() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasSet_SetSetParentInput"
+        }
+      };
+    },
+    get AtlasSet_setNotionId() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasSet_SetNotionIdInput"
+        }
+      };
+    },
+    get createChallenge() {
+      return {
+        __args: {
+          address: "String!"
+        }
+      };
+    },
+    get solveChallenge() {
+      return {
+        __args: {
+          nonce: "String!",
+          signature: "String!"
+        }
+      };
+    },
+    get createSession() {
+      return {
+        __args: {
+          session: "SessionInput!"
+        }
+      };
+    },
+    get revokeSession() {
+      return {
+        __args: {
+          sessionId: "String!"
         }
       };
     },
@@ -1343,17 +1408,102 @@ const typesTree = {
           docId: "PHID"
         }
       };
+    },
+    get addDrive() {
+      return {
+        __fields: typesTree.DocumentDrive_DocumentDriveState,
+        __args: {
+          global: "DocumentDriveStateInput!",
+          preferredEditor: "String"
+        }
+      };
+    },
+    get setDriveIcon() {
+      return {
+        __args: {
+          id: "String!",
+          icon: "String!"
+        }
+      };
+    },
+    get setDriveName() {
+      return {
+        __args: {
+          id: "String!",
+          name: "String!"
+        }
+      };
     }
+  },
+  Query: {
+    get driveIdBySlug() {
+      return {
+        __args: {
+          slug: "String!"
+        }
+      };
+    },
+    get analytics() {
+      return {
+        __fields: typesTree.AnalyticsQuery
+      };
+    },
+    get AtlasExploratory() {
+      return {
+        __fields: typesTree.AtlasExploratoryQueries
+      };
+    },
+    get AtlasFeedbackIssues() {
+      return {
+        __fields: typesTree.AtlasFeedbackIssuesQueries
+      };
+    },
+    get AtlasFoundation() {
+      return {
+        __fields: typesTree.AtlasFoundationQueries
+      };
+    },
+    get AtlasGrounding() {
+      return {
+        __fields: typesTree.AtlasGroundingQueries
+      };
+    },
+    get AtlasMultiParent() {
+      return {
+        __fields: typesTree.AtlasMultiParentQueries
+      };
+    },
+    get AtlasScope() {
+      return {
+        __fields: typesTree.AtlasScopeQueries
+      };
+    },
+    get AtlasSet() {
+      return {
+        __fields: typesTree.AtlasSetQueries
+      };
+    },
+    me: {},
+    sessions: {},
+    drives: {}
+  },
+  AnalyticsPeriod: {
+    get rows() {
+      return {
+        __fields: typesTree.AnalyticsSeries
+      };
+    }
+  },
+  AnalyticsSeries: {
+    dimensions: {}
   },
   AtlasExploratory_AtlasExploratoryState: {
     globalTags: {},
-    references: {},
     originalContextData: {},
     findings: {}
   },
   AtlasExploratoryState: {
     globalTags: {},
-    references: {},
     originalContextData: {},
     findings: {}
   },
@@ -1378,44 +1528,32 @@ const typesTree = {
   AtlasFoundation_AtlasFoundationState: {
     parent: {},
     globalTags: {},
-    references: {},
-    originalContextData: {},
-    provenance: {}
+    originalContextData: {}
   },
   AtlasFoundationState: {
     parent: {},
     globalTags: {},
-    references: {},
-    originalContextData: {},
-    provenance: {}
+    originalContextData: {}
   },
   AtlasGrounding_AtlasGroundingState: {
     parent: {},
     globalTags: {},
-    references: {},
-    originalContextData: {},
-    provenance: {}
+    originalContextData: {}
   },
   AtlasGroundingState: {
     parent: {},
     globalTags: {},
-    references: {},
-    originalContextData: {},
-    provenance: {}
+    originalContextData: {}
   },
   AtlasMultiParent_AtlasMultiParentState: {
     parents: {},
     globalTags: {},
-    references: {},
-    originalContextData: {},
-    provenance: {}
+    originalContextData: {}
   },
   AtlasMultiParentState: {
     parents: {},
     globalTags: {},
-    references: {},
-    originalContextData: {},
-    provenance: {}
+    originalContextData: {}
   },
   AtlasScope_AtlasScopeState: {
     globalTags: {},
@@ -1424,6 +1562,15 @@ const typesTree = {
   AtlasScopeState: {
     globalTags: {},
     originalContextData: {}
+  },
+  AtlasSet_AtlasSetState: {
+    parent: {}
+  },
+  AtlasSetState: {
+    parent: {}
+  },
+  Dimension: {
+    values: {}
   },
   DocumentDrive_DocumentDriveState: {
     nodes: {}
@@ -1468,38 +1615,6 @@ const typesTree = {
     get signer() {
       return {
         __fields: typesTree.Signer
-      };
-    }
-  },
-  Query: {
-    get AtlasExploratory() {
-      return {
-        __fields: typesTree.AtlasExploratoryQueries
-      };
-    },
-    get AtlasFeedbackIssues() {
-      return {
-        __fields: typesTree.AtlasFeedbackIssuesQueries
-      };
-    },
-    get AtlasFoundation() {
-      return {
-        __fields: typesTree.AtlasFoundationQueries
-      };
-    },
-    get AtlasGrounding() {
-      return {
-        __fields: typesTree.AtlasGroundingQueries
-      };
-    },
-    get AtlasMultiParent() {
-      return {
-        __fields: typesTree.AtlasMultiParentQueries
-      };
-    },
-    get AtlasScope() {
-      return {
-        __fields: typesTree.AtlasScopeQueries
       };
     }
   },
@@ -1548,31 +1663,35 @@ const client = {
   },
   setUrl: (_url) => url = _url,
   queries: {
+    analytics: apiEndpoint("query", "analytics"),
     AtlasExploratory: apiEndpoint("query", "AtlasExploratory"),
     AtlasFeedbackIssues: apiEndpoint("query", "AtlasFeedbackIssues"),
     AtlasFoundation: apiEndpoint("query", "AtlasFoundation"),
     AtlasGrounding: apiEndpoint("query", "AtlasGrounding"),
     AtlasMultiParent: apiEndpoint("query", "AtlasMultiParent"),
-    AtlasScope: apiEndpoint("query", "AtlasScope")
+    AtlasScope: apiEndpoint("query", "AtlasScope"),
+    AtlasSet: apiEndpoint("query", "AtlasSet"),
+    me: apiEndpoint("query", "me"),
+    sessions: apiEndpoint("query", "sessions"),
+    drives: apiEndpoint("query", "drives"),
+    driveIdBySlug: apiEndpoint("query", "driveIdBySlug")
   },
   mutations: {
     AtlasExploratory_createDocument: apiEndpoint("mutation", "AtlasExploratory_createDocument"),
     AtlasExploratory_setExploratoryName: apiEndpoint("mutation", "AtlasExploratory_setExploratoryName"),
-    AtlasExploratory_setDocNumber: apiEndpoint("mutation", "AtlasExploratory_setDocNumber"),
     AtlasExploratory_setContent: apiEndpoint("mutation", "AtlasExploratory_setContent"),
     AtlasExploratory_setMasterStatus: apiEndpoint("mutation", "AtlasExploratory_setMasterStatus"),
     AtlasExploratory_setParent: apiEndpoint("mutation", "AtlasExploratory_setParent"),
-    AtlasExploratory_removeParent: apiEndpoint("mutation", "AtlasExploratory_removeParent"),
     AtlasExploratory_setAtlasType: apiEndpoint("mutation", "AtlasExploratory_setAtlasType"),
     AtlasExploratory_setFindings: apiEndpoint("mutation", "AtlasExploratory_setFindings"),
+    AtlasExploratory_setDocNumber: apiEndpoint("mutation", "AtlasExploratory_setDocNumber"),
     AtlasExploratory_addTags: apiEndpoint("mutation", "AtlasExploratory_addTags"),
     AtlasExploratory_removeTags: apiEndpoint("mutation", "AtlasExploratory_removeTags"),
     AtlasExploratory_addContextData: apiEndpoint("mutation", "AtlasExploratory_addContextData"),
     AtlasExploratory_removeContextData: apiEndpoint("mutation", "AtlasExploratory_removeContextData"),
-    AtlasExploratory_setProvenance: apiEndpoint("mutation", "AtlasExploratory_setProvenance"),
     AtlasExploratory_setNotionId: apiEndpoint("mutation", "AtlasExploratory_setNotionId"),
-    AtlasExploratory_addAdditionalGuidance: apiEndpoint("mutation", "AtlasExploratory_addAdditionalGuidance"),
-    AtlasExploratory_removeAdditionalGuidance: apiEndpoint("mutation", "AtlasExploratory_removeAdditionalGuidance"),
+    AtlasExploratory_setAdditionalGuidance: apiEndpoint("mutation", "AtlasExploratory_setAdditionalGuidance"),
+    AtlasExploratory_replaceContextData: apiEndpoint("mutation", "AtlasExploratory_replaceContextData"),
     AtlasFeedbackIssues_createDocument: apiEndpoint("mutation", "AtlasFeedbackIssues_createDocument"),
     AtlasFeedbackIssues_createIssue: apiEndpoint("mutation", "AtlasFeedbackIssues_createIssue"),
     AtlasFeedbackIssues_deleteIssue: apiEndpoint("mutation", "AtlasFeedbackIssues_deleteIssue"),
@@ -1583,62 +1702,67 @@ const client = {
     AtlasFeedbackIssues_editComment: apiEndpoint("mutation", "AtlasFeedbackIssues_editComment"),
     AtlasFoundation_createDocument: apiEndpoint("mutation", "AtlasFoundation_createDocument"),
     AtlasFoundation_setFoundationName: apiEndpoint("mutation", "AtlasFoundation_setFoundationName"),
-    AtlasFoundation_setDocNumber: apiEndpoint("mutation", "AtlasFoundation_setDocNumber"),
     AtlasFoundation_setContent: apiEndpoint("mutation", "AtlasFoundation_setContent"),
     AtlasFoundation_setMasterStatus: apiEndpoint("mutation", "AtlasFoundation_setMasterStatus"),
-    AtlasFoundation_addReference: apiEndpoint("mutation", "AtlasFoundation_addReference"),
     AtlasFoundation_setAtlasType: apiEndpoint("mutation", "AtlasFoundation_setAtlasType"),
-    AtlasFoundation_removeReference: apiEndpoint("mutation", "AtlasFoundation_removeReference"),
     AtlasFoundation_setParent: apiEndpoint("mutation", "AtlasFoundation_setParent"),
+    AtlasFoundation_setDocNumber: apiEndpoint("mutation", "AtlasFoundation_setDocNumber"),
     AtlasFoundation_addTags: apiEndpoint("mutation", "AtlasFoundation_addTags"),
     AtlasFoundation_removeTags: apiEndpoint("mutation", "AtlasFoundation_removeTags"),
     AtlasFoundation_addContextData: apiEndpoint("mutation", "AtlasFoundation_addContextData"),
     AtlasFoundation_removeContextData: apiEndpoint("mutation", "AtlasFoundation_removeContextData"),
-    AtlasFoundation_setProvenance: apiEndpoint("mutation", "AtlasFoundation_setProvenance"),
     AtlasFoundation_setNotionId: apiEndpoint("mutation", "AtlasFoundation_setNotionId"),
+    AtlasFoundation_replaceContextData: apiEndpoint("mutation", "AtlasFoundation_replaceContextData"),
     AtlasGrounding_createDocument: apiEndpoint("mutation", "AtlasGrounding_createDocument"),
     AtlasGrounding_setGroundingName: apiEndpoint("mutation", "AtlasGrounding_setGroundingName"),
-    AtlasGrounding_setDocNumber: apiEndpoint("mutation", "AtlasGrounding_setDocNumber"),
     AtlasGrounding_setContent: apiEndpoint("mutation", "AtlasGrounding_setContent"),
     AtlasGrounding_setMasterStatus: apiEndpoint("mutation", "AtlasGrounding_setMasterStatus"),
     AtlasGrounding_setAtlasType: apiEndpoint("mutation", "AtlasGrounding_setAtlasType"),
     AtlasGrounding_setParent: apiEndpoint("mutation", "AtlasGrounding_setParent"),
+    AtlasGrounding_setDocNumber: apiEndpoint("mutation", "AtlasGrounding_setDocNumber"),
     AtlasGrounding_addTags: apiEndpoint("mutation", "AtlasGrounding_addTags"),
     AtlasGrounding_removeTags: apiEndpoint("mutation", "AtlasGrounding_removeTags"),
     AtlasGrounding_addContextData: apiEndpoint("mutation", "AtlasGrounding_addContextData"),
     AtlasGrounding_removeContextData: apiEndpoint("mutation", "AtlasGrounding_removeContextData"),
-    AtlasGrounding_setProvenance: apiEndpoint("mutation", "AtlasGrounding_setProvenance"),
     AtlasGrounding_setNotionId: apiEndpoint("mutation", "AtlasGrounding_setNotionId"),
-    AtlasGrounding_addReference: apiEndpoint("mutation", "AtlasGrounding_addReference"),
-    AtlasGrounding_removeReference: apiEndpoint("mutation", "AtlasGrounding_removeReference"),
+    AtlasGrounding_replaceContextData: apiEndpoint("mutation", "AtlasGrounding_replaceContextData"),
     AtlasMultiParent_createDocument: apiEndpoint("mutation", "AtlasMultiParent_createDocument"),
-    AtlasMultiParent_setMultiparentName: apiEndpoint("mutation", "AtlasMultiParent_setMultiparentName"),
-    AtlasMultiParent_setDocNumber: apiEndpoint("mutation", "AtlasMultiParent_setDocNumber"),
+    AtlasMultiParent_setExploratoryName: apiEndpoint("mutation", "AtlasMultiParent_setExploratoryName"),
     AtlasMultiParent_setContent: apiEndpoint("mutation", "AtlasMultiParent_setContent"),
     AtlasMultiParent_setMasterStatus: apiEndpoint("mutation", "AtlasMultiParent_setMasterStatus"),
     AtlasMultiParent_addParent: apiEndpoint("mutation", "AtlasMultiParent_addParent"),
     AtlasMultiParent_setAtlasType: apiEndpoint("mutation", "AtlasMultiParent_setAtlasType"),
     AtlasMultiParent_removeParent: apiEndpoint("mutation", "AtlasMultiParent_removeParent"),
+    AtlasMultiParent_replaceParent: apiEndpoint("mutation", "AtlasMultiParent_replaceParent"),
     AtlasMultiParent_addTags: apiEndpoint("mutation", "AtlasMultiParent_addTags"),
     AtlasMultiParent_removeTags: apiEndpoint("mutation", "AtlasMultiParent_removeTags"),
     AtlasMultiParent_addContextData: apiEndpoint("mutation", "AtlasMultiParent_addContextData"),
     AtlasMultiParent_removeContextData: apiEndpoint("mutation", "AtlasMultiParent_removeContextData"),
-    AtlasMultiParent_setProvenance: apiEndpoint("mutation", "AtlasMultiParent_setProvenance"),
+    AtlasMultiParent_replaceContextData: apiEndpoint("mutation", "AtlasMultiParent_replaceContextData"),
     AtlasMultiParent_setNotionId: apiEndpoint("mutation", "AtlasMultiParent_setNotionId"),
-    AtlasMultiParent_addReference: apiEndpoint("mutation", "AtlasMultiParent_addReference"),
-    AtlasMultiParent_removeReference: apiEndpoint("mutation", "AtlasMultiParent_removeReference"),
     AtlasScope_createDocument: apiEndpoint("mutation", "AtlasScope_createDocument"),
     AtlasScope_setScopeName: apiEndpoint("mutation", "AtlasScope_setScopeName"),
-    AtlasScope_setDocNumber: apiEndpoint("mutation", "AtlasScope_setDocNumber"),
     AtlasScope_setContent: apiEndpoint("mutation", "AtlasScope_setContent"),
     AtlasScope_setMasterStatus: apiEndpoint("mutation", "AtlasScope_setMasterStatus"),
+    AtlasScope_setDocNumber: apiEndpoint("mutation", "AtlasScope_setDocNumber"),
     AtlasScope_addTags: apiEndpoint("mutation", "AtlasScope_addTags"),
     AtlasScope_removeTags: apiEndpoint("mutation", "AtlasScope_removeTags"),
     AtlasScope_addContextData: apiEndpoint("mutation", "AtlasScope_addContextData"),
     AtlasScope_removeContextData: apiEndpoint("mutation", "AtlasScope_removeContextData"),
-    AtlasScope_setProvenance: apiEndpoint("mutation", "AtlasScope_setProvenance"),
     AtlasScope_setNotionId: apiEndpoint("mutation", "AtlasScope_setNotionId"),
-    ForkAtlas: apiEndpoint("mutation", "ForkAtlas")
+    AtlasScope_replaceContextData: apiEndpoint("mutation", "AtlasScope_replaceContextData"),
+    AtlasSet_createDocument: apiEndpoint("mutation", "AtlasSet_createDocument"),
+    AtlasSet_setSetName: apiEndpoint("mutation", "AtlasSet_setSetName"),
+    AtlasSet_setSetParent: apiEndpoint("mutation", "AtlasSet_setSetParent"),
+    AtlasSet_setNotionId: apiEndpoint("mutation", "AtlasSet_setNotionId"),
+    createChallenge: apiEndpoint("mutation", "createChallenge"),
+    solveChallenge: apiEndpoint("mutation", "solveChallenge"),
+    createSession: apiEndpoint("mutation", "createSession"),
+    revokeSession: apiEndpoint("mutation", "revokeSession"),
+    ForkAtlas: apiEndpoint("mutation", "ForkAtlas"),
+    addDrive: apiEndpoint("mutation", "addDrive"),
+    setDriveIcon: apiEndpoint("mutation", "setDriveIcon"),
+    setDriveName: apiEndpoint("mutation", "setDriveName")
   }
 };
 var stdin_default = client;

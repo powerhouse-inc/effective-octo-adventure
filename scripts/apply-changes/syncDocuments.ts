@@ -12,6 +12,7 @@ import {
 } from "../../document-models/utils.js";
 import { AtlasFoundationClient } from "./clients/AtlasFoundationClient.js";
 import { AtlasScopeClient } from "./clients/AtlasScopeClient.js";
+import { AtlasSetClient } from "./clients/AtlasSetClient.js";
 import { DocumentsCache } from "./common/DocumentsCache.js";
 import { ReactorClient } from "./common/ReactorClient.js";
 import { SystemGraphClient } from "./SystemGraphClient.js";
@@ -62,6 +63,12 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
       readClient,
       config.driveName,
     ),
+    set: new AtlasSetClient(
+      new URL("./graphql", config.gqlEndpoint).href,
+      documentsCache,
+      readClient,
+      config.driveName,
+    ),
   };
 
   for (const client of Object.values(clients)) {
@@ -70,10 +77,6 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
 
   console.log(documentsCache.getDocumentsCount());
   console.log("\nProcessing Notion documents...");
-
-  // const queue = Object.values(notionDocsIndex)
-  //   .filter((pnd) => pnd!.type == "scope")
-  //   .sort((a, b) => (a!.docNo < b!.docNo ? -1 : 1));
 
   // the queue is initialized with the scopes (first level of the atlas)
   const queue: ViewNode[] = [...atlasData]
@@ -112,7 +115,7 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
       } else if (isMultiParent(documentNode)) {
         console.log("Update for MultiParent Document not implemented yet.");
       } else if (isSet(documentNode)) {
-        console.log("Update for Set Document not implemented yet.");
+        const newDocumentId = await clients.set.update(documentNode);
       } else {
         console.log(`Update for type ${documentNode.type} not implemented yet.`);
       }

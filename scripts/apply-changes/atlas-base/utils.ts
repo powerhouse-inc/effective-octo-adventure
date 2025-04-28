@@ -1,9 +1,8 @@
 import { type Maybe } from "graphql-ts-client";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
-import { getNodeDocNo, getNodeTitle } from "../../../document-models/utils.js";
 
-type Link = {
+export type Link = {
   id: string;
   docNo: Maybe<string>;
   title: Maybe<string>;

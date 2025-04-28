@@ -1,3 +1,4 @@
+import { useEffect, useCallback, useMemo, useState } from "react";
 import { ArrayField, type ArrayFieldProps } from "../ArrayField.js";
 import {
   PHIDDiffField,
@@ -31,6 +32,46 @@ const MultiPhIdForm = ({
   onUpdate,
 }: MultiPhIdFormProps) => {
   const formMode = useFormMode();
+  // boolean flag to trigger callback recreation only when needed
+  const [renderComponentTrigger, setRenderComponentTrigger] = useState(false);
+
+  // string value of latest data
+  const dataSignature = useMemo(
+    () =>
+      JSON.stringify(
+        data.map((item) => ({
+          id: item.id,
+          title: item.initialOptions?.[0]?.title,
+        })),
+      ),
+    [data],
+  );
+
+  // this callback only recreates when renderComponentTrigger changes,
+  // not on every data change, but still has access to latest data
+  const renderComponent = useCallback(
+    (props: PHIDDiffFieldProps) => {
+      // the new item not have initialOptions
+      if (props.name === "item-new") {
+        return <PHIDDiffField {...props} />;
+      }
+
+      // for existing fields, use the initialOptions of the corresponding element
+      const fieldId = props.name?.replace("item-", "");
+      const element = data.find((d) => d.id === fieldId);
+
+      return (
+        <PHIDDiffField {...props} initialOptions={element?.initialOptions} />
+      );
+    },
+    [renderComponentTrigger],
+  );
+
+  // split rendering into two phases: this effect runs after data changes are complete,
+  // then triggers a new render cycle by updating the boolean flag
+  useEffect(() => {
+    setRenderComponentTrigger(!renderComponentTrigger);
+  }, [dataSignature]);
 
   return (
     <ArrayField<string, PHIDDiffFieldProps>
@@ -42,20 +83,7 @@ const MultiPhIdForm = ({
         value: element.id,
       }))}
       label={label}
-      component={(props) => {
-        // the new item not have initialOptions
-        if (props.name === "item-new") {
-          return <PHIDDiffField {...props} />;
-        }
-
-        // for existing fields, use the initialOptions of the corresponding element
-        const fieldId = props.name?.replace("item-", "");
-        const element = data.find((d) => d.id === fieldId);
-
-        return (
-          <PHIDDiffField {...props} initialOptions={element?.initialOptions} />
-        );
-      }}
+      component={renderComponent}
       componentProps={{
         placeholder: "phd:",
         variant: "withValueAndTitle",

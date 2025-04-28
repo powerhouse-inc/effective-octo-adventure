@@ -1,34 +1,35 @@
-import {
-  type AtlasFoundationState,
-  type FDocumentLink,
-  type FStatus,
-  type Maybe,
-  type SetContentInput,
-  type SetDocNumberInput,
-  type SetFoundationNameInput,
-  type SetParentInput,
-} from "document-models/atlas-foundation/index.js";
+import type {
+  AtlasExploratoryState,
+  DocumentInfo,
+  EStatus,
+  Maybe,
+  SetContentInput,
+  SetDocNumberInput,
+  SetExploratoryNameInput,
+  SetParentInput,
+} from "document-models/atlas-exploratory/index.js";
 import { gql } from "graphql-request";
 import {
   getNodeDocNo,
   getNodeName,
   getNodeTitle,
-  isFoundation,
+  isExploratory,
 } from "../../../document-models/utils.js";
 import { graphqlClient as writeClient } from "../../clients/index.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import {
   findAtlasParentInCache,
+  Link,
 } from "../atlas-base/utils.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { type ReactorClient } from "../common/ReactorClient.js";
 import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
 import { NotionConverter } from 'notion-to-md';
 
-const DOCUMENT_TYPE = "sky/atlas-foundation";
+const DOCUMENT_TYPE = "sky/atlas-exploratory";
 
-export class AtlasFoundationClient extends AtlasBaseClient<
-  AtlasFoundationState,
+export class AtlasExploratoryClient extends AtlasBaseClient<
+  AtlasExploratoryState,
   typeof writeClient
 > {
   private readonly driveId: string;
@@ -48,7 +49,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<
     );
     this.driveId = driveId;
     this.setDocumentSchema(gql`
-      AtlasFoundation {
+      AtlasExploratory {
         id
         name
         state {
@@ -76,17 +77,16 @@ export class AtlasFoundationClient extends AtlasBaseClient<
   }
 
   protected createDocumentFromInput(documentNode: ViewNode) {
-    return this.writeClient.mutations.AtlasFoundation_createDocument({
+    return this.writeClient.mutations.AtlasExploratory_createDocument({
       __args: { driveId: this.driveId, name: getNodeTitle(documentNode) },
     });
   }
 
   protected getTargetState(
     input: ViewNode,
-    currentState: AtlasFoundationState,
-  ): AtlasFoundationState {
-    // @ts-expect-error
-    const parent: Maybe<FDocumentLink> = findAtlasParentInCache(
+    currentState: AtlasExploratoryState,
+  ): AtlasExploratoryState {
+    const parent: Maybe<Link> = findAtlasParentInCache(
       input,
       this.documentsCache,
     );
@@ -103,15 +103,15 @@ export class AtlasFoundationClient extends AtlasBaseClient<
       //   .join("\n")
       //   .trim(),
       notionId: input.id,
-      parent,
+      parent: parent?.id || "",
     };
   }
 
-  protected async patchField<K extends keyof AtlasFoundationState>(
+  protected async patchField<K extends keyof AtlasExploratoryState>(
     id: string,
     fieldName: K,
-    current: AtlasFoundationState[K],
-    target: AtlasFoundationState[K],
+    current: AtlasExploratoryState[K],
+    target: AtlasExploratoryState[K],
   ) {
     console.log(` > ${fieldName}: ${current ? JSON.stringify(current) : ""} > ${target ? JSON.stringify(target) : ""}`);
     const patch = this.writeClient.mutations,
@@ -119,27 +119,27 @@ export class AtlasFoundationClient extends AtlasBaseClient<
 
     switch (fieldName) {
       case "docNo":
-        await patch.AtlasFoundation_setDocNumber(
+        await patch.AtlasExploratory_setDocNumber(
           arg<SetDocNumberInput>({ docNo: target as string }),
         );
         break;
       case "name":
-        await patch.AtlasFoundation_setFoundationName(
-          arg<SetFoundationNameInput>({ name: target as string }),
+        await patch.AtlasExploratory_setExploratoryName(
+          arg<SetExploratoryNameInput>({ name: target as string }),
         );
         break;
       case "masterStatus":
-        await patch.AtlasFoundation_setMasterStatus(
-          arg<any>({ masterStatus: target as FStatus }),
+        await patch.AtlasExploratory_setMasterStatus(
+          arg<any>({ masterStatus: target as EStatus }),
         );
         break;
       case "content":
-        await patch.AtlasFoundation_setContent(
+        await patch.AtlasExploratory_setContent(
           arg<SetContentInput>({ content: target as string }),
         );
         break;
       case "notionId":
-        await patch.AtlasFoundation_setNotionId(
+        await patch.AtlasExploratory_setNotionId(
           arg<any>({ notionID: target || undefined }),
         );
         break;
@@ -153,9 +153,9 @@ export class AtlasFoundationClient extends AtlasBaseClient<
         if (!target) {
           throw new Error("Parent is not found");
         }
-        const parsedTarget = target as FDocumentLink;
-        await patch.AtlasFoundation_setParent(
-          arg<SetParentInput>(parsedTarget),
+        const parsedTarget = target as string;
+        await patch.AtlasExploratory_setParent(
+          arg<SetParentInput>({ parent: parsedTarget }),
         );
         break;
       default:
@@ -164,6 +164,6 @@ export class AtlasFoundationClient extends AtlasBaseClient<
   }
 
   public canHandle(node: ViewNode): boolean {
-    return isFoundation(node);
+    return isExploratory(node);
   }
 }

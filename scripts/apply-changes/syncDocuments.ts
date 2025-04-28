@@ -2,21 +2,11 @@ import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
 import {
   getNodeTitle,
   atlasData,
-  isScope,
-  isFoundation,
-  getNodeDocNo,
-  isGrounding,
-  isExploratory,
-  isMultiParent,
-  isSet
 } from "../../document-models/utils.js";
-import { AtlasFoundationClient } from "./clients/AtlasFoundationClient.js";
-import { AtlasScopeClient } from "./clients/AtlasScopeClient.js";
-import { AtlasSetClient } from "./clients/AtlasSetClient.js";
 import { DocumentsCache } from "./common/DocumentsCache.js";
 import { ReactorClient } from "./common/ReactorClient.js";
 import { SystemGraphClient } from "./SystemGraphClient.js";
-import { AtlasGroundingClient } from "./clients/AtlasGroundingClient.js";
+import { createClientRegistry } from "./clients/AtlasClientRegistry.js";
 
 export type DocumentSyncConfig = {
   gqlEndpoint: string;
@@ -51,36 +41,8 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
   const driveNodes = await readClient.getDriveNodes();
   const documentsCache = new DocumentsCache(driveNodes);
 
-  const clients = {
-    scopes: new AtlasScopeClient(
-      new URL("./graphql", config.gqlEndpoint).href,
-      documentsCache,
-      readClient,
-      config.driveName,
-    ),
-    foundation: new AtlasFoundationClient(
-      new URL("./graphql", config.gqlEndpoint).href,
-      documentsCache,
-      readClient,
-      config.driveName,
-    ),
-    grounding: new AtlasGroundingClient(
-      new URL("./graphql", config.gqlEndpoint).href,
-      documentsCache,
-      readClient,
-      config.driveName,
-    ),
-    set: new AtlasSetClient(
-      new URL("./graphql", config.gqlEndpoint).href,
-      documentsCache,
-      readClient,
-      config.driveName,
-    ),
-  };
-
-  for (const client of Object.values(clients)) {
-    await client.loadDriveDocumentCache();
-  }
+  const clientRegistry = createClientRegistry(config, documentsCache, readClient);
+  await clientRegistry.loadDriveDocumentCache();
 
   console.log(documentsCache.getDocumentsCount());
   console.log("\nProcessing Notion documents...");
@@ -111,21 +73,8 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
     );
 
     try {
-      if (isScope(documentNode)) {
-        const newDocumentId = await clients.scopes.update(documentNode);
-      } else if (isFoundation(documentNode)) {
-        const newDocumentId = await clients.foundation.update(documentNode);
-      } else if (isGrounding(documentNode)) {
-        const newDocumentId = await clients.grounding.update(documentNode);
-      } else if (isExploratory(documentNode)) {
-        console.log("Update for Exploratory Document not implemented yet.");
-      } else if (isMultiParent(documentNode)) {
-        console.log("Update for MultiParent Document not implemented yet.");
-      } else if (isSet(documentNode)) {
-        const newDocumentId = await clients.set.update(documentNode);
-      } else {
-        console.log(`Update for type ${documentNode.type} not implemented yet.`);
-      }
+      // update/create the document in the drive
+      await clientRegistry.update(documentNode);
     } catch (e) {
       console.error(e);
     }

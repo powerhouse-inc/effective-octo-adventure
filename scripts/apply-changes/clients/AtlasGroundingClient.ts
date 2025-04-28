@@ -12,6 +12,7 @@ import {
   getNodeDocNo,
   getNodeName,
   getNodeTitle,
+  isGrounding,
 } from "../../../document-models/utils.js";
 import { graphqlClient as writeClient } from "../../clients/index.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
@@ -156,5 +157,9 @@ export class AtlasGroundingClient extends AtlasBaseClient<
       default:
         throw new Error(`Patcher for field ${fieldName} not implemented`);
     }
+  }
+
+  public canHandle(node: ViewNode): boolean {
+    return isGrounding(node);
   }
 }

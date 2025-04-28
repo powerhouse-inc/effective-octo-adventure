@@ -90,4 +90,6 @@ export abstract class AtlasBaseClient<
     current: AtlasStateType[K],
     target: AtlasStateType[K],
   ): Promise<void>;
+  
+  public abstract canHandle(node: ViewNode): boolean;
 }

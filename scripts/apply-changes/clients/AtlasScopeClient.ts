@@ -4,6 +4,7 @@ import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { type ReactorClient } from "../common/ReactorClient.js";
 
 import {
+  AtlasScopeState,
   type SetContentInput,
   type SetDocNumberInput,
   type SetScopeNameInput,
@@ -13,9 +14,9 @@ import {
   getNodeName,
   getNodeTitle,
   getPNDTitle,
+  isScope,
   pndContentToString,
 } from "../../../document-models/utils.js";
-import { type AtlasScopeState } from "../../clients/graphql.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
 
@@ -39,7 +40,6 @@ const statusStringToEnum = (status: string): string => {
 };
 
 export class AtlasScopeClient extends AtlasBaseClient<
-  /* @ts-expect-error */
   AtlasScopeState,
   typeof writeClient
 > {
@@ -105,7 +105,6 @@ export class AtlasScopeClient extends AtlasBaseClient<
     };
   }
 
-  /* @ts-expect-error */
   protected async patchField<K extends keyof AtlasScopeState>(
     id: string,
     fieldName: K,
@@ -149,5 +148,9 @@ export class AtlasScopeClient extends AtlasBaseClient<
         throw new Error("originalContextData patcher is not implemented yet.");
         break;
     }
+  }
+
+  public canHandle(node: ViewNode): boolean {
+    return isScope(node);
   }
 }

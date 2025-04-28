@@ -13,9 +13,6 @@ import {
   getNodeDocNo,
   getNodeName,
   getNodeTitle,
-  getPNDTitle,
-  isScope,
-  pndContentToString,
 } from "../../../document-models/utils.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
@@ -151,6 +148,6 @@ export class AtlasScopeClient extends AtlasBaseClient<
   }
 
   public canHandle(node: ViewNode): boolean {
-    return isScope(node);
+    return node.type === "scope";
   }
 }

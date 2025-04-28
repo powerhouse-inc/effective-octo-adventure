@@ -1,12 +1,11 @@
-import {
-  AtlasGroundingState,
-  GDocumentLink,
-  GStatus,
+import type {
+  AtlasMultiParentState,
+  MStatus,
   SetContentInput,
-  SetDocNumberInput,
-  SetGroundingNameInput,
-  SetParentInput,
-} from "document-models/atlas-grounding/index.js";
+  AddParentInput,
+  SetExploratoryNameInput,
+  MDocumentLink
+} from "document-models/atlas-multi-parent/index.js";
 import { gql } from "graphql-request";
 import {
   getNodeDocNo,
@@ -15,15 +14,17 @@ import {
 } from "../../../document-models/utils.js";
 import { graphqlClient as writeClient } from "../../clients/index.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
-import { findAtlasParentInCache } from "../atlas-base/utils.js";
+import {
+  findAtlasParentInCache,
+} from "../atlas-base/utils.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { type ReactorClient } from "../common/ReactorClient.js";
 import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
 
-const DOCUMENT_TYPE = "sky/atlas-grounding";
+const DOCUMENT_TYPE = "sky/atlas-multiparent";
 
-export class AtlasGroundingClient extends AtlasBaseClient<
-  AtlasGroundingState,
+export class AtlasMultiParentClient extends AtlasBaseClient<
+  AtlasMultiParentState,
   typeof writeClient
 > {
   private readonly driveId: string;
@@ -32,24 +33,23 @@ export class AtlasGroundingClient extends AtlasBaseClient<
     mutationsSubgraphUrl: string,
     documentsCache: DocumentsCache,
     readClient: ReactorClient,
-    driveId: string
+    driveId: string,
   ) {
     super(
       DOCUMENT_TYPE,
       mutationsSubgraphUrl,
       documentsCache,
       readClient,
-      writeClient
+      writeClient,
     );
     this.driveId = driveId;
     this.setDocumentSchema(gql`
-      AtlasGrounding {
+      AtlasMultiParent {
         id
         name
         state {
-          docNo
           name
-          parent {
+          parents {
             id
             title
             docNo
@@ -71,25 +71,23 @@ export class AtlasGroundingClient extends AtlasBaseClient<
   }
 
   protected createDocumentFromInput(documentNode: ViewNode) {
-    return this.writeClient.mutations.AtlasGrounding_createDocument({
+    return this.writeClient.mutations.AtlasMultiParent_createDocument({
       __args: { driveId: this.driveId, name: getNodeTitle(documentNode) },
     });
   }
 
   protected getTargetState(
     input: ViewNode,
-    currentState: AtlasGroundingState
-  ): AtlasGroundingState {
-    // @ts-expect-error
-    const parent: Maybe<GDocumentLink> = findAtlasParentInCache(
-      input,
-      this.documentsCache
-    );
-
+    currentState: AtlasMultiParentState,
+  ): AtlasMultiParentState {
+    // const parent: Maybe<MDocumentLink> = findAtlasParentInCache(
+    //   input,
+    //   this.documentsCache,
+    // );
+    
     return {
       ...currentState,
-      docNo: getNodeDocNo(input),
-      name: getNodeName(input),      
+      name: getNodeName(input),
       // TODO: extract masterStatus from the view node
       // masterStatus: input.masterStatusNames[0]?.toUpperCase() || "PLACEHOLDER",
       // TODO: implement content converting the notion content to markdown
@@ -98,46 +96,39 @@ export class AtlasGroundingClient extends AtlasBaseClient<
       //   .join("\n")
       //   .trim(),
       notionId: input.id,
-      parent,
+      // parents: [parent],
     };
   }
 
-  protected async patchField<K extends keyof AtlasGroundingState>(
+  protected async patchField<K extends keyof AtlasMultiParentState>(
     id: string,
     fieldName: K,
-    current: AtlasGroundingState[K],
-    target: AtlasGroundingState[K]
+    current: AtlasMultiParentState[K],
+    target: AtlasMultiParentState[K],
   ) {
-    console.log(
-      ` > ${fieldName}: ${current ? JSON.stringify(current) : ""} > ${target ? JSON.stringify(target) : ""}`
-    );
+    console.log(` > ${fieldName}: ${current ? JSON.stringify(current) : ""} > ${target ? JSON.stringify(target) : ""}`);
     const patch = this.writeClient.mutations,
       arg = mutationArg(this.driveId, id);
 
     switch (fieldName) {
-      case "docNo":
-        await patch.AtlasGrounding_setDocNumber(
-          arg<SetDocNumberInput>({ docNo: target as string })
-        );
-        break;
       case "name":
-        await patch.AtlasGrounding_setGroundingName(
-          arg<SetGroundingNameInput>({ name: target as string })
+        await patch.AtlasMultiParent_setExploratoryName(
+          arg<SetExploratoryNameInput>({ name: target as string }),
         );
         break;
       case "masterStatus":
-        await patch.AtlasGrounding_setMasterStatus(
-          arg<any>({ masterStatus: target as GStatus })
+        await patch.AtlasMultiParent_setMasterStatus(
+          arg<any>({ masterStatus: target as MStatus }),
         );
         break;
       case "content":
-        await patch.AtlasGrounding_setContent(
-          arg<SetContentInput>({ content: target as string })
+        await patch.AtlasMultiParent_setContent(
+          arg<SetContentInput>({ content: target as string }),
         );
         break;
       case "notionId":
-        await patch.AtlasGrounding_setNotionId(
-          arg<any>({ notionID: target || undefined })
+        await patch.AtlasMultiParent_setNotionId(
+          arg<any>({ notionId: target || undefined }),
         );
         break;
       case "globalTags":
@@ -146,12 +137,15 @@ export class AtlasGroundingClient extends AtlasBaseClient<
       case "originalContextData":
         throw new Error("originalContextData patcher is not implemented yet.");
         break;
-      case "parent":
+      case "parents":
         if (!target) {
           throw new Error("Parent is not found");
         }
-        const parsedTarget = target as GDocumentLink;
-        await patch.AtlasGrounding_setParent(arg<SetParentInput>(parsedTarget));
+        const parsedTarget = target as unknown as MDocumentLink;
+        await patch.AtlasMultiParent_addParent(
+          arg<AddParentInput>(parsedTarget),
+        );
+        throw new Error("parents patcher is not implemented yet.");
         break;
       default:
         throw new Error(`Patcher for field ${fieldName} not implemented`);
@@ -159,6 +153,6 @@ export class AtlasGroundingClient extends AtlasBaseClient<
   }
 
   public canHandle(node: ViewNode): boolean {
-    return ["tenet", "originalContextData", "activeData"].includes(node.type);
+    return ["annotation", "neededResearch"].includes(node.type);
   }
 }

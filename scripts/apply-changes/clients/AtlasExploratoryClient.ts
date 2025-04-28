@@ -13,7 +13,6 @@ import {
   getNodeDocNo,
   getNodeName,
   getNodeTitle,
-  isExploratory,
 } from "../../../document-models/utils.js";
 import { graphqlClient as writeClient } from "../../clients/index.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
@@ -164,6 +163,6 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
   }
 
   public canHandle(node: ViewNode): boolean {
-    return isExploratory(node);
+    return ["scenario", "scenarioVariation"].includes(node.type);
   }
 }

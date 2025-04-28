@@ -13,7 +13,6 @@ import {
   getNodeDocNo,
   getNodeName,
   getNodeTitle,
-  isFoundation,
 } from "../../../document-models/utils.js";
 import { graphqlClient as writeClient } from "../../clients/index.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
@@ -164,6 +163,8 @@ export class AtlasFoundationClient extends AtlasBaseClient<
   }
 
   public canHandle(node: ViewNode): boolean {
-    return isFoundation(node);
+    return ["article", "section", "core", "activeDataController"].includes(
+      node.type,
+    );
   }
 }

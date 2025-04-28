@@ -113,4 +113,8 @@ export class AtlasSetClient extends AtlasBaseClient<
         break;
     }
   }
+
+  public canHandle(node: ViewNode): boolean {
+    return node.type === "category";
+  }
 }

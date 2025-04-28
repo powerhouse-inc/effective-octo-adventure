@@ -105,29 +105,3 @@ export const getNodeName = (node: ViewNode) => {
 export const getNodeTitle = (node: ViewNode) => {
   return `${getNodeDocNo(node)} - ${getNodeName(node)}`;
 };
-
-export const isScope = (node: ViewNode) => {
-  return node.type === "scope";
-};
-
-export const isFoundation = (node: ViewNode) => {
-  return ["article", "section", "core", "activeDataController"].includes(
-    node.type,
-  );
-};
-
-export const isExploratory = (node: ViewNode) => {
-  return ["scenario", "scenarioVariation"].includes(node.type);
-};
-
-export const isGrounding = (node: ViewNode) => {
-  return ["tenet", "originalContextData", "activeData"].includes(node.type);
-};
-
-export const isMultiParent = (node: ViewNode) => {
-  return ["annotation", "neededResearch"].includes(node.type);
-};
-
-export const isSet = (node: ViewNode) => {
-  return node.type === "category";
-};

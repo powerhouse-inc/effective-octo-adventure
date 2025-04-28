@@ -8,6 +8,7 @@ import { AtlasFoundationClient } from "./AtlasFoundationClient.js";
 import { AtlasGroundingClient } from "./AtlasGroundingClient.js";
 import { AtlasExploratoryClient } from "./AtlasExploratoryClient.js";
 import { AtlasSetClient } from "./AtlasSetClient.js";
+import { AtlasMultiParentClient } from "./AtlasMultiParentClient.js";
 
 /**
  * List of all the clients classes that are available to be used.
@@ -20,7 +21,7 @@ const CLIENTS = [
   AtlasGroundingClient,
   AtlasExploratoryClient,
   AtlasSetClient,
-  // TODO: add multi-parent client
+  AtlasMultiParentClient,
 ];
 
 export class AtlasClientRegistry {
@@ -59,7 +60,7 @@ export class AtlasClientRegistry {
     if (client) {
       await client.update(node);
     } else {
-      console.log(`Update for type ${node.type} not implemented yet.`);
+      console.error(`Update for type ${node.type} not implemented yet.`);
     }
   }
 
@@ -78,7 +79,7 @@ export class AtlasClientRegistry {
  * @param config - The configuration for all the clients.
  * @param documentCache - The document cache for all the clients.
  * @param readClient - The read client for all the clients.
- * 
+ *
  * @returns The new client registry.
  */
 export const createClientRegistry = (

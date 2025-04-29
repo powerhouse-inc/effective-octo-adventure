@@ -1,5 +1,6 @@
 import {
   AtlasGroundingState,
+  GAtlasType,
   GDocumentLink,
   GStatus,
   SetContentInput,
@@ -86,6 +87,21 @@ export class AtlasGroundingClient extends AtlasBaseClient<
       this.documentsCache
     );
 
+    let atlasType: GAtlasType;
+    switch (input.type) {
+      case "activeData":
+        atlasType = "ACTIVE_DATA";
+        break;
+      case "originalContextData":
+        atlasType = "ORIGINAL_CONTEXT_DATA";
+        break;
+      case "tenet":
+        atlasType = "TENET";
+        break;
+      default:
+        throw new Error(`Unsupported atlas type: ${input.type}`);
+    }
+
     return {
       ...currentState,
       docNo: getNodeDocNo(input),
@@ -97,6 +113,7 @@ export class AtlasGroundingClient extends AtlasBaseClient<
       //   .map((c) => pndContentToString(c))
       //   .join("\n")
       //   .trim(),
+      atlasType,
       notionId: input.id,
       parent,
     };
@@ -152,6 +169,11 @@ export class AtlasGroundingClient extends AtlasBaseClient<
         }
         const parsedTarget = target as GDocumentLink;
         await patch.AtlasGrounding_setParent(arg<SetParentInput>(parsedTarget));
+        break;
+      case "atlasType":
+        await patch.AtlasGrounding_setAtlasType(
+          arg<any>({ atlasType: target as GAtlasType }),
+        );
         break;
       default:
         throw new Error(`Patcher for field ${fieldName} not implemented`);

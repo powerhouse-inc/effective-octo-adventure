@@ -4,7 +4,8 @@ import type {
   SetContentInput,
   AddParentInput,
   SetExploratoryNameInput,
-  MDocumentLink
+  MDocumentLink,
+  MAtlasType
 } from "document-models/atlas-multi-parent/index.js";
 import { gql } from "graphql-request";
 import {
@@ -84,6 +85,18 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
     //   input,
     //   this.documentsCache,
     // );
+
+    let atlasType: MAtlasType;
+    switch (input.type) {
+      case "annotation":
+        atlasType = "ANNOTATION";
+        break;
+      case "neededResearch":
+        atlasType = "NEEDED_RESEARCH";
+        break;
+      default:
+        throw new Error(`Unsupported atlas type: ${input.type}`);
+    }
     
     return {
       ...currentState,
@@ -95,6 +108,7 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
       //   .map((c) => pndContentToString(c))
       //   .join("\n")
       //   .trim(),
+      atlasType,
       notionId: input.id,
       // parents: [parent],
     };
@@ -145,7 +159,11 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
         await patch.AtlasMultiParent_addParent(
           arg<AddParentInput>(parsedTarget),
         );
-        throw new Error("parents patcher is not implemented yet.");
+        break;
+      case "atlasType":
+        await patch.AtlasMultiParent_setAtlasType(
+          arg<any>({ atlasType: target as MAtlasType }),
+        );
         break;
       default:
         throw new Error(`Patcher for field ${fieldName} not implemented`);

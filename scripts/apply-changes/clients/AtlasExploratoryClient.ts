@@ -1,6 +1,7 @@
 import type {
   AtlasExploratoryState,
   DocumentInfo,
+  EAtlasType,
   EStatus,
   Maybe,
   SetContentInput,
@@ -89,6 +90,18 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
       input,
       this.documentsCache,
     );
+
+    let atlasType: EAtlasType;
+    switch (input.type) {
+      case "scenario":
+        atlasType = "SCENARIO";
+        break;
+      case "scenarioVariation":
+        atlasType = "SCENARIO_VARIATION";
+        break;
+      default:
+        throw new Error(`Unsupported atlas type: ${input.type}`);
+    }
     
     return {
       ...currentState,
@@ -101,6 +114,7 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
       //   .map((c) => pndContentToString(c))
       //   .join("\n")
       //   .trim(),
+      atlasType,
       notionId: input.id,
       parent: parent?.id || "",
     };
@@ -155,6 +169,11 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
         const parsedTarget = target as string;
         await patch.AtlasExploratory_setParent(
           arg<SetParentInput>({ parent: parsedTarget }),
+        );
+        break;
+      case "atlasType":
+        await patch.AtlasExploratory_setAtlasType(
+          arg<any>({ atlasType: target as EAtlasType }),
         );
         break;
       default:

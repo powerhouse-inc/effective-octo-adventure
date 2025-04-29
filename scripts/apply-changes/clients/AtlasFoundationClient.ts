@@ -1,4 +1,5 @@
 import {
+  FAtlasType,
   type AtlasFoundationState,
   type FDocumentLink,
   type FStatus,
@@ -89,8 +90,26 @@ export class AtlasFoundationClient extends AtlasBaseClient<
       input,
       this.documentsCache,
     );
-    
+
+    let atlasType: FAtlasType;
+    switch (input.type) {
+      case "activeDataController":
+        atlasType = "ACTIVE_DATA_CONTROLLER";
+        break;
+      case "article":
+        atlasType = "ARTICLE";
+        break;
+      case "core":
+        atlasType = "CORE";
+        break;
+      case "section":
+        atlasType = "SECTION";
+        break;
+      default:
+        throw new Error(`Unsupported atlas type: ${input.type}`);
+    }
     return {
+      ...currentState,
       ...currentState,
       docNo: getNodeDocNo(input),
       name: getNodeName(input),
@@ -101,6 +120,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<
       //   .map((c) => pndContentToString(c))
       //   .join("\n")
       //   .trim(),
+      atlasType,
       notionId: input.id,
       parent,
     };
@@ -155,6 +175,11 @@ export class AtlasFoundationClient extends AtlasBaseClient<
         const parsedTarget = target as FDocumentLink;
         await patch.AtlasFoundation_setParent(
           arg<SetParentInput>(parsedTarget),
+        );
+        break;
+      case "atlasType":
+        await patch.AtlasFoundation_setAtlasType(
+          arg<any>({ atlasType: target }),
         );
         break;
       default:

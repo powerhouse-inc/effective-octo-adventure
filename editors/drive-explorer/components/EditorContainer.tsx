@@ -24,6 +24,7 @@ import {
   AtlasMultiParent,
   AtlasScope,
   AtlasFeedbackIssues,
+  AtlasSet,
 } from "../../../document-models/index.js";
 
 export interface EditorContainerProps {
@@ -42,6 +43,7 @@ const documentModelsMap = {
   [AtlasMultiParent.documentModel.id]: AtlasMultiParent,
   [AtlasScope.documentModel.id]: AtlasScope,
   [AtlasFeedbackIssues.documentModel.id]: AtlasFeedbackIssues,
+  [AtlasSet.documentModel.id]: AtlasSet,
 };
 
 const documentEditorMap2 = {
@@ -72,6 +74,11 @@ const documentEditorMap2 = {
   ),
   [AtlasFeedbackIssues.documentModel.id]: lazy(() =>
     import("../../atlas-feedback-issues/index.js").then((m) => ({
+      default: m.default.Component,
+    })),
+  ),
+  [AtlasSet.documentModel.id]: lazy(() =>
+    import("../../atlas-set-editor/index.js").then((m) => ({
       default: m.default.Component,
     })),
   ),

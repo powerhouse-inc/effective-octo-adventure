@@ -28,6 +28,10 @@
       "name": "Atlas Multi Parent"
     },
     {
+      "id": "sky/atlas-set",
+      "name": "Atlas Set"
+    },
+    {
       "id": "makerdao/feedback-issues",
       "name": "Atlas Feedback Issues"
     }
@@ -57,6 +61,11 @@
       "id": "AtlasMultiParent",
       "name": "Atlas Multi Parent",
       "documentTypes": ["sky/atlas-multi-parent"]
+    },
+    {
+      "id": "AtlasSet",
+      "name": "Atlas Set",
+      "documentTypes": ["sky/atlas-set"]
     },
     {
       "id": "AtlasFeedbackIssues",

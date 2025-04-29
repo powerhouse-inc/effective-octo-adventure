@@ -2,9 +2,10 @@ import { type Maybe } from "document-model";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { type ReactorClient } from "../common/ReactorClient.js";
 import { DocumentClient } from "../common/DocumentClient.js";
-import { type ParsedNotionDocument } from "./NotionTypes.js";
-import { getPNDTitle } from "../../../document-models/utils.js";
+// import { type ParsedNotionDocument } from "./NotionTypes.js";
+import { getNodeTitle, getPNDTitle } from "../../../document-models/utils.js";
 import _ from "lodash";
+import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
 
 type WriteClientBase = {
   setUrl(url: string): void;
@@ -30,7 +31,7 @@ export const mutationArg = (driveId: string, docId: string) => {
 export abstract class AtlasBaseClient<
   ScopeType extends AtlasStateType,
   WriteClientType extends WriteClientBase,
-> extends DocumentClient<ScopeType, ParsedNotionDocument> {
+> extends DocumentClient<ScopeType, ViewNode> {
   protected readonly writeClient: WriteClientType;
 
   constructor(
@@ -53,14 +54,12 @@ export abstract class AtlasBaseClient<
     return state.name;
   }
 
-  protected getNameFromInput(notionDoc: ParsedNotionDocument): Maybe<string> {
-    return getPNDTitle(notionDoc);
+  protected getNameFromInput(documentNode: ViewNode): Maybe<string> {
+    return getNodeTitle(documentNode);
   }
 
-  protected getInputIdFromInput(
-    notionDoc: ParsedNotionDocument,
-  ): Maybe<string> {
-    return notionDoc.id;
+  protected getInputIdFromInput(documentNode: ViewNode): Maybe<string> {
+    return documentNode.id;
   }
 
   protected async patchDocumentState(
@@ -91,4 +90,6 @@ export abstract class AtlasBaseClient<
     current: AtlasStateType[K],
     target: AtlasStateType[K],
   ): Promise<void>;
+  
+  public abstract canHandle(node: ViewNode): boolean;
 }

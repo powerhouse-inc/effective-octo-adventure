@@ -607,6 +607,43 @@ const typesTree = {
       };
     }
   },
+  AtlasSet: {
+    get operations() {
+      return {
+        __fields: typesTree.Operation,
+        __args: {
+          skip: "Int",
+          first: "Int"
+        }
+      };
+    },
+    get initialState() {
+      return {
+        __fields: typesTree.AtlasSet_AtlasSetState
+      };
+    },
+    get state() {
+      return {
+        __fields: typesTree.AtlasSet_AtlasSetState
+      };
+    }
+  },
+  AtlasSetQueries: {
+    get getDocument() {
+      return {
+        __fields: typesTree.AtlasSet,
+        __args: {
+          driveId: "String",
+          docId: "PHID"
+        }
+      };
+    },
+    get getDocuments() {
+      return {
+        __fields: typesTree.AtlasSet
+      };
+    }
+  },
   DocumentDrive: {
     get operations() {
       return {
@@ -1300,6 +1337,41 @@ const typesTree = {
         }
       };
     },
+    get AtlasSet_createDocument() {
+      return {
+        __args: {
+          driveId: "String",
+          name: "String"
+        }
+      };
+    },
+    get AtlasSet_setSetName() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasSet_SetSetNameInput"
+        }
+      };
+    },
+    get AtlasSet_setSetParent() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasSet_SetSetParentInput"
+        }
+      };
+    },
+    get AtlasSet_setNotionId() {
+      return {
+        __args: {
+          driveId: "String",
+          docId: "PHID",
+          input: "AtlasSet_SetNotionIdInput"
+        }
+      };
+    },
     get createChallenge() {
       return {
         __args: {
@@ -1406,6 +1478,11 @@ const typesTree = {
         __fields: typesTree.AtlasScopeQueries
       };
     },
+    get AtlasSet() {
+      return {
+        __fields: typesTree.AtlasSetQueries
+      };
+    },
     me: {},
     sessions: {},
     drives: {}
@@ -1485,6 +1562,12 @@ const typesTree = {
   AtlasScopeState: {
     globalTags: {},
     originalContextData: {}
+  },
+  AtlasSet_AtlasSetState: {
+    parent: {}
+  },
+  AtlasSetState: {
+    parent: {}
   },
   Dimension: {
     values: {}
@@ -1587,6 +1670,7 @@ const client = {
     AtlasGrounding: apiEndpoint("query", "AtlasGrounding"),
     AtlasMultiParent: apiEndpoint("query", "AtlasMultiParent"),
     AtlasScope: apiEndpoint("query", "AtlasScope"),
+    AtlasSet: apiEndpoint("query", "AtlasSet"),
     me: apiEndpoint("query", "me"),
     sessions: apiEndpoint("query", "sessions"),
     drives: apiEndpoint("query", "drives"),
@@ -1667,6 +1751,10 @@ const client = {
     AtlasScope_removeContextData: apiEndpoint("mutation", "AtlasScope_removeContextData"),
     AtlasScope_setNotionId: apiEndpoint("mutation", "AtlasScope_setNotionId"),
     AtlasScope_replaceContextData: apiEndpoint("mutation", "AtlasScope_replaceContextData"),
+    AtlasSet_createDocument: apiEndpoint("mutation", "AtlasSet_createDocument"),
+    AtlasSet_setSetName: apiEndpoint("mutation", "AtlasSet_setSetName"),
+    AtlasSet_setSetParent: apiEndpoint("mutation", "AtlasSet_setSetParent"),
+    AtlasSet_setNotionId: apiEndpoint("mutation", "AtlasSet_setNotionId"),
     createChallenge: apiEndpoint("mutation", "createChallenge"),
     solveChallenge: apiEndpoint("mutation", "solveChallenge"),
     createSession: apiEndpoint("mutation", "createSession"),

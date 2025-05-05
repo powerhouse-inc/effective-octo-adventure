@@ -1,7 +1,5 @@
-import viewTreeData from "../data/view-node-tree.json" with { type: "json" };
-import documentIndexData from "../data/parsed/all-items.json" with { type: "json" };
+import atlasDataUntyped from "../data/atlas-data.json" with { type: "json" };
 import {
-  type ViewTree,
   type ParsedNotionDocumentIndex,
   type ParsedNotionDocumentType,
   type ParsedNotionDocument,
@@ -9,10 +7,9 @@ import {
   type ViewTreeContentValue,
   type ViewTreeContentSegment,
 } from "../scripts/apply-changes/atlas-base/NotionTypes.js";
+import type { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
 
-export const viewTree: ViewTree = viewTreeData as unknown as ViewTree;
-export const documentIndex =
-  documentIndexData as unknown as ParsedNotionDocumentIndex;
+export const atlasData = atlasDataUntyped as unknown as ViewNode[];
 
 export const getEmptyNotionDocument = (
   notionId: string,
@@ -36,8 +33,10 @@ export const getOriginalNotionDocument = (
   notionId: string,
   type: ParsedNotionDocumentType,
 ) => {
-  const notionDoc =
-    documentIndex[notionId] || getEmptyNotionDocument(notionId, type);
+  // TODO: get the right original notion document
+  // const notionDoc =
+  //   documentIndex[notionId] || getEmptyNotionDocument(notionId, type);
+  const notionDoc = getEmptyNotionDocument(notionId, type);
 
   return notionDoc;
 };
@@ -92,4 +91,17 @@ export const viewNodeContentToString = (content: ViewTreeContentValue) => {
 
 export const contentSegmentToString = (segment: ViewTreeContentSegment) => {
   return segment.text;
+};
+
+export const getNodeDocNo = (node: ViewNode) => {
+  const formalId = node.title.formalId;
+  return `${formalId.prefix ?? ""}.${formalId.numberPath.join(".")}`;
+};
+
+export const getNodeName = (node: ViewNode) => {
+  return node.title.title;
+};
+
+export const getNodeTitle = (node: ViewNode) => {
+  return `${getNodeDocNo(node)} - ${getNodeName(node)}`;
 };

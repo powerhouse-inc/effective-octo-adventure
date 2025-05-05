@@ -404,6 +404,7 @@ export interface AtlasFoundationArgs {}
 export interface AtlasGroundingArgs {}
 export interface AtlasMultiParentArgs {}
 export interface AtlasScopeArgs {}
+export interface AtlasSetArgs {}
 export interface MeArgs {}
 export interface SessionsArgs {}
 export interface DrivesArgs {}
@@ -773,6 +774,25 @@ export interface AtlasScopeReplaceContextDataArgs {
   driveId?: string
   docId?: PHID
   input?: AtlasScope_ReplaceContextDataInput
+}
+export interface AtlasSetCreateDocumentArgs {
+  driveId?: string
+  name?: string
+}
+export interface AtlasSetSetSetNameArgs {
+  driveId?: string
+  docId?: PHID
+  input?: AtlasSet_SetSetNameInput
+}
+export interface AtlasSetSetSetParentArgs {
+  driveId?: string
+  docId?: PHID
+  input?: AtlasSet_SetSetParentInput
+}
+export interface AtlasSetSetNotionIdArgs {
+  driveId?: string
+  docId?: PHID
+  input?: AtlasSet_SetNotionIdInput
 }
 export interface CreateChallengeArgs {
   address: string
@@ -1884,6 +1904,88 @@ export interface AtlasScopeState {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
+export interface AtlasSet {
+  id: string
+  name: string
+  documentType: string
+  operations: Operation[]
+  revision: number
+  created: DateTime
+  lastModified: DateTime
+  initialState: AtlasSet_AtlasSetState
+  state: AtlasSet_AtlasSetState
+  stateJSON?: JSONObject
+}
+
+/**
+ * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
+ */
+
+export interface AtlasSet_AtlasSetState {
+  id: PHID
+  name: string
+  parent?: AtlasSet_SetDocumentLink
+  notionId?: string
+}
+
+/**
+ * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
+ */
+
+export interface AtlasSet_SetDocumentLink {
+  id: PHID
+  title?: OLabel
+}
+
+/**
+ * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
+ */
+
+export interface AtlasSet_SetNotionIdInput {
+  notionId: string
+}
+
+/**
+ * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
+ */
+
+export interface AtlasSet_SetSetNameInput {
+  name: string
+}
+
+/**
+ * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
+ */
+
+export interface AtlasSet_SetSetParentInput {
+  id: PHID
+  title?: OLabel
+}
+
+/**
+ * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
+ */
+
+export interface AtlasSetQueries {
+  getDocument?: AtlasSet
+  getDocuments?: AtlasSet[]
+}
+
+/**
+ * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
+ */
+
+export interface AtlasSetState {
+  id: PHID
+  name: string
+  parent?: SetDocumentLink
+  notionId?: string
+}
+
+/**
+ * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
+ */
+
 export interface Challenge {
   nonce: string
   message: string
@@ -2228,6 +2330,10 @@ export interface Mutation {
   AtlasScope_removeContextData?: number
   AtlasScope_setNotionId?: number
   AtlasScope_replaceContextData?: number
+  AtlasSet_createDocument?: string
+  AtlasSet_setSetName?: number
+  AtlasSet_setSetParent?: number
+  AtlasSet_setNotionId?: number
   createChallenge?: Challenge
   solveChallenge?: SessionOutput
   createSession?: SessionOutput
@@ -2274,6 +2380,7 @@ export interface Query {
   AtlasGrounding?: AtlasGroundingQueries
   AtlasMultiParent?: AtlasMultiParentQueries
   AtlasScope?: AtlasScopeQueries
+  AtlasSet?: AtlasSetQueries
   me?: User
   sessions: Session[]
   drives: string[]
@@ -2317,6 +2424,15 @@ export interface SessionInput {
 export interface SessionOutput {
   id: ID
   token?: string
+}
+
+/**
+ * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
+ */
+
+export interface SetDocumentLink {
+  id: PHID
+  title?: OLabel
 }
 
 /**
@@ -3087,6 +3203,66 @@ export interface AtlasScopeStateSelection {
   masterStatus?: boolean
   globalTags?: boolean
   originalContextData?: DocumentInfoSelection
+  notionId?: boolean
+}
+
+export interface AtlasSetSelection {
+  id?: boolean
+  name?: boolean
+  documentType?: boolean
+  operations?: {
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: { skip?: number; first?: number }
+  } & OperationSelection
+  revision?: boolean
+  created?: boolean
+  lastModified?: boolean
+  initialState?: AtlasSet_AtlasSetStateSelection
+  state?: AtlasSet_AtlasSetStateSelection
+  stateJSON?: boolean
+}
+
+export interface AtlasSet_AtlasSetStateSelection {
+  id?: boolean
+  name?: boolean
+  parent?: AtlasSet_SetDocumentLinkSelection
+  notionId?: boolean
+}
+
+export interface AtlasSet_SetDocumentLinkSelection {
+  id?: boolean
+  title?: boolean
+}
+
+export interface AtlasSet_SetNotionIdInputSelection {
+  notionId?: boolean
+}
+
+export interface AtlasSet_SetSetNameInputSelection {
+  name?: boolean
+}
+
+export interface AtlasSet_SetSetParentInputSelection {
+  id?: boolean
+  title?: boolean
+}
+
+export interface AtlasSetQueriesSelection {
+  getDocument?: {
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: { driveId?: string; docId?: PHID }
+  } & AtlasSetSelection
+  getDocuments?: AtlasSetSelection
+}
+
+export interface AtlasSetStateSelection {
+  id?: boolean
+  name?: boolean
+  parent?: SetDocumentLinkSelection
   notionId?: boolean
 }
 
@@ -3986,6 +4162,42 @@ export interface MutationSelection {
       input?: AtlasScope_ReplaceContextDataInput
     }
   }
+  AtlasSet_createDocument?: {
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: { driveId?: string; name?: string }
+  }
+  AtlasSet_setSetName?: {
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasSet_SetSetNameInput
+    }
+  }
+  AtlasSet_setSetParent?: {
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasSet_SetSetParentInput
+    }
+  }
+  AtlasSet_setNotionId?: {
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args?: {
+      driveId?: string
+      docId?: PHID
+      input?: AtlasSet_SetNotionIdInput
+    }
+  }
   createChallenge?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
@@ -4077,6 +4289,11 @@ export interface SessionInputSelection {
 export interface SessionOutputSelection {
   id?: boolean
   token?: boolean
+}
+
+export interface SetDocumentLinkSelection {
+  id?: boolean
+  title?: boolean
 }
 
 export interface SignerSelection {
@@ -4180,6 +4397,15 @@ export declare const client: {
         __alias?: string
       } & AtlasScopeQueriesSelection,
       DeepRequired<AtlasScopeQueries>,
+      AllEnums
+    >
+    AtlasSet: Endpoint<
+      {
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+      } & AtlasSetQueriesSelection,
+      DeepRequired<AtlasSetQueries>,
       AllEnums
     >
     me: Endpoint<
@@ -4957,6 +5183,46 @@ export declare const client: {
         __retry?: boolean
         __alias?: string
         __args?: AtlasScopeReplaceContextDataArgs
+      },
+      number,
+      AllEnums
+    >
+    AtlasSet_createDocument: Endpoint<
+      {
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasSetCreateDocumentArgs
+      },
+      string,
+      AllEnums
+    >
+    AtlasSet_setSetName: Endpoint<
+      {
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasSetSetSetNameArgs
+      },
+      number,
+      AllEnums
+    >
+    AtlasSet_setSetParent: Endpoint<
+      {
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasSetSetSetParentArgs
+      },
+      number,
+      AllEnums
+    >
+    AtlasSet_setNotionId: Endpoint<
+      {
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args?: AtlasSetSetNotionIdArgs
       },
       number,
       AllEnums

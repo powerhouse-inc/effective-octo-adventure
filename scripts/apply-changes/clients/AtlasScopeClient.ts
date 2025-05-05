@@ -1,20 +1,21 @@
 import { gql } from "graphql-request";
-import { graphqlClient as writeClient } from "../clients/index.js";
-import { type ParsedNotionDocument } from "./atlas-base/NotionTypes.js";
-import { type DocumentsCache } from "./common/DocumentsCache.js";
-import { type ReactorClient } from "./common/ReactorClient.js";
+import { graphqlClient as writeClient } from "../../clients/index.js";
+import { type DocumentsCache } from "../common/DocumentsCache.js";
+import { type ReactorClient } from "../common/ReactorClient.js";
 
 import {
+  AtlasScopeState,
   type SetContentInput,
   type SetDocNumberInput,
   type SetScopeNameInput,
-} from "../../document-models/atlas-scope/index.js";
+} from "../../../document-models/atlas-scope/index.js";
 import {
-  getPNDTitle,
-  pndContentToString,
-} from "../../document-models/utils.js";
-import { type AtlasScopeState } from "../clients/graphql.js";
-import { AtlasBaseClient, mutationArg } from "./atlas-base/AtlasBaseClient.js";
+  getNodeDocNo,
+  getNodeName,
+  getNodeTitle,
+} from "../../../document-models/utils.js";
+import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
+import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
 
 const DOCUMENT_TYPE = "sky/atlas-scope";
 
@@ -36,7 +37,6 @@ const statusStringToEnum = (status: string): string => {
 };
 
 export class AtlasScopeClient extends AtlasBaseClient<
-  /* @ts-expect-error */
   AtlasScopeState,
   typeof writeClient
 > {
@@ -73,34 +73,35 @@ export class AtlasScopeClient extends AtlasBaseClient<
     `);
   }
 
-  protected createDocumentFromInput(notionDoc: ParsedNotionDocument) {
+  protected createDocumentFromInput(documentNode: ViewNode) {
     return this.writeClient.mutations.AtlasScope_createDocument({
-      __args: { driveId: this.driveId, name: getPNDTitle(notionDoc) },
+      __args: { driveId: this.driveId, name: getNodeTitle(documentNode) },
     });
   }
 
   protected getTargetState(
-    input: ParsedNotionDocument,
+    input: ViewNode,
     currentState: AtlasScopeState,
   ): AtlasScopeState {
     return {
       ...currentState,
-      docNo: input.docNo,
-      name: getPNDTitle(input, false),
-      /* @ts-expect-error */
-      masterStatus: statusStringToEnum(
-        input.masterStatusNames[0] || "PLACEHOLDER",
-      ),
-      content: input.content
-        .map((c) => pndContentToString(c))
-        .join("\n")
-        .trim(),
+      docNo: getNodeDocNo(input),
+      name: getNodeName(input),
+      // TODO: extract masterStatus from the view node
+      // masterStatus: statusStringToEnum(
+      //   input.masterStatusNames[0] || "PLACEHOLDER",
+      // ),
+      // TODO: implement content converting the notion content to markdown
+      content: "",
+      // content: input.content
+      //   .map((c) => pndContentToString(c))
+      //   .join("\n")
+      //   .trim(),
       notionId: input.id,
       //globalTags: [],
     };
   }
 
-  /* @ts-expect-error */
   protected async patchField<K extends keyof AtlasScopeState>(
     id: string,
     fieldName: K,
@@ -144,5 +145,9 @@ export class AtlasScopeClient extends AtlasBaseClient<
         throw new Error("originalContextData patcher is not implemented yet.");
         break;
     }
+  }
+
+  public canHandle(node: ViewNode): boolean {
+    return node.type === "scope";
   }
 }

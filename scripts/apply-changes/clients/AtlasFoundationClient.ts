@@ -1,4 +1,5 @@
 import {
+  FAtlasType,
   type AtlasFoundationState,
   type FDocumentLink,
   type FStatus,
@@ -10,18 +11,19 @@ import {
 } from "document-models/atlas-foundation/index.js";
 import { gql } from "graphql-request";
 import {
-  getPNDTitle,
-  pndContentToString,
-} from "../../document-models/utils.js";
-import { graphqlClient as writeClient } from "../clients/index.js";
-import { AtlasBaseClient, mutationArg } from "./atlas-base/AtlasBaseClient.js";
-import { type ParsedNotionDocument } from "./atlas-base/NotionTypes.js";
+  getNodeDocNo,
+  getNodeName,
+  getNodeTitle,
+} from "../../../document-models/utils.js";
+import { graphqlClient as writeClient } from "../../clients/index.js";
+import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import {
-  extractDocNoAndTitle,
   findAtlasParentInCache,
-} from "./atlas-base/utils.js";
-import { type DocumentsCache } from "./common/DocumentsCache.js";
-import { type ReactorClient } from "./common/ReactorClient.js";
+} from "../atlas-base/utils.js";
+import { type DocumentsCache } from "../common/DocumentsCache.js";
+import { type ReactorClient } from "../common/ReactorClient.js";
+import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
+import { NotionConverter } from 'notion-to-md';
 
 const DOCUMENT_TYPE = "sky/atlas-foundation";
 
@@ -73,33 +75,52 @@ export class AtlasFoundationClient extends AtlasBaseClient<
     `);
   }
 
-  protected createDocumentFromInput(notionDoc: ParsedNotionDocument) {
+  protected createDocumentFromInput(documentNode: ViewNode) {
     return this.writeClient.mutations.AtlasFoundation_createDocument({
-      __args: { driveId: this.driveId, name: getPNDTitle(notionDoc) },
+      __args: { driveId: this.driveId, name: getNodeTitle(documentNode) },
     });
   }
 
   protected getTargetState(
-    input: ParsedNotionDocument,
+    input: ViewNode,
     currentState: AtlasFoundationState,
   ): AtlasFoundationState {
-    const [docNo, title] = extractDocNoAndTitle(input.docNo, input.name);
     // @ts-expect-error
     const parent: Maybe<FDocumentLink> = findAtlasParentInCache(
       input,
       this.documentsCache,
     );
-    
+
+    let atlasType: FAtlasType;
+    switch (input.type) {
+      case "activeDataController":
+        atlasType = "ACTIVE_DATA_CONTROLLER";
+        break;
+      case "article":
+        atlasType = "ARTICLE";
+        break;
+      case "core":
+        atlasType = "CORE";
+        break;
+      case "section":
+        atlasType = "SECTION";
+        break;
+      default:
+        throw new Error(`Unsupported atlas type: ${input.type}`);
+    }
     return {
       ...currentState,
-      docNo,
-      name: title,
-      /* @ts-expect-error */
-      masterStatus: input.masterStatusNames[0]?.toUpperCase() || "PLACEHOLDER",
-      content: input.content
-        .map((c) => pndContentToString(c))
-        .join("\n")
-        .trim(),
+      ...currentState,
+      docNo: getNodeDocNo(input),
+      name: getNodeName(input),
+      // TODO: extract masterStatus from the view node
+      // masterStatus: input.masterStatusNames[0]?.toUpperCase() || "PLACEHOLDER",
+      // TODO: implement content converting the notion content to markdown
+      // content: input.content
+      //   .map((c) => pndContentToString(c))
+      //   .join("\n")
+      //   .trim(),
+      atlasType,
       notionId: input.id,
       parent,
     };
@@ -111,7 +132,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<
     current: AtlasFoundationState[K],
     target: AtlasFoundationState[K],
   ) {
-    console.log(` > ${fieldName}: ${current ? current + " " : ""}> ${target}`);
+    console.log(` > ${fieldName}: ${current ? JSON.stringify(current) : ""} > ${target ? JSON.stringify(target) : ""}`);
     const patch = this.writeClient.mutations,
       arg = mutationArg(this.driveId, id);
 
@@ -156,8 +177,19 @@ export class AtlasFoundationClient extends AtlasBaseClient<
           arg<SetParentInput>(parsedTarget),
         );
         break;
+      case "atlasType":
+        await patch.AtlasFoundation_setAtlasType(
+          arg<any>({ atlasType: target }),
+        );
+        break;
       default:
         throw new Error(`Patcher for field ${fieldName} not implemented`);
     }
+  }
+
+  public canHandle(node: ViewNode): boolean {
+    return ["article", "section", "core", "activeDataController"].includes(
+      node.type,
+    );
   }
 }

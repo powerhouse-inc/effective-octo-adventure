@@ -102,10 +102,12 @@ export abstract class DocumentClient<StateType, InputType> {
     let newDocumentId: string | null = null;
 
     if (documentIds.length > 0) {
+      // ASK: when can we have multiple documents with the same input?
       console.log(
         `Updating ${documentIds.length} existing document(s) for "${this.getNameFromInput(inputDocument)}"...`,
       );
     } else {
+      // ASK: why we need to generate a new  ID for teh document? Is that intentional?
       newDocumentId = await this.createDocumentFromInput(inputDocument);
 
       documentIds.push(newDocumentId);

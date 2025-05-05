@@ -67,14 +67,24 @@ export function DriverLayout({
   }, [atlasNodes]);
 
   const selectedNode = activeNodeId
-    ? (state[activeNodeId] as AtlasArticle | AtlasFeedbackIssue)
+    ? (state[activeNodeId] as AtlasArticle | AtlasFeedbackIssue) // TODO: atlas set doesn't have a docNo
     : null;
 
-  const title = !selectedNode
-    ? "Welcome to the Atlas Explorer"
-    : "docNo" in selectedNode.global
-      ? `${selectedNode.global.docNo} - ${selectedNode.global.name}`
-      : "Atlas Feedback Issues";
+  // create drive-level title for the active document
+  const title = useMemo(() => {
+    if (!selectedNode) {
+      return "Welcome to the Atlas Explorer";
+    }
+    if (selectedNode.documentType === "sky/atlas-set") {
+      return (selectedNode as AtlasArticle).global.name;
+    }
+
+    if ("docNo" in selectedNode.global) {
+      return `${selectedNode.global.docNo} - ${selectedNode.global.name}`;
+    }
+
+    return "Atlas Feedback Issues";
+  }, [selectedNode]);
 
   const onActiveNodeChange = useCallback((node: SidebarNode) => {
     setActiveNodeId(node.id);
@@ -223,7 +233,7 @@ function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
     let icons = {};
     const type = node.global.atlasType?.toLowerCase() || "scope";
 
-    if (type === "category") {
+    if (node.documentType === "sky/atlas-set") {
       icons = {
         icon: "FolderClose",
         expandedIcon: "FolderOpen",
@@ -250,9 +260,15 @@ function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
       status = "MODIFIED";
     }
 
+    // get the right title for the node depending on the document type
+    const title =
+      node.documentType === "sky/atlas-set"
+        ? node.global.name
+        : `${node.global.docNo} - ${node.global.name}`;
+
     nodesById[key] = {
       id: key,
-      title: `${node.global.docNo} - ${node.global.name}`,
+      title,
       children: [],
       status: status as NodeStatus,
       ...icons,

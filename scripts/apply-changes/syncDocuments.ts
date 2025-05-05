@@ -1,13 +1,12 @@
+import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
 import {
-  getPNDTitle,
-  documentIndex as notionDocsIndex,
+  getNodeTitle,
+  atlasData,
 } from "../../document-models/utils.js";
-import { type ParsedNotionDocument } from "./atlas-base/NotionTypes.js";
-import { AtlasFoundationClient } from "./AtlasFoundationClient.js";
-import { AtlasScopeClient } from "./AtlasScopeClient.js";
 import { DocumentsCache } from "./common/DocumentsCache.js";
 import { ReactorClient } from "./common/ReactorClient.js";
 import { SystemGraphClient } from "./SystemGraphClient.js";
+import { createClientRegistry } from "./clients/AtlasClientRegistry.js";
 
 export type DocumentSyncConfig = {
   gqlEndpoint: string;
@@ -42,81 +41,48 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
   const driveNodes = await readClient.getDriveNodes();
   const documentsCache = new DocumentsCache(driveNodes);
 
-  const clients = {
-    scopes: new AtlasScopeClient(
-      new URL("./graphql", config.gqlEndpoint).href,
-      documentsCache,
-      readClient,
-      config.driveName,
-    ),
-    foundation: new AtlasFoundationClient(
-      new URL("./graphql", config.gqlEndpoint).href,
-      documentsCache,
-      readClient,
-      config.driveName,
-    ),
-  };
-
-  for (const client of Object.values(clients)) {
-    await client.loadDriveDocumentCache();
-  }
+  const clientRegistry = createClientRegistry(config, documentsCache, readClient);
+  await clientRegistry.loadDriveDocumentCache();
 
   console.log(documentsCache.getDocumentsCount());
   console.log("\nProcessing Notion documents...");
 
-  const queue = Object.values(notionDocsIndex)
-    .filter((pnd) => pnd!.type == "scope")
-    .sort((a, b) => (a!.docNo < b!.docNo ? -1 : 1));
+  // the queue is initialized with the scopes (first level of the atlas)
+  const queue: ViewNode[] = [...atlasData]
 
-  let processed = 0,
-    skipped = 0,
-    notionDoc: ParsedNotionDocument | undefined;
+  let processed = 0;
+  let skipped = 0;
 
-  while ((notionDoc = queue.shift())) {
+  while (queue.length > 0) {
+    let documentNode = queue.shift()!;
     if (processed >= config.processLimit) {
       console.log(`\nProcess limit reached.`);
       break;
     }
 
-    if (config.skipNodes[notionDoc.id]) {
+    if (config.skipNodes[documentNode.id]) {
       console.log(
-        `SKIP [${notionDoc.id}]: ${getPNDTitle(notionDoc)} (${notionDoc.type})`,
+        `SKIP [${documentNode.id}]: ${getNodeTitle(documentNode)} (${documentNode.type})`,
       );
       skipped++;
       continue;
     }
 
     console.log(
-      `>> ${processed + 1} [${notionDoc.id}]: ${getPNDTitle(notionDoc)} (${notionDoc.type})`,
+      `>> ${processed + 1} [${documentNode.id}]: ${getNodeTitle(documentNode)} (${documentNode.type})`,
     );
 
     try {
-      if (notionDoc.type === "scope") {
-        const newDocumentId = await clients.scopes.update(notionDoc);
-      } else if (
-        ["article", "section", "core", "activeDataController"].includes(
-          notionDoc.type,
-        )
-      ) {
-        const newDocumentId = await clients.foundation.update(notionDoc);
-      } else {
-        console.log(`Update for type ${notionDoc.type} not implemented yet.`);
-      }
+      // update/create the document in the drive
+      await clientRegistry.update(documentNode);
     } catch (e) {
       console.error(e);
     }
 
-    notionDoc.children.forEach((childNotionId) => {
-      if (!notionDocsIndex[childNotionId]) {
-        //console.warn(`Cannot find notion document ${childNotionId} (child ref of scope ${notionDoc?.name})`);
-      } else {
-        const item = { ...notionDocsIndex[childNotionId] };
-        if (!item.parents?.includes(notionDoc!.id)) {
-          item.parents = [...(item.parents || []), notionDoc!.id];
-        }
-        queue.push(item);
-      }
-    });
+    // add all the sub documents to the queue
+    if (documentNode.subDocuments.length > 0) {
+      queue.push(...documentNode.subDocuments);
+    }
 
     processed++;
   }

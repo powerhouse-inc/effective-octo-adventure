@@ -1,6 +1,5 @@
 import type {
   AtlasExploratoryState,
-  DocumentInfo,
   EAtlasType,
   EStatus,
   Maybe,
@@ -116,7 +115,11 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
       //   .trim(),
       atlasType,
       notionId: input.id,
-      parent: parent?.id || "",
+      parent: {
+        id: parent?.id || "",
+        title: parent?.title || "",
+        docNo: parent?.docNo || "",
+      },
     };
   }
 
@@ -168,7 +171,11 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
         }
         const parsedTarget = target as string;
         await patch.AtlasExploratory_setParent(
-          arg<SetParentInput>({ parent: parsedTarget }),
+          arg<SetParentInput>({ 
+            id: parsedTarget,
+            title: parsedTarget,
+            docNo: parsedTarget,
+           }),
         );
         break;
       case "atlasType":

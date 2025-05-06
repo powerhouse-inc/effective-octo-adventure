@@ -161,7 +161,11 @@ export function FoundationForm({
             <SinglePhIdForm
               label="Parent Document"
               value={documentState.parent}
-              baselineValue={originalNodeState.parents?.[0] ?? ""}
+              baselineValue={originalNodeState.parents?.[0] ?? ""} // TODO: add the correct baseline value
+              baselineIcon={undefined} // TODO: add the correct baseline icon
+              baselineTitle={undefined} // TODO: add the correct baseline title
+              baselineType={undefined} // TODO: add the correct baseline type
+              baselineDescription={undefined} // TODO: add the correct baseline description
               onSave={(value) => {
                 if (value === null || value === "") {
                   dispatch(

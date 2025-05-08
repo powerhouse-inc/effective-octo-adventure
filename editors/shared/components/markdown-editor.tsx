@@ -5,7 +5,6 @@ import "@uiw/react-md-editor/markdown-editor.css";
 // import "@uiw/react-markdown-preview/markdown.css";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
-import "./markdown-editor.module.css";
 
 // Custom preview renderer to make links open in new tabs and ensure proper list rendering
 const previewOptions = {

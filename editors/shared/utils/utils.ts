@@ -112,3 +112,16 @@ export const parseTitleText = (title: string) => {
   }
   return { docNo: "", name: title };
 };
+
+export const getViewMode = (mode: EditorMode) => {
+  switch (mode) {
+    case "Edition":
+      return "edition";
+    case "DiffRemoved":
+      return "removal";
+    case "DiffAdditions":
+      return "addition";
+    case "DiffMixed":
+      return "mixed";
+  }
+};

@@ -1,6 +1,7 @@
-import { Form } from "@powerhousedao/design-system/scalars";
+import { Form, StringField } from "@powerhousedao/design-system/scalars";
 import { useFormMode } from "../../../providers/FormModeProvider.js";
 import { StringDiffField } from "../../diff-fields/string-diff-field.js";
+import { getViewMode } from "../../../utils/utils.js";
 
 interface GenericTextFormProps {
   label?: string;
@@ -24,6 +25,7 @@ const GenericTextForm = ({
   autoExpand = false,
 }: GenericTextFormProps) => {
   const formMode = useFormMode();
+  const viewMode = getViewMode(formMode);
   const onSubmit = (data: { genericText: string }) => {
     if (data.genericText !== undefined && data.genericText !== value) {
       onSave(data.genericText);
@@ -37,14 +39,15 @@ const GenericTextForm = ({
       defaultValues={{ genericText: value }}
     >
       {({ triggerSubmit }) => (
-        <StringDiffField
+        <StringField
           name="genericText"
           label={label}
+          value={value}
           placeholder={placeholder}
           required={required}
           onBlur={triggerSubmit}
-          mode={formMode}
-          baselineValue={baselineValue}
+          viewMode={viewMode}
+          baseValue={baselineValue}
           multiline={multiline}
           autoExpand={autoExpand}
         />

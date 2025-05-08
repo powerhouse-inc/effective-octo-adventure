@@ -11,6 +11,8 @@ export default function Editor(props: IProps) {
     <EditorLayout
       title="Multi-Parent Document"
       notionId={props.document.state.global.notionId}
+      splitModeEnabled={true}
+      readOnlyModeEnabled={true}
     >
       {({ isSplitMode, isEditMode }) =>
         isSplitMode ? (

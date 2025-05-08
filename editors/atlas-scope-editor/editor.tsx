@@ -10,8 +10,8 @@ export default function Editor(props: IProps) {
     <EditorLayout
       title="Atlas Explorer - The Support Scope"
       notionId={props.document.state.global.notionId}
-      splitModeEnabled={true}
       readOnlyModeEnabled={true}
+      splitModeEnabled={true}
     >
       {({ isSplitMode, isEditMode }) =>
         isSplitMode ? (

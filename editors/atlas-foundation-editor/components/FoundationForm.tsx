@@ -159,6 +159,7 @@ export function FoundationForm({
             )}
           >
             <SinglePhIdForm
+              key={documentState.parent || "doc-with-no-parent"}
               label="Parent Document"
               value={documentState.parent}
               // TODO: add the correct baseline value

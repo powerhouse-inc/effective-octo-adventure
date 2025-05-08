@@ -42,7 +42,6 @@ const GenericTextForm = ({
         <StringField
           name="genericText"
           label={label}
-          value={value}
           placeholder={placeholder}
           required={required}
           onBlur={triggerSubmit}

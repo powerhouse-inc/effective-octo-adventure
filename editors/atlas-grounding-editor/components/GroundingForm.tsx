@@ -172,7 +172,15 @@ export function GroundingForm({
             <SinglePhIdForm
               label="Parent Document"
               value={documentState.parent}
-              baselineValue={originalNodeState.parents?.[0] ?? ""}
+              // TODO: add the correct baseline value
+              baselineValue={
+                originalNodeState.parents?.[0] ??
+                "phd:687933ce-87eb-4f35-a171-30333b31a462"
+              }
+              baselineIcon={undefined} // TODO: add the correct baseline icon
+              baselineTitle={"Original title"} // TODO: add the correct baseline title
+              baselineType={"original/type"} // TODO: add the correct baseline type
+              baselineDescription={"original description"} // TODO: add the correct baseline description
               onSave={(value) => {
                 if (value === null || value === "") {
                   dispatch(

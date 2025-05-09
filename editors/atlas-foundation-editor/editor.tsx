@@ -11,6 +11,8 @@ export default function Editor(props: IProps) {
     <EditorLayout
       title="Foundation Document"
       notionId={props.document.state.global.notionId}
+      readOnlyModeEnabled={true}
+      splitModeEnabled={true}
     >
       {({ isSplitMode, isEditMode }) =>
         isSplitMode ? (

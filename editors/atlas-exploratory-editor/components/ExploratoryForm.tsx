@@ -24,13 +24,14 @@ import { AdditionalGuidance } from "./AdditionalGuidance.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
 import { Toggle } from "@powerhousedao/design-system/ui";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
 } from "../../shared/utils/styles.js";
+import { type UseFormReturn } from "react-hook-form";
 
 interface ExploratoryFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
@@ -92,6 +93,14 @@ export function ExploratoryForm({
       (documentState.atlasType as ParsedNotionDocumentType) || "scenario",
     ),
   );
+
+  const formRef = useRef<UseFormReturn>(null);
+  // keep the form state in sync with the document state
+  useEffect(() => {
+    if (formRef.current) {
+      formRef.current.reset({ ...documentState });
+    }
+  }, [documentState]);
 
   return (
     <FormModeProvider mode={mode}>
@@ -165,7 +174,15 @@ export function ExploratoryForm({
             <SinglePhIdForm
               label="Parent Document"
               value={documentState.parent}
-              baselineValue={originalNodeState.parents?.[0] ?? ""}
+              // TODO: add the correct baseline value
+              baselineValue={
+                originalNodeState.parents?.[0] ??
+                "phd:687933ce-87eb-4f35-a171-30333b31a462"
+              }
+              baselineIcon={undefined} // TODO: add the correct baseline icon
+              baselineTitle={"Original title"} // TODO: add the correct baseline title
+              baselineType={"original/type"} // TODO: add the correct baseline type
+              baselineDescription={"original description"} // TODO: add the correct baseline description
               onSave={(value) => {
                 if (value === null || value === "") {
                   dispatch(

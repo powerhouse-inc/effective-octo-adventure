@@ -1,15 +1,16 @@
 import { useEffect, useCallback, useMemo, useState } from "react";
 import { ArrayField, type ArrayFieldProps } from "../ArrayField.js";
-import {
-  PHIDDiffField,
-  type PHIDDiffFieldProps,
-} from "../diff-fields/phid-diff-field.js";
 import { useFormMode } from "../../providers/FormModeProvider.js";
 import {
   fetchPHIDOptions,
   fetchSelectedPHIDOption,
+  getViewMode,
 } from "../../utils/utils.js";
 import type { PHIDOption } from "@powerhousedao/design-system/ui";
+import {
+  PHIDField,
+  type PHIDFieldProps,
+} from "@powerhousedao/design-system/scalars";
 
 type CommonDataProps = {
   id: string;
@@ -18,7 +19,7 @@ type CommonDataProps = {
 
 interface MultiPhIdFormProps
   extends Omit<
-    ArrayFieldProps<string, PHIDDiffFieldProps>,
+    ArrayFieldProps<string, PHIDFieldProps>,
     "fields" | "componentProps" | "component"
   > {
   data: CommonDataProps[];
@@ -32,6 +33,7 @@ const MultiPhIdForm = ({
   onUpdate,
 }: MultiPhIdFormProps) => {
   const formMode = useFormMode();
+  const viewMode = getViewMode(formMode);
   // boolean flag to trigger callback recreation only when needed
   const [renderComponentTrigger, setRenderComponentTrigger] = useState(false);
 
@@ -50,10 +52,10 @@ const MultiPhIdForm = ({
   // this callback only recreates when renderComponentTrigger changes,
   // not on every data change, but still has access to latest data
   const renderComponent = useCallback(
-    (props: PHIDDiffFieldProps) => {
+    (props: PHIDFieldProps) => {
       // the new item not have initialOptions
       if (props.name === "item-new") {
-        return <PHIDDiffField {...props} />;
+        return <PHIDField {...props} />;
       }
 
       // for existing fields, use the initialOptions of the corresponding element
@@ -61,7 +63,17 @@ const MultiPhIdForm = ({
       const element = data.find((d) => d.id === fieldId);
 
       return (
-        <PHIDDiffField {...props} initialOptions={element?.initialOptions} />
+        <PHIDField
+          {...props}
+          initialOptions={element?.initialOptions}
+          viewMode={viewMode}
+          // TODO: add the correct base values
+          baseValue={"phd:687933ce-87eb-4f35-a171-30333b31a462"}
+          basePreviewIcon={undefined}
+          basePreviewTitle={"Original title"}
+          basePreviewPath={"original/type"}
+          basePreviewDescription={"original description"}
+        />
       );
     },
     [renderComponentTrigger],
@@ -74,7 +86,7 @@ const MultiPhIdForm = ({
   }, [dataSignature]);
 
   return (
-    <ArrayField<string, PHIDDiffFieldProps>
+    <ArrayField<string, PHIDFieldProps>
       onAdd={onAdd}
       onRemove={onRemove}
       onUpdate={onUpdate}
@@ -107,7 +119,7 @@ const MultiPhIdForm = ({
           }
           return element?.initialOptions?.[0];
         },
-        mode: formMode,
+        viewMode: viewMode,
         validators: [
           (value: string, formState) => {
             if (!value) return true;

@@ -107,7 +107,7 @@
     "@powerhousedao/reactor-api": "1.29.18-staging.6",
     "@powerhousedao/reactor-local": "1.27.34-staging.0",
     "@powerhousedao/scalars": "1.33.1-staging.2",
-    "@powerhousedao/sky-atlas-notion-data": "^1.1.5",
+    "@powerhousedao/sky-atlas-notion-data": "1.1.8",
     "@tailwindcss/cli": "^4.1.3",
     "@testing-library/react": "^16.3.0",
     "@types/diff": "^7.0.2",

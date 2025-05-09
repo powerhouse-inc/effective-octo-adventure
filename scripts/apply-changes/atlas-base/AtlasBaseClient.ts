@@ -5,7 +5,7 @@ import { DocumentClient } from "../common/DocumentClient.js";
 // import { type ParsedNotionDocument } from "./NotionTypes.js";
 import { getNodeTitle, getPNDTitle } from "../../../document-models/utils.js";
 import _ from "lodash";
-import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
+import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
 
 type WriteClientBase = {
   setUrl(url: string): void;
@@ -31,7 +31,7 @@ export const mutationArg = (driveId: string, docId: string) => {
 export abstract class AtlasBaseClient<
   ScopeType extends AtlasStateType,
   WriteClientType extends WriteClientBase,
-> extends DocumentClient<ScopeType, ViewNode> {
+> extends DocumentClient<ScopeType, ViewNodeExtended> {
   protected readonly writeClient: WriteClientType;
 
   constructor(
@@ -54,11 +54,11 @@ export abstract class AtlasBaseClient<
     return state.name;
   }
 
-  protected getNameFromInput(documentNode: ViewNode): Maybe<string> {
+  protected getNameFromInput(documentNode: ViewNodeExtended): Maybe<string> {
     return getNodeTitle(documentNode);
   }
 
-  protected getInputIdFromInput(documentNode: ViewNode): Maybe<string> {
+  protected getInputIdFromInput(documentNode: ViewNodeExtended): Maybe<string> {
     return documentNode.id;
   }
 
@@ -91,5 +91,5 @@ export abstract class AtlasBaseClient<
     target: AtlasStateType[K],
   ): Promise<void>;
   
-  public abstract canHandle(node: ViewNode): boolean;
+  public abstract canHandle(node: ViewNodeExtended): boolean;
 }

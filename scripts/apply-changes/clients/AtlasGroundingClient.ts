@@ -2,6 +2,7 @@ import {
   AtlasGroundingState,
   GAtlasType,
   GDocumentLink,
+  GGlobalTag,
   GStatus,
   SetContentInput,
   SetDocNumberInput,
@@ -16,10 +17,10 @@ import {
 } from "../../../document-models/utils.js";
 import { graphqlClient as writeClient } from "../../clients/index.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
-import { findAtlasParentInCache } from "../atlas-base/utils.js";
+import { contentToMarkdown, findAtlasParentInCache, statusStringToEnum } from "../atlas-base/utils.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { type ReactorClient } from "../common/ReactorClient.js";
-import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
+import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
 
 const DOCUMENT_TYPE = "sky/atlas-grounding";
 
@@ -71,14 +72,14 @@ export class AtlasGroundingClient extends AtlasBaseClient<
     `);
   }
 
-  protected createDocumentFromInput(documentNode: ViewNode) {
+  protected createDocumentFromInput(documentNode: ViewNodeExtended) {
     return this.writeClient.mutations.AtlasGrounding_createDocument({
       __args: { driveId: this.driveId, name: getNodeTitle(documentNode) },
     });
   }
 
   protected getTargetState(
-    input: ViewNode,
+    input: ViewNodeExtended,
     currentState: AtlasGroundingState
   ): AtlasGroundingState {
     // @ts-expect-error
@@ -106,16 +107,20 @@ export class AtlasGroundingClient extends AtlasBaseClient<
       ...currentState,
       docNo: getNodeDocNo(input),
       name: getNodeName(input),      
-      // TODO: extract masterStatus from the view node
-      // masterStatus: input.masterStatusNames[0]?.toUpperCase() || "PLACEHOLDER",
-      // TODO: implement content converting the notion content to markdown
-      // content: input.content
-      //   .map((c) => pndContentToString(c))
-      //   .join("\n")
-      //   .trim(),
+      masterStatus: statusStringToEnum(
+        input.masterStatus || "Placeholder",
+      ) as GStatus,
+      content: contentToMarkdown(input.markdownContent),
       atlasType,
       notionId: input.id,
       parent,
+      globalTags: input.globalTags as GGlobalTag[],
+      originalContextData: input.originalContextData.map((contextData) => ({
+        id: contextData,
+        // TODO: add correct title and docNo
+        title: "",
+        docNo: "",
+      })),
     };
   }
 
@@ -158,11 +163,22 @@ export class AtlasGroundingClient extends AtlasBaseClient<
         );
         break;
       case "globalTags":
-        throw new Error("globalTags patcher is not implemented yet.");
+        await patch.AtlasGrounding_addTags(
+          arg<any>({ newTags: target as GGlobalTag[] })
+        );
         break;
-      case "originalContextData":
-        throw new Error("originalContextData patcher is not implemented yet.");
+      case "originalContextData": {
+        if (target && Array.isArray(target) && target.length > 0) {
+          await Promise.all(
+            (target as GDocumentLink[]).map(async (contextData) => {
+              await patch.AtlasGrounding_addContextData(
+                arg<any>({ id: contextData.id })
+              );
+            })
+          );
+        }
         break;
+      }
       case "parent":
         if (!target) {
           throw new Error("Parent is not found");
@@ -180,7 +196,7 @@ export class AtlasGroundingClient extends AtlasBaseClient<
     }
   }
 
-  public canHandle(node: ViewNode): boolean {
+  public canHandle(node: ViewNodeExtended): boolean {
     return ["tenet", "originalContextData", "activeData"].includes(node.type);
   }
 }

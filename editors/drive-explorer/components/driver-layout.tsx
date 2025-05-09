@@ -21,6 +21,7 @@ import { Home } from "./home.js";
 import { documentModel as AtlasFeedbackIssues } from "../../../document-models/atlas-feedback-issues/gen/document-model.js";
 import type { Node } from "document-drive";
 import { ShareDrive } from "../../shared/components/share-drive.js";
+import type { AtlasMultiParentState } from "../../../document-models/atlas-multi-parent/index.js";
 
 export interface DriverLayoutProps {
   readonly driveId: string;
@@ -81,6 +82,10 @@ export function DriverLayout({
 
     if ("docNo" in selectedNode.global) {
       return `${selectedNode.global.docNo} - ${selectedNode.global.name}`;
+    }
+
+    if (selectedNode.documentType === "sky/atlas-multiparent") {
+      return (selectedNode as AtlasArticle).global.name;
     }
 
     return "Atlas Feedback Issues";
@@ -262,9 +267,11 @@ function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
 
     // get the right title for the node depending on the document type
     const title =
-      node.documentType === "sky/atlas-set"
+      "sky/atlas-set" === node.documentType
         ? node.global.name
-        : `${node.global.docNo} - ${node.global.name}`;
+        : "sky/atlas-multiparent" === node.documentType
+          ? `${(node.global as unknown as AtlasMultiParentState).parents?.[0].docNo} - ${node.global.name}`
+          : `${node.global.docNo} - ${node.global.name}`;
 
     nodesById[key] = {
       id: key,
@@ -277,7 +284,15 @@ function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
 
   // Build the tree
   for (const [key, value] of Object.entries(allNodes)) {
-    if (
+    if (value.documentType === "sky/atlas-multiparent") {
+      const parents = (value.global as unknown as AtlasMultiParentState)
+        .parents;
+      if (parents && parents.length > 0) {
+        for (const parent of parents) {
+          nodesById[parent.id].children?.push(nodesById[key]);
+        }
+      }
+    } else if (
       value.global.parent &&
       !!value.global.parent.id &&
       nodesById[value.global.parent.id]

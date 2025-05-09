@@ -1,4 +1,4 @@
-import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
+import { type ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
 import {
   getNodeTitle,
   atlasData,
@@ -48,7 +48,7 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
   console.log("\nProcessing Notion documents...");
 
   // the queue is initialized with the scopes (first level of the atlas)
-  const queue: ViewNode[] = [...atlasData]
+  const queue: ViewNodeExtended[] = [...atlasData]
 
   let processed = 0;
   let skipped = 0;

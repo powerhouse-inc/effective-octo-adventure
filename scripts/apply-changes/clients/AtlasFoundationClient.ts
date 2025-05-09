@@ -1,5 +1,6 @@
 import {
   FAtlasType,
+  FGlobalTag,
   type AtlasFoundationState,
   type FDocumentLink,
   type FStatus,
@@ -18,12 +19,13 @@ import {
 import { graphqlClient as writeClient } from "../../clients/index.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import {
+  contentToMarkdown,
   findAtlasParentInCache,
+  statusStringToEnum,
 } from "../atlas-base/utils.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { type ReactorClient } from "../common/ReactorClient.js";
-import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
-import { NotionConverter } from 'notion-to-md';
+import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
 
 const DOCUMENT_TYPE = "sky/atlas-foundation";
 
@@ -75,14 +77,14 @@ export class AtlasFoundationClient extends AtlasBaseClient<
     `);
   }
 
-  protected createDocumentFromInput(documentNode: ViewNode) {
+  protected createDocumentFromInput(documentNode: ViewNodeExtended) {
     return this.writeClient.mutations.AtlasFoundation_createDocument({
       __args: { driveId: this.driveId, name: getNodeTitle(documentNode) },
     });
   }
 
   protected getTargetState(
-    input: ViewNode,
+    input: ViewNodeExtended,
     currentState: AtlasFoundationState,
   ): AtlasFoundationState {
     // @ts-expect-error
@@ -113,16 +115,20 @@ export class AtlasFoundationClient extends AtlasBaseClient<
       ...currentState,
       docNo: getNodeDocNo(input),
       name: getNodeName(input),
-      // TODO: extract masterStatus from the view node
-      // masterStatus: input.masterStatusNames[0]?.toUpperCase() || "PLACEHOLDER",
-      // TODO: implement content converting the notion content to markdown
-      // content: input.content
-      //   .map((c) => pndContentToString(c))
-      //   .join("\n")
-      //   .trim(),
+      masterStatus: statusStringToEnum(
+        input.masterStatus || "Placeholder",
+      ) as FStatus,
+      content: contentToMarkdown(input.markdownContent),
       atlasType,
       notionId: input.id,
       parent,
+      globalTags: input.globalTags as FGlobalTag[],
+      originalContextData: input.originalContextData.map((contextData) => ({
+        id: contextData,
+        // TODO: add correct title and docNo
+        title: "",
+        docNo: "",
+      })),
     };
   }
 
@@ -163,11 +169,22 @@ export class AtlasFoundationClient extends AtlasBaseClient<
         );
         break;
       case "globalTags":
-        throw new Error("globalTags patcher is not implemented yet.");
+        await patch.AtlasFoundation_addTags(
+          arg<any>({ newTags: target as FGlobalTag[] }),
+        );
         break;
-      case "originalContextData":
-        throw new Error("originalContextData patcher is not implemented yet.");
+      case "originalContextData": {
+        if (target && Array.isArray(target) && target.length > 0) {
+          await Promise.all(
+            (target as FDocumentLink[]).map(async (contextData) => {
+              await patch.AtlasFoundation_addContextData(
+                arg<any>({ id: contextData.id }),
+              );
+            })
+          );
+        }
         break;
+      }
       case "parent":
         if (!target) {
           throw new Error("Parent is not found");
@@ -187,7 +204,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<
     }
   }
 
-  public canHandle(node: ViewNode): boolean {
+  public canHandle(node: ViewNodeExtended): boolean {
     return ["article", "section", "core", "activeDataController"].includes(
       node.type,
     );

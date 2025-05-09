@@ -5,7 +5,8 @@ import type {
   AddParentInput,
   SetExploratoryNameInput,
   MDocumentLink,
-  MAtlasType
+  MAtlasType,
+  MGlobalTag,
 } from "document-models/atlas-multi-parent/index.js";
 import { gql } from "graphql-request";
 import {
@@ -16,11 +17,14 @@ import {
 import { graphqlClient as writeClient } from "../../clients/index.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import {
+  contentToMarkdown,
   findAtlasParentInCache,
+  statusStringToEnum,
 } from "../atlas-base/utils.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { type ReactorClient } from "../common/ReactorClient.js";
-import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
+import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
+import { Maybe } from "document-model";
 
 const DOCUMENT_TYPE = "sky/atlas-multiparent";
 
@@ -34,14 +38,14 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
     mutationsSubgraphUrl: string,
     documentsCache: DocumentsCache,
     readClient: ReactorClient,
-    driveId: string,
+    driveId: string
   ) {
     super(
       DOCUMENT_TYPE,
       mutationsSubgraphUrl,
       documentsCache,
       readClient,
-      writeClient,
+      writeClient
     );
     this.driveId = driveId;
     this.setDocumentSchema(gql`
@@ -71,20 +75,21 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
     `);
   }
 
-  protected createDocumentFromInput(documentNode: ViewNode) {
+  protected createDocumentFromInput(documentNode: ViewNodeExtended) {
     return this.writeClient.mutations.AtlasMultiParent_createDocument({
       __args: { driveId: this.driveId, name: getNodeTitle(documentNode) },
     });
   }
 
   protected getTargetState(
-    input: ViewNode,
-    currentState: AtlasMultiParentState,
+    input: ViewNodeExtended,
+    currentState: AtlasMultiParentState
   ): AtlasMultiParentState {
-    // const parent: Maybe<MDocumentLink> = findAtlasParentInCache(
-    //   input,
-    //   this.documentsCache,
-    // );
+    // @ts-expect-error
+    const parent: Maybe<MDocumentLink> = findAtlasParentInCache(
+      input,
+      this.documentsCache,
+    );
 
     let atlasType: MAtlasType;
     switch (input.type) {
@@ -97,20 +102,24 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
       default:
         throw new Error(`Unsupported atlas type: ${input.type}`);
     }
-    
+
     return {
       ...currentState,
       name: getNodeName(input),
-      // TODO: extract masterStatus from the view node
-      // masterStatus: input.masterStatusNames[0]?.toUpperCase() || "PLACEHOLDER",
-      // TODO: implement content converting the notion content to markdown
-      // content: input.content
-      //   .map((c) => pndContentToString(c))
-      //   .join("\n")
-      //   .trim(),
+      masterStatus: statusStringToEnum(
+        input.masterStatus || "Placeholder"
+      ) as MStatus,
+      content: contentToMarkdown(input.markdownContent),
       atlasType,
       notionId: input.id,
-      // parents: [parent],
+      globalTags: input.globalTags as MGlobalTag[],
+      originalContextData: input.originalContextData.map((contextData) => ({
+        id: contextData,
+        // TODO: add correct title and docNo
+        title: "",
+        docNo: "",
+      })),
+      parents: parent ? [parent]: [] ,
     };
   }
 
@@ -118,51 +127,64 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
     id: string,
     fieldName: K,
     current: AtlasMultiParentState[K],
-    target: AtlasMultiParentState[K],
+    target: AtlasMultiParentState[K]
   ) {
-    console.log(` > ${fieldName}: ${current ? JSON.stringify(current) : ""} > ${target ? JSON.stringify(target) : ""}`);
+    console.log(
+      ` > ${fieldName}: ${current ? JSON.stringify(current) : ""} > ${target ? JSON.stringify(target) : ""}`
+    );
     const patch = this.writeClient.mutations,
       arg = mutationArg(this.driveId, id);
 
     switch (fieldName) {
       case "name":
         await patch.AtlasMultiParent_setExploratoryName(
-          arg<SetExploratoryNameInput>({ name: target as string }),
+          arg<SetExploratoryNameInput>({ name: target as string })
         );
         break;
       case "masterStatus":
         await patch.AtlasMultiParent_setMasterStatus(
-          arg<any>({ masterStatus: target as MStatus }),
+          arg<any>({ masterStatus: target as MStatus })
         );
         break;
       case "content":
         await patch.AtlasMultiParent_setContent(
-          arg<SetContentInput>({ content: target as string }),
+          arg<SetContentInput>({ content: target as string })
         );
         break;
       case "notionId":
         await patch.AtlasMultiParent_setNotionId(
-          arg<any>({ notionId: target || undefined }),
+          arg<any>({ notionId: target || undefined })
         );
         break;
       case "globalTags":
-        throw new Error("globalTags patcher is not implemented yet.");
+        await patch.AtlasMultiParent_addTags(
+          arg<any>({ newTags: target as MGlobalTag[] })
+        );
         break;
-      case "originalContextData":
-        throw new Error("originalContextData patcher is not implemented yet.");
+      case "originalContextData": {
+        if (target && Array.isArray(target) && target.length > 0) {
+          await Promise.all(
+            (target as MDocumentLink[]).map(async (contextData) => {
+              await patch.AtlasMultiParent_addContextData(
+                arg<any>({ id: contextData.id })
+              );
+            })
+          );
+        }
         break;
+      }
       case "parents":
-        if (!target) {
+        if (!target || target.length === 0) {
           throw new Error("Parent is not found");
         }
-        const parsedTarget = target as unknown as MDocumentLink;
+        const parsedTarget = target as unknown as MDocumentLink[];
         await patch.AtlasMultiParent_addParent(
-          arg<AddParentInput>(parsedTarget),
+          arg<AddParentInput>(parsedTarget[0])
         );
         break;
       case "atlasType":
         await patch.AtlasMultiParent_setAtlasType(
-          arg<any>({ atlasType: target as MAtlasType }),
+          arg<any>({ atlasType: target as MAtlasType })
         );
         break;
       default:
@@ -170,7 +192,7 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
     }
   }
 
-  public canHandle(node: ViewNode): boolean {
+  public canHandle(node: ViewNodeExtended): boolean {
     return ["annotation", "neededResearch"].includes(node.type);
   }
 }

@@ -10,7 +10,7 @@ import { graphqlClient as writeClient } from "../../clients/index.js";
 import { gql } from "graphql-request";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { ReactorClient } from "../common/ReactorClient.js";
-import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
+import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
 import { getNodeName } from "../../../document-models/utils.js";
 import { findAtlasParentInCache, Link } from "../atlas-base/utils.js";
 import { Maybe } from "document-model";
@@ -54,25 +54,27 @@ export class AtlasSetClient extends AtlasBaseClient<
     `);
   }
 
-  protected createDocumentFromInput(documentNode: ViewNode) {
+  protected createDocumentFromInput(documentNode: ViewNodeExtended) {
     return this.writeClient.mutations.AtlasSet_createDocument({
       __args: { driveId: this.driveId, name: getNodeName(documentNode) },
     });
   }
 
   protected getTargetState(
-    input: ViewNode,
+    input: ViewNodeExtended,
     currentState: AtlasSetState
   ): AtlasSetState {
     const parentLink: Maybe<Link> = findAtlasParentInCache(
-        input,
-        this.documentsCache,
-      );
+      input,
+      this.documentsCache
+    );
 
-    const parent: Maybe<SetDocumentLink> = parentLink ? {
-      id: parentLink.id,
-      title: parentLink.title || null,
-    } : null;
+    const parent: Maybe<SetDocumentLink> = parentLink
+      ? {
+          id: parentLink.id,
+          title: parentLink.title || null,
+        }
+      : null;
 
     return {
       ...currentState,
@@ -114,7 +116,7 @@ export class AtlasSetClient extends AtlasBaseClient<
     }
   }
 
-  public canHandle(node: ViewNode): boolean {
+  public canHandle(node: ViewNodeExtended): boolean {
     return node.type === "category";
   }
 }

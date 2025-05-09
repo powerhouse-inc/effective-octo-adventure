@@ -13,7 +13,7 @@ const DocNoForm = ({ value, baselineValue, onSave }: DocNoFormProps) => {
       label="Doc №"
       placeholder="Doc No"
       value={value ?? ""}
-      baselineValue={baselineValue ?? ""}
+      baselineValue="Old doc number"
       onSave={onSave}
     />
   );

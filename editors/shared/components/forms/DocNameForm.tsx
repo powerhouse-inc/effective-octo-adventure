@@ -19,7 +19,7 @@ const DocNameForm = ({
       label="Name"
       placeholder={placeholder}
       value={value ?? ""}
-      baselineValue={baselineValue ?? ""}
+      baselineValue={"Old title to compare"}
       onSave={onSave}
     />
   );

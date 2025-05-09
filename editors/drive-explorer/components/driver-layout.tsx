@@ -270,8 +270,8 @@ function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
       "sky/atlas-set" === node.documentType
         ? node.global.name
         : "sky/atlas-multiparent" === node.documentType
-          ? `${(node.global as unknown as AtlasMultiParentState).parents?.[0].docNo} - ${node.global.name}`
-          : `${node.global.docNo} - ${node.global.name}`;
+          ? `${(node.global as unknown as AtlasMultiParentState).parents?.[0]?.docNo} - ${node.global.name}`
+          : `${node.global?.docNo} - ${node.global.name}`;
 
     nodesById[key] = {
       id: key,

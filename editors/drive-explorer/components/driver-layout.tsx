@@ -289,7 +289,7 @@ function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
         .parents;
       if (parents && parents.length > 0) {
         for (const parent of parents) {
-          nodesById[parent.id].children?.push(nodesById[key]);
+          nodesById[parent.id]?.children?.push(nodesById[key]);
         }
       }
     } else if (
@@ -297,15 +297,17 @@ function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
       !!value.global.parent.id &&
       nodesById[value.global.parent.id]
     ) {
-      nodesById[value.global.parent.id].children?.push(nodesById[key]);
+      if (nodesById[key]) {
+        nodesById[value.global.parent.id]?.children?.push(nodesById[key]);
+      }
     }
   }
 
   const childrenIds = new Set<string>();
 
   Object.entries(nodesById).forEach(([id, node]) => {
-    if (node.children) {
-      node.children.forEach((child) => {
+    if (node?.children) {
+      node?.children?.forEach((child) => {
         childrenIds.add(child.id);
       });
     }
@@ -320,10 +322,10 @@ function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
 
 function sortSidebarNodes(nodes: SidebarNode[]): SidebarNode[] {
   const sortedNodes = nodes.map((node) => {
-    if (node.children && node.children.length > 0) {
+    if (node?.children && node?.children?.length > 0) {
       return {
         ...node,
-        children: sortSidebarNodes(node.children),
+        children: sortSidebarNodes(node?.children),
       };
     }
 

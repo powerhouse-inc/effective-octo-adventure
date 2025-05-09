@@ -1,4 +1,4 @@
-import { type ViewNode } from "@powerhousedao/sky-atlas-notion-data";
+import { type ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
 import { type AtlasBaseClient } from "../atlas-base/AtlasBaseClient.js";
 import { type DocumentSyncConfig } from "../syncDocuments.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
@@ -42,7 +42,7 @@ export class AtlasClientRegistry {
    * @param node - The node to find a client for.
    * @returns The client that can handle the node, or null if no client is found.
    */
-  private findClientFor(node: ViewNode): AtlasBaseClient<any, any> | null {
+  private findClientFor(node: ViewNodeExtended): AtlasBaseClient<any, any> | null {
     for (const client of this.clients) {
       if (client.canHandle(node)) {
         return client;
@@ -55,7 +55,7 @@ export class AtlasClientRegistry {
    * Invokes the update method from the appropriate client.
    * @param node - The node to update.
    */
-  public async update(node: ViewNode): Promise<void> {
+  public async update(node: ViewNodeExtended): Promise<void> {
     const client = this.findClientFor(node);
     if (client) {
       await client.update(node);

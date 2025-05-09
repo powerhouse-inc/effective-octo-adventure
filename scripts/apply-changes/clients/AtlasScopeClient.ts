@@ -5,6 +5,9 @@ import { type ReactorClient } from "../common/ReactorClient.js";
 
 import {
   AtlasScopeState,
+  DocumentInfo,
+  GlobalTag,
+  Status,
   type SetContentInput,
   type SetDocNumberInput,
   type SetScopeNameInput,
@@ -15,26 +18,10 @@ import {
   getNodeTitle,
 } from "../../../document-models/utils.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
-import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
+import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
+import { contentToMarkdown, statusStringToEnum } from "../atlas-base/utils.js";
 
 const DOCUMENT_TYPE = "sky/atlas-scope";
-
-const statusStringToEnum = (status: string): string => {
-  switch (status.toUpperCase()) {
-    case "PLACEHOLDER":
-      return "PLACEHOLDER";
-    case "PROVISIONAL":
-      return "PROVISIONAL";
-    case "APPROVED":
-      return "APPROVED";
-    case "DEFERRED":
-      return "DEFERRED";
-    case "ARCHIVED":
-      return "ARCHIVED";
-    default:
-      throw new Error("Unknown scope status: " + status);
-  }
-};
 
 export class AtlasScopeClient extends AtlasBaseClient<
   AtlasScopeState,
@@ -46,14 +33,14 @@ export class AtlasScopeClient extends AtlasBaseClient<
     mutationsSubgraphUrl: string,
     documentsCache: DocumentsCache,
     readClient: ReactorClient,
-    driveId: string,
+    driveId: string
   ) {
     super(
       DOCUMENT_TYPE,
       mutationsSubgraphUrl,
       documentsCache,
       readClient,
-      writeClient,
+      writeClient
     );
     this.driveId = driveId;
     this.setDocumentSchema(gql`
@@ -73,32 +60,34 @@ export class AtlasScopeClient extends AtlasBaseClient<
     `);
   }
 
-  protected createDocumentFromInput(documentNode: ViewNode) {
+  protected createDocumentFromInput(documentNode: ViewNodeExtended) {
     return this.writeClient.mutations.AtlasScope_createDocument({
       __args: { driveId: this.driveId, name: getNodeTitle(documentNode) },
     });
   }
 
   protected getTargetState(
-    input: ViewNode,
-    currentState: AtlasScopeState,
+    input: ViewNodeExtended,
+    currentState: AtlasScopeState
   ): AtlasScopeState {
     return {
       ...currentState,
       docNo: getNodeDocNo(input),
       name: getNodeName(input),
-      // TODO: extract masterStatus from the view node
-      // masterStatus: statusStringToEnum(
-      //   input.masterStatusNames[0] || "PLACEHOLDER",
-      // ),
+      masterStatus: statusStringToEnum(
+        input.masterStatus || "Placeholder"
+      ) as Status,
       // TODO: implement content converting the notion content to markdown
-      content: "",
-      // content: input.content
-      //   .map((c) => pndContentToString(c))
-      //   .join("\n")
-      //   .trim(),
+      content: contentToMarkdown(input.markdownContent),
       notionId: input.id,
-      //globalTags: [],
+      globalTags: input.globalTags as GlobalTag[],
+      originalContextData: input.originalContextData.map((contextData) => ({
+        id: contextData,
+        // TODO: add correct title and docNo
+        title: "",
+        docNo: "",
+      })),
+      // originalContextData: [],
     };
   }
 
@@ -106,7 +95,7 @@ export class AtlasScopeClient extends AtlasBaseClient<
     id: string,
     fieldName: K,
     current: AtlasScopeState[K],
-    target: AtlasScopeState[K],
+    target: AtlasScopeState[K]
   ) {
     console.log(` > ${fieldName}: ${current ? current + " " : ""}> ${target}`);
     const patch = this.writeClient.mutations,
@@ -115,39 +104,50 @@ export class AtlasScopeClient extends AtlasBaseClient<
     switch (fieldName) {
       case "docNo":
         await patch.AtlasScope_setDocNumber(
-          arg<SetDocNumberInput>({ docNo: target as string }),
+          arg<SetDocNumberInput>({ docNo: target as string })
         );
         break;
       case "name":
         await patch.AtlasScope_setScopeName(
-          arg<SetScopeNameInput>({ name: target as string }),
+          arg<SetScopeNameInput>({ name: target as string })
         );
         break;
       case "masterStatus":
         await patch.AtlasScope_setMasterStatus(
-          arg<any>({ masterStatus: target as string }),
+          arg<any>({ masterStatus: target as string })
         );
         break;
       case "content":
         await patch.AtlasScope_setContent(
-          arg<SetContentInput>({ content: target as string }),
+          arg<SetContentInput>({ content: target as string })
         );
         break;
       case "notionId":
         await patch.AtlasScope_setNotionId(
-          arg<any>({ notionID: target || undefined }),
+          arg<any>({ notionID: target || undefined })
         );
         break;
       case "globalTags":
-        throw new Error("globalTags patcher is not implemented yet.");
+        await patch.AtlasScope_addTags(
+          arg<any>({ newTags: target as GlobalTag[] })
+        );
         break;
-      case "originalContextData":
-        throw new Error("originalContextData patcher is not implemented yet.");
+      case "originalContextData": {
+        if (target && Array.isArray(target) && target.length > 0) {
+          await Promise.all(
+            (target as DocumentInfo[]).map(async (contextData) => {
+              await patch.AtlasScope_addContextData(
+                arg<any>({ id: contextData.id })
+              );
+            })
+          );
+        }
         break;
+      }
     }
   }
 
-  public canHandle(node: ViewNode): boolean {
+  public canHandle(node: ViewNodeExtended): boolean {
     return node.type === "scope";
   }
 }

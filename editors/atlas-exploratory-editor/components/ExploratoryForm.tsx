@@ -112,7 +112,7 @@ export function ExploratoryForm({
                 value={documentState.name}
                 baselineValue={originalNodeState.name}
                 onSave={(value) => {
-                  dispatch(actions.setExploratoryName({ name: value }));
+                  dispatch(actions.setExploratoryName({ name: value ?? "" }));
                 }}
               />
             </div>

@@ -3,6 +3,7 @@ import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchSelectedPHIDOption,
   getCardVariant,
+  getStringValue,
   getTagText,
 } from "../../shared/utils/utils.js";
 import type { EditorMode } from "../../shared/types.js";
@@ -102,7 +103,9 @@ export function ScopeForm({
                 value={documentState.name}
                 baselineValue={originalNodeState.name}
                 onSave={(value) => {
-                  dispatch(actions.setScopeName({ name: value }));
+                  dispatch(
+                    actions.setScopeName({ name: getStringValue(value) }),
+                  );
                 }}
                 placeholder="The Governance Scope"
               />

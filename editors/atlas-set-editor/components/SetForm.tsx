@@ -9,6 +9,7 @@ import { getFlexLayoutClassName } from "../../shared/utils/styles.js";
 import {
   fetchSelectedPHIDOption,
   getCardVariant,
+  getStringValue,
   getTagText,
 } from "../../shared/utils/utils.js";
 import { type IProps } from "../editor.js";
@@ -57,7 +58,7 @@ export function SetForm({
                 value={documentState.name}
                 baselineValue={originalNodeState.name}
                 onSave={(value) => {
-                  dispatch(actions.setSetName({ name: value }));
+                  dispatch(actions.setSetName({ name: getStringValue(value) }));
                 }}
                 placeholder="The Governance Scope"
               />

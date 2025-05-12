@@ -3,6 +3,7 @@ import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchSelectedPHIDOption,
   getCardVariant,
+  getStringValue,
   getTagText,
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
@@ -117,7 +118,11 @@ export function FoundationForm({
                 value={documentState.name}
                 baselineValue={originalNodeState.name}
                 onSave={(value) => {
-                  dispatch(actions.setFoundationName({ name: value }));
+                  dispatch(
+                    actions.setFoundationName({
+                      name: getStringValue(value),
+                    }),
+                  );
                 }}
               />
             </div>

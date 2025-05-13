@@ -1,7 +1,7 @@
 import { Button, Icon, toast } from "@powerhousedao/design-system";
 import { useCallback } from "react";
 import { Link2 } from "lucide-react";
-import { cn } from "@powerhousedao/design-system/scalars";
+import { cn } from "@powerhousedao/document-engineering/scalars";
 
 interface IProps {
   driveUrl: string;

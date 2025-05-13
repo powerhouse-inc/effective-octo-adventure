@@ -1,4 +1,4 @@
-import { cn } from "@powerhousedao/design-system/scalars";
+import { cn } from "@powerhousedao/document-engineering/scalars";
 
 export const getFlexLayoutClassName = (
   isSplitMode: boolean,

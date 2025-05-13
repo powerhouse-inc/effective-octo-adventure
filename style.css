@@ -1,4 +1,5 @@
 @import url("@powerhousedao/design-system/style.css");
+@import url("@powerhousedao/document-engineering/style.css");
 @import "tailwindcss" source(".");
 @import "./editors/shared/components/markdown-editor.module.css";
 

@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
 import TagStatus from "./tags-status.js";
-import { cn } from "@powerhousedao/design-system/scalars";
+import { cn } from "@powerhousedao/document-engineering/scalars";
 interface AtlasCardProps extends PropsWithChildren {
   tagText?: string;
   variant?: "gray" | "green" | "blue";

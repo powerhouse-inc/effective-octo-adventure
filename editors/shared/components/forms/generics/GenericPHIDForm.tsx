@@ -1,11 +1,11 @@
-import { Form, PHIDField } from "@powerhousedao/design-system/scalars";
+import { Form, PHIDField } from "@powerhousedao/document-engineering/scalars";
 import { useFormMode } from "../../../providers/FormModeProvider.js";
 import {
   fetchPHIDOptions,
   fetchSelectedPHIDOption,
   getViewMode,
 } from "../../../utils/utils.js";
-import type { PHIDOption } from "@powerhousedao/design-system/ui";
+import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import type React from "react";
 import { useEffect } from "react";
 import { type FieldValues, type UseFormReturn } from "react-hook-form";

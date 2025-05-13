@@ -1,4 +1,7 @@
-import { Form, type SelectOption } from "@powerhousedao/design-system/scalars";
+import {
+  Form,
+  type SelectOption,
+} from "@powerhousedao/document-engineering/scalars";
 import { useFormMode } from "../../../providers/FormModeProvider.js";
 import { EnumDiffField } from "../../diff-fields/enum-diff-field.js";
 

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { diffSentences, diffWords } from "diff";
 import type { EditorMode } from "../types.js";
-import { cn } from "@powerhousedao/design-system/scalars";
+import { cn } from "@powerhousedao/document-engineering/scalars";
 
 interface DiffTextProps {
   baseline: string;

@@ -1,4 +1,4 @@
-import { Form, StringField } from "@powerhousedao/design-system/scalars";
+import { Form, StringField } from "@powerhousedao/document-engineering/scalars";
 import { useFormMode } from "../../../providers/FormModeProvider.js";
 import { StringDiffField } from "../../diff-fields/string-diff-field.js";
 import { getViewMode } from "../../../utils/utils.js";

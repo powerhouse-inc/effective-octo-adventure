@@ -201,20 +201,14 @@ export function ExploratoryForm({
             />
           </div>
 
-          {/* TODO: Improve this in the next iteration */}
           <div className="flex flex-row justify-end items-center gap-2">
-            <span
-              className={cn(
-                !isAligned ? "text-gray-700" : "text-gray-300",
-                "text-sm font-semibold leading-[22px]",
-              )}
-            >
-              Misaligned
-            </span>
             <Toggle
-              disabled={mode !== "Edition"}
+              baseValue={false}
+              viewMode={"addition"}
+              optionalLabel="Misaligned"
+              label="Aligned"
               name="findings.isAligned"
-              value={documentState.findings.isAligned}
+              value={true}
               onChange={() => {
                 dispatch(
                   actions.setFindings({
@@ -223,19 +217,12 @@ export function ExploratoryForm({
                 );
               }}
             />
-            <span
-              className={cn(
-                isAligned ? "text-gray-700" : "text-gray-300",
-                "text-sm font-semibold font-inter leading-[22px]",
-              )}
-            >
-              Aligned
-            </span>
           </div>
 
           <AdditionalGuidance
             value={documentState.additionalGuidance}
-            baselineValue={""} // TODO: add the right baseline value
+            // TODO: add the right baseline value
+            baselineValue={""}
             onSave={(value) => {
               dispatch(
                 actions.setAdditionalGuidance({

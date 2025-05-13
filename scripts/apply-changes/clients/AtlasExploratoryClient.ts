@@ -1,7 +1,7 @@
 import type {
   AtlasExploratoryState,
-  EDocumentLink,
   EAtlasType,
+  EDocumentLink,
   EGlobalTag,
   EStatus,
   Maybe,
@@ -127,7 +127,7 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
         // TODO: add correct title and docNo
         title: "",
         docNo: "",
-        documentType: ""
+        documentType: "",
       })),
     };
   }

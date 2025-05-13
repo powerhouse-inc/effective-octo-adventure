@@ -1,4 +1,4 @@
-import { cn } from "@powerhousedao/design-system/scalars";
+import { cn } from "@powerhousedao/document-engineering/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchSelectedPHIDOption,
@@ -6,7 +6,7 @@ import {
   getStringValue,
   getTagText,
 } from "../../shared/utils/utils.js";
-import { type PHIDOption } from "@powerhousedao/design-system/ui";
+import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
 import type { EditorMode } from "../../shared/types.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
@@ -23,14 +23,13 @@ import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
 } from "../../shared/utils/styles.js";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
-import type { UseFormReturn } from "react-hook-form";
 
 interface GroundingFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
@@ -62,15 +61,6 @@ export function GroundingForm({
     ...originalDocumentState,
     parent: parentId,
   };
-
-  // TODO: use a better solution
-  // keep the form state in sync with the document state
-  const formRef = useRef<UseFormReturn>(null);
-  useEffect(() => {
-    if (formRef.current) {
-      formRef.current.reset({ ...documentState });
-    }
-  }, [documentState]);
 
   const [contentValue, setContentValue] = useState(documentState.content ?? "");
 
@@ -177,7 +167,15 @@ export function GroundingForm({
             <SinglePhIdForm
               label="Parent Document"
               value={documentState.parent}
-              baselineValue={originalNodeState.parents?.[0] ?? ""}
+              // TODO: add the correct baseline value
+              baselineValue={
+                originalNodeState.parents?.[0] ??
+                "phd:687933ce-87eb-4f35-a171-30333b31a462"
+              }
+              baselineIcon={undefined} // TODO: add the correct baseline icon
+              baselineTitle={"Original title"} // TODO: add the correct baseline title
+              baselineType={"original/type"} // TODO: add the correct baseline type
+              baselineDescription={"original description"} // TODO: add the correct baseline description
               onSave={(value) => {
                 if (value === null || value === "") {
                   dispatch(

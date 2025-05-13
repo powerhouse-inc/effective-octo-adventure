@@ -1,4 +1,4 @@
-import { cn } from "@powerhousedao/design-system/scalars";
+import { cn } from "@powerhousedao/document-engineering/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchSelectedPHIDOption,
@@ -7,8 +7,7 @@ import {
   getTagText,
 } from "../../shared/utils/utils.js";
 import type { EditorMode } from "../../shared/types.js";
-import { useEffect, useRef, useState } from "react";
-import { type UseFormReturn } from "react-hook-form";
+import { useEffect, useState } from "react";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import {
@@ -28,7 +27,7 @@ import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js"
 import { globalScopeTagsEnumOptions } from "../../shared/utils/common-options.js";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
-import { type PHIDOption } from "@powerhousedao/design-system/ui";
+import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
 
 interface ScopeFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
@@ -75,14 +74,6 @@ export function ScopeForm({
     // @ts-ignore
     (documentState.atlasType as ParsedNotionDocumentType) || "article",
   );
-
-  const formRef = useRef<UseFormReturn>(null);
-  // keep the form state in sync with the document state
-  useEffect(() => {
-    if (formRef.current) {
-      formRef.current.reset({ ...documentState });
-    }
-  }, [documentState]);
 
   return (
     <FormModeProvider mode={mode}>

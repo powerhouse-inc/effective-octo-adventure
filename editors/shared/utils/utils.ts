@@ -1,4 +1,4 @@
-import type { PHIDOption } from "@powerhousedao/design-system/ui";
+import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import docsIndex from "../../../scripts/apply-changes/data/index.json" with { type: "json" };
 import { type EditorMode } from "../types.js";
 import type { DocumentDriveDocument } from "document-drive";
@@ -111,4 +111,17 @@ export const parseTitleText = (title: string) => {
     return { docNo: parts[0], name: parts[1] };
   }
   return { docNo: "", name: title };
+};
+
+export const getViewMode = (mode: EditorMode) => {
+  switch (mode) {
+    case "Edition":
+      return "edition";
+    case "DiffRemoved":
+      return "removal";
+    case "DiffAdditions":
+      return "addition";
+    case "DiffMixed":
+      return "mixed";
+  }
 };

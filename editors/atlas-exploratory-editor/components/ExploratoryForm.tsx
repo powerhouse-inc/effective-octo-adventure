@@ -1,4 +1,4 @@
-import { cn } from "@powerhousedao/design-system/scalars";
+import { cn } from "@powerhousedao/document-engineering/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchSelectedPHIDOption,
@@ -6,7 +6,10 @@ import {
   getStringValue,
   getTagText,
 } from "../../shared/utils/utils.js";
-import { type PHIDOption } from "@powerhousedao/design-system/ui";
+import {
+  type PHIDOption,
+  Toggle,
+} from "@powerhousedao/document-engineering/ui";
 import type { EditorMode } from "../../shared/types.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
@@ -24,7 +27,6 @@ import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm
 import { AdditionalGuidance } from "./AdditionalGuidance.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
-import { Toggle } from "@powerhousedao/design-system/ui";
 import { useEffect, useState } from "react";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
@@ -170,7 +172,15 @@ export function ExploratoryForm({
             <SinglePhIdForm
               label="Parent Document"
               value={documentState.parent}
-              baselineValue={originalNodeState.parents?.[0] ?? ""}
+              // TODO: add the correct baseline value
+              baselineValue={
+                originalNodeState.parents?.[0] ??
+                "phd:687933ce-87eb-4f35-a171-30333b31a462"
+              }
+              baselineIcon={undefined} // TODO: add the correct baseline icon
+              baselineTitle={"Original title"} // TODO: add the correct baseline title
+              baselineType={"original/type"} // TODO: add the correct baseline type
+              baselineDescription={"original description"} // TODO: add the correct baseline description
               onSave={(value) => {
                 if (value === null || value === "") {
                   dispatch(

@@ -1,17 +1,25 @@
-import { Form } from "@powerhousedao/design-system/scalars";
+import { Form, PHIDField } from "@powerhousedao/document-engineering/scalars";
 import { useFormMode } from "../../../providers/FormModeProvider.js";
-import { PHIDDiffField } from "../../diff-fields/phid-diff-field.js";
 import {
   fetchPHIDOptions,
   fetchSelectedPHIDOption,
+  getViewMode,
 } from "../../../utils/utils.js";
-import type { PHIDOption } from "@powerhousedao/design-system/ui";
+import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
+import type React from "react";
+import { useEffect } from "react";
+import { type FieldValues, type UseFormReturn } from "react-hook-form";
+import { useRef } from "react";
 
 interface GenericPHIDFormProps {
   label: string;
   placeholder: string;
   value: string;
   baselineValue: string;
+  baselineIcon?: string | React.ReactElement;
+  baselineTitle?: string;
+  baselineType?: string;
+  baselineDescription?: string;
   required?: boolean;
   initialOptions?: PHIDOption[];
   onSave: (value: string) => void;
@@ -22,25 +30,39 @@ const GenericPHIDForm = ({
   placeholder = "phd:",
   value,
   baselineValue,
+  baselineIcon,
+  baselineTitle,
+  baselineType,
+  baselineDescription,
   onSave,
   required = false,
   initialOptions,
 }: GenericPHIDFormProps) => {
   const formMode = useFormMode();
+  const viewMode = getViewMode(formMode);
+
   const onSubmit = (data: { phidValue: string }) => {
     if (data.phidValue !== undefined && data.phidValue !== value) {
       onSave(data.phidValue);
     }
   };
 
+  const formRef = useRef<UseFormReturn<FieldValues>>(null);
+
+  useEffect(() => {
+    if (formRef.current) {
+      formRef.current.reset({ phidValue: value });
+    }
+  }, [value]);
   return (
     <Form
       onSubmit={onSubmit}
       submitChangesOnly
       defaultValues={{ phidValue: value }}
+      ref={formRef}
     >
       {({ triggerSubmit }) => (
-        <PHIDDiffField
+        <PHIDField
           name="phidValue"
           label={label}
           required={required}
@@ -60,8 +82,13 @@ const GenericPHIDForm = ({
             return initialOptions?.[0];
           }}
           onBlur={triggerSubmit}
-          mode={formMode}
-          baselineValue={baselineValue}
+          viewMode={viewMode}
+          diffMode="sentences"
+          baseValue={baselineValue}
+          basePreviewIcon={baselineIcon}
+          basePreviewTitle={baselineTitle}
+          basePreviewPath={baselineType}
+          basePreviewDescription={baselineDescription}
         />
       )}
     </Form>

@@ -2,13 +2,15 @@ import {
   FormLabel,
   StringField,
   type StringFieldProps,
-} from "@powerhousedao/design-system/scalars";
+} from "@powerhousedao/document-engineering/scalars";
 import type { BaseDiffFieldProps } from "../../types.js";
 import { FakeInput } from "./fake-input.js";
 import { useFormContext } from "react-hook-form";
 import { DiffText } from "../diff-text.js";
 
-interface StringDiffFieldProps extends StringFieldProps, BaseDiffFieldProps {}
+// Avoid property conflict between the two interfaces
+type StringDiffFieldProps = Omit<StringFieldProps, "diffMode"> &
+  BaseDiffFieldProps;
 
 const StringDiffField = ({
   mode,

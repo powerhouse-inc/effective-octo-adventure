@@ -1,9 +1,12 @@
 import { useMemo, useContext } from "react";
 import ToggleSwitch from "./toggle-switch.js";
 import type { Maybe } from "document-model";
-import { useSidebar, type SidebarNode } from "@powerhousedao/design-system/ui";
+import {
+  useSidebar,
+  type SidebarNode,
+} from "@powerhousedao/document-engineering/ui";
 import { Breadcrumbs } from "./breadcrumbs.js";
-import { cn } from "@powerhousedao/design-system/scalars";
+import { cn } from "@powerhousedao/document-engineering/scalars";
 import {
   useViewMode,
   ViewModeContext,

@@ -1,4 +1,4 @@
-import { EnumField, Form } from "@powerhousedao/design-system/scalars";
+import { EnumField, Form } from "@powerhousedao/document-engineering/scalars";
 import { type AddTagsInput } from "document-models/atlas-scope/index.js";
 import { useCallback } from "react";
 

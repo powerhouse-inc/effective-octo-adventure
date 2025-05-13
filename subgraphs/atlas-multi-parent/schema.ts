@@ -67,6 +67,7 @@ export const schema: DocumentNode = gql`
     id: PHID!
     title: OLabel
     docNo: String
+    documentType: String
   }
 
   """
@@ -209,6 +210,7 @@ export const schema: DocumentNode = gql`
     id: PHID!
     title: OLabel
     docNo: String
+    documentType: String
   }
   input AtlasMultiParent_SetAtlasTypeInput {
     atlasType: MAtlasType!
@@ -221,6 +223,7 @@ export const schema: DocumentNode = gql`
     id: PHID!
     title: OLabel
     docNo: String
+    documentType: String
   }
 
   """
@@ -240,6 +243,7 @@ export const schema: DocumentNode = gql`
     id: PHID!
     title: OLabel
     docNo: String
+    documentType: String
   }
   input AtlasMultiParent_RemoveContextDataInput {
     id: PHID!
@@ -249,6 +253,7 @@ export const schema: DocumentNode = gql`
     id: PHID!
     title: OLabel
     docNo: String
+    documentType: String
   }
   input AtlasMultiParent_SetNotionIdInput {
     notionId: String!

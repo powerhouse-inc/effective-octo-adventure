@@ -75,6 +75,7 @@ type EDocumentLink {
   id: PHID!
   title: OLabel
   docNo: String
+  documentType: String
 }
 
 
@@ -122,34 +123,29 @@ enum EGlobalTag {
 # general
 
 input SetExploratoryNameInput {
-  "Add your inputs here"
   name: String!
 }
 
 input SetContentInput {
-  "Add your inputs here"
   content: String! 
 }
 
 input SetMasterStatusInput {
-  "Add your inputs here"
   masterStatus: EStatus!
 }
 
 input SetParentInput {
-  "Add your inputs here"
   id: PHID!
   title: OLabel
   docNo: String
+  documentType: String
 }
 
 input SetAtlasTypeInput {
-  "Add your inputs here"
   atlasType: EAtlasType! 
 }
 
 input SetFindingsInput {
-  "Add your inputs here"
   isAligned: Boolean!
 }
 
@@ -160,37 +156,31 @@ input SetDocNumberInput {
 # tags
 
 input AddTagsInput {
-  "Add your inputs here"
   newTags: [EGlobalTag!]!
 }
 
 input RemoveTagsInput {
-  "Add your inputs here"
   tags: [EGlobalTag!]!
 }
 
 # context
 
 input AddContextDataInput {
-  "Add your inputs here"
   id: PHID!
   title: String
   docNo: String
-  
+  documentType: String
 }
 
 input RemoveContextDataInput {
-  "Add your inputs here"
   id: PHID!
 }
 
 input SetNotionIdInput {
-  "Add your inputs here"
   notionID: String
 }
 
 input SetAdditionalGuidanceInput {
-  "Add your inputs here"
   additionalGuidance: String!
 }
 
@@ -199,4 +189,5 @@ input ReplaceContextDataInput {
   id: PHID!
   title: String
   docNo: String
+  documentType: String
 }

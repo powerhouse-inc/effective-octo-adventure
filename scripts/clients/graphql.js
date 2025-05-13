@@ -1498,11 +1498,13 @@ const typesTree = {
     dimensions: {}
   },
   AtlasExploratory_AtlasExploratoryState: {
+    parent: {},
     globalTags: {},
     originalContextData: {},
     findings: {}
   },
   AtlasExploratoryState: {
+    parent: {},
     globalTags: {},
     originalContextData: {},
     findings: {}

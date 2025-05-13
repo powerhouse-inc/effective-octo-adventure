@@ -6,7 +6,8 @@ export const reducer: AtlasExploratoryContextOperations = {
       id: action.input.id,
       title: action.input.title ?? "",
       // TODO: should we add docNo? we're assuming it's not needed
-      docNo: null,
+      docNo: action.input.docNo ?? null,
+      documentType: action.input.documentType ?? null,
     };
     state.originalContextData = [...state.originalContextData, newContextData];
   },
@@ -23,8 +24,8 @@ export const reducer: AtlasExploratoryContextOperations = {
         return {
           id: action.input.id,
           title: action.input.title ?? "",
-          // TODO: should we add docNo? we're assuming it's not needed
-          docNo: null,
+          docNo: action.input.docNo ?? null,
+          documentType: action.input.documentType ?? null,
         };
       }
       return contextData;

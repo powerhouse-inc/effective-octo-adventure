@@ -15,6 +15,7 @@ export const schema: DocumentNode = gql`
   type SetDocumentLink {
     id: PHID!
     title: OLabel
+    documentType: String
   }
 
   """
@@ -61,6 +62,7 @@ export const schema: DocumentNode = gql`
   input AtlasSet_SetSetParentInput {
     id: PHID!
     title: OLabel
+    documentType: String
   }
   input AtlasSet_SetNotionIdInput {
     notionId: String!

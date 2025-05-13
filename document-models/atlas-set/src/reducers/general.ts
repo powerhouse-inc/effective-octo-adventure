@@ -14,6 +14,7 @@ export const reducer: AtlasSetGeneralOperations = {
     state.parent = {
       id: action.input.id,
       title: action.input.title || null,
+      documentType: action.input.documentType || null,
     };
   },
   setNotionIdOperation(state, action) {

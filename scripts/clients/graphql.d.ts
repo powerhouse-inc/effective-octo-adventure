@@ -921,6 +921,7 @@ export interface AtlasExploratory_AddContextDataInput {
   id: PHID
   title?: string
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -938,12 +939,12 @@ export interface AtlasExploratory_AddTagsInput {
 export interface AtlasExploratory_AtlasExploratoryState {
   docNo?: string
   name?: string
-  parent: PHID
+  parent: AtlasExploratory_EDocumentLink
   atlasType: AtlasExploratory_EAtlasType
   content?: string
   masterStatus: AtlasExploratory_EStatus
   globalTags: AtlasExploratory_EGlobalTag[]
-  originalContextData: AtlasExploratory_DocumentInfo[]
+  originalContextData: AtlasExploratory_EDocumentLink[]
   notionId?: string
   findings: AtlasExploratory_Finding
   additionalGuidance: string
@@ -953,10 +954,11 @@ export interface AtlasExploratory_AtlasExploratoryState {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface AtlasExploratory_DocumentInfo {
+export interface AtlasExploratory_EDocumentLink {
   id: PHID
   title?: OLabel
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -992,6 +994,7 @@ export interface AtlasExploratory_ReplaceContextDataInput {
   id: PHID
   title?: string
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -1063,7 +1066,10 @@ export interface AtlasExploratory_SetNotionIdInput {
  */
 
 export interface AtlasExploratory_SetParentInput {
-  parent: PHID
+  id: PHID
+  title?: OLabel
+  docNo?: string
+  documentType?: string
 }
 
 /**
@@ -1082,12 +1088,12 @@ export interface AtlasExploratoryQueries {
 export interface AtlasExploratoryState {
   docNo?: string
   name?: string
-  parent: PHID
+  parent: EDocumentLink
   atlasType: EAtlasType
   content?: string
   masterStatus: EStatus
   globalTags: EGlobalTag[]
-  originalContextData: DocumentInfo[]
+  originalContextData: EDocumentLink[]
   notionId?: string
   findings: Finding
   additionalGuidance: string
@@ -1254,6 +1260,7 @@ export interface AtlasFoundation_AddContextDataInput {
   id: PHID
   title?: string
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -1288,6 +1295,7 @@ export interface AtlasFoundation_FDocumentLink {
   id: PHID
   title?: OLabel
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -1315,6 +1323,7 @@ export interface AtlasFoundation_ReplaceContextDataInput {
   id: PHID
   title?: string
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -1373,6 +1382,7 @@ export interface AtlasFoundation_SetParentInput {
   id: PHID
   title?: OLabel
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -1425,6 +1435,7 @@ export interface AtlasGrounding_AddContextDataInput {
   id: PHID
   title?: string
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -1459,6 +1470,7 @@ export interface AtlasGrounding_GDocumentLink {
   id: PHID
   title?: OLabel
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -1486,6 +1498,7 @@ export interface AtlasGrounding_ReplaceContextDataInput {
   id: PHID
   title?: string
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -1544,6 +1557,7 @@ export interface AtlasGrounding_SetParentInput {
   id: PHID
   title?: OLabel
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -1596,6 +1610,7 @@ export interface AtlasMultiParent_AddContextDataInput {
   id: PHID
   title?: OLabel
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -1606,6 +1621,7 @@ export interface AtlasMultiParent_AddParentInput {
   id: PHID
   title?: OLabel
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -1639,6 +1655,7 @@ export interface AtlasMultiParent_MDocumentLink {
   id: PHID
   title?: OLabel
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -1674,6 +1691,7 @@ export interface AtlasMultiParent_ReplaceContextDataInput {
   id: PHID
   title?: OLabel
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -1685,6 +1703,7 @@ export interface AtlasMultiParent_ReplaceParentInput {
   id: PHID
   title?: OLabel
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -1776,6 +1795,7 @@ export interface AtlasScope_AddContextDataInput {
   id: PHID
   title?: string
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -1808,6 +1828,7 @@ export interface AtlasScope_DocumentInfo {
   id: PHID
   title?: OLabel
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -1835,6 +1856,7 @@ export interface AtlasScope_ReplaceContextDataInput {
   id: PHID
   title?: string
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -1935,6 +1957,7 @@ export interface AtlasSet_AtlasSetState {
 export interface AtlasSet_SetDocumentLink {
   id: PHID
   title?: OLabel
+  documentType?: string
 }
 
 /**
@@ -1960,6 +1983,7 @@ export interface AtlasSet_SetSetNameInput {
 export interface AtlasSet_SetSetParentInput {
   id: PHID
   title?: OLabel
+  documentType?: string
 }
 
 /**
@@ -2170,6 +2194,7 @@ export interface DocumentInfo {
   id: PHID
   title?: OLabel
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -2191,10 +2216,22 @@ export interface DocumentModel {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
+export interface EDocumentLink {
+  id: PHID
+  title?: OLabel
+  docNo?: string
+  documentType?: string
+}
+
+/**
+ * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
+ */
+
 export interface FDocumentLink {
   id: PHID
   title?: OLabel
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -2213,6 +2250,7 @@ export interface GDocumentLink {
   id: PHID
   title?: OLabel
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -2235,6 +2273,7 @@ export interface MDocumentLink {
   id: PHID
   title?: OLabel
   docNo?: string
+  documentType?: string
 }
 
 /**
@@ -2433,6 +2472,7 @@ export interface SessionOutput {
 export interface SetDocumentLink {
   id: PHID
   title?: OLabel
+  documentType?: string
 }
 
 /**
@@ -2564,6 +2604,7 @@ export interface AtlasExploratory_AddContextDataInputSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasExploratory_AddTagsInputSelection {
@@ -2573,21 +2614,22 @@ export interface AtlasExploratory_AddTagsInputSelection {
 export interface AtlasExploratory_AtlasExploratoryStateSelection {
   docNo?: boolean
   name?: boolean
-  parent?: boolean
+  parent?: AtlasExploratory_EDocumentLinkSelection
   atlasType?: boolean
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  originalContextData?: AtlasExploratory_DocumentInfoSelection
+  originalContextData?: AtlasExploratory_EDocumentLinkSelection
   notionId?: boolean
   findings?: AtlasExploratory_FindingSelection
   additionalGuidance?: boolean
 }
 
-export interface AtlasExploratory_DocumentInfoSelection {
+export interface AtlasExploratory_EDocumentLinkSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasExploratory_FindingSelection {
@@ -2607,6 +2649,7 @@ export interface AtlasExploratory_ReplaceContextDataInputSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasExploratory_SetAdditionalGuidanceInputSelection {
@@ -2642,7 +2685,10 @@ export interface AtlasExploratory_SetNotionIdInputSelection {
 }
 
 export interface AtlasExploratory_SetParentInputSelection {
-  parent?: boolean
+  id?: boolean
+  title?: boolean
+  docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasExploratoryQueriesSelection {
@@ -2658,12 +2704,12 @@ export interface AtlasExploratoryQueriesSelection {
 export interface AtlasExploratoryStateSelection {
   docNo?: boolean
   name?: boolean
-  parent?: boolean
+  parent?: EDocumentLinkSelection
   atlasType?: boolean
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  originalContextData?: DocumentInfoSelection
+  originalContextData?: EDocumentLinkSelection
   notionId?: boolean
   findings?: FindingSelection
   additionalGuidance?: boolean
@@ -2785,6 +2831,7 @@ export interface AtlasFoundation_AddContextDataInputSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasFoundation_AddTagsInputSelection {
@@ -2807,6 +2854,7 @@ export interface AtlasFoundation_FDocumentLinkSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasFoundation_RemoveContextDataInputSelection {
@@ -2822,6 +2870,7 @@ export interface AtlasFoundation_ReplaceContextDataInputSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasFoundation_SetAtlasTypeInputSelection {
@@ -2852,6 +2901,7 @@ export interface AtlasFoundation_SetParentInputSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasFoundationQueriesSelection {
@@ -2898,6 +2948,7 @@ export interface AtlasGrounding_AddContextDataInputSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasGrounding_AddTagsInputSelection {
@@ -2920,6 +2971,7 @@ export interface AtlasGrounding_GDocumentLinkSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasGrounding_RemoveContextDataInputSelection {
@@ -2935,6 +2987,7 @@ export interface AtlasGrounding_ReplaceContextDataInputSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasGrounding_SetAtlasTypeInputSelection {
@@ -2965,6 +3018,7 @@ export interface AtlasGrounding_SetParentInputSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasGroundingQueriesSelection {
@@ -3011,12 +3065,14 @@ export interface AtlasMultiParent_AddContextDataInputSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasMultiParent_AddParentInputSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasMultiParent_AddTagsInputSelection {
@@ -3038,6 +3094,7 @@ export interface AtlasMultiParent_MDocumentLinkSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasMultiParent_RemoveContextDataInputSelection {
@@ -3057,6 +3114,7 @@ export interface AtlasMultiParent_ReplaceContextDataInputSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasMultiParent_ReplaceParentInputSelection {
@@ -3064,6 +3122,7 @@ export interface AtlasMultiParent_ReplaceParentInputSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasMultiParent_SetAtlasTypeInputSelection {
@@ -3129,6 +3188,7 @@ export interface AtlasScope_AddContextDataInputSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasScope_AddTagsInputSelection {
@@ -3149,6 +3209,7 @@ export interface AtlasScope_DocumentInfoSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasScope_RemoveContextDataInputSelection {
@@ -3164,6 +3225,7 @@ export interface AtlasScope_ReplaceContextDataInputSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasScope_SetContentInputSelection {
@@ -3234,6 +3296,7 @@ export interface AtlasSet_AtlasSetStateSelection {
 export interface AtlasSet_SetDocumentLinkSelection {
   id?: boolean
   title?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasSet_SetNotionIdInputSelection {
@@ -3247,6 +3310,7 @@ export interface AtlasSet_SetSetNameInputSelection {
 export interface AtlasSet_SetSetParentInputSelection {
   id?: boolean
   title?: boolean
+  documentType?: boolean
 }
 
 export interface AtlasSetQueriesSelection {
@@ -3391,6 +3455,7 @@ export interface DocumentInfoSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface DocumentModelSelection {
@@ -3409,10 +3474,18 @@ export interface DocumentModelSelection {
   stateJSON?: boolean
 }
 
+export interface EDocumentLinkSelection {
+  id?: boolean
+  title?: boolean
+  docNo?: boolean
+  documentType?: boolean
+}
+
 export interface FDocumentLinkSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface FindingSelection {
@@ -3423,6 +3496,7 @@ export interface GDocumentLinkSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface IssueSelection {
@@ -3437,6 +3511,7 @@ export interface MDocumentLinkSelection {
   id?: boolean
   title?: boolean
   docNo?: boolean
+  documentType?: boolean
 }
 
 export interface MultiCurrencyConversionsSelection {
@@ -4294,6 +4369,7 @@ export interface SessionOutputSelection {
 export interface SetDocumentLinkSelection {
   id?: boolean
   title?: boolean
+  documentType?: boolean
 }
 
 export interface SignerSelection {

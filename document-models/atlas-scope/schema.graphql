@@ -54,6 +54,7 @@ type DocumentInfo {
   id: PHID!
   title: OLabel
   docNo: String
+  documentType: String
 }
 
 enum Status {
@@ -130,6 +131,7 @@ input AddContextDataInput {
   id: PHID!
   title: String
   docNo: String
+  documentType: String
 }
 
 input RemoveContextDataInput {
@@ -146,4 +148,5 @@ input ReplaceContextDataInput {
   id:PHID!
   title: String
   docNo: String
+  documentType: String
 }

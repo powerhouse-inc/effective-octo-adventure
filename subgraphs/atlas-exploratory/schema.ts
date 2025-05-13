@@ -66,6 +66,7 @@ export const schema: DocumentNode = gql`
     id: PHID!
     title: OLabel
     docNo: String
+    documentType: String
   }
 
   """
@@ -201,29 +202,24 @@ export const schema: DocumentNode = gql`
   Module: General
   """
   input AtlasExploratory_SetExploratoryNameInput {
-    "Add your inputs here"
     name: String!
   }
   input AtlasExploratory_SetContentInput {
-    "Add your inputs here"
     content: String!
   }
   input AtlasExploratory_SetMasterStatusInput {
-    "Add your inputs here"
     masterStatus: EStatus!
   }
   input AtlasExploratory_SetParentInput {
-    "Add your inputs here"
     id: PHID!
     title: OLabel
     docNo: String
+    documentType: String
   }
   input AtlasExploratory_SetAtlasTypeInput {
-    "Add your inputs here"
     atlasType: EAtlasType!
   }
   input AtlasExploratory_SetFindingsInput {
-    "Add your inputs here"
     isAligned: Boolean!
   }
   input AtlasExploratory_SetDocNumberInput {
@@ -234,11 +230,9 @@ export const schema: DocumentNode = gql`
   Module: Tags
   """
   input AtlasExploratory_AddTagsInput {
-    "Add your inputs here"
     newTags: [EGlobalTag!]!
   }
   input AtlasExploratory_RemoveTagsInput {
-    "Add your inputs here"
     tags: [EGlobalTag!]!
   }
 
@@ -246,21 +240,18 @@ export const schema: DocumentNode = gql`
   Module: Context
   """
   input AtlasExploratory_AddContextDataInput {
-    "Add your inputs here"
     id: PHID!
     title: String
     docNo: String
+    documentType: String
   }
   input AtlasExploratory_RemoveContextDataInput {
-    "Add your inputs here"
     id: PHID!
   }
   input AtlasExploratory_SetNotionIdInput {
-    "Add your inputs here"
     notionID: String
   }
   input AtlasExploratory_SetAdditionalGuidanceInput {
-    "Add your inputs here"
     additionalGuidance: String!
   }
   input AtlasExploratory_ReplaceContextDataInput {
@@ -268,5 +259,6 @@ export const schema: DocumentNode = gql`
     id: PHID!
     title: String
     docNo: String
+    documentType: String
   }
 `;

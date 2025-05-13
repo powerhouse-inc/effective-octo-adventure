@@ -5,7 +5,8 @@ export const reducer: AtlasMultiParentContextOperations = {
     const newContextData = {
       id: action.input.id,
       title: action.input.title || null,
-      docNo: null,
+      docNo: action.input.docNo ?? null,
+      documentType: action.input.documentType ?? null,
     };
     state.originalContextData = [newContextData, ...state.originalContextData];
   },
@@ -22,7 +23,8 @@ export const reducer: AtlasMultiParentContextOperations = {
         return {
           id: action.input.id,
           title: action.input.title || null,
-          docNo: null,
+          docNo: action.input.docNo ?? null,
+          documentType: action.input.documentType ?? null,
         };
       }
       return contextData;

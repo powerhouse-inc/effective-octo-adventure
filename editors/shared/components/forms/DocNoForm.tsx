@@ -15,7 +15,6 @@ const DocNoForm = ({ value, baselineValue, onSave }: DocNoFormProps) => {
       value={value ?? ""}
       baselineValue={baselineValue ?? ""}
       onSave={onSave}
-      key={value || "doc-number-key"}
     />
   );
 };

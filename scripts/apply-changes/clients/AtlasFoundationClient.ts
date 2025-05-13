@@ -9,7 +9,7 @@ import {
   type SetDocNumberInput,
   type SetFoundationNameInput,
   type SetParentInput,
-} from "document-models/atlas-foundation/index.js";
+} from "../../../document-models/atlas-foundation/index.js";
 import { gql } from "graphql-request";
 import {
   getNodeDocNo,

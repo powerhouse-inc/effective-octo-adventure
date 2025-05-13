@@ -8,7 +8,7 @@ import {
   SetDocNumberInput,
   SetGroundingNameInput,
   SetParentInput,
-} from "document-models/atlas-grounding/index.js";
+} from "../../../document-models/atlas-grounding/index.js";
 import { gql } from "graphql-request";
 import {
   getNodeDocNo,

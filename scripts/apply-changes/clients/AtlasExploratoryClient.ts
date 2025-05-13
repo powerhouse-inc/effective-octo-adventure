@@ -9,7 +9,7 @@ import type {
   SetDocNumberInput,
   SetExploratoryNameInput,
   SetParentInput,
-} from "document-models/atlas-exploratory/index.js";
+} from "../../../document-models/atlas-exploratory/index.js";
 import { gql } from "graphql-request";
 import {
   getNodeDocNo,

@@ -7,7 +7,7 @@ import type {
   MDocumentLink,
   MAtlasType,
   MGlobalTag,
-} from "document-models/atlas-multi-parent/index.js";
+} from "../../../document-models/atlas-multi-parent/index.js";
 import { gql } from "graphql-request";
 import {
   getNodeDocNo,

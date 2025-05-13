@@ -1,7 +1,7 @@
 import { GenericEnumForm } from "./generics/GenericEnumForm.js";
 import type { Maybe } from "document-model";
 import { globalTagsEnumOptions } from "../../utils/common-options.js";
-import { type SelectOption } from "@powerhousedao/design-system/scalars";
+import { type SelectOption } from "@powerhousedao/document-engineering/scalars";
 
 interface GlobalTagsFormProps {
   value: Maybe<string[]>;

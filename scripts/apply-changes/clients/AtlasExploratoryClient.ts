@@ -1,7 +1,7 @@
 import type {
   AtlasExploratoryState,
-  DocumentInfo,
   EAtlasType,
+  EDocumentLink,
   EGlobalTag,
   EStatus,
   Maybe,
@@ -119,6 +119,7 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
         id: parent?.id || "",
         title: parent?.title || "",
         docNo: parent?.docNo || "",
+        documentType: "",
       },
       globalTags: input.globalTags as EGlobalTag[],
       originalContextData: input.originalContextData.map((contextData) => ({
@@ -126,6 +127,7 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
         // TODO: add correct title and docNo
         title: "",
         docNo: "",
+        documentType: "",
       })),
     };
   }
@@ -174,7 +176,7 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
       case "originalContextData": {
         if (target && Array.isArray(target) && target.length > 0) {
           await Promise.all(
-            (target as DocumentInfo[]).map(async (contextData) => {
+            (target as EDocumentLink[]).map(async (contextData) => {
               await patch.AtlasExploratory_addContextData(
                 arg<any>({ id: contextData.id }),
               );

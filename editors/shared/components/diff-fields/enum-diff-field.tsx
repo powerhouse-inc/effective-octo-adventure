@@ -2,7 +2,7 @@ import {
   EnumField,
   FormLabel,
   type EnumFieldProps,
-} from "@powerhousedao/design-system/scalars";
+} from "@powerhousedao/document-engineering/scalars";
 import { type BaseDiffFieldProps } from "../../types.js";
 import { FakeInput } from "./fake-input.js";
 import { DiffText } from "../diff-text.js";

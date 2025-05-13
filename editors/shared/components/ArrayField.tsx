@@ -1,4 +1,4 @@
-import { Form } from "@powerhousedao/design-system/scalars";
+import { Form } from "@powerhousedao/document-engineering/scalars";
 import type React from "react";
 import { useEffect, useMemo, useRef } from "react";
 import type { UseFormReturn } from "react-hook-form";

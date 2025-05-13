@@ -1,4 +1,4 @@
-import { cn } from "@powerhousedao/design-system/scalars";
+import { cn } from "@powerhousedao/document-engineering/scalars";
 import { actions } from "../../../document-models/atlas-set/index.js";
 import ContentCard from "../../shared/components/content-card.js";
 import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
@@ -13,7 +13,7 @@ import {
   getTagText,
 } from "../../shared/utils/utils.js";
 import { type IProps } from "../editor.js";
-import type { PHIDOption } from "@powerhousedao/design-system/ui";
+import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 
 interface SetFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;

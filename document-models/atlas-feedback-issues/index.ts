@@ -28,4 +28,3 @@ export { reducer, actions, utils, documentModel };
 
 export * from "./gen/types.js";
 export * from "./src/utils.js";
-export { ADDRESS_ALLOW_LIST } from "./src/constants.js";

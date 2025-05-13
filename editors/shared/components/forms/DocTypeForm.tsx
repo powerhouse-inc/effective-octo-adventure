@@ -1,7 +1,7 @@
 import { GenericEnumForm } from "./generics/GenericEnumForm.js";
 import type { Maybe } from "document-model";
 import { type FAtlasType } from "../../../../document-models/atlas-foundation/index.js";
-import { type SelectOption } from "@powerhousedao/design-system/scalars";
+import { type SelectOption } from "@powerhousedao/document-engineering/scalars";
 
 interface DocTypeFormProps {
   label?: string;

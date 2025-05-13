@@ -1,4 +1,4 @@
-import type { PHIDOption } from "@powerhousedao/design-system/ui";
+import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import docsIndex from "../../../scripts/apply-changes/data/index.json" with { type: "json" };
 import { type EditorMode } from "../types.js";
 import type { DocumentDriveDocument } from "document-drive";

@@ -1,4 +1,4 @@
-import { cn } from "@powerhousedao/design-system/scalars";
+import { cn } from "@powerhousedao/document-engineering/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchSelectedPHIDOption,
@@ -6,7 +6,7 @@ import {
   getStringValue,
   getTagText,
 } from "../../shared/utils/utils.js";
-import { type PHIDOption } from "@powerhousedao/design-system/ui";
+import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
 import type { EditorMode } from "../../shared/types.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";

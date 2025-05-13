@@ -6,11 +6,11 @@ import {
   fetchSelectedPHIDOption,
   getViewMode,
 } from "../../utils/utils.js";
-import type { PHIDOption } from "@powerhousedao/design-system/ui";
+import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import {
   PHIDField,
   type PHIDFieldProps,
-} from "@powerhousedao/design-system/scalars";
+} from "@powerhousedao/document-engineering/scalars";
 
 type CommonDataProps = {
   id: string;

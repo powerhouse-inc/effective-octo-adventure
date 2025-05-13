@@ -120,6 +120,7 @@ export class AtlasGroundingClient extends AtlasBaseClient<
         // TODO: add correct title and docNo
         title: "",
         docNo: "",
+        documentType: "",
       })),
     };
   }

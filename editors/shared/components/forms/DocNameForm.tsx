@@ -21,6 +21,7 @@ const DocNameForm = ({
       value={value ?? ""}
       baselineValue={baselineValue ?? ""}
       onSave={onSave}
+      key={value || "doc-name-key"}
     />
   );
 };

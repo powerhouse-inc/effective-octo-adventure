@@ -19,6 +19,7 @@ function AdditionalGuidance({
       baselineValue={baselineValue ?? ""}
       onSave={onSave}
       multiline
+      key={value || "additional-guidance-key"}
     />
   );
 }

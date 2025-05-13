@@ -1,12 +1,12 @@
 import { type Maybe } from "graphql-ts-client";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
-import { pndContentToString } from "document-models/utils.js";
 
 export type Link = {
   id: string;
   docNo: Maybe<string>;
   title: Maybe<string>;
+  documentType: Maybe<string>;
 };
 
 export const findAtlasParentInCache = (
@@ -27,6 +27,7 @@ export const findAtlasParentInCache = (
       id: parentDoc.id,
       title: parentDoc.name || null,
       docNo: (parentDoc.state as any)?.docNo || null,
+      documentType: parentDoc.documentType,
     };
   }
 

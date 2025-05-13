@@ -7,6 +7,9 @@ import {
 } from "../../../utils/utils.js";
 import type { PHIDOption } from "@powerhousedao/design-system/ui";
 import type React from "react";
+import { useEffect } from "react";
+import { type FieldValues, type UseFormReturn } from "react-hook-form";
+import { useRef } from "react";
 
 interface GenericPHIDFormProps {
   label: string;
@@ -44,11 +47,19 @@ const GenericPHIDForm = ({
     }
   };
 
+  const formRef = useRef<UseFormReturn<FieldValues>>(null);
+
+  useEffect(() => {
+    if (formRef.current) {
+      formRef.current.reset({ phidValue: value });
+    }
+  }, [value]);
   return (
     <Form
       onSubmit={onSubmit}
       submitChangesOnly
       defaultValues={{ phidValue: value }}
+      ref={formRef}
     >
       {({ triggerSubmit }) => (
         <PHIDField

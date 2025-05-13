@@ -20,7 +20,7 @@ import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
@@ -28,7 +28,6 @@ import {
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
 import type { PHIDOption } from "@powerhousedao/design-system/ui";
-import { type UseFormReturn } from "react-hook-form";
 
 interface MultiParentFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
@@ -73,14 +72,6 @@ export function MultiParentForm({
       (documentState.atlasType as ParsedNotionDocumentType) || "annotation",
     ),
   );
-
-  const formRef = useRef<UseFormReturn>(null);
-  // keep the form state in sync with the document state
-  useEffect(() => {
-    if (formRef.current) {
-      formRef.current.reset({ ...documentState });
-    }
-  }, [documentState]);
 
   return (
     <FormModeProvider mode={mode}>

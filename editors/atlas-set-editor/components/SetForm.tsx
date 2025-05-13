@@ -13,8 +13,6 @@ import {
 } from "../../shared/utils/utils.js";
 import { type IProps } from "../editor.js";
 import type { PHIDOption } from "@powerhousedao/design-system/ui";
-import { useEffect, useRef } from "react";
-import { type UseFormReturn } from "react-hook-form";
 
 interface SetFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
@@ -48,14 +46,6 @@ export function SetForm({
     name: "",
     parent: "",
   };
-
-  const formRef = useRef<UseFormReturn>(null);
-  // keep the form state in sync with the document state
-  useEffect(() => {
-    if (formRef.current) {
-      formRef.current.reset({ ...documentState });
-    }
-  }, [documentState]);
 
   return (
     <FormModeProvider mode={mode}>

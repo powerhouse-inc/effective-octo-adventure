@@ -24,14 +24,13 @@ import { AdditionalGuidance } from "./AdditionalGuidance.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
 import { Toggle } from "@powerhousedao/design-system/ui";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
 } from "../../shared/utils/styles.js";
-import { type UseFormReturn } from "react-hook-form";
 
 interface ExploratoryFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
@@ -93,14 +92,6 @@ export function ExploratoryForm({
       (documentState.atlasType as ParsedNotionDocumentType) || "scenario",
     ),
   );
-
-  const formRef = useRef<UseFormReturn>(null);
-  // keep the form state in sync with the document state
-  useEffect(() => {
-    if (formRef.current) {
-      formRef.current.reset({ ...documentState });
-    }
-  }, [documentState]);
 
   return (
     <FormModeProvider mode={mode}>

@@ -21,14 +21,13 @@ import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
 } from "../../shared/utils/styles.js";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
-import type { UseFormReturn } from "react-hook-form";
 
 interface FoundationFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: EditorMode;
@@ -60,15 +59,6 @@ export function FoundationForm({
     ...originalDocumentState,
     parent: parentId,
   };
-
-  // TODO: use a better solution
-  // keep the form state in sync with the document state
-  const formRef = useRef<UseFormReturn>(null);
-  useEffect(() => {
-    if (formRef.current) {
-      formRef.current.reset({ ...documentState });
-    }
-  }, [documentState]);
 
   const [contentValue, setContentValue] = useState(documentState.content ?? "");
 

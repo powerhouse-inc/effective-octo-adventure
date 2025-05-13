@@ -7,8 +7,7 @@ import {
   getTagText,
 } from "../../shared/utils/utils.js";
 import type { EditorMode } from "../../shared/types.js";
-import { useEffect, useRef, useState } from "react";
-import { type UseFormReturn } from "react-hook-form";
+import { useEffect, useState } from "react";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import {
@@ -75,14 +74,6 @@ export function ScopeForm({
     // @ts-ignore
     (documentState.atlasType as ParsedNotionDocumentType) || "article",
   );
-
-  const formRef = useRef<UseFormReturn>(null);
-  // keep the form state in sync with the document state
-  useEffect(() => {
-    if (formRef.current) {
-      formRef.current.reset({ ...documentState });
-    }
-  }, [documentState]);
 
   return (
     <FormModeProvider mode={mode}>

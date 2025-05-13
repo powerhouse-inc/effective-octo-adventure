@@ -70,6 +70,7 @@ type FDocumentLink {
   id:PHID!
   title:OLabel
   docNo: String 
+  documentType: String
 }
 
 """
@@ -139,6 +140,7 @@ input SetParentInput {
   id:PHID!
   title:OLabel
   docNo: String
+  documentType: String
 }
 
 input SetDocNumberInput {
@@ -161,6 +163,7 @@ input AddContextDataInput {
   id: PHID!
   title: String
   docNo: String
+  documentType: String
 }
 
 input RemoveContextDataInput {
@@ -176,4 +179,5 @@ input ReplaceContextDataInput {
   id: PHID!
   title: String
   docNo: String
+  documentType: String
 }

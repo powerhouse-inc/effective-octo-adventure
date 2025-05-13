@@ -25,7 +25,8 @@ export const reducer: AtlasGroundingGeneralOperations = {
     state.parent = {
       id: action.input.id,
       title: action.input.title ?? "",
-      docNo: null,
+      docNo: action.input.docNo ?? null,
+      documentType: action.input.documentType ?? null,
     };
   },
 };

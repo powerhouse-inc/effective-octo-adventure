@@ -45,6 +45,7 @@ export const schema: DocumentNode = gql`
     id: PHID!
     title: OLabel
     docNo: String
+    documentType: String
   }
 
   enum Status {
@@ -188,6 +189,7 @@ export const schema: DocumentNode = gql`
     id: PHID!
     title: String
     docNo: String
+    documentType: String
   }
   input AtlasScope_RemoveContextDataInput {
     id: PHID!
@@ -201,5 +203,6 @@ export const schema: DocumentNode = gql`
     id: PHID!
     title: String
     docNo: String
+    documentType: String
   }
 `;

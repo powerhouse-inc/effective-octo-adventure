@@ -24,6 +24,7 @@ type AtlasSetState {
 type SetDocumentLink {
   id: PHID!
   title: OLabel
+  documentType: String
 }
 
 
@@ -37,6 +38,7 @@ input SetSetNameInput {
 input SetSetParentInput {
   id: PHID!
   title: OLabel
+  documentType: String
 }
 
 input SetNotionIdInput {

@@ -77,6 +77,7 @@ type MDocumentLink {
   id: PHID!
   title: OLabel
   docNo: String
+  documentType: String
 }
 
 """
@@ -139,6 +140,7 @@ input AddParentInput {
   id: PHID!
   title: OLabel
   docNo: String
+  documentType: String
 }
 
 input SetAtlasTypeInput {
@@ -154,6 +156,7 @@ input ReplaceParentInput {
   id: PHID!
   title: OLabel
   docNo: String
+  documentType: String
 }
 
 # tags
@@ -172,6 +175,7 @@ input AddContextDataInput {
   id: PHID!
   title: OLabel
   docNo: String
+  documentType: String
 }
 
 input RemoveContextDataInput {
@@ -183,6 +187,7 @@ input ReplaceContextDataInput {
   id: PHID!
   title: OLabel
   docNo: String
+  documentType: String
 }
 
 input SetNotionIdInput {

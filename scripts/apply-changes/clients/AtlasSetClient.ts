@@ -73,6 +73,7 @@ export class AtlasSetClient extends AtlasBaseClient<
       ? {
           id: parentLink.id,
           title: parentLink.title || null,
+          documentType: "",
         }
       : null;
 

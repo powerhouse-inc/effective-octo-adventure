@@ -118,6 +118,7 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
         // TODO: add correct title and docNo
         title: "",
         docNo: "",
+        documentType: "",
       })),
       parents: parent ? [parent]: [] ,
     };

@@ -20,7 +20,7 @@ export default function Editor(props: IProps) {
               <ScopeForm
                 document={props.document}
                 dispatch={props.dispatch}
-                mode={isEditMode ? "Edition" : "DiffRemoved"}
+                mode={isEditMode ? "edition" : "removal"}
                 isSplitMode={isSplitMode}
               />
             }
@@ -28,7 +28,7 @@ export default function Editor(props: IProps) {
               <ScopeForm
                 document={props.document}
                 dispatch={props.dispatch}
-                mode={isEditMode ? "DiffMixed" : "DiffAdditions"}
+                mode={isEditMode ? "mixed" : "addition"}
                 isSplitMode={isSplitMode}
               />
             }
@@ -37,7 +37,7 @@ export default function Editor(props: IProps) {
           <ScopeForm
             document={props.document}
             dispatch={props.dispatch}
-            mode={isEditMode ? "Edition" : "DiffMixed"}
+            mode={isEditMode ? "edition" : "mixed"}
           />
         )
       }

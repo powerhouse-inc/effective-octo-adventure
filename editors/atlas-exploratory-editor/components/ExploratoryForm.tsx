@@ -1,4 +1,4 @@
-import { cn } from "@powerhousedao/document-engineering/scalars";
+import { cn, type ViewMode } from "@powerhousedao/document-engineering/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchSelectedPHIDOption,
@@ -36,7 +36,7 @@ import {
 } from "../../shared/utils/styles.js";
 
 interface ExploratoryFormProps extends Pick<IProps, "document" | "dispatch"> {
-  mode: EditorMode;
+  mode: ViewMode;
   isSplitMode?: boolean;
   isAligned?: boolean;
 }
@@ -214,7 +214,7 @@ export function ExploratoryForm({
               Misaligned
             </span>
             <Toggle
-              disabled={mode !== "Edition"}
+              disabled={mode !== "edition"}
               name="findings.isAligned"
               value={documentState.findings.isAligned}
               onChange={() => {

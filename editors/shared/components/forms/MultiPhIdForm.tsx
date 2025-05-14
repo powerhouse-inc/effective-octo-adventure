@@ -4,7 +4,6 @@ import { useFormMode } from "../../providers/FormModeProvider.js";
 import {
   fetchPHIDOptions,
   fetchSelectedPHIDOption,
-  getViewMode,
 } from "../../utils/utils.js";
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import {
@@ -32,8 +31,7 @@ const MultiPhIdForm = ({
   onRemove,
   onUpdate,
 }: MultiPhIdFormProps) => {
-  const formMode = useFormMode();
-  const viewMode = getViewMode(formMode);
+  const viewMode = useFormMode();
   // boolean flag to trigger callback recreation only when needed
   const [renderComponentTrigger, setRenderComponentTrigger] = useState(false);
 

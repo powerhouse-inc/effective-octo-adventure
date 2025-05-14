@@ -1,17 +1,17 @@
 import type React from "react";
 import { createContext, useContext } from "react";
-import type { EditorMode } from "../types.js";
+import { type ViewMode } from "@powerhousedao/document-engineering/scalars";
 
 interface FormModeContextType {
-  mode: EditorMode;
+  mode: ViewMode;
 }
 const FormModeContext = createContext<FormModeContextType>({
-  mode: "Readonly",
+  mode: "edition",
 });
 
 interface FormModeProviderProps {
   children: React.ReactNode;
-  mode: EditorMode;
+  mode: ViewMode;
 }
 
 /**

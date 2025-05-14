@@ -2,6 +2,7 @@ import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import docsIndex from "../../../scripts/apply-changes/data/index.json" with { type: "json" };
 import { type EditorMode } from "../types.js";
 import type { DocumentDriveDocument } from "document-drive";
+import { type ViewMode } from "@powerhousedao/document-engineering/scalars";
 
 /**
  * @deprecated Use fetchPHIDOptions & fetchSelectedPHIDOption instead
@@ -60,18 +61,14 @@ export const fetchSelectedPHIDOption = (
   return (docsIndex as PHIDOption[]).find((option) => option.value === value);
 };
 
-export const getCardVariant = (mode: EditorMode) => {
-  return mode === "Edition"
-    ? "blue"
-    : mode === "Readonly" || mode === "DiffRemoved"
-      ? "gray"
-      : "green";
+export const getCardVariant = (mode: ViewMode) => {
+  return mode === "edition" ? "blue" : mode === "removal" ? "gray" : "green";
 };
 
-export const getTagText = (mode: string) => {
-  return mode === "Edition"
+export const getTagText = (mode: ViewMode) => {
+  return mode === "edition"
     ? "Edition Atlas"
-    : mode === "Readonly" || mode === "DiffRemoved"
+    : mode === "removal"
       ? "Official Atlas"
       : "Atlas Draft";
 };
@@ -111,17 +108,4 @@ export const parseTitleText = (title: string) => {
     return { docNo: parts[0], name: parts[1] };
   }
   return { docNo: "", name: title };
-};
-
-export const getViewMode = (mode: EditorMode) => {
-  switch (mode) {
-    case "Edition":
-      return "edition";
-    case "DiffRemoved":
-      return "removal";
-    case "DiffAdditions":
-      return "addition";
-    case "DiffMixed":
-      return "mixed";
-  }
 };

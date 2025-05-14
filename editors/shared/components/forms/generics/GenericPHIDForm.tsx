@@ -3,7 +3,6 @@ import { useFormMode } from "../../../providers/FormModeProvider.js";
 import {
   fetchPHIDOptions,
   fetchSelectedPHIDOption,
-  getViewMode,
 } from "../../../utils/utils.js";
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import type React from "react";
@@ -38,8 +37,7 @@ const GenericPHIDForm = ({
   required = false,
   initialOptions,
 }: GenericPHIDFormProps) => {
-  const formMode = useFormMode();
-  const viewMode = getViewMode(formMode);
+  const viewMode = useFormMode();
 
   const onSubmit = (data: { phidValue: string }) => {
     if (data.phidValue !== undefined && data.phidValue !== value) {

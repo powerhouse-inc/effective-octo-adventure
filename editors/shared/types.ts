@@ -1,3 +1,5 @@
+import { type ViewMode } from "@powerhousedao/document-engineering/scalars";
+
 export type EditorMode =
   | "Edition"
   | "Readonly"
@@ -8,7 +10,7 @@ export type EditorMode =
 export type DiffMode = "words" | "sentences";
 
 export interface BaseDiffFieldProps {
-  mode: EditorMode;
+  mode: ViewMode;
   baselineValue?: string;
   diffMode?: DiffMode;
 }

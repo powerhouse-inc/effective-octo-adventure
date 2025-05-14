@@ -18,8 +18,8 @@ const EnumDiffField = ({
 }: EnumDiffFieldProps) => {
   const { getValues } = useFormContext();
 
-  if (mode === "Edition" || mode === "Readonly") {
-    return <EnumField disabled={mode === "Readonly"} {...enumProps} />;
+  if (mode === "edition") {
+    return <EnumField {...enumProps} />;
   }
 
   const value = getValues(enumProps.name!) as string;

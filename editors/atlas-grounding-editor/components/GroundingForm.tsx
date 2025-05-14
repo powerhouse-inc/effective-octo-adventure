@@ -1,4 +1,4 @@
-import { cn } from "@powerhousedao/document-engineering/scalars";
+import { cn, type ViewMode } from "@powerhousedao/document-engineering/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchSelectedPHIDOption,
@@ -32,7 +32,7 @@ import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
 
 interface GroundingFormProps extends Pick<IProps, "document" | "dispatch"> {
-  mode: EditorMode;
+  mode: ViewMode;
   isSplitMode?: boolean;
 }
 

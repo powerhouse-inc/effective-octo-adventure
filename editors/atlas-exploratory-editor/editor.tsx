@@ -25,7 +25,7 @@ export default function Editor(props: IProps) {
                 document={props.document}
                 dispatch={props.dispatch}
                 isSplitMode={isSplitMode}
-                mode={isEditMode ? "Edition" : "DiffRemoved"}
+                mode={isEditMode ? "edition" : "removal"}
                 isAligned={isAligned}
               />
             }
@@ -34,7 +34,7 @@ export default function Editor(props: IProps) {
                 document={props.document}
                 dispatch={props.dispatch}
                 isSplitMode={isSplitMode}
-                mode={isEditMode ? "DiffMixed" : "DiffAdditions"}
+                mode={isEditMode ? "mixed" : "addition"}
                 isAligned={isAligned}
               />
             }
@@ -43,7 +43,7 @@ export default function Editor(props: IProps) {
           <ExploratoryForm
             document={props.document}
             dispatch={props.dispatch}
-            mode={isEditMode ? "Edition" : "DiffMixed"}
+            mode={isEditMode ? "edition" : "mixed"}
             isAligned={isAligned}
           />
         )

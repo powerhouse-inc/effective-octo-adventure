@@ -1,4 +1,4 @@
-import { cn } from "@powerhousedao/document-engineering/scalars";
+import { cn, type ViewMode } from "@powerhousedao/document-engineering/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchSelectedPHIDOption,
@@ -30,7 +30,7 @@ import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
 import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
 
 interface ScopeFormProps extends Pick<IProps, "document" | "dispatch"> {
-  mode: EditorMode;
+  mode: ViewMode;
   isSplitMode?: boolean;
 }
 

@@ -20,8 +20,8 @@ const StringDiffField = ({
 }: StringDiffFieldProps) => {
   const { getValues } = useFormContext();
 
-  if (mode === "Edition" || mode === "Readonly") {
-    return <StringField disabled={mode === "Readonly"} {...stringProps} />;
+  if (mode === "edition") {
+    return <StringField {...stringProps} />;
   }
 
   const value = (getValues(stringProps.name!) as string) || "";

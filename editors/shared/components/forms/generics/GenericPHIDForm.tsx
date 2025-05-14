@@ -1,12 +1,14 @@
-import { Form, PHIDField } from "@powerhousedao/design-system/scalars";
+import { Form, PHIDField } from "@powerhousedao/document-engineering/scalars";
 import { useFormMode } from "../../../providers/FormModeProvider.js";
 import {
   fetchPHIDOptions,
   fetchSelectedPHIDOption,
-  getViewMode,
 } from "../../../utils/utils.js";
-import type { PHIDOption } from "@powerhousedao/design-system/ui";
+import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import type React from "react";
+import { useEffect } from "react";
+import { type FieldValues, type UseFormReturn } from "react-hook-form";
+import { useRef } from "react";
 
 interface GenericPHIDFormProps {
   label: string;
@@ -35,8 +37,7 @@ const GenericPHIDForm = ({
   required = false,
   initialOptions,
 }: GenericPHIDFormProps) => {
-  const formMode = useFormMode();
-  const viewMode = getViewMode(formMode);
+  const viewMode = useFormMode();
 
   const onSubmit = (data: { phidValue: string }) => {
     if (data.phidValue !== undefined && data.phidValue !== value) {
@@ -44,11 +45,19 @@ const GenericPHIDForm = ({
     }
   };
 
+  const formRef = useRef<UseFormReturn<FieldValues>>(null);
+
+  useEffect(() => {
+    if (formRef.current) {
+      formRef.current.reset({ phidValue: value });
+    }
+  }, [value]);
   return (
     <Form
       onSubmit={onSubmit}
       submitChangesOnly
       defaultValues={{ phidValue: value }}
+      ref={formRef}
     >
       {({ triggerSubmit }) => (
         <PHIDField

@@ -1,12 +1,11 @@
 import { useMemo } from "react";
 import { diffSentences, diffWords } from "diff";
-import type { EditorMode } from "../types.js";
-import { cn } from "@powerhousedao/design-system/scalars";
+import { cn, type ViewMode } from "@powerhousedao/document-engineering/scalars";
 
 interface DiffTextProps {
   baseline: string;
   value: string;
-  mode: EditorMode;
+  mode: ViewMode;
   diffMode: "words" | "sentences";
   className?: string;
 }
@@ -28,7 +27,7 @@ export const DiffText = ({
     <span className={cn("leading-[18px]", className)}>
       {wordsDiff.map((word, index) => {
         return word.added ? (
-          mode === "DiffAdditions" || mode === "DiffMixed" ? (
+          mode === "addition" || mode === "mixed" ? (
             <span
               className="bg-green-600/30 mr-1 text-gray-700"
               key={`${word.value}-${index}`}
@@ -37,7 +36,7 @@ export const DiffText = ({
             </span>
           ) : null
         ) : word.removed ? (
-          mode === "DiffRemoved" || mode === "DiffMixed" ? (
+          mode === "removal" || mode === "mixed" ? (
             <span
               className="bg-red-600/30 text-gray-700 mr-1"
               key={`${word.value}-${index}`}

@@ -1,7 +1,7 @@
-import { Form, StringField } from "@powerhousedao/design-system/scalars";
+import { Form, StringField } from "@powerhousedao/document-engineering/scalars";
 import { useFormMode } from "../../../providers/FormModeProvider.js";
-import { StringDiffField } from "../../diff-fields/string-diff-field.js";
-import { getViewMode } from "../../../utils/utils.js";
+import { useEffect, useRef } from "react";
+import type { UseFormReturn, FieldValues } from "react-hook-form";
 
 interface GenericTextFormProps {
   label?: string;
@@ -24,8 +24,16 @@ const GenericTextForm = ({
   multiline = false,
   autoExpand = false,
 }: GenericTextFormProps) => {
-  const formMode = useFormMode();
-  const viewMode = getViewMode(formMode);
+  const mode = useFormMode();
+  const formRef = useRef<UseFormReturn<FieldValues>>(null);
+
+  // Reset the form when the value changes to keep the form in sync with the value for split mode
+  useEffect(() => {
+    if (formRef.current) {
+      formRef.current.reset({ genericText: value });
+    }
+  }, [value]);
+
   const onSubmit = (data: { genericText: string }) => {
     if (data.genericText !== undefined && data.genericText !== value) {
       onSave(data.genericText);
@@ -34,6 +42,7 @@ const GenericTextForm = ({
 
   return (
     <Form
+      ref={formRef}
       onSubmit={onSubmit}
       submitChangesOnly
       defaultValues={{ genericText: value }}
@@ -45,7 +54,7 @@ const GenericTextForm = ({
           placeholder={placeholder}
           required={required}
           onBlur={triggerSubmit}
-          viewMode={viewMode}
+          viewMode={mode}
           baseValue={baselineValue}
           multiline={multiline}
           autoExpand={autoExpand}

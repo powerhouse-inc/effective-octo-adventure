@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@powerhousedao/design-system/scalars";
+import { cn } from "@powerhousedao/document-engineering/scalars";
 import { useState } from "react";
 interface ToggleProps {
   options: string[];

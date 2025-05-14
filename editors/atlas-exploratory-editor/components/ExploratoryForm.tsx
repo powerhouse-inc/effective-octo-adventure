@@ -1,4 +1,4 @@
-import { cn } from "@powerhousedao/design-system/scalars";
+import { cn, type ViewMode } from "@powerhousedao/document-engineering/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchSelectedPHIDOption,
@@ -6,7 +6,10 @@ import {
   getStringValue,
   getTagText,
 } from "../../shared/utils/utils.js";
-import { type PHIDOption } from "@powerhousedao/design-system/ui";
+import {
+  type PHIDOption,
+  Toggle,
+} from "@powerhousedao/document-engineering/ui";
 import type { EditorMode } from "../../shared/types.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
@@ -24,7 +27,6 @@ import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm
 import { AdditionalGuidance } from "./AdditionalGuidance.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
-import { Toggle } from "@powerhousedao/design-system/ui";
 import { useEffect, useState } from "react";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
@@ -34,7 +36,7 @@ import {
 } from "../../shared/utils/styles.js";
 
 interface ExploratoryFormProps extends Pick<IProps, "document" | "dispatch"> {
-  mode: EditorMode;
+  mode: ViewMode;
   isSplitMode?: boolean;
   isAligned?: boolean;
 }
@@ -202,13 +204,11 @@ export function ExploratoryForm({
           </div>
 
           <div className="flex flex-row justify-end items-center gap-2">
+            {/* TODO: add the right baseline value */}
             <Toggle
-              baseValue={false}
-              viewMode={"addition"}
-              optionalLabel="Misaligned"
-              label="Aligned"
+              disabled={mode !== "edition"}
               name="findings.isAligned"
-              value={true}
+              value={documentState.findings.isAligned}
               onChange={() => {
                 dispatch(
                   actions.setFindings({

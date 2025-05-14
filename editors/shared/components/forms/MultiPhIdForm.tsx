@@ -4,13 +4,12 @@ import { useFormMode } from "../../providers/FormModeProvider.js";
 import {
   fetchPHIDOptions,
   fetchSelectedPHIDOption,
-  getViewMode,
 } from "../../utils/utils.js";
-import type { PHIDOption } from "@powerhousedao/design-system/ui";
+import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import {
   PHIDField,
   type PHIDFieldProps,
-} from "@powerhousedao/design-system/scalars";
+} from "@powerhousedao/document-engineering/scalars";
 
 type CommonDataProps = {
   id: string;
@@ -32,8 +31,7 @@ const MultiPhIdForm = ({
   onRemove,
   onUpdate,
 }: MultiPhIdFormProps) => {
-  const formMode = useFormMode();
-  const viewMode = getViewMode(formMode);
+  const viewMode = useFormMode();
   // boolean flag to trigger callback recreation only when needed
   const [renderComponentTrigger, setRenderComponentTrigger] = useState(false);
 

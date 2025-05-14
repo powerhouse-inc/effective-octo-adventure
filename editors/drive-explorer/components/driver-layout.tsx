@@ -3,19 +3,19 @@ import {
   FileItem,
   type BaseUiFileNode,
   ToastContainer,
+  CreateDocumentModal,
 } from "@powerhousedao/design-system";
 import {
   Sidebar,
   SidebarProvider,
   type NodeStatus,
   type SidebarNode,
-} from "@powerhousedao/design-system/ui";
+} from "@powerhousedao/document-engineering/ui";
 import { useCallback, useState, useRef, useMemo } from "react";
 import { useDriveContext } from "@powerhousedao/reactor-browser";
 import { type AtlasFeedbackIssue, type AtlasArticle } from "./types.js";
 import { EditorContainer } from "./EditorContainer.js";
 import { type DocumentModelModule, type EditorContext } from "document-model";
-import { CreateDocumentModal } from "@powerhousedao/design-system";
 import { CreateDocument } from "./create-document.js";
 import { Home } from "./home.js";
 import { documentModel as AtlasFeedbackIssues } from "../../../document-models/atlas-feedback-issues/gen/document-model.js";

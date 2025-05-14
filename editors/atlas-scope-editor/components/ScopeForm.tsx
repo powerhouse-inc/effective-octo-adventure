@@ -1,4 +1,4 @@
-import { cn } from "@powerhousedao/design-system/scalars";
+import { cn, type ViewMode } from "@powerhousedao/document-engineering/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchSelectedPHIDOption,
@@ -27,10 +27,10 @@ import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js"
 import { globalScopeTagsEnumOptions } from "../../shared/utils/common-options.js";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
-import { type PHIDOption } from "@powerhousedao/design-system/ui";
+import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
 
 interface ScopeFormProps extends Pick<IProps, "document" | "dispatch"> {
-  mode: EditorMode;
+  mode: ViewMode;
   isSplitMode?: boolean;
 }
 

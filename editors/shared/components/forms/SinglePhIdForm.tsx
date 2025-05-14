@@ -1,6 +1,6 @@
 import { GenericPHIDForm } from "./generics/GenericPHIDForm.js";
 import type { Maybe } from "document-model";
-import type { PHIDOption } from "@powerhousedao/design-system/ui";
+import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import type React from "react";
 
 interface SinglePhIdFormProps {

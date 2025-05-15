@@ -19,7 +19,6 @@ import {
 import { graphqlClient as writeClient } from "../../clients/index.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import {
-  contentToMarkdown,
   findAtlasParentInCache,
   Link,
   statusStringToEnum,
@@ -112,7 +111,7 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
       masterStatus: statusStringToEnum(
         input.masterStatus || "Placeholder",
       ) as EStatus,
-      content: contentToMarkdown(input.markdownContent),
+      content: input.markdownContent,
       atlasType,
       notionId: input.id,
       parent: {

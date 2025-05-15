@@ -5,12 +5,9 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
+  mapViewMode,
 } from "../../shared/utils/utils.js";
-import {
-  type PHIDOption,
-  Toggle,
-} from "@powerhousedao/document-engineering/ui";
-import type { EditorMode } from "../../shared/types.js";
+import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
@@ -21,13 +18,14 @@ import {
   type EGlobalTag,
   type EAtlasType,
 } from "../../../document-models/atlas-exploratory/index.js";
+import { Toggle } from "@powerhousedao/document-engineering/ui";
 import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { AdditionalGuidance } from "./AdditionalGuidance.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
 import {
@@ -203,41 +201,32 @@ export function ExploratoryForm({
             />
           </div>
 
-          {/* TODO: Improve this in the next iteration */}
           <div className="flex flex-row justify-end items-center gap-2">
-            <span
-              className={cn(
-                !isAligned ? "text-gray-700" : "text-gray-300",
-                "text-sm font-semibold leading-[22px]",
-              )}
-            >
-              Misaligned
-            </span>
-            <Toggle
-              disabled={mode !== "edition"}
-              name="findings.isAligned"
-              value={documentState.findings.isAligned}
-              onChange={() => {
-                dispatch(
-                  actions.setFindings({
-                    isAligned: !documentState.findings.isAligned,
-                  }),
-                );
-              }}
-            />
-            <span
-              className={cn(
-                isAligned ? "text-gray-700" : "text-gray-300",
-                "text-sm font-semibold font-inter leading-[22px]",
-              )}
-            >
-              Aligned
-            </span>
+            <div className="flex items-center gap-2">
+              <Toggle
+                value={documentState.findings.isAligned}
+                // TODO:Add correct base line
+                baseValue={false}
+                optionalLabel="Misaligned"
+                viewMode={mapViewMode(mode)}
+                label="Aligned"
+                disabled={mode !== "edition"}
+                name="findings.isAligned"
+                onChange={() => {
+                  dispatch(
+                    actions.setFindings({
+                      isAligned: !documentState.findings.isAligned,
+                    }),
+                  );
+                }}
+              />
+            </div>
           </div>
 
           <AdditionalGuidance
             value={documentState.additionalGuidance}
-            baselineValue={""} // TODO: add the right baseline value
+            // TODO: add the right baseline value
+            baselineValue={""}
             onSave={(value) => {
               dispatch(
                 actions.setAdditionalGuidance({

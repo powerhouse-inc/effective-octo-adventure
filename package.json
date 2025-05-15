@@ -70,7 +70,7 @@
     "@hookform/resolvers": "^3.10.0",
     "@powerhousedao/common": "1.10.39-staging.1",
     "@powerhousedao/design-system": "1.39.22-staging.1",
-    "@powerhousedao/document-engineering": "^1.0.2",
+    "@powerhousedao/document-engineering": "1.1.0",
     "@powerhousedao/reactor-browser": "1.22.29-staging.3",
     "@radix-ui/react-dialog": "^1.1.7",
     "@radix-ui/react-dropdown-menu": "^2.1.7",

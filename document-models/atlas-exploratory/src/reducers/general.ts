@@ -23,6 +23,7 @@ export const reducer: AtlasExploratoryGeneralOperations = {
       title: action.input.title ?? "",
       docNo: action.input.docNo ?? null,
       documentType: action.input.documentType ?? null,
+      icon: action.input.icon ?? null,
     };
   },
 

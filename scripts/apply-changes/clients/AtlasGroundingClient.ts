@@ -55,17 +55,15 @@ export class AtlasGroundingClient extends AtlasBaseClient<
             id
             title
             docNo
+            documentType
+            icon
           }
           masterStatus
           atlasType
           content
           globalTags
           notionId
-          originalContextData {
-            id
-            title
-            docNo
-          }
+          originalContextData
         }
         revision
       }
@@ -115,13 +113,7 @@ export class AtlasGroundingClient extends AtlasBaseClient<
       notionId: input.id,
       parent,
       globalTags: input.globalTags as GGlobalTag[],
-      originalContextData: input.originalContextData.map((contextData) => ({
-        id: contextData,
-        // TODO: add correct title and docNo
-        title: "",
-        docNo: "",
-        documentType: "",
-      })),
+      originalContextData: input.originalContextData,
     };
   }
 
@@ -171,9 +163,9 @@ export class AtlasGroundingClient extends AtlasBaseClient<
       case "originalContextData": {
         if (target && Array.isArray(target) && target.length > 0) {
           await Promise.all(
-            (target as GDocumentLink[]).map(async (contextData) => {
+            target.map(async (contextData) => {
               await patch.AtlasGrounding_addContextData(
-                arg<any>({ id: contextData.id })
+                arg<any>({ id: contextData })
               );
             })
           );

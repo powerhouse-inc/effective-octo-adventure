@@ -57,17 +57,15 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
             id
             title
             docNo
+            documentType
+            icon
           }
           masterStatus
           atlasType
           content
           globalTags
           notionId
-          originalContextData {
-            id
-            title
-            docNo
-          }
+          originalContextData
         }
         revision
       }
@@ -112,13 +110,7 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
       atlasType,
       notionId: input.id,
       globalTags: input.globalTags as MGlobalTag[],
-      originalContextData: input.originalContextData.map((contextData) => ({
-        id: contextData,
-        // TODO: add correct title and docNo
-        title: "",
-        docNo: "",
-        documentType: "",
-      })),
+      originalContextData: input.originalContextData,
       parents: parent ? [parent]: [] ,
     };
   }
@@ -164,9 +156,9 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
       case "originalContextData": {
         if (target && Array.isArray(target) && target.length > 0) {
           await Promise.all(
-            (target as MDocumentLink[]).map(async (contextData) => {
+            target.map(async (contextData) => {
               await patch.AtlasMultiParent_addContextData(
-                arg<any>({ id: contextData.id })
+                arg<any>({ id: contextData })
               );
             })
           );

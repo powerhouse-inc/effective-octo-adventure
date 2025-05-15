@@ -40,7 +40,7 @@ type AtlasScopeState {
   """
   List of Atlas documents that were relevant for the creation of the scope document. 
   """
-  originalContextData: [DocumentInfo!]!
+  originalContextData: [String!]!
   """
   Original Notion document ID of the scope document.
   """
@@ -55,6 +55,7 @@ type DocumentInfo {
   title: OLabel
   docNo: String
   documentType: String
+  icon: String
 }
 
 enum Status {
@@ -128,14 +129,11 @@ input RemoveTagsInput {
 # context
 
 input AddContextDataInput {
-  id: PHID!
-  title: String
-  docNo: String
-  documentType: String
+  id: String!
 }
 
 input RemoveContextDataInput {
-  id: PHID!
+  id: String!
 }
 
 input SetNotionIdInput {
@@ -144,9 +142,6 @@ input SetNotionIdInput {
 }
 
 input ReplaceContextDataInput {
-  prevId: PHID!
-  id:PHID!
-  title: String
-  docNo: String
-  documentType: String
+  prevId: String!
+  id: String!
 }

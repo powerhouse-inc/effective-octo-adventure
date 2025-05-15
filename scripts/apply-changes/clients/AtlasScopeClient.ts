@@ -5,7 +5,6 @@ import { type ReactorClient } from "../common/ReactorClient.js";
 
 import {
   AtlasScopeState,
-  DocumentInfo,
   GlobalTag,
   Status,
   type SetContentInput,
@@ -54,6 +53,7 @@ export class AtlasScopeClient extends AtlasBaseClient<
           content
           globalTags
           notionId
+          originalContextData
         }
         revision
       }
@@ -80,14 +80,7 @@ export class AtlasScopeClient extends AtlasBaseClient<
       content: input.markdownContent,
       notionId: input.id,
       globalTags: input.globalTags as GlobalTag[],
-      originalContextData: input.originalContextData.map((contextData) => ({
-        id: contextData,
-        // TODO: add correct title and docNo
-        title: "",
-        docNo: "",
-        documentType: "",
-      })),
-      // originalContextData: [],
+      originalContextData: input.originalContextData,
     };
   }
 
@@ -135,9 +128,9 @@ export class AtlasScopeClient extends AtlasBaseClient<
       case "originalContextData": {
         if (target && Array.isArray(target) && target.length > 0) {
           await Promise.all(
-            (target as DocumentInfo[]).map(async (contextData) => {
+            target.map(async (contextData) => {
               await patch.AtlasScope_addContextData(
-                arg<any>({ id: contextData.id })
+                arg<any>({ id: contextData })
               );
             })
           );

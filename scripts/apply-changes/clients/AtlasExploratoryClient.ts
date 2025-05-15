@@ -60,17 +60,15 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
             id
             title
             docNo
+            documentType
+            icon
           }
           masterStatus
           atlasType
           content
           globalTags
           notionId
-          originalContextData {
-            id
-            title
-            docNo
-          }
+          originalContextData
         }
         revision
       }
@@ -119,15 +117,10 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
         title: parent?.title || "",
         docNo: parent?.docNo || "",
         documentType: "",
+        icon: "",
       },
       globalTags: input.globalTags as EGlobalTag[],
-      originalContextData: input.originalContextData.map((contextData) => ({
-        id: contextData,
-        // TODO: add correct title and docNo
-        title: "",
-        docNo: "",
-        documentType: "",
-      })),
+      originalContextData: input.originalContextData
     };
   }
 
@@ -175,9 +168,9 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
       case "originalContextData": {
         if (target && Array.isArray(target) && target.length > 0) {
           await Promise.all(
-            (target as EDocumentLink[]).map(async (contextData) => {
+            target.map(async (contextData) => {
               await patch.AtlasExploratory_addContextData(
-                arg<any>({ id: contextData.id }),
+                arg<any>({ id: contextData }),
               );
             })
           );

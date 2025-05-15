@@ -2,30 +2,19 @@ import { type AtlasMultiParentContextOperations } from "../../gen/context/operat
 
 export const reducer: AtlasMultiParentContextOperations = {
   addContextDataOperation(state, action) {
-    const newContextData = {
-      id: action.input.id,
-      title: action.input.title || null,
-      docNo: action.input.docNo ?? null,
-      documentType: action.input.documentType ?? null,
-    };
-    state.originalContextData = [newContextData, ...state.originalContextData];
+    state.originalContextData = [...state.originalContextData, action.input.id];
   },
 
   removeContextDataOperation(state, action) {
     state.originalContextData = state.originalContextData.filter(
-      (contextData) => contextData.id !== action.input.id,
+      (contextData) => contextData !== action.input.id,
     );
   },
 
   replaceContextDataOperation(state, action) {
     state.originalContextData = state.originalContextData.map((contextData) => {
-      if (contextData.id === action.input.prevId) {
-        return {
-          id: action.input.id,
-          title: action.input.title || null,
-          docNo: action.input.docNo ?? null,
-          documentType: action.input.documentType ?? null,
-        };
+      if (contextData === action.input.prevId) {
+        return action.input.id;
       }
       return contextData;
     });

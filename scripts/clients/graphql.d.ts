@@ -1599,10 +1599,7 @@ export interface AtlasMultiParent {
  */
 
 export interface AtlasMultiParent_AddContextDataInput {
-  id: PHID
-  title?: OLabel
-  docNo?: string
-  documentType?: string
+  id: string
 }
 
 /**
@@ -1614,6 +1611,7 @@ export interface AtlasMultiParent_AddParentInput {
   title?: OLabel
   docNo?: string
   documentType?: string
+  icon?: string
 }
 
 /**
@@ -1635,7 +1633,7 @@ export interface AtlasMultiParent_AtlasMultiParentState {
   content?: string
   masterStatus: AtlasMultiParent_MStatus
   globalTags: AtlasMultiParent_MGlobalTag[]
-  originalContextData: AtlasMultiParent_MDocumentLink[]
+  originalContextData: string[]
   notionId?: string
 }
 
@@ -1648,6 +1646,7 @@ export interface AtlasMultiParent_MDocumentLink {
   title?: OLabel
   docNo?: string
   documentType?: string
+  icon?: string
 }
 
 /**
@@ -1655,7 +1654,7 @@ export interface AtlasMultiParent_MDocumentLink {
  */
 
 export interface AtlasMultiParent_RemoveContextDataInput {
-  id: PHID
+  id: string
 }
 
 /**
@@ -1679,11 +1678,8 @@ export interface AtlasMultiParent_RemoveTagsInput {
  */
 
 export interface AtlasMultiParent_ReplaceContextDataInput {
-  prevId: PHID
-  id: PHID
-  title?: OLabel
-  docNo?: string
-  documentType?: string
+  prevId: string
+  id: string
 }
 
 /**
@@ -1696,6 +1692,7 @@ export interface AtlasMultiParent_ReplaceParentInput {
   title?: OLabel
   docNo?: string
   documentType?: string
+  icon?: string
 }
 
 /**
@@ -1758,7 +1755,7 @@ export interface AtlasMultiParentState {
   content?: string
   masterStatus: MStatus
   globalTags: MGlobalTag[]
-  originalContextData: MDocumentLink[]
+  originalContextData: string[]
   notionId?: string
 }
 
@@ -2264,6 +2261,7 @@ export interface MDocumentLink {
   title?: OLabel
   docNo?: string
   documentType?: string
+  icon?: string
 }
 
 /**
@@ -3045,9 +3043,6 @@ export interface AtlasMultiParentSelection {
 
 export interface AtlasMultiParent_AddContextDataInputSelection {
   id?: boolean
-  title?: boolean
-  docNo?: boolean
-  documentType?: boolean
 }
 
 export interface AtlasMultiParent_AddParentInputSelection {
@@ -3055,6 +3050,7 @@ export interface AtlasMultiParent_AddParentInputSelection {
   title?: boolean
   docNo?: boolean
   documentType?: boolean
+  icon?: boolean
 }
 
 export interface AtlasMultiParent_AddTagsInputSelection {
@@ -3068,7 +3064,7 @@ export interface AtlasMultiParent_AtlasMultiParentStateSelection {
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  originalContextData?: AtlasMultiParent_MDocumentLinkSelection
+  originalContextData?: boolean
   notionId?: boolean
 }
 
@@ -3077,6 +3073,7 @@ export interface AtlasMultiParent_MDocumentLinkSelection {
   title?: boolean
   docNo?: boolean
   documentType?: boolean
+  icon?: boolean
 }
 
 export interface AtlasMultiParent_RemoveContextDataInputSelection {
@@ -3094,9 +3091,6 @@ export interface AtlasMultiParent_RemoveTagsInputSelection {
 export interface AtlasMultiParent_ReplaceContextDataInputSelection {
   prevId?: boolean
   id?: boolean
-  title?: boolean
-  docNo?: boolean
-  documentType?: boolean
 }
 
 export interface AtlasMultiParent_ReplaceParentInputSelection {
@@ -3105,6 +3099,7 @@ export interface AtlasMultiParent_ReplaceParentInputSelection {
   title?: boolean
   docNo?: boolean
   documentType?: boolean
+  icon?: boolean
 }
 
 export interface AtlasMultiParent_SetAtlasTypeInputSelection {
@@ -3144,7 +3139,7 @@ export interface AtlasMultiParentStateSelection {
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  originalContextData?: MDocumentLinkSelection
+  originalContextData?: boolean
   notionId?: boolean
 }
 
@@ -3492,6 +3487,7 @@ export interface MDocumentLinkSelection {
   title?: boolean
   docNo?: boolean
   documentType?: boolean
+  icon?: boolean
 }
 
 export interface MultiCurrencyConversionsSelection {

@@ -14914,11 +14914,7 @@ snapshots:
       react-circle-flags: 0.0.22(react@18.3.1)
       react-day-picker: 9.4.3(react@18.3.1)
       react-dom: 18.3.1(react@18.3.1)
-<<<<<<< HEAD
       react-hook-form: 7.56.3(react@18.3.1)
-=======
-      react-hook-form: 7.56.0(react@18.3.1)
->>>>>>> origin/main
       react-multi-select-component: 4.3.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-number-format: 5.4.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-select: 5.10.1(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -17727,7 +17723,7 @@ snapshots:
 
   axios@1.8.4:
     dependencies:
-      follow-redirects: 1.15.9
+      follow-redirects: 1.15.9(debug@4.3.7)
       form-data: 4.0.2
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -19666,8 +19662,6 @@ snapshots:
   focus-trap@7.6.4:
     dependencies:
       tabbable: 6.2.0
-
-  follow-redirects@1.15.9: {}
 
   follow-redirects@1.15.9(debug@4.3.7):
     optionalDependencies:

@@ -1938,6 +1938,7 @@ export interface AtlasSet_SetDocumentLink {
   id: PHID
   title?: OLabel
   documentType?: string
+  icon?: string
 }
 
 /**
@@ -1964,6 +1965,7 @@ export interface AtlasSet_SetSetParentInput {
   id: PHID
   title?: OLabel
   documentType?: string
+  icon?: string
 }
 
 /**
@@ -2458,6 +2460,7 @@ export interface SetDocumentLink {
   id: PHID
   title?: OLabel
   documentType?: string
+  icon?: string
 }
 
 /**
@@ -3262,6 +3265,7 @@ export interface AtlasSet_SetDocumentLinkSelection {
   id?: boolean
   title?: boolean
   documentType?: boolean
+  icon?: boolean
 }
 
 export interface AtlasSet_SetNotionIdInputSelection {
@@ -3276,6 +3280,7 @@ export interface AtlasSet_SetSetParentInputSelection {
   id?: boolean
   title?: boolean
   documentType?: boolean
+  icon?: boolean
 }
 
 export interface AtlasSetQueriesSelection {
@@ -4340,6 +4345,7 @@ export interface SetDocumentLinkSelection {
   id?: boolean
   title?: boolean
   documentType?: boolean
+  icon?: boolean
 }
 
 export interface SignerSelection {

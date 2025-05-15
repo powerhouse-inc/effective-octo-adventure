@@ -15,6 +15,7 @@ export const reducer: AtlasSetGeneralOperations = {
       id: action.input.id,
       title: action.input.title || null,
       documentType: action.input.documentType || null,
+      icon: action.input.icon || null,
     };
   },
   setNotionIdOperation(state, action) {

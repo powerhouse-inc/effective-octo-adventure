@@ -31,7 +31,7 @@ export const schema: DocumentNode = gql`
     """
     List of Atlas documents that were relevant for the creation of the scope document.
     """
-    originalContextData: [DocumentInfo!]!
+    originalContextData: [String!]!
     """
     Original Notion document ID of the scope document.
     """
@@ -46,6 +46,7 @@ export const schema: DocumentNode = gql`
     title: OLabel
     docNo: String
     documentType: String
+    icon: String
   }
 
   enum Status {
@@ -186,23 +187,17 @@ export const schema: DocumentNode = gql`
   Module: Context
   """
   input AtlasScope_AddContextDataInput {
-    id: PHID!
-    title: String
-    docNo: String
-    documentType: String
+    id: String!
   }
   input AtlasScope_RemoveContextDataInput {
-    id: PHID!
+    id: String!
   }
   input AtlasScope_SetNotionIdInput {
     "Add your inputs here"
     notionID: String
   }
   input AtlasScope_ReplaceContextDataInput {
-    prevId: PHID!
-    id: PHID!
-    title: String
-    docNo: String
-    documentType: String
+    prevId: String!
+    id: String!
   }
 `;

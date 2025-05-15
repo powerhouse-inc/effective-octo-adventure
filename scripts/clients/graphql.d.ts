@@ -1257,10 +1257,7 @@ export interface AtlasFoundation {
  */
 
 export interface AtlasFoundation_AddContextDataInput {
-  id: PHID
-  title?: string
-  docNo?: string
-  documentType?: string
+  id: string
 }
 
 /**
@@ -1283,7 +1280,7 @@ export interface AtlasFoundation_AtlasFoundationState {
   content?: string
   masterStatus: AtlasFoundation_FStatus
   globalTags: AtlasFoundation_FGlobalTag[]
-  originalContextData: AtlasFoundation_FDocumentLink[]
+  originalContextData: string[]
   notionId?: string
 }
 
@@ -1296,6 +1293,7 @@ export interface AtlasFoundation_FDocumentLink {
   title?: OLabel
   docNo?: string
   documentType?: string
+  icon?: string
 }
 
 /**
@@ -1303,7 +1301,7 @@ export interface AtlasFoundation_FDocumentLink {
  */
 
 export interface AtlasFoundation_RemoveContextDataInput {
-  id: PHID
+  id: string
 }
 
 /**
@@ -1319,11 +1317,8 @@ export interface AtlasFoundation_RemoveTagsInput {
  */
 
 export interface AtlasFoundation_ReplaceContextDataInput {
-  prevId: PHID
-  id: PHID
-  title?: string
-  docNo?: string
-  documentType?: string
+  prevId: string
+  id: string
 }
 
 /**
@@ -1383,6 +1378,7 @@ export interface AtlasFoundation_SetParentInput {
   title?: OLabel
   docNo?: string
   documentType?: string
+  icon?: string
 }
 
 /**
@@ -1406,7 +1402,7 @@ export interface AtlasFoundationState {
   content?: string
   masterStatus: FStatus
   globalTags: FGlobalTag[]
-  originalContextData: FDocumentLink[]
+  originalContextData: string[]
   notionId?: string
 }
 
@@ -1792,10 +1788,7 @@ export interface AtlasScope {
  */
 
 export interface AtlasScope_AddContextDataInput {
-  id: PHID
-  title?: string
-  docNo?: string
-  documentType?: string
+  id: string
 }
 
 /**
@@ -1816,7 +1809,7 @@ export interface AtlasScope_AtlasScopeState {
   content?: string
   masterStatus: AtlasScope_Status
   globalTags: AtlasScope_GlobalTag[]
-  originalContextData: AtlasScope_DocumentInfo[]
+  originalContextData: string[]
   notionId?: string
 }
 
@@ -1829,6 +1822,7 @@ export interface AtlasScope_DocumentInfo {
   title?: OLabel
   docNo?: string
   documentType?: string
+  icon?: string
 }
 
 /**
@@ -1836,7 +1830,7 @@ export interface AtlasScope_DocumentInfo {
  */
 
 export interface AtlasScope_RemoveContextDataInput {
-  id: PHID
+  id: string
 }
 
 /**
@@ -1852,11 +1846,8 @@ export interface AtlasScope_RemoveTagsInput {
  */
 
 export interface AtlasScope_ReplaceContextDataInput {
-  prevId: PHID
-  id: PHID
-  title?: string
-  docNo?: string
-  documentType?: string
+  prevId: string
+  id: string
 }
 
 /**
@@ -1918,7 +1909,7 @@ export interface AtlasScopeState {
   content?: string
   masterStatus: Status
   globalTags: GlobalTag[]
-  originalContextData: DocumentInfo[]
+  originalContextData: string[]
   notionId?: string
 }
 
@@ -2195,6 +2186,7 @@ export interface DocumentInfo {
   title?: OLabel
   docNo?: string
   documentType?: string
+  icon?: string
 }
 
 /**
@@ -2232,6 +2224,7 @@ export interface FDocumentLink {
   title?: OLabel
   docNo?: string
   documentType?: string
+  icon?: string
 }
 
 /**
@@ -2829,9 +2822,6 @@ export interface AtlasFoundationSelection {
 
 export interface AtlasFoundation_AddContextDataInputSelection {
   id?: boolean
-  title?: boolean
-  docNo?: boolean
-  documentType?: boolean
 }
 
 export interface AtlasFoundation_AddTagsInputSelection {
@@ -2846,7 +2836,7 @@ export interface AtlasFoundation_AtlasFoundationStateSelection {
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  originalContextData?: AtlasFoundation_FDocumentLinkSelection
+  originalContextData?: boolean
   notionId?: boolean
 }
 
@@ -2855,6 +2845,7 @@ export interface AtlasFoundation_FDocumentLinkSelection {
   title?: boolean
   docNo?: boolean
   documentType?: boolean
+  icon?: boolean
 }
 
 export interface AtlasFoundation_RemoveContextDataInputSelection {
@@ -2868,9 +2859,6 @@ export interface AtlasFoundation_RemoveTagsInputSelection {
 export interface AtlasFoundation_ReplaceContextDataInputSelection {
   prevId?: boolean
   id?: boolean
-  title?: boolean
-  docNo?: boolean
-  documentType?: boolean
 }
 
 export interface AtlasFoundation_SetAtlasTypeInputSelection {
@@ -2902,6 +2890,7 @@ export interface AtlasFoundation_SetParentInputSelection {
   title?: boolean
   docNo?: boolean
   documentType?: boolean
+  icon?: boolean
 }
 
 export interface AtlasFoundationQueriesSelection {
@@ -2922,7 +2911,7 @@ export interface AtlasFoundationStateSelection {
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  originalContextData?: FDocumentLinkSelection
+  originalContextData?: boolean
   notionId?: boolean
 }
 
@@ -3186,9 +3175,6 @@ export interface AtlasScopeSelection {
 
 export interface AtlasScope_AddContextDataInputSelection {
   id?: boolean
-  title?: boolean
-  docNo?: boolean
-  documentType?: boolean
 }
 
 export interface AtlasScope_AddTagsInputSelection {
@@ -3201,7 +3187,7 @@ export interface AtlasScope_AtlasScopeStateSelection {
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  originalContextData?: AtlasScope_DocumentInfoSelection
+  originalContextData?: boolean
   notionId?: boolean
 }
 
@@ -3210,6 +3196,7 @@ export interface AtlasScope_DocumentInfoSelection {
   title?: boolean
   docNo?: boolean
   documentType?: boolean
+  icon?: boolean
 }
 
 export interface AtlasScope_RemoveContextDataInputSelection {
@@ -3223,9 +3210,6 @@ export interface AtlasScope_RemoveTagsInputSelection {
 export interface AtlasScope_ReplaceContextDataInputSelection {
   prevId?: boolean
   id?: boolean
-  title?: boolean
-  docNo?: boolean
-  documentType?: boolean
 }
 
 export interface AtlasScope_SetContentInputSelection {
@@ -3264,7 +3248,7 @@ export interface AtlasScopeStateSelection {
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  originalContextData?: DocumentInfoSelection
+  originalContextData?: boolean
   notionId?: boolean
 }
 
@@ -3456,6 +3440,7 @@ export interface DocumentInfoSelection {
   title?: boolean
   docNo?: boolean
   documentType?: boolean
+  icon?: boolean
 }
 
 export interface DocumentModelSelection {
@@ -3486,6 +3471,7 @@ export interface FDocumentLinkSelection {
   title?: boolean
   docNo?: boolean
   documentType?: boolean
+  icon?: boolean
 }
 
 export interface FindingSelection {

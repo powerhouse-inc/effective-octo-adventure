@@ -27,6 +27,7 @@ export const reducer: AtlasFoundationGeneralOperations = {
       title: action.input.title ?? "",
       docNo: action.input.docNo ?? null,
       documentType: action.input.documentType ?? null,
+      icon: action.input.icon ?? null,
     };
   },
 };

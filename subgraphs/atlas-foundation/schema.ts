@@ -44,7 +44,7 @@ export const schema: DocumentNode = gql`
     """
     List of Atlas documents that were relevant for the creation of this Foundation document.
     """
-    originalContextData: [FDocumentLink!]!
+    originalContextData: [String!]!
 
     """
     Original Notion document ID of the Foundation document.
@@ -60,6 +60,7 @@ export const schema: DocumentNode = gql`
     title: OLabel
     docNo: String
     documentType: String
+    icon: String
   }
 
   """
@@ -200,6 +201,7 @@ export const schema: DocumentNode = gql`
     title: OLabel
     docNo: String
     documentType: String
+    icon: String
   }
   input AtlasFoundation_SetDocNumberInput {
     docNo: String
@@ -219,22 +221,16 @@ export const schema: DocumentNode = gql`
   Module: Context
   """
   input AtlasFoundation_AddContextDataInput {
-    id: PHID!
-    title: String
-    docNo: String
-    documentType: String
+    id: String!
   }
   input AtlasFoundation_RemoveContextDataInput {
-    id: PHID!
+    id: String!
   }
   input AtlasFoundation_SetNotionIdInput {
     notionID: String!
   }
   input AtlasFoundation_ReplaceContextDataInput {
-    prevId: PHID!
-    id: PHID!
-    title: String
-    docNo: String
-    documentType: String
+    prevId: String!
+    id: String!
   }
 `;

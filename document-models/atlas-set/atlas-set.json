@@ -13,8 +13,8 @@
             "changeLog": [],
             "state": {
                 "global": {
-                    "schema": "type AtlasSetState {\n  id: PHID!\n  name: String!\n  parent: SetDocumentLink\n  notionId: String\n}\n\ntype SetDocumentLink {\n  id: PHID!\n  title: OLabel\n  documentType: String\n}",
-                    "initialValue": "{\n  \"id\": \"\",\n  \"name\": \"\",\n  \"parent\": {\n    \"id\": \"\",\n    \"title\": \"\",\n    \"documentType\": \"\"\n  },\n  \"notionId\": \"\"\n}",
+                    "schema": "type AtlasSetState {\n  id: PHID!\n  name: String!\n  parent: SetDocumentLink\n  notionId: String\n}\n\ntype SetDocumentLink {\n  id: PHID!\n  title: OLabel\n  documentType: String\n  icon: String\n}",
+                    "initialValue": "{\n  \"id\": \"\",\n  \"name\": \"\",\n  \"parent\": {\n    \"id\": \"\",\n    \"title\": \"\",\n    \"documentType\": \"\",\n    \"icon\": \"\"\n  },\n  \"notionId\": \"\"\n}",
                     "examples": []
                 },
                 "local": {
@@ -44,7 +44,7 @@
                             "id": "nE5yNQ7ABx3oOPPH3Dz1sjerjh8=",
                             "name": "SET_SET_PARENT",
                             "description": "",
-                            "schema": "input SetSetParentInput {\n  id: PHID!\n  title: OLabel\n  documentType: String\n}",
+                            "schema": "input SetSetParentInput {\n  id: PHID!\n  title: OLabel\n  documentType: String\n  icon: String\n}",
                             "template": "",
                             "reducer": "",
                             "errors": [],

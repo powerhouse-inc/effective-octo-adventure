@@ -16,6 +16,7 @@ export const schema: DocumentNode = gql`
     id: PHID!
     title: OLabel
     documentType: String
+    icon: String
   }
 
   """
@@ -63,6 +64,7 @@ export const schema: DocumentNode = gql`
     id: PHID!
     title: OLabel
     documentType: String
+    icon: String
   }
   input AtlasSet_SetNotionIdInput {
     notionId: String!

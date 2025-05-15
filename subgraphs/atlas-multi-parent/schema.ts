@@ -51,7 +51,7 @@ export const schema: DocumentNode = gql`
       title: OLabel
     }
     """
-    originalContextData: [MDocumentLink!]!
+    originalContextData: [String!]!
 
     """
     Original Notion document ID of the MultiParent document.
@@ -68,6 +68,7 @@ export const schema: DocumentNode = gql`
     title: OLabel
     docNo: String
     documentType: String
+    icon: String
   }
 
   """
@@ -211,6 +212,7 @@ export const schema: DocumentNode = gql`
     title: OLabel
     docNo: String
     documentType: String
+    icon: String
   }
   input AtlasMultiParent_SetAtlasTypeInput {
     atlasType: MAtlasType!
@@ -224,6 +226,7 @@ export const schema: DocumentNode = gql`
     title: OLabel
     docNo: String
     documentType: String
+    icon: String
   }
 
   """
@@ -240,20 +243,14 @@ export const schema: DocumentNode = gql`
   Module: Context
   """
   input AtlasMultiParent_AddContextDataInput {
-    id: PHID!
-    title: OLabel
-    docNo: String
-    documentType: String
+    id: String!
   }
   input AtlasMultiParent_RemoveContextDataInput {
-    id: PHID!
+    id: String!
   }
   input AtlasMultiParent_ReplaceContextDataInput {
-    prevId: PHID!
-    id: PHID!
-    title: OLabel
-    docNo: String
-    documentType: String
+    prevId: String!
+    id: String!
   }
   input AtlasMultiParent_SetNotionIdInput {
     notionId: String!

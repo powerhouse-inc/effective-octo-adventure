@@ -8,7 +8,6 @@ export type IProps = EditorProps<AtlasExploratoryDocument>;
 
 export default function Editor(props: IProps) {
   const documentState = props.document.state.global;
-  const isAligned = documentState.findings.isAligned;
 
   return (
     <EditorLayout
@@ -26,7 +25,6 @@ export default function Editor(props: IProps) {
                 dispatch={props.dispatch}
                 isSplitMode={isSplitMode}
                 mode={isEditMode ? "edition" : "removal"}
-                isAligned={isAligned}
               />
             }
             right={
@@ -35,7 +33,6 @@ export default function Editor(props: IProps) {
                 dispatch={props.dispatch}
                 isSplitMode={isSplitMode}
                 mode={isEditMode ? "mixed" : "addition"}
-                isAligned={isAligned}
               />
             }
           />
@@ -44,7 +41,6 @@ export default function Editor(props: IProps) {
             document={props.document}
             dispatch={props.dispatch}
             mode={isEditMode ? "edition" : "mixed"}
-            isAligned={isAligned}
           />
         )
       }

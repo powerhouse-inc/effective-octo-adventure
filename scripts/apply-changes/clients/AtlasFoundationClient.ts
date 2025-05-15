@@ -59,17 +59,15 @@ export class AtlasFoundationClient extends AtlasBaseClient<
             id
             title
             docNo
+            documentType
+            icon
           }
           masterStatus
           atlasType
           content
           globalTags
           notionId
-          originalContextData {
-            id
-            title
-            docNo
-          }
+          originalContextData
         }
         revision
       }
@@ -111,7 +109,6 @@ export class AtlasFoundationClient extends AtlasBaseClient<
     }
     return {
       ...currentState,
-      ...currentState,
       docNo: getNodeDocNo(input),
       name: getNodeName(input),
       masterStatus: statusStringToEnum(
@@ -122,13 +119,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<
       notionId: input.id,
       parent,
       globalTags: input.globalTags as FGlobalTag[],
-      originalContextData: input.originalContextData.map((contextData) => ({
-        id: contextData,
-        // TODO: add correct title and docNo
-        title: "",
-        docNo: "",
-        documentType: "",
-      })),
+      originalContextData: input.originalContextData,
     };
   }
 
@@ -176,9 +167,9 @@ export class AtlasFoundationClient extends AtlasBaseClient<
       case "originalContextData": {
         if (target && Array.isArray(target) && target.length > 0) {
           await Promise.all(
-            (target as FDocumentLink[]).map(async (contextData) => {
+            target.map(async (contextData) => {
               await patch.AtlasFoundation_addContextData(
-                arg<any>({ id: contextData.id }),
+                arg<any>({ id: contextData }),
               );
             })
           );

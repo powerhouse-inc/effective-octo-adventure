@@ -23,6 +23,7 @@ export const reducer: AtlasMultiParentGeneralOperations = {
       title: action.input.title || null,
       docNo: action.input.docNo || null,
       documentType: action.input.documentType || null,
+      icon: action.input.icon ?? null,
     });
   },
 
@@ -40,6 +41,7 @@ export const reducer: AtlasMultiParentGeneralOperations = {
           title: action.input.title || null,
           docNo: action.input.docNo || null,
           documentType: action.input.documentType || null,
+          icon: action.input.icon ?? null,
         };
       }
       return parent;

@@ -53,7 +53,7 @@ type AtlasFoundationState {
   """
     List of Atlas documents that were relevant for the creation of this Foundation document.
   """
-  originalContextData: [FDocumentLink!]!
+  originalContextData: [String!]!
 
 
   """
@@ -71,6 +71,7 @@ type FDocumentLink {
   title:OLabel
   docNo: String 
   documentType: String
+  icon: String
 }
 
 """
@@ -141,6 +142,7 @@ input SetParentInput {
   title:OLabel
   docNo: String
   documentType: String
+  icon: String
 }
 
 input SetDocNumberInput {
@@ -160,14 +162,11 @@ input RemoveTagsInput {
 # context
 
 input AddContextDataInput {
-  id: PHID!
-  title: String
-  docNo: String
-  documentType: String
+  id: String!
 }
 
 input RemoveContextDataInput {
-  id: PHID! 
+  id: String! 
 }
 
 input SetNotionIdInput {
@@ -175,9 +174,6 @@ input SetNotionIdInput {
 }
 
 input ReplaceContextDataInput {
-  prevId: PHID!
-  id: PHID!
-  title: String
-  docNo: String
-  documentType: String
+  prevId: String!
+  id: String!
 }

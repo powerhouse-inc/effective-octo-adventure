@@ -48,7 +48,7 @@ type AtlasExploratoryState {
   """
   List of Atlas documents that were relevant for the creation of this Exploratory document.  
   """
-  originalContextData: [EDocumentLink!]!
+  originalContextData: [String!]!
   """
   Original Notion document ID of the Exploratory document.  
   Used for cross-system referencing and linking back to the original Notion source.
@@ -76,6 +76,7 @@ type EDocumentLink {
   title: OLabel
   docNo: String
   documentType: String
+  icon: String
 }
 
 
@@ -139,6 +140,7 @@ input SetParentInput {
   title: OLabel
   docNo: String
   documentType: String
+  icon: String
 }
 
 input SetAtlasTypeInput {
@@ -166,14 +168,11 @@ input RemoveTagsInput {
 # context
 
 input AddContextDataInput {
-  id: PHID!
-  title: String
-  docNo: String
-  documentType: String
+  id: String!
 }
 
 input RemoveContextDataInput {
-  id: PHID!
+  id: String!
 }
 
 input SetNotionIdInput {
@@ -185,9 +184,6 @@ input SetAdditionalGuidanceInput {
 }
 
 input ReplaceContextDataInput {
- prevId: PHID!
-  id: PHID!
-  title: String
-  docNo: String
-  documentType: String
+ prevId: String!
+  id: String!
 }

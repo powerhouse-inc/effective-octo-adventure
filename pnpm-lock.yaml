@@ -14914,7 +14914,11 @@ snapshots:
       react-circle-flags: 0.0.22(react@18.3.1)
       react-day-picker: 9.4.3(react@18.3.1)
       react-dom: 18.3.1(react@18.3.1)
+<<<<<<< HEAD
       react-hook-form: 7.56.3(react@18.3.1)
+=======
+      react-hook-form: 7.56.0(react@18.3.1)
+>>>>>>> origin/main
       react-multi-select-component: 4.3.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-number-format: 5.4.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-select: 5.10.1(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)

@@ -61,7 +61,7 @@ Change a subfield "name" to "title" in MDocumentLink object.
 }
   
   """
-  originalContextData: [MDocumentLink!]!
+  originalContextData: [String!]!
   
   """
   Original Notion document ID of the MultiParent document.  
@@ -78,6 +78,7 @@ type MDocumentLink {
   title: OLabel
   docNo: String
   documentType: String
+  icon: String
 }
 
 """
@@ -141,6 +142,7 @@ input AddParentInput {
   title: OLabel
   docNo: String
   documentType: String
+  icon: String
 }
 
 input SetAtlasTypeInput {
@@ -157,6 +159,7 @@ input ReplaceParentInput {
   title: OLabel
   docNo: String
   documentType: String
+  icon: String
 }
 
 # tags
@@ -172,22 +175,16 @@ input RemoveTagsInput {
 # context
 
 input AddContextDataInput {
-  id: PHID!
-  title: OLabel
-  docNo: String
-  documentType: String
+  id: String!
 }
 
 input RemoveContextDataInput {
-  id: PHID!
+  id: String!
 }
 
 input ReplaceContextDataInput {
-  prevId: PHID!
-  id: PHID!
-  title: OLabel
-  docNo: String
-  documentType: String
+  prevId: String!
+  id: String!
 }
 
 input SetNotionIdInput {

@@ -39,7 +39,7 @@ export const schema: DocumentNode = gql`
     """
     List of Atlas documents that were relevant for the creation of this Exploratory document.
     """
-    originalContextData: [EDocumentLink!]!
+    originalContextData: [String!]!
     """
     Original Notion document ID of the Exploratory document.
     Used for cross-system referencing and linking back to the original Notion source.
@@ -67,6 +67,7 @@ export const schema: DocumentNode = gql`
     title: OLabel
     docNo: String
     documentType: String
+    icon: String
   }
 
   """
@@ -215,6 +216,7 @@ export const schema: DocumentNode = gql`
     title: OLabel
     docNo: String
     documentType: String
+    icon: String
   }
   input AtlasExploratory_SetAtlasTypeInput {
     atlasType: EAtlasType!
@@ -240,13 +242,10 @@ export const schema: DocumentNode = gql`
   Module: Context
   """
   input AtlasExploratory_AddContextDataInput {
-    id: PHID!
-    title: String
-    docNo: String
-    documentType: String
+    id: String!
   }
   input AtlasExploratory_RemoveContextDataInput {
-    id: PHID!
+    id: String!
   }
   input AtlasExploratory_SetNotionIdInput {
     notionID: String
@@ -255,10 +254,7 @@ export const schema: DocumentNode = gql`
     additionalGuidance: String!
   }
   input AtlasExploratory_ReplaceContextDataInput {
-    prevId: PHID!
-    id: PHID!
-    title: String
-    docNo: String
-    documentType: String
+    prevId: String!
+    id: String!
   }
 `;

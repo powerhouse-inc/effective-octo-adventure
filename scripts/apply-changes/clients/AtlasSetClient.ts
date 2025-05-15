@@ -46,6 +46,8 @@ export class AtlasSetClient extends AtlasBaseClient<
           parent {
             id
             title
+            documentType
+            icon
           }
           notionId
         }
@@ -74,6 +76,7 @@ export class AtlasSetClient extends AtlasBaseClient<
           id: parentLink.id,
           title: parentLink.title || null,
           documentType: "",
+          icon: "",
         }
       : null;
 

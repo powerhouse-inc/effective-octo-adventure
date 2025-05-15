@@ -1,7 +1,7 @@
 import { type ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
 import {
+  getAtlasData,
   getNodeTitle,
-  atlasData,
 } from "../../document-models/utils.js";
 import { DocumentsCache } from "./common/DocumentsCache.js";
 import { ReactorClient } from "./common/ReactorClient.js";
@@ -47,8 +47,8 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
   console.log(documentsCache.getDocumentsCount());
   console.log("\nProcessing Notion documents...");
 
-  // the queue is initialized with the scopes (first level of the atlas)
-  const queue: ViewNodeExtended[] = [...atlasData]
+  const atlasData = await getAtlasData();
+  const queue: ViewNodeExtended[] = [...atlasData];
 
   let processed = 0;
   let skipped = 0;

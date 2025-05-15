@@ -1,4 +1,3 @@
-import atlasDataUntyped from "../data/atlas-data-extended.json" with { type: "json" };
 import {
   type ParsedNotionDocumentType,
   type ParsedNotionDocument,
@@ -7,8 +6,18 @@ import {
   type ViewTreeContentSegment,
 } from "../scripts/apply-changes/atlas-base/NotionTypes.js";
 import type { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
+import path from "path";
+import fs from "fs";
 
-export const atlasData = atlasDataUntyped as unknown as ViewNodeExtended[];
+/**
+ * Returns the atlas data from the local file system dynamically.
+ */
+export const getAtlasData = async () => {
+  const __dirname = path.dirname(new URL(import.meta.url).pathname);
+  const jsonPath = path.resolve(__dirname, "../data/atlas-data-extended.json");
+  const raw = fs.readFileSync(jsonPath, "utf-8");
+  return JSON.parse(raw) as ViewNodeExtended[];
+};
 
 export const getEmptyNotionDocument = (
   notionId: string,

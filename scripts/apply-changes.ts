@@ -27,6 +27,7 @@ const SKIP_NODES: { [id: string]: boolean } = {
   "0ba1b2bd-9513-487d-974c-0d08fb04b341": true, // The Protocol Scope
   "9e3f76e6-3343-4e70-af0b-c914be2e8d5a": true, // The Accessibility Scope
   "4281ab93-ef4f-4974-988d-7dad149a693d": true, // Atlas Preamble
+  "1b3f2ff0-8d73-80e6-86b0-c28bf9a97896": true, // The agent scope
 };
 
 // Set to true in order to update the index.json file with

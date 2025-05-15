@@ -19,7 +19,7 @@ import {
 } from "../../../document-models/utils.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
-import { contentToMarkdown, statusStringToEnum } from "../atlas-base/utils.js";
+import { statusStringToEnum } from "../atlas-base/utils.js";
 
 const DOCUMENT_TYPE = "sky/atlas-scope";
 
@@ -77,8 +77,7 @@ export class AtlasScopeClient extends AtlasBaseClient<
       masterStatus: statusStringToEnum(
         input.masterStatus || "Placeholder"
       ) as Status,
-      // TODO: implement content converting the notion content to markdown
-      content: contentToMarkdown(input.markdownContent),
+      content: input.markdownContent,
       notionId: input.id,
       globalTags: input.globalTags as GlobalTag[],
       originalContextData: input.originalContextData.map((contextData) => ({

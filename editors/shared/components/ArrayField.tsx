@@ -1,7 +1,7 @@
 import { Form } from "@powerhousedao/document-engineering/scalars";
 import type React from "react";
 import { useEffect, useMemo, useRef } from "react";
-import type { UseFormReturn } from "react-hook-form";
+import type { FieldValues, UseFormReturn } from "react-hook-form";
 
 interface UpdateOptions<TValue> {
   previousValue: TValue;
@@ -40,7 +40,7 @@ const ArrayField = <TValue, TProps>({
   component: Component,
   componentProps,
 }: ArrayFieldProps<TValue, TProps>) => {
-  const formRef = useRef<UseFormReturn>(null);
+  const formRef = useRef<UseFormReturn<FieldValues>>(null);
 
   const onSubmit = (data: Record<`item-${number}` | "item-new", TValue>) => {
     for (const [key, value] of Object.entries(data)) {

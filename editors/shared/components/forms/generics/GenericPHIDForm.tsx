@@ -7,7 +7,7 @@ import {
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import type React from "react";
 import { useEffect } from "react";
-import { type FieldValues, type UseFormReturn } from "react-hook-form";
+import type { FieldValues, UseFormReturn } from "react-hook-form";
 import { useRef } from "react";
 
 interface GenericPHIDFormProps {

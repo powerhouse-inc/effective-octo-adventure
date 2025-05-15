@@ -1,9 +1,9 @@
-import {
-  Form,
-  type SelectOption,
-} from "@powerhousedao/document-engineering/scalars";
+import { Form, EnumField } from "@powerhousedao/document-engineering/scalars";
+import { type SelectOption } from "@powerhousedao/document-engineering/ui";
 import { useFormMode } from "../../../providers/FormModeProvider.js";
-import { EnumDiffField } from "../../diff-fields/enum-diff-field.js";
+import { useEffect } from "react";
+import type { FieldValues, UseFormReturn } from "react-hook-form";
+import { useRef } from "react";
 
 type GenericEnumFormProps = {
   label: string;
@@ -35,12 +35,20 @@ const GenericEnumForm = ({
   required = false,
   multiple = false,
 }: GenericEnumFormProps) => {
-  const formMode = useFormMode();
+  const viewMode = useFormMode();
   const onSubmit = (data: { genericEnum: unknown }) => {
     if (data.genericEnum !== undefined && data.genericEnum !== value) {
       onSave(data.genericEnum as string & string[]);
     }
   };
+
+  const formRef = useRef<UseFormReturn<FieldValues>>(null);
+
+  useEffect(() => {
+    if (formRef.current) {
+      formRef.current.reset({ genericEnum: value });
+    }
+  }, [value]);
 
   return (
     <Form
@@ -48,9 +56,10 @@ const GenericEnumForm = ({
       submitChangesOnly
       defaultValues={{ genericEnum: value }}
       extraFormProps={{ shouldFocusError: false }}
+      ref={formRef}
     >
       {({ triggerSubmit }) => (
-        <EnumDiffField
+        <EnumField
           name="genericEnum"
           label={label}
           placeholder={placeholder}
@@ -58,8 +67,13 @@ const GenericEnumForm = ({
           required={required}
           multiple={multiple}
           onBlur={triggerSubmit}
-          mode={formMode}
-          baselineValue={baselineValue.toString()}
+          viewMode={viewMode}
+          diffMode="sentences"
+          baseValue={
+            Array.isArray(baselineValue)
+              ? baselineValue.join(", ")
+              : baselineValue
+          }
           options={options}
         />
       )}

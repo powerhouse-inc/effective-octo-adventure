@@ -93,7 +93,6 @@ export function ExploratoryForm({
       (documentState.atlasType as ParsedNotionDocumentType) || "scenario",
     ),
   );
-  console.log("mode", mode, documentState.findings.isAligned);
 
   return (
     <FormModeProvider mode={mode}>

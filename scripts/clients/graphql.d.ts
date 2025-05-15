@@ -918,10 +918,7 @@ export interface AtlasExploratory {
  */
 
 export interface AtlasExploratory_AddContextDataInput {
-  id: PHID
-  title?: string
-  docNo?: string
-  documentType?: string
+  id: string
 }
 
 /**
@@ -944,7 +941,7 @@ export interface AtlasExploratory_AtlasExploratoryState {
   content?: string
   masterStatus: AtlasExploratory_EStatus
   globalTags: AtlasExploratory_EGlobalTag[]
-  originalContextData: AtlasExploratory_EDocumentLink[]
+  originalContextData: string[]
   notionId?: string
   findings: AtlasExploratory_Finding
   additionalGuidance: string
@@ -959,6 +956,7 @@ export interface AtlasExploratory_EDocumentLink {
   title?: OLabel
   docNo?: string
   documentType?: string
+  icon?: string
 }
 
 /**
@@ -974,7 +972,7 @@ export interface AtlasExploratory_Finding {
  */
 
 export interface AtlasExploratory_RemoveContextDataInput {
-  id: PHID
+  id: string
 }
 
 /**
@@ -990,11 +988,8 @@ export interface AtlasExploratory_RemoveTagsInput {
  */
 
 export interface AtlasExploratory_ReplaceContextDataInput {
-  prevId: PHID
-  id: PHID
-  title?: string
-  docNo?: string
-  documentType?: string
+  prevId: string
+  id: string
 }
 
 /**
@@ -1070,6 +1065,7 @@ export interface AtlasExploratory_SetParentInput {
   title?: OLabel
   docNo?: string
   documentType?: string
+  icon?: string
 }
 
 /**
@@ -1093,7 +1089,7 @@ export interface AtlasExploratoryState {
   content?: string
   masterStatus: EStatus
   globalTags: EGlobalTag[]
-  originalContextData: EDocumentLink[]
+  originalContextData: string[]
   notionId?: string
   findings: Finding
   additionalGuidance: string
@@ -2206,6 +2202,7 @@ export interface EDocumentLink {
   title?: OLabel
   docNo?: string
   documentType?: string
+  icon?: string
 }
 
 /**
@@ -2590,9 +2587,6 @@ export interface AtlasExploratorySelection {
 
 export interface AtlasExploratory_AddContextDataInputSelection {
   id?: boolean
-  title?: boolean
-  docNo?: boolean
-  documentType?: boolean
 }
 
 export interface AtlasExploratory_AddTagsInputSelection {
@@ -2607,7 +2601,7 @@ export interface AtlasExploratory_AtlasExploratoryStateSelection {
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  originalContextData?: AtlasExploratory_EDocumentLinkSelection
+  originalContextData?: boolean
   notionId?: boolean
   findings?: AtlasExploratory_FindingSelection
   additionalGuidance?: boolean
@@ -2618,6 +2612,7 @@ export interface AtlasExploratory_EDocumentLinkSelection {
   title?: boolean
   docNo?: boolean
   documentType?: boolean
+  icon?: boolean
 }
 
 export interface AtlasExploratory_FindingSelection {
@@ -2635,9 +2630,6 @@ export interface AtlasExploratory_RemoveTagsInputSelection {
 export interface AtlasExploratory_ReplaceContextDataInputSelection {
   prevId?: boolean
   id?: boolean
-  title?: boolean
-  docNo?: boolean
-  documentType?: boolean
 }
 
 export interface AtlasExploratory_SetAdditionalGuidanceInputSelection {
@@ -2677,6 +2669,7 @@ export interface AtlasExploratory_SetParentInputSelection {
   title?: boolean
   docNo?: boolean
   documentType?: boolean
+  icon?: boolean
 }
 
 export interface AtlasExploratoryQueriesSelection {
@@ -2697,7 +2690,7 @@ export interface AtlasExploratoryStateSelection {
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  originalContextData?: EDocumentLinkSelection
+  originalContextData?: boolean
   notionId?: boolean
   findings?: FindingSelection
   additionalGuidance?: boolean
@@ -3452,6 +3445,7 @@ export interface EDocumentLinkSelection {
   title?: boolean
   docNo?: boolean
   documentType?: boolean
+  icon?: boolean
 }
 
 export interface FDocumentLinkSelection {

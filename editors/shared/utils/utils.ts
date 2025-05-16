@@ -109,10 +109,3 @@ export const parseTitleText = (title: string) => {
   }
   return { docNo: "", name: title };
 };
-
-export const mapViewMode = (
-  mode?: ViewMode,
-): Extract<ViewMode, "edition" | "addition" | "removal"> => {
-  if (mode === "mixed" || mode === undefined) return "edition";
-  return mode;
-};

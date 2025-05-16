@@ -5,7 +5,6 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
-  mapViewMode,
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
@@ -208,7 +207,7 @@ export function ExploratoryForm({
                 // TODO:Add correct base line
                 baseValue={false}
                 optionalLabel="Misaligned"
-                viewMode={mapViewMode(mode)}
+                viewMode={mode}
                 label="Aligned"
                 disabled={mode !== "edition"}
                 name="findings.isAligned"

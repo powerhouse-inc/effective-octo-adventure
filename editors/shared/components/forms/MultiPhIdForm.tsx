@@ -22,6 +22,7 @@ interface MultiPhIdFormProps
     "fields" | "componentProps" | "component"
   > {
   data: CommonDataProps[];
+  fetchOptionsCallback: (value: string) => PHIDOption[];
 }
 
 const MultiPhIdForm = ({
@@ -30,6 +31,7 @@ const MultiPhIdForm = ({
   onAdd,
   onRemove,
   onUpdate,
+  fetchOptionsCallback,
 }: MultiPhIdFormProps) => {
   const viewMode = useFormMode();
   // boolean flag to trigger callback recreation only when needed
@@ -98,7 +100,7 @@ const MultiPhIdForm = ({
         placeholder: "phd:",
         variant: "withValueAndTitle",
         allowUris: true,
-        fetchOptionsCallback: fetchPHIDOptions,
+        fetchOptionsCallback,
         fetchSelectedOptionCallback: (val) => {
           const result = fetchSelectedPHIDOption(val);
           const element = data.find((d) => d.id === val);

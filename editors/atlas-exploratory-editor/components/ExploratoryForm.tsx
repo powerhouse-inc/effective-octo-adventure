@@ -25,13 +25,14 @@ import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm
 import { AdditionalGuidance } from "./AdditionalGuidance.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
 } from "../../shared/utils/styles.js";
+import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 
 interface ExploratoryFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: ViewMode;
@@ -48,6 +49,8 @@ export function ExploratoryForm({
 }: ExploratoryFormProps) {
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
+
+  const fetchOptionsCallback = useParentOptions("sky/atlas-foundation");
 
   const originalDocumentState = document.state.global;
   const parentId = originalDocumentState.parent?.id
@@ -170,6 +173,7 @@ export function ExploratoryForm({
             <SinglePhIdForm
               label="Parent Document"
               value={documentState.parent}
+              fetchOptionsCallback={fetchOptionsCallback}
               // TODO: add the correct baseline value
               baselineValue={
                 originalNodeState.parents?.[0] ??

@@ -6,7 +6,6 @@ import {
   getStringValue,
   getTagText,
 } from "../../shared/utils/utils.js";
-import type { EditorMode } from "../../shared/types.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
@@ -20,7 +19,7 @@ import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
@@ -28,6 +27,7 @@ import {
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
+import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 
 interface MultiParentFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: ViewMode;
@@ -42,6 +42,8 @@ export function MultiParentForm({
 }: MultiParentFormProps) {
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
+
+  const fetchOptionsCallback = useParentOptions("sky/atlas-multiparent");
 
   const documentState = document.state.global;
 
@@ -148,6 +150,7 @@ export function MultiParentForm({
                   initialOptions: [initialOption],
                 };
               })}
+              fetchOptionsCallback={fetchOptionsCallback}
               onAdd={(value) => {
                 const newData = fetchSelectedPHIDOption(value);
                 const newId = value.split(":")[1];

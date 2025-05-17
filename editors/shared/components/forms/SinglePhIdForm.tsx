@@ -14,6 +14,7 @@ interface SinglePhIdFormProps {
   label: string;
   placeholder?: string;
   initialOptions?: PHIDOption[];
+  fetchOptionsCallback: (value: string) => PHIDOption[];
 }
 
 const SinglePhIdForm = ({
@@ -27,6 +28,7 @@ const SinglePhIdForm = ({
   label,
   placeholder = "phd:",
   initialOptions,
+  fetchOptionsCallback,
 }: SinglePhIdFormProps) => {
   return (
     <GenericPHIDForm
@@ -40,6 +42,7 @@ const SinglePhIdForm = ({
       baselineDescription={baselineDescription}
       onSave={onSave}
       initialOptions={initialOptions}
+      fetchOptionsCallback={fetchOptionsCallback}
     />
   );
 };

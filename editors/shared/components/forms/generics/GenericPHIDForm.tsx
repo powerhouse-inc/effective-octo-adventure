@@ -1,9 +1,6 @@
 import { Form, PHIDField } from "@powerhousedao/document-engineering/scalars";
 import { useFormMode } from "../../../providers/FormModeProvider.js";
-import {
-  fetchPHIDOptions,
-  fetchSelectedPHIDOption,
-} from "../../../utils/utils.js";
+import { fetchSelectedPHIDOption } from "../../../utils/utils.js";
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import type React from "react";
 import { useEffect } from "react";
@@ -22,6 +19,7 @@ interface GenericPHIDFormProps {
   required?: boolean;
   initialOptions?: PHIDOption[];
   onSave: (value: string) => void;
+  fetchOptionsCallback: (value: string) => PHIDOption[];
 }
 
 const GenericPHIDForm = ({
@@ -36,6 +34,7 @@ const GenericPHIDForm = ({
   onSave,
   required = false,
   initialOptions,
+  fetchOptionsCallback,
 }: GenericPHIDFormProps) => {
   const viewMode = useFormMode();
 
@@ -46,12 +45,12 @@ const GenericPHIDForm = ({
   };
 
   const formRef = useRef<UseFormReturn<FieldValues>>(null);
-
   useEffect(() => {
     if (formRef.current) {
       formRef.current.reset({ phidValue: value });
     }
   }, [value]);
+
   return (
     <Form
       onSubmit={onSubmit}
@@ -68,7 +67,7 @@ const GenericPHIDForm = ({
           variant="withValueAndTitle"
           allowUris
           initialOptions={initialOptions}
-          fetchOptionsCallback={fetchPHIDOptions}
+          fetchOptionsCallback={fetchOptionsCallback}
           fetchSelectedOptionCallback={(val) => {
             const result = fetchSelectedPHIDOption(val);
             if (result !== undefined) {

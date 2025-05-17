@@ -13,6 +13,7 @@ import {
 } from "../../shared/utils/utils.js";
 import { type IProps } from "../editor.js";
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
+import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 
 interface SetFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: ViewMode;
@@ -27,6 +28,9 @@ export function SetForm({
 }: SetFormProps) {
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
+
+  const fetchOptionsCallback = useParentOptions("sky/atlas-set");
+
   const parentId = document.state.global.parent?.id
     ? `phd:${document.state.global.parent.id}`
     : "";
@@ -67,6 +71,7 @@ export function SetForm({
               <SinglePhIdForm
                 label="Parent Document"
                 value={documentState.parent}
+                fetchOptionsCallback={fetchOptionsCallback}
                 // TODO: add the correct baseline value
                 baselineValue={
                   originalNodeState.parent ??
@@ -82,7 +87,7 @@ export function SetForm({
                       actions.setSetParent({
                         id: "",
                         title: "",
-                      }),
+                      })
                     );
                   } else {
                     const newParentId = value.split(":")[1];
@@ -91,7 +96,7 @@ export function SetForm({
                       actions.setSetParent({
                         id: newParentId,
                         title: newParentData?.title ?? "",
-                      }),
+                      })
                     );
                   }
                 }}

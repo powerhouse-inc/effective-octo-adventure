@@ -23,13 +23,14 @@ import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
 } from "../../shared/utils/styles.js";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
+import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 
 interface GroundingFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: ViewMode;
@@ -44,6 +45,8 @@ export function GroundingForm({
 }: GroundingFormProps) {
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
+
+  const fetchOptionsCallback = useParentOptions("sky/atlas-grounding");
 
   const originalDocumentState = document.state.global;
   const parentId = originalDocumentState.parent?.id
@@ -167,6 +170,7 @@ export function GroundingForm({
             <SinglePhIdForm
               label="Parent Document"
               value={documentState.parent}
+              fetchOptionsCallback={fetchOptionsCallback}
               // TODO: add the correct baseline value
               baselineValue={
                 originalNodeState.parents?.[0] ??

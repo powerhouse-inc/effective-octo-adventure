@@ -28,6 +28,7 @@ import {
 } from "../../shared/utils/styles.js";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
+import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 
 interface FoundationFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: ViewMode;
@@ -42,6 +43,8 @@ export function FoundationForm({
 }: FoundationFormProps) {
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
+
+  const fetchOptionsCallback = useParentOptions("sky/atlas-foundation");
 
   const originalDocumentState = document.state.global;
   const parentId = originalDocumentState.parent?.id
@@ -84,8 +87,8 @@ export function FoundationForm({
   const [originalNodeState] = useState(() =>
     getOriginalNotionDocument(
       (documentState.notionId as string) || "notion-id-not-set",
-      (documentState.atlasType as ParsedNotionDocumentType) || "article",
-    ),
+      (documentState.atlasType as ParsedNotionDocumentType) || "article"
+    )
   );
 
   return (
@@ -110,7 +113,7 @@ export function FoundationForm({
                   dispatch(
                     actions.setFoundationName({
                       name: getStringValue(value),
-                    }),
+                    })
                   );
                 }}
               />
@@ -149,12 +152,13 @@ export function FoundationForm({
           <div
             className={cn(
               "flex flex-col gap-3",
-              getWidthClassName(!!isSplitMode),
+              getWidthClassName(!!isSplitMode)
             )}
           >
             <SinglePhIdForm
               label="Parent Document"
               value={documentState.parent}
+              fetchOptionsCallback={fetchOptionsCallback}
               // TODO: add the correct baseline value
               baselineValue={
                 originalNodeState.parents?.[0] ??
@@ -169,7 +173,7 @@ export function FoundationForm({
                   dispatch(
                     actions.setParent({
                       id: "",
-                    }),
+                    })
                   );
                 } else {
                   const newParentId = value.split(":")[1];
@@ -178,7 +182,7 @@ export function FoundationForm({
                     actions.setParent({
                       id: newParentId,
                       title: newParentData?.title ?? "",
-                    }),
+                    })
                   );
                 }
               }}
@@ -206,7 +210,7 @@ export function FoundationForm({
                   actions.addContextData({
                     id: newId,
                     title: newData?.title ?? "",
-                  }),
+                  })
                 );
               }}
               onRemove={({ value }) => {
@@ -222,7 +226,7 @@ export function FoundationForm({
                     prevId,
                     id: newId,
                     title: newData?.title ?? "",
-                  }),
+                  })
                 );
               }}
             />
@@ -241,7 +245,7 @@ export function FoundationForm({
 
                 // Tags to add (are in newTags but not in currentTags)
                 const tagsToAdd = newTags.filter(
-                  (tag) => !currentTags.includes(tag),
+                  (tag) => !currentTags.includes(tag)
                 );
                 if (tagsToAdd.length > 0) {
                   dispatch(actions.addTags({ tags: tagsToAdd }));
@@ -249,7 +253,7 @@ export function FoundationForm({
 
                 // Tags to remove (are in currentTags but not in newTags)
                 const tagsToRemove = currentTags.filter(
-                  (tag) => !newTags.includes(tag),
+                  (tag) => !newTags.includes(tag)
                 );
                 if (tagsToRemove.length > 0) {
                   dispatch(actions.removeTags({ tags: tagsToRemove }));

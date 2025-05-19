@@ -6,8 +6,6 @@ import {
   getStringValue,
   getTagText,
 } from "../../shared/utils/utils.js";
-import type { EditorMode } from "../../shared/types.js";
-import { useEffect, useState } from "react";
 import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import {
@@ -25,9 +23,9 @@ import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import { globalScopeTagsEnumOptions } from "../../shared/utils/common-options.js";
-import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
 import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
+import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 
 interface ScopeFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: ViewMode;
@@ -44,29 +42,6 @@ export function ScopeForm({
   const tagText = getTagText(mode);
 
   const documentState = document.state.global;
-
-  // TODO: replace the entire originalNodeState with the actual baseline document
-  const [contentValue, setContentValue] = useState<string>(
-    documentState.content || "",
-  );
-
-  // Update contentValue when documentState changes
-  useEffect(() => {
-    setContentValue(documentState.content || "");
-  }, [documentState.content]);
-
-  // Custom handler for content changes
-  const handleContentChange = (value: string) => {
-    setContentValue(value);
-  };
-
-  // Custom handler for content blur
-  const handleContentBlur = () => {
-    // Only submit if the content has actually changed
-    if (contentValue !== documentState.content) {
-      dispatch(actions.setContent({ content: contentValue }));
-    }
-  };
 
   // baseline document state
   const originalNodeState = getOriginalNotionDocument(
@@ -114,12 +89,11 @@ export function ScopeForm({
             </div>
           </div>
           <div className={cn("flex-1 min-h-[350px]")}>
-            <MarkdownEditor
-              value={contentValue}
-              onChange={handleContentChange}
-              onBlur={handleContentBlur}
-              height={350}
-              label="Content"
+            <MarkdownContentForm
+              value={documentState.content ?? ""}
+              onSave={(value) => {
+                dispatch(actions.setContent({ content: value }));
+              }}
             />
           </div>
 

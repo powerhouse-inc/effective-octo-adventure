@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-// No import is required in the WebPack.
-import "@uiw/react-md-editor/markdown-editor.css";
-// No import is required in the WebPack.
-// import "@uiw/react-markdown-preview/markdown.css";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
+import "@uiw/react-md-editor/markdown-editor.css";
+import "./markdown-editor.module.css";
 
 // Custom preview renderer to make links open in new tabs and ensure proper list rendering
 const previewOptions = {
@@ -36,6 +34,7 @@ export function MarkdownEditor({
   labelStyle = { fontSize: "14px", marginBottom: "10px", fontWeight: 500 },
   readOnly = false,
 }: MarkdownEditorProps) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [MDEditor, setMDEditor] = useState<any>(null);
   const [contentValue, setContentValue] = useState<string>(value || "");
 

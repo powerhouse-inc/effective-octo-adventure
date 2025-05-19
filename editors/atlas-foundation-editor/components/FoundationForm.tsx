@@ -21,14 +21,14 @@ import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
 } from "../../shared/utils/styles.js";
-import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
 import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
+import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 
 interface FoundationFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: ViewMode;
@@ -63,32 +63,12 @@ export function FoundationForm({
     parent: parentId,
   };
 
-  const [contentValue, setContentValue] = useState(documentState.content ?? "");
-
-  // Update contentValue when documentState changes
-  useEffect(() => {
-    setContentValue(documentState.content ?? "");
-  }, [documentState.content]);
-
-  // Custom handler for content changes
-  const handleContentChange = (value: string) => {
-    setContentValue(value);
-  };
-
-  // Custom handler for content blur
-  const handleContentBlur = () => {
-    // Only save if the content has actually changed
-    if (contentValue !== documentState.content) {
-      dispatch(actions.setContent({ content: contentValue }));
-    }
-  };
-
   // baseline node state
   const [originalNodeState] = useState(() =>
     getOriginalNotionDocument(
       (documentState.notionId as string) || "notion-id-not-set",
-      (documentState.atlasType as ParsedNotionDocumentType) || "article"
-    )
+      (documentState.atlasType as ParsedNotionDocumentType) || "article",
+    ),
   );
 
   return (
@@ -113,7 +93,7 @@ export function FoundationForm({
                   dispatch(
                     actions.setFoundationName({
                       name: getStringValue(value),
-                    })
+                    }),
                   );
                 }}
               />
@@ -140,19 +120,18 @@ export function FoundationForm({
             </div>
           </div>
           <div className={cn("flex-1 min-h-[350px]")}>
-            <MarkdownEditor
-              value={contentValue}
-              onChange={handleContentChange}
-              onBlur={handleContentBlur}
-              height={350}
-              label="Content"
+            <MarkdownContentForm
+              value={documentState.content ?? ""}
+              onSave={(value) => {
+                dispatch(actions.setContent({ content: value }));
+              }}
             />
           </div>
 
           <div
             className={cn(
               "flex flex-col gap-3",
-              getWidthClassName(!!isSplitMode)
+              getWidthClassName(!!isSplitMode),
             )}
           >
             <SinglePhIdForm
@@ -173,7 +152,7 @@ export function FoundationForm({
                   dispatch(
                     actions.setParent({
                       id: "",
-                    })
+                    }),
                   );
                 } else {
                   const newParentId = value.split(":")[1];
@@ -182,7 +161,7 @@ export function FoundationForm({
                     actions.setParent({
                       id: newParentId,
                       title: newParentData?.title ?? "",
-                    })
+                    }),
                   );
                 }
               }}
@@ -226,7 +205,7 @@ export function FoundationForm({
                     prevId,
                     id: newId,
                     title: newData?.title ?? "",
-                  })
+                  }),
                 );
               }}
             />

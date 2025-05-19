@@ -18,7 +18,7 @@ import {
 } from "../../../document-models/utils.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
-import { statusStringToEnum } from "../atlas-base/utils.js";
+import { processMarkdownContent, statusStringToEnum } from "../atlas-base/utils.js";
 
 const DOCUMENT_TYPE = "sky/atlas-scope";
 
@@ -77,7 +77,7 @@ export class AtlasScopeClient extends AtlasBaseClient<
       masterStatus: statusStringToEnum(
         input.masterStatus || "Placeholder"
       ) as Status,
-      content: input.markdownContent,
+      content: processMarkdownContent(input.markdownContent),
       notionId: input.id,
       globalTags: input.globalTags as GlobalTag[],
       originalContextData: input.originalContextData,

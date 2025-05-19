@@ -1,7 +1,6 @@
 import type {
   AtlasExploratoryState,
   EAtlasType,
-  EDocumentLink,
   EGlobalTag,
   EStatus,
   Maybe,
@@ -21,6 +20,7 @@ import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import {
   findAtlasParentInCache,
   Link,
+  processMarkdownContent,
   statusStringToEnum,
 } from "../atlas-base/utils.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
@@ -109,7 +109,7 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
       masterStatus: statusStringToEnum(
         input.masterStatus || "Placeholder",
       ) as EStatus,
-      content: input.markdownContent,
+      content: processMarkdownContent(input.markdownContent),
       atlasType,
       notionId: input.id,
       parent: {

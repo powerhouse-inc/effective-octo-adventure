@@ -17,7 +17,7 @@ import {
 } from "../../../document-models/utils.js";
 import { graphqlClient as writeClient } from "../../clients/index.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
-import { findAtlasParentInCache, statusStringToEnum } from "../atlas-base/utils.js";
+import { findAtlasParentInCache, processMarkdownContent, statusStringToEnum } from "../atlas-base/utils.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { type ReactorClient } from "../common/ReactorClient.js";
 import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
@@ -108,7 +108,7 @@ export class AtlasGroundingClient extends AtlasBaseClient<
       masterStatus: statusStringToEnum(
         input.masterStatus || "Placeholder",
       ) as GStatus,
-      content: input.markdownContent,
+      content: processMarkdownContent(input.markdownContent),
       atlasType,
       notionId: input.id,
       parent,

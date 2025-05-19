@@ -18,6 +18,7 @@ import { graphqlClient as writeClient } from "../../clients/index.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import {
   findAtlasParentInCache,
+  processMarkdownContent,
   statusStringToEnum,
 } from "../atlas-base/utils.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
@@ -106,7 +107,7 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
       masterStatus: statusStringToEnum(
         input.masterStatus || "Placeholder"
       ) as MStatus,
-      content: input.markdownContent,
+      content: processMarkdownContent(input.markdownContent),
       atlasType,
       notionId: input.id,
       globalTags: input.globalTags as MGlobalTag[],

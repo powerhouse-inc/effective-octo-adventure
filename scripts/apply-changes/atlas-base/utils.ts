@@ -1,7 +1,10 @@
 import { type Maybe } from "graphql-ts-client";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { ViewNode } from "@powerhousedao/sky-atlas-notion-data";
-import { pndContentToString } from "document-models/utils.js";
+import remarkParse from "remark-parse";
+import remarkStringify from "remark-stringify";
+import { unified } from "unified";
+import { visit } from "unist-util-visit";
 
 export type Link = {
   id: string;
@@ -30,21 +33,6 @@ export const findAtlasParentInCache = (
     };
   }
 
-  // TODO: previous implementation (not used anymore, but kept for reference)
-  // for (let i = 0; (parent === null && i < parents.length); i++) {
-  //   const parentDocIds = cache.resolveInputId(parents[i]);
-  //   if (parentDocIds.length) {
-  //     const parentDoc = cache.searchDocument(parentDocIds[0]);
-  //     if (parentDoc) {
-  //       parent = {
-  //         id: parentDoc.id,
-  //         title: parentDoc.name || null,
-  //         docNo: (parentDoc.state as any)?.docNo || null,
-  //       };
-  //     }
-  //   }
-  // }
-
   if (parent === null) {
     console.log(
       `Can't find the parent in document cache: ${input.ancestorSlugSuffixes?.join(",")}`
@@ -57,16 +45,41 @@ export const findAtlasParentInCache = (
 export const statusStringToEnum = (status: string): string => {
   switch (status.toUpperCase()) {
     case "PLACEHOLDER":
-      return "PLACEHOLDER";
     case "PROVISIONAL":
-      return "PROVISIONAL";
     case "APPROVED":
-      return "APPROVED";
     case "DEFERRED":
-      return "DEFERRED";
     case "ARCHIVED":
-      return "ARCHIVED";
+      return status.toUpperCase();
     default:
       throw new Error("Unknown scope status: " + status);
   }
+};
+
+export const processMarkdownContent = (content: string): string => {
+  const processor = unified()
+    .use(remarkParse)
+    .use(() => (tree) => {
+      visit(tree, "link", (node: any) => {
+        if (!!node.url) {
+          const isRelative = node.url.startsWith("./");
+          const isRootRelative =
+            node.url.startsWith("/") && !node.url.startsWith("//");
+
+          if (isRelative || isRootRelative) {
+            // Prepend the base URL
+            // If the original URL was "./path", it becomes "baseUrl/path"
+            // If the original URL was "/path", it becomes "baseUrl/path"
+            const pathPart = isRelative
+              ? node.url.substring(2)
+              : node.url.substring(1);
+            const baseUrl = process.env.ATLAS_BASE_URL || "https://sky-atlas.powerhouse.io";
+            node.url = `${baseUrl}/${pathPart}`;
+          }
+        }
+      });
+    })
+    .use(remarkStringify);
+
+  const file = processor.processSync(content);
+  return String(file);
 };

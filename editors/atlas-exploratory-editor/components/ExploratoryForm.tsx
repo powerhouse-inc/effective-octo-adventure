@@ -24,14 +24,14 @@ import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm
 import { AdditionalGuidance } from "./AdditionalGuidance.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
+import { useState } from "react";
 import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
 } from "../../shared/utils/styles.js";
 import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
+import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 import { transformUrl } from "../../shared/utils/utils.js";
 
 interface ExploratoryFormProps extends Pick<IProps, "document" | "dispatch"> {
@@ -67,26 +67,6 @@ export function ExploratoryForm({
   const documentState = {
     ...originalDocumentState,
     parent: parentId,
-  };
-
-  const [contentValue, setContentValue] = useState(documentState.content ?? "");
-
-  // Update contentValue when documentState changes
-  useEffect(() => {
-    setContentValue(documentState.content ?? "");
-  }, [documentState.content]);
-
-  // Custom handler for content changes
-  const handleContentChange = (value: string) => {
-    setContentValue(value);
-  };
-
-  // Custom handler for content blur
-  const handleContentBlur = () => {
-    // Only save if the content has actually changed
-    if (contentValue !== documentState.content) {
-      dispatch(actions.setContent({ content: contentValue }));
-    }
   };
 
   // baseline node state
@@ -155,12 +135,11 @@ export function ExploratoryForm({
             </div>
           </div>
           <div className={cn("flex-1 min-h-[350px]")}>
-            <MarkdownEditor
-              value={contentValue}
-              onChange={handleContentChange}
-              onBlur={handleContentBlur}
-              height={350}
-              label="Content"
+            <MarkdownContentForm
+              value={documentState.content ?? ""}
+              onSave={(value) => {
+                dispatch(actions.setContent({ content: value }));
+              }}
             />
           </div>
 

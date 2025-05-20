@@ -17,7 +17,7 @@ import {
 } from "../../../document-models/utils.js";
 import { graphqlClient as writeClient } from "../../clients/index.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
-import { findAtlasParentInCache, statusStringToEnum } from "../atlas-base/utils.js";
+import { findAtlasParentInCache, processMarkdownContent, statusStringToEnum } from "../atlas-base/utils.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { type ReactorClient } from "../common/ReactorClient.js";
 import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
@@ -80,11 +80,10 @@ export class AtlasGroundingClient extends AtlasBaseClient<
     input: ViewNodeExtended,
     currentState: AtlasGroundingState
   ): AtlasGroundingState {
-    // @ts-expect-error
-    const parent: Maybe<GDocumentLink> = findAtlasParentInCache(
+    const parent = findAtlasParentInCache(
       input,
       this.documentsCache
-    );
+    )!;
 
     let atlasType: GAtlasType;
     switch (input.type) {
@@ -108,10 +107,16 @@ export class AtlasGroundingClient extends AtlasBaseClient<
       masterStatus: statusStringToEnum(
         input.masterStatus || "Placeholder",
       ) as GStatus,
-      content: input.markdownContent,
+      content: processMarkdownContent(input.markdownContent),
       atlasType,
       notionId: input.id,
-      parent,
+      parent: {
+        id: parent.id,
+        title: parent.title ?? "",
+        docNo: parent.docNo ?? "",
+        documentType: parent.documentType ?? "",
+        icon: parent.icon ?? "",
+      },
       globalTags: input.globalTags as GGlobalTag[],
       originalContextData: input.originalContextData,
     };
@@ -176,8 +181,7 @@ export class AtlasGroundingClient extends AtlasBaseClient<
         if (!target) {
           throw new Error("Parent is not found");
         }
-        const parsedTarget = target as GDocumentLink;
-        await patch.AtlasGrounding_setParent(arg<SetParentInput>(parsedTarget));
+        await patch.AtlasGrounding_setParent(arg<SetParentInput>(target as GDocumentLink));
         break;
       case "atlasType":
         await patch.AtlasGrounding_setAtlasType(

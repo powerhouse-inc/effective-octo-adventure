@@ -19,17 +19,17 @@ import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
 } from "../../shared/utils/styles.js";
-import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
 import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import { transformUrl } from "../../shared/utils/utils.js";
+import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 
 interface MultiParentFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: ViewMode;
@@ -44,30 +44,9 @@ export function MultiParentForm({
 }: MultiParentFormProps) {
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
-
-  const fetchOptionsCallback = useParentOptions("sky/atlas-multiparent");
-
   const documentState = document.state.global;
 
-  const [contentValue, setContentValue] = useState(documentState.content || "");
-
-  // Update contentValue when documentState changes
-  useEffect(() => {
-    setContentValue(documentState.content || "");
-  }, [documentState.content]);
-
-  // Custom handler for content changes
-  const handleContentChange = (value: string) => {
-    setContentValue(value);
-  };
-
-  // Custom handler for content blur
-  const handleContentBlur = () => {
-    // Only save if the content has actually changed
-    if (contentValue !== documentState.content) {
-      dispatch(actions.setContent({ content: getStringValue(contentValue) }));
-    }
-  };
+  const fetchOptionsCallback = useParentOptions("sky/atlas-multiparent");
 
   // baseline node state
   const [originalNodeState] = useState(() =>
@@ -123,12 +102,11 @@ export function MultiParentForm({
             </div>
           </div>
           <div className={cn("flex-1 min-h-[350px]")}>
-            <MarkdownEditor
-              value={contentValue}
-              onChange={handleContentChange}
-              onBlur={handleContentBlur}
-              height={350}
-              label="Content"
+            <MarkdownContentForm
+              value={documentState.content ?? ""}
+              onSave={(value) => {
+                dispatch(actions.setContent({ content: value }));
+              }}
             />
           </div>
 

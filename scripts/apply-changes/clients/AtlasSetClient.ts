@@ -66,17 +66,17 @@ export class AtlasSetClient extends AtlasBaseClient<
     input: ViewNodeExtended,
     currentState: AtlasSetState
   ): AtlasSetState {
-    const parentLink: Maybe<Link> = findAtlasParentInCache(
+    const parentLink = findAtlasParentInCache(
       input,
       this.documentsCache
-    );
+    )!;
 
     const parent: Maybe<SetDocumentLink> = parentLink
       ? {
           id: parentLink.id,
-          title: parentLink.title || null,
-          documentType: "",
-          icon: "",
+          title: parentLink.title ?? "",
+          documentType: parentLink.documentType ?? "",
+          icon: parentLink.icon ?? "",
         }
       : null;
 
@@ -108,9 +108,7 @@ export class AtlasSetClient extends AtlasBaseClient<
         if (!target) {
           throw new Error("Parent is not found");
         }
-        const parsedTarget = target as SetDocumentLink;
-
-        await patch.AtlasSet_setSetParent(arg<SetSetParentInput>(parsedTarget));
+        await patch.AtlasSet_setSetParent(arg<SetSetParentInput>(target as SetDocumentLink));
         break;
       case "notionId":
         await patch.AtlasSet_setNotionId(

@@ -8,6 +8,7 @@ import {
 import type { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
 import path from "path";
 import fs from "fs";
+import { type IconName } from "@powerhousedao/design-system";
 
 /**
  * Returns the atlas data from the local file system dynamically.
@@ -112,4 +113,25 @@ export const getNodeName = (node: ViewNodeExtended) => {
 
 export const getNodeTitle = (node: ViewNodeExtended) => {
   return `${getNodeDocNo(node)} - ${getNodeName(node)}`;
+};
+
+export const getDocumentIcon = (
+  documentType: string,
+  atlasType: string,
+): IconName => {
+  if (documentType === "sky/atlas-set") {
+    return "FolderClose";
+  }
+
+  const type = atlasType?.toLowerCase() || "scope";
+
+  if (type === "neededResearch" || type === "needed_research") {
+    return "Tube";
+  } else if (type === "tenet") {
+    return "Compass";
+  } else if (type === "annotation") {
+    return "Pencil";
+  }
+
+  return "File";
 };

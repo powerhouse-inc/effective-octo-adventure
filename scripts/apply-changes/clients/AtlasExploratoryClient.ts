@@ -1,6 +1,7 @@
 import type {
   AtlasExploratoryState,
   EAtlasType,
+  EDocumentLink,
   EGlobalTag,
   EStatus,
   Maybe,
@@ -85,10 +86,10 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
     input: ViewNodeExtended,
     currentState: AtlasExploratoryState,
   ): AtlasExploratoryState {
-    const parent: Maybe<Link> = findAtlasParentInCache(
+    const parent = findAtlasParentInCache(
       input,
       this.documentsCache,
-    );
+    )!;
 
     let atlasType: EAtlasType;
     switch (input.type) {
@@ -113,11 +114,11 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
       atlasType,
       notionId: input.id,
       parent: {
-        id: parent?.id || "",
-        title: parent?.title || "",
-        docNo: parent?.docNo || "",
-        documentType: "",
-        icon: "",
+        id: parent.id,
+        title: parent.title ?? "",
+        docNo: parent.docNo ?? "",
+        documentType: parent.documentType ?? "",
+        icon: parent.icon ?? "",
       },
       globalTags: input.globalTags as EGlobalTag[],
       originalContextData: input.originalContextData
@@ -177,19 +178,16 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
         }
         break;
       }
-      case "parent":
-        if (!target) {
+      case "parent":{
+        if (!target || !("id" in target)) {
           throw new Error("Parent is not found");
         }
-        const parsedTarget = target as string;
+
         await patch.AtlasExploratory_setParent(
-          arg<SetParentInput>({ 
-            id: parsedTarget,
-            title: parsedTarget,
-            docNo: parsedTarget,
-           }),
+          arg<SetParentInput>(target as EDocumentLink),
         );
         break;
+      }
       case "atlasType":
         await patch.AtlasExploratory_setAtlasType(
           arg<any>({ atlasType: target as EAtlasType }),

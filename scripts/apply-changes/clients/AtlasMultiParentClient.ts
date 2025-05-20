@@ -83,11 +83,10 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
     input: ViewNodeExtended,
     currentState: AtlasMultiParentState
   ): AtlasMultiParentState {
-    // @ts-expect-error
-    const parent: Maybe<MDocumentLink> = findAtlasParentInCache(
+    const parent = findAtlasParentInCache(
       input,
       this.documentsCache,
-    );
+    )! as MDocumentLink;
 
     let atlasType: MAtlasType;
     switch (input.type) {

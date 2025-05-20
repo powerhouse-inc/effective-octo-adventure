@@ -17,7 +17,7 @@ const DRIVE_NAME =
 const PREFERRED_EDITOR = "AtlasDriveExplorer";
 
 // Max. number of document to process
-const PROCESS_LIMIT = 200;
+const PROCESS_LIMIT = 500;
 
 // Which scope documents to skip or include
 const SKIP_NODES: { [id: string]: boolean } = {

@@ -5,11 +5,14 @@ import remarkParse from "remark-parse";
 import remarkStringify from "remark-stringify";
 import { unified } from "unified";
 import { visit } from "unist-util-visit";
+import { getDocumentIcon } from "../../../document-models/utils.js";
 
 export type Link = {
   id: string;
   docNo: Maybe<string>;
   title: Maybe<string>;
+  documentType: Maybe<string>;
+  icon: Maybe<string>;
 };
 
 export const findAtlasParentInCache = (
@@ -28,8 +31,13 @@ export const findAtlasParentInCache = (
   if (parentDoc) {
     parent = {
       id: parentDoc.id,
-      title: parentDoc.name || null,
-      docNo: (parentDoc.state as any)?.docNo || null,
+      title: parentDoc.name || "",
+      docNo: (parentDoc.state as any)?.docNo || "",
+      documentType: parentDoc.documentType,
+      icon: getDocumentIcon(
+        parentDoc.documentType,
+        (parentDoc.state as any).atlasType,
+      ),
     };
   }
 

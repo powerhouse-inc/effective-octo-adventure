@@ -1,16 +1,7 @@
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import docsIndex from "../../../scripts/apply-changes/data/index.json" with { type: "json" };
-import { type EditorMode } from "../types.js";
 import type { DocumentDriveDocument } from "document-drive";
 import { type ViewMode } from "@powerhousedao/document-engineering/scalars";
-
-/**
- * @deprecated Use fetchPHIDOptions & fetchSelectedPHIDOption instead
- */
-export const cb = async (phid: string): Promise<PHIDOption[]> =>
-  (docsIndex as PHIDOption[]).filter(
-    (entry) => entry.value.includes(phid) || (entry.title || "").includes(phid),
-  );
 
 const filterPHIDOptions = (
   options: PHIDOption[],
@@ -108,4 +99,8 @@ export const parseTitleText = (title: string) => {
     return { docNo: parts[0], name: parts[1] };
   }
   return { docNo: "", name: title };
+};
+
+export const transformUrl = (url: string): string => {
+  return encodeURIComponent(url).replace(/\./g, "%2E");
 };

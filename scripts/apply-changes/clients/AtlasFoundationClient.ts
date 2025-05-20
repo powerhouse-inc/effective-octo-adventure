@@ -85,11 +85,10 @@ export class AtlasFoundationClient extends AtlasBaseClient<
     input: ViewNodeExtended,
     currentState: AtlasFoundationState,
   ): AtlasFoundationState {
-    // @ts-expect-error
-    const parent: Maybe<FDocumentLink> = findAtlasParentInCache(
+    const parent = findAtlasParentInCache(
       input,
       this.documentsCache,
-    );
+    )!;
 
     let atlasType: FAtlasType;
     switch (input.type) {
@@ -118,7 +117,13 @@ export class AtlasFoundationClient extends AtlasBaseClient<
       content: processMarkdownContent(input.markdownContent),
       atlasType,
       notionId: input.id,
-      parent,
+      parent: {
+        id: parent.id,
+        title: parent.title ?? "",
+        docNo: parent.docNo ?? "",
+        documentType: parent.documentType ?? "",
+        icon: parent.icon ?? "",
+      },
       globalTags: input.globalTags as FGlobalTag[],
       originalContextData: input.originalContextData,
     };

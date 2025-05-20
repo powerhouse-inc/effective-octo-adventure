@@ -80,11 +80,10 @@ export class AtlasGroundingClient extends AtlasBaseClient<
     input: ViewNodeExtended,
     currentState: AtlasGroundingState
   ): AtlasGroundingState {
-    // @ts-expect-error
-    const parent: Maybe<GDocumentLink> = findAtlasParentInCache(
+    const parent = findAtlasParentInCache(
       input,
       this.documentsCache
-    );
+    )!;
 
     let atlasType: GAtlasType;
     switch (input.type) {
@@ -111,7 +110,13 @@ export class AtlasGroundingClient extends AtlasBaseClient<
       content: processMarkdownContent(input.markdownContent),
       atlasType,
       notionId: input.id,
-      parent,
+      parent: {
+        id: parent.id,
+        title: parent.title ?? "",
+        docNo: parent.docNo ?? "",
+        documentType: parent.documentType ?? "",
+        icon: parent.icon ?? "",
+      },
       globalTags: input.globalTags as GGlobalTag[],
       originalContextData: input.originalContextData,
     };
@@ -176,8 +181,7 @@ export class AtlasGroundingClient extends AtlasBaseClient<
         if (!target) {
           throw new Error("Parent is not found");
         }
-        const parsedTarget = target as GDocumentLink;
-        await patch.AtlasGrounding_setParent(arg<SetParentInput>(parsedTarget));
+        await patch.AtlasGrounding_setParent(arg<SetParentInput>(target as GDocumentLink));
         break;
       case "atlasType":
         await patch.AtlasGrounding_setAtlasType(

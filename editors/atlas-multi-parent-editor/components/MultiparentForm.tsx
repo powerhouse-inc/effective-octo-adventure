@@ -102,6 +102,7 @@ export function MultiParentForm({
           <div className={cn("flex-1 min-h-[350px]")}>
             <MarkdownContentForm
               value={documentState.content ?? ""}
+              baselineValue={""}
               onSave={(value) => {
                 dispatch(actions.setContent({ content: value }));
               }}

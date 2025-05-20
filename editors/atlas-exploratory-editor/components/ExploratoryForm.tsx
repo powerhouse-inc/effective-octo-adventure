@@ -26,12 +26,13 @@ import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js"
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { MarkdownEditor } from "../../shared/components/markdown-editor.js";
-import { MultiPhIdForm } from "../../shared/components/forms/MultiPhIdForm.js";
+import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
 } from "../../shared/utils/styles.js";
 import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
+import { transformUrl } from "../../shared/utils/utils.js";
 
 interface ExploratoryFormProps extends Pick<IProps, "document" | "dispatch"> {
   mode: ViewMode;
@@ -245,43 +246,32 @@ export function ExploratoryForm({
               getWidthClassName(!!isSplitMode),
             )}
           >
-            <MultiPhIdForm
+            <MultiUrlForm
               label="Original Context Data"
               data={documentState.originalContextData.map((element) => {
-                const initialOption: PHIDOption = {
-                  icon: "File",
-                  title: element.title ?? "",
-                  value: `phd:${element.id}`,
-                };
-
                 return {
-                  id: `phd:${element.id}`,
-                  initialOptions: [initialOption],
+                  id: transformUrl(element),
+                  value: element,
                 };
               })}
               onAdd={(value) => {
-                const newData = fetchSelectedPHIDOption(value);
-                const newId = value.split(":")[1];
                 dispatch(
                   actions.addContextData({
-                    id: newId,
-                    title: newData?.title ?? "",
+                    id: value,
                   }),
                 );
               }}
               onRemove={({ value }) => {
-                const id = value.split(":")[1];
+                const id = value;
                 dispatch(actions.removeContextData({ id }));
               }}
               onUpdate={({ previousValue, value }) => {
-                const newData = fetchSelectedPHIDOption(value);
-                const prevId = previousValue.split(":")[1];
-                const newId = value.split(":")[1];
+                const prevId = previousValue;
+                const newId = value;
                 dispatch(
                   actions.replaceContextData({
                     prevId,
                     id: newId,
-                    title: newData?.title ?? "",
                   }),
                 );
               }}

@@ -8,7 +8,6 @@ import {
 import {
   Sidebar,
   SidebarProvider,
-  type NodeStatus,
   type SidebarNode,
 } from "@powerhousedao/document-engineering/ui";
 import { useCallback, useState, useRef, useMemo } from "react";
@@ -21,7 +20,7 @@ import { Home } from "./home.js";
 import { documentModel as AtlasFeedbackIssues } from "../../../document-models/atlas-feedback-issues/gen/document-model.js";
 import type { Node } from "document-drive";
 import { ShareDrive } from "../../shared/components/share-drive.js";
-import type { AtlasMultiParentState } from "../../../document-models/atlas-multi-parent/index.js";
+import { buildSidebarTree } from "../sidebar-utils.js";
 
 export interface DriverLayoutProps {
   readonly driveId: string;
@@ -229,108 +228,4 @@ export function DriverLayout({
       </main>
     </SidebarProvider>
   );
-}
-
-function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
-  const nodesById: Record<string, SidebarNode> = {};
-
-  for (const [key, node] of Object.entries(allNodes)) {
-    let icons = {};
-    const type = node.global.atlasType?.toLowerCase() || "scope";
-
-    if (node.documentType === "sky/atlas-set") {
-      icons = {
-        icon: "FolderClose",
-        expandedIcon: "FolderOpen",
-      };
-    } else if (type === "neededResearch") {
-      icons = {
-        icon: "Tube",
-      };
-    } else if (type === "tenet") {
-      icons = {
-        icon: "Compass",
-      };
-    } else if (type === "annotation") {
-      icons = {
-        icon: "Pencil",
-      };
-    }
-
-    let status = "UNCHANGED";
-
-    if (!node.global.notionId) {
-      status = "CREATED";
-    } else if (node.revision.global > 7) {
-      status = "MODIFIED";
-    }
-
-    // get the right title for the node depending on the document type
-    const title =
-      "sky/atlas-set" === node.documentType
-        ? node.global.name
-        : "sky/atlas-multiparent" === node.documentType
-          ? `${(node.global as unknown as AtlasMultiParentState).parents?.[0]?.docNo} - ${node.global.name}`
-          : `${node.global?.docNo} - ${node.global.name}`;
-
-    nodesById[key] = {
-      id: key,
-      title,
-      children: [],
-      status: status as NodeStatus,
-      ...icons,
-    };
-  }
-
-  // Build the tree
-  for (const [key, value] of Object.entries(allNodes)) {
-    if (value.documentType === "sky/atlas-multiparent") {
-      const parents = (value.global as unknown as AtlasMultiParentState)
-        .parents;
-      if (parents && parents.length > 0) {
-        for (const parent of parents) {
-          nodesById[parent.id]?.children?.push(nodesById[key]);
-        }
-      }
-    } else if (
-      value.global.parent &&
-      !!value.global.parent.id &&
-      nodesById[value.global.parent.id]
-    ) {
-      if (nodesById[key]) {
-        nodesById[value.global.parent.id]?.children?.push(nodesById[key]);
-      }
-    }
-  }
-
-  const childrenIds = new Set<string>();
-
-  Object.entries(nodesById).forEach(([id, node]) => {
-    if (node?.children) {
-      node?.children?.forEach((child) => {
-        childrenIds.add(child.id);
-      });
-    }
-  });
-
-  const result = Object.values(nodesById).filter(
-    (node) => !childrenIds.has(node.id),
-  );
-
-  return sortSidebarNodes(result);
-}
-
-function sortSidebarNodes(nodes: SidebarNode[]): SidebarNode[] {
-  const sortedNodes = nodes.map((node) => {
-    if (node?.children && node?.children?.length > 0) {
-      return {
-        ...node,
-        children: sortSidebarNodes(node?.children),
-      };
-    }
-
-    return node;
-  });
-
-  return sortedNodes.sort((a, b) => a.title.localeCompare(b.title));
 }

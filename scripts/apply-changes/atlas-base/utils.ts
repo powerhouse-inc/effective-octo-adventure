@@ -91,3 +91,7 @@ export const processMarkdownContent = (content: string): string => {
   const file = processor.processSync(content);
   return String(file);
 };
+
+export const contextDataIdToUrl = (contextDataId: string): string => {
+  return `https://www.notion.so/${contextDataId.replaceAll("-", "")}`;
+};

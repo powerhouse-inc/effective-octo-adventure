@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import "@uiw/react-md-editor/markdown-editor.css";
-import "./markdown-editor.module.css";
 
 // Custom preview renderer to make links open in new tabs and ensure proper list rendering
 const previewOptions = {
@@ -67,6 +66,37 @@ export function MarkdownEditor({
 
   return (
     <div>
+      <style>
+        {`
+          .w-md-editor-preview ul {
+            list-style-type: disc !important;
+            padding-left: 2em !important;
+          }
+
+          .w-md-editor-preview ol {
+            list-style-type: decimal !important;
+            padding-left: 2em !important;
+          }
+
+          /* Ensure proper table styling */
+          .w-md-editor-preview table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1em 0;
+          }
+
+          .w-md-editor-preview th,
+          .w-md-editor-preview td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+          }
+
+          .w-md-editor-preview th {
+            background-color: #f5f5f5;
+          }
+        `}
+      </style>
       {label && <p style={labelStyle}>{label}</p>}
       {MDEditor && (
         <div data-color-mode="light">

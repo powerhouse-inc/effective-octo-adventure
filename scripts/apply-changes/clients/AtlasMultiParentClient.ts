@@ -17,6 +17,7 @@ import {
 import { graphqlClient as writeClient } from "../../clients/index.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import {
+  contextDataIdToUrl,
   findAtlasParentInCache,
   processMarkdownContent,
   statusStringToEnum,
@@ -158,7 +159,7 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
           await Promise.all(
             target.map(async (contextData) => {
               await patch.AtlasMultiParent_addContextData(
-                arg<any>({ id: contextData })
+                arg<any>({ id: contextDataIdToUrl(contextData as string) })
               );
             })
           );

@@ -17,7 +17,7 @@ import {
 } from "../../../document-models/utils.js";
 import { graphqlClient as writeClient } from "../../clients/index.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
-import { findAtlasParentInCache, processMarkdownContent, statusStringToEnum } from "../atlas-base/utils.js";
+import { contextDataIdToUrl, findAtlasParentInCache, processMarkdownContent, statusStringToEnum } from "../atlas-base/utils.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { type ReactorClient } from "../common/ReactorClient.js";
 import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
@@ -170,7 +170,7 @@ export class AtlasGroundingClient extends AtlasBaseClient<
           await Promise.all(
             target.map(async (contextData) => {
               await patch.AtlasGrounding_addContextData(
-                arg<any>({ id: contextData })
+                arg<any>({ id: contextDataIdToUrl(contextData) })
               );
             })
           );

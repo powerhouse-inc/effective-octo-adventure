@@ -18,7 +18,7 @@ import {
 } from "../../../document-models/utils.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
-import { processMarkdownContent, statusStringToEnum } from "../atlas-base/utils.js";
+import { contextDataIdToUrl, processMarkdownContent, statusStringToEnum } from "../atlas-base/utils.js";
 
 const DOCUMENT_TYPE = "sky/atlas-scope";
 
@@ -130,7 +130,7 @@ export class AtlasScopeClient extends AtlasBaseClient<
           await Promise.all(
             target.map(async (contextData) => {
               await patch.AtlasScope_addContextData(
-                arg<any>({ id: contextData })
+                arg<any>({ id: contextDataIdToUrl(contextData) })
               );
             })
           );

@@ -19,6 +19,7 @@ import {
 import { graphqlClient as writeClient } from "../../clients/index.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import {
+  contextDataIdToUrl,
   findAtlasParentInCache,
   Link,
   processMarkdownContent,
@@ -171,7 +172,7 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
           await Promise.all(
             target.map(async (contextData) => {
               await patch.AtlasExploratory_addContextData(
-                arg<any>({ id: contextData }),
+                arg<any>({ id: contextDataIdToUrl(contextData) }),
               );
             })
           );

@@ -2,6 +2,7 @@ import { cn, type ViewMode } from "@powerhousedao/document-engineering/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
   fetchSelectedPHIDOption,
+  getBaseDocumentTimestamp,
   getCardVariant,
   getStringValue,
   getTagText,
@@ -71,6 +72,8 @@ export function FoundationForm({
       (documentState.atlasType as ParsedNotionDocumentType) || "article",
     ),
   );
+
+  console.log("getBaseDocumentTimestamp", getBaseDocumentTimestamp(document));
 
   return (
     <FormModeProvider mode={mode}>

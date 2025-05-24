@@ -29,7 +29,10 @@ import {
 } from "../../shared/utils/styles.js";
 import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
-import { transformUrl } from "../../shared/utils/utils.js";
+import {
+  transformUrl,
+  getBaseDocumentTimestamp,
+} from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 
 interface GroundingFormProps extends Pick<IProps, "document" | "dispatch"> {
@@ -72,6 +75,8 @@ export function GroundingForm({
       (documentState.atlasType as ParsedNotionDocumentType) || "tenet",
     ),
   );
+
+  console.log("getBaseDocumentTimestamp", getBaseDocumentTimestamp(document));
 
   return (
     <FormModeProvider mode={mode}>

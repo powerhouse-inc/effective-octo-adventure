@@ -7,6 +7,7 @@ import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { getFlexLayoutClassName } from "../../shared/utils/styles.js";
 import {
   fetchSelectedPHIDOption,
+  getBaseDocumentTimestamp,
   getCardVariant,
   getStringValue,
   getTagText,
@@ -51,6 +52,8 @@ export function SetForm({
     parent: "",
   };
 
+  console.log("getBaseDocumentTimestamp", getBaseDocumentTimestamp(document));
+
   return (
     <FormModeProvider mode={mode}>
       <ContentCard tagText={tagText} variant={cardVariant} className="mt-4">
@@ -87,7 +90,7 @@ export function SetForm({
                       actions.setSetParent({
                         id: "",
                         title: "",
-                      })
+                      }),
                     );
                   } else {
                     const newParentId = value.split(":")[1];
@@ -96,7 +99,7 @@ export function SetForm({
                       actions.setSetParent({
                         id: newParentId,
                         title: newParentData?.title ?? "",
-                      })
+                      }),
                     );
                   }
                 }}

@@ -37,8 +37,6 @@ const MarkdownContentForm: React.FC<MarkdownContentFormProps> = ({
     }
   };
 
-  console.log("mode", mode);
-
   if (mode === "edition") {
     return (
       <div>

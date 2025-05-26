@@ -50,8 +50,6 @@ export function ScopeForm({
     (documentState.atlasType as ParsedNotionDocumentType) || "article",
   );
 
-  console.log("getBaseDocumentTimestamp", getBaseDocumentTimestamp(document));
-
   return (
     <FormModeProvider mode={mode}>
       <ContentCard tagText={tagText} variant={cardVariant} className="mt-4">

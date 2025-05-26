@@ -73,8 +73,6 @@ export function FoundationForm({
     ),
   );
 
-  console.log("getBaseDocumentTimestamp", getBaseDocumentTimestamp(document));
-
   return (
     <FormModeProvider mode={mode}>
       <ContentCard tagText={tagText} variant={cardVariant}>

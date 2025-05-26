@@ -52,8 +52,6 @@ export function SetForm({
     parent: "",
   };
 
-  console.log("getBaseDocumentTimestamp", getBaseDocumentTimestamp(document));
-
   return (
     <FormModeProvider mode={mode}>
       <ContentCard tagText={tagText} variant={cardVariant} className="mt-4">

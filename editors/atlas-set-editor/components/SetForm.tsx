@@ -7,7 +7,6 @@ import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { getFlexLayoutClassName } from "../../shared/utils/styles.js";
 import {
   fetchSelectedPHIDOption,
-  getBaseDocumentTimestamp,
   getCardVariant,
   getStringValue,
   getTagText,

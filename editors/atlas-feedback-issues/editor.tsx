@@ -1,6 +1,6 @@
 import { WagmiContext } from "@powerhousedao/design-system";
 import { type ViewNode, type ViewNodeMap } from "./types/view-nodes.js";
-import { type EditorProps, hashKey } from "document-model";
+import { type EditorProps, generateId } from "document-model";
 import {
   actions,
   type CreateIssueInput,
@@ -110,7 +110,7 @@ export default function Editor(props: AtlasFeedbackIssuesEditorProps) {
   const handleCreateIssue = useCallback(
     (event: CreateIssueEvent) => {
       const { notionIds } = event.detail;
-      const phid = hashKey();
+      const phid = generateId();
       const input: CreateIssueInput = {
         phid,
         notionIds,

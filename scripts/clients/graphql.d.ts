@@ -21,6 +21,7 @@ export declare type JSONObject = string
 export declare type OID = string
 export declare type OLabel = string
 export declare type PHID = string
+export declare type Unknown = string
 export declare type URL = string
 
 // Enums
@@ -405,8 +406,6 @@ export interface AtlasGroundingArgs {}
 export interface AtlasMultiParentArgs {}
 export interface AtlasScopeArgs {}
 export interface AtlasSetArgs {}
-export interface MeArgs {}
-export interface SessionsArgs {}
 export interface DrivesArgs {}
 export interface DriveIdBySlugArgs {
   slug: string
@@ -794,25 +793,15 @@ export interface AtlasSetSetNotionIdArgs {
   docId?: PHID
   input?: AtlasSet_SetNotionIdInput
 }
-export interface CreateChallengeArgs {
-  address: string
-}
-export interface SolveChallengeArgs {
-  nonce: string
-  signature: string
-}
-export interface CreateSessionArgs {
-  session: SessionInput
-}
-export interface RevokeSessionArgs {
-  sessionId: string
-}
 export interface ForkAtlasArgs {
   driveId?: string
   docId?: PHID
 }
 export interface AddDriveArgs {
-  global: DocumentDriveStateInput
+  name: string
+  icon?: string
+  id?: string
+  slug?: string
   preferredEditor?: string
 }
 export interface SetDriveIconArgs {
@@ -825,6 +814,18 @@ export interface SetDriveNameArgs {
 }
 
 // Input/Output Types
+
+/**
+ * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
+ */
+
+export interface AddDriveResult {
+  id: string
+  slug: string
+  name: string
+  icon?: string
+  preferredEditor?: string
+}
 
 /**
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
@@ -941,7 +942,7 @@ export interface AtlasExploratory_AtlasExploratoryState {
   content?: string
   masterStatus: AtlasExploratory_EStatus
   globalTags: AtlasExploratory_EGlobalTag[]
-  originalContextData: string[]
+  originalContextData: AtlasExploratory_EDocumentLink[]
   notionId?: string
   findings: AtlasExploratory_Finding
   additionalGuidance: string
@@ -956,7 +957,6 @@ export interface AtlasExploratory_EDocumentLink {
   title?: OLabel
   docNo?: string
   documentType?: string
-  icon?: string
 }
 
 /**
@@ -1276,7 +1276,7 @@ export interface AtlasFoundation_AtlasFoundationState {
   content?: string
   masterStatus: AtlasFoundation_FStatus
   globalTags: AtlasFoundation_FGlobalTag[]
-  originalContextData: string[]
+  originalContextData: AtlasFoundation_FDocumentLink[]
   notionId?: string
 }
 
@@ -1289,7 +1289,6 @@ export interface AtlasFoundation_FDocumentLink {
   title?: OLabel
   docNo?: string
   documentType?: string
-  icon?: string
 }
 
 /**
@@ -1447,7 +1446,7 @@ export interface AtlasGrounding_AtlasGroundingState {
   content?: string
   masterStatus: AtlasGrounding_GStatus
   globalTags: AtlasGrounding_GGlobalTag[]
-  originalContextData: string[]
+  originalContextData: AtlasGrounding_GDocumentLink[]
   notionId?: string
 }
 
@@ -1460,7 +1459,6 @@ export interface AtlasGrounding_GDocumentLink {
   title?: OLabel
   docNo?: string
   documentType?: string
-  icon?: string
 }
 
 /**
@@ -1629,7 +1627,7 @@ export interface AtlasMultiParent_AtlasMultiParentState {
   content?: string
   masterStatus: AtlasMultiParent_MStatus
   globalTags: AtlasMultiParent_MGlobalTag[]
-  originalContextData: string[]
+  originalContextData: AtlasMultiParent_MDocumentLink[]
   notionId?: string
 }
 
@@ -1642,7 +1640,6 @@ export interface AtlasMultiParent_MDocumentLink {
   title?: OLabel
   docNo?: string
   documentType?: string
-  icon?: string
 }
 
 /**
@@ -1798,7 +1795,7 @@ export interface AtlasScope_AtlasScopeState {
   content?: string
   masterStatus: AtlasScope_Status
   globalTags: AtlasScope_GlobalTag[]
-  originalContextData: string[]
+  originalContextData: AtlasScope_DocumentInfo[]
   notionId?: string
 }
 
@@ -1811,7 +1808,6 @@ export interface AtlasScope_DocumentInfo {
   title?: OLabel
   docNo?: string
   documentType?: string
-  icon?: string
 }
 
 /**
@@ -1938,7 +1934,6 @@ export interface AtlasSet_SetDocumentLink {
   id: PHID
   title?: OLabel
   documentType?: string
-  icon?: string
 }
 
 /**
@@ -1986,16 +1981,6 @@ export interface AtlasSetState {
   name: string
   parent?: SetDocumentLink
   notionId?: string
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface Challenge {
-  nonce: string
-  message: string
-  hex: string
 }
 
 /**
@@ -2051,11 +2036,9 @@ export interface DocumentDrive {
  */
 
 export interface DocumentDrive_DocumentDriveState {
-  id: ID
   name: string
   nodes: []
   icon?: string
-  slug?: string
 }
 
 /**
@@ -2360,12 +2343,8 @@ export interface Mutation {
   AtlasSet_setSetName?: number
   AtlasSet_setSetParent?: number
   AtlasSet_setNotionId?: number
-  createChallenge?: Challenge
-  solveChallenge?: SessionOutput
-  createSession?: SessionOutput
-  revokeSession?: SessionOutput
   ForkAtlas?: string
-  addDrive?: DocumentDrive_DocumentDriveState
+  addDrive?: AddDriveResult
   setDriveIcon?: boolean
   setDriveName?: boolean
 }
@@ -2407,49 +2386,8 @@ export interface Query {
   AtlasMultiParent?: AtlasMultiParentQueries
   AtlasScope?: AtlasScopeQueries
   AtlasSet?: AtlasSetQueries
-  me?: User
-  sessions: Session[]
   drives: string[]
   driveIdBySlug?: string
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface Session {
-  id: ID
-  userId: string
-  address: string
-  expiresAt: DateTime
-  createdAt: DateTime
-  updatedAt: DateTime
-  referenceTokenId: string
-  createdBy: string
-  referenceExpiryDate?: DateTime
-  isUserCreated: boolean
-  name?: string
-  allowedOrigins?: string
-  revokedAt?: DateTime
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface SessionInput {
-  expiryDurationSeconds?: number
-  name: string
-  allowedOrigins: string
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
-export interface SessionOutput {
-  id: ID
-  token?: string
 }
 
 /**
@@ -2496,15 +2434,6 @@ export interface SignerUser {
  * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
  */
 
-export interface User {
-  address: string
-  createdAt: DateTime
-}
-
-/**
- * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
- */
-
 export interface Value {
   path?: string
   label?: string
@@ -2513,6 +2442,14 @@ export interface Value {
 }
 
 // Selection Types
+
+export interface AddDriveResultSelection {
+  id?: boolean
+  slug?: boolean
+  name?: boolean
+  icon?: boolean
+  preferredEditor?: boolean
+}
 
 export interface AnalyticsFilterSelection {
   start?: boolean
@@ -2604,7 +2541,7 @@ export interface AtlasExploratory_AtlasExploratoryStateSelection {
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  originalContextData?: boolean
+  originalContextData?: AtlasExploratory_EDocumentLinkSelection
   notionId?: boolean
   findings?: AtlasExploratory_FindingSelection
   additionalGuidance?: boolean
@@ -2615,7 +2552,6 @@ export interface AtlasExploratory_EDocumentLinkSelection {
   title?: boolean
   docNo?: boolean
   documentType?: boolean
-  icon?: boolean
 }
 
 export interface AtlasExploratory_FindingSelection {
@@ -2827,7 +2763,7 @@ export interface AtlasFoundation_AtlasFoundationStateSelection {
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  originalContextData?: boolean
+  originalContextData?: AtlasFoundation_FDocumentLinkSelection
   notionId?: boolean
 }
 
@@ -2836,7 +2772,6 @@ export interface AtlasFoundation_FDocumentLinkSelection {
   title?: boolean
   docNo?: boolean
   documentType?: boolean
-  icon?: boolean
 }
 
 export interface AtlasFoundation_RemoveContextDataInputSelection {
@@ -2940,7 +2875,7 @@ export interface AtlasGrounding_AtlasGroundingStateSelection {
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  originalContextData?: boolean
+  originalContextData?: AtlasGrounding_GDocumentLinkSelection
   notionId?: boolean
 }
 
@@ -2949,7 +2884,6 @@ export interface AtlasGrounding_GDocumentLinkSelection {
   title?: boolean
   docNo?: boolean
   documentType?: boolean
-  icon?: boolean
 }
 
 export interface AtlasGrounding_RemoveContextDataInputSelection {
@@ -3060,7 +2994,7 @@ export interface AtlasMultiParent_AtlasMultiParentStateSelection {
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  originalContextData?: boolean
+  originalContextData?: AtlasMultiParent_MDocumentLinkSelection
   notionId?: boolean
 }
 
@@ -3069,7 +3003,6 @@ export interface AtlasMultiParent_MDocumentLinkSelection {
   title?: boolean
   docNo?: boolean
   documentType?: boolean
-  icon?: boolean
 }
 
 export interface AtlasMultiParent_RemoveContextDataInputSelection {
@@ -3171,7 +3104,7 @@ export interface AtlasScope_AtlasScopeStateSelection {
   content?: boolean
   masterStatus?: boolean
   globalTags?: boolean
-  originalContextData?: boolean
+  originalContextData?: AtlasScope_DocumentInfoSelection
   notionId?: boolean
 }
 
@@ -3180,7 +3113,6 @@ export interface AtlasScope_DocumentInfoSelection {
   title?: boolean
   docNo?: boolean
   documentType?: boolean
-  icon?: boolean
 }
 
 export interface AtlasScope_RemoveContextDataInputSelection {
@@ -3265,7 +3197,6 @@ export interface AtlasSet_SetDocumentLinkSelection {
   id?: boolean
   title?: boolean
   documentType?: boolean
-  icon?: boolean
 }
 
 export interface AtlasSet_SetNotionIdInputSelection {
@@ -3298,12 +3229,6 @@ export interface AtlasSetStateSelection {
   name?: boolean
   parent?: SetDocumentLinkSelection
   notionId?: boolean
-}
-
-export interface ChallengeSelection {
-  nonce?: boolean
-  message?: boolean
-  hex?: boolean
 }
 
 export interface CommentSelection {
@@ -3344,11 +3269,9 @@ export interface DocumentDriveSelection {
 }
 
 export interface DocumentDrive_DocumentDriveStateSelection {
-  id?: boolean
   name?: boolean
   nodes?: boolean
   icon?: boolean
-  slug?: boolean
 }
 
 export interface DocumentDrive_FileNodeSelection {
@@ -4248,30 +4171,6 @@ export interface MutationSelection {
       input?: AtlasSet_SetNotionIdInput
     }
   }
-  createChallenge?: {
-    __headers?: { [key: string]: string }
-    __retry?: boolean
-    __alias?: string
-    __args: { address: string }
-  } & ChallengeSelection
-  solveChallenge?: {
-    __headers?: { [key: string]: string }
-    __retry?: boolean
-    __alias?: string
-    __args: { nonce: string; signature: string }
-  } & SessionOutputSelection
-  createSession?: {
-    __headers?: { [key: string]: string }
-    __retry?: boolean
-    __alias?: string
-    __args: { session: SessionInput }
-  } & SessionOutputSelection
-  revokeSession?: {
-    __headers?: { [key: string]: string }
-    __retry?: boolean
-    __alias?: string
-    __args: { sessionId: string }
-  } & SessionOutputSelection
   ForkAtlas?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
@@ -4282,8 +4181,14 @@ export interface MutationSelection {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args: { global: DocumentDriveStateInput; preferredEditor?: string }
-  } & DocumentDrive_DocumentDriveStateSelection
+    __args: {
+      name: string
+      icon?: string
+      id?: string
+      slug?: string
+      preferredEditor?: string
+    }
+  } & AddDriveResultSelection
   setDriveIcon?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
@@ -4314,33 +4219,6 @@ export interface PHOperationContextSelection {
   signer?: SignerSelection
 }
 
-export interface SessionSelection {
-  id?: boolean
-  userId?: boolean
-  address?: boolean
-  expiresAt?: boolean
-  createdAt?: boolean
-  updatedAt?: boolean
-  referenceTokenId?: boolean
-  createdBy?: boolean
-  referenceExpiryDate?: boolean
-  isUserCreated?: boolean
-  name?: boolean
-  allowedOrigins?: boolean
-  revokedAt?: boolean
-}
-
-export interface SessionInputSelection {
-  expiryDurationSeconds?: boolean
-  name?: boolean
-  allowedOrigins?: boolean
-}
-
-export interface SessionOutputSelection {
-  id?: boolean
-  token?: boolean
-}
-
 export interface SetDocumentLinkSelection {
   id?: boolean
   title?: boolean
@@ -4363,11 +4241,6 @@ export interface SignerUserSelection {
   address?: boolean
   networkId?: boolean
   chainId?: boolean
-}
-
-export interface UserSelection {
-  address?: boolean
-  createdAt?: boolean
 }
 
 export interface ValueSelection {
@@ -4458,24 +4331,6 @@ export declare const client: {
         __alias?: string
       } & AtlasSetQueriesSelection,
       DeepRequired<AtlasSetQueries>,
-      AllEnums
-    >
-    me: Endpoint<
-      {
-        __headers?: { [key: string]: string }
-        __retry?: boolean
-        __alias?: string
-      } & UserSelection,
-      DeepRequired<User>,
-      AllEnums
-    >
-    sessions: Endpoint<
-      {
-        __headers?: { [key: string]: string }
-        __retry?: boolean
-        __alias?: string
-      } & SessionSelection,
-      DeepRequired<Session[]>,
       AllEnums
     >
     drives: Endpoint<
@@ -5279,46 +5134,6 @@ export declare const client: {
       number,
       AllEnums
     >
-    createChallenge: Endpoint<
-      {
-        __headers?: { [key: string]: string }
-        __retry?: boolean
-        __alias?: string
-        __args: CreateChallengeArgs
-      } & ChallengeSelection,
-      DeepRequired<Challenge>,
-      AllEnums
-    >
-    solveChallenge: Endpoint<
-      {
-        __headers?: { [key: string]: string }
-        __retry?: boolean
-        __alias?: string
-        __args: SolveChallengeArgs
-      } & SessionOutputSelection,
-      DeepRequired<SessionOutput>,
-      AllEnums
-    >
-    createSession: Endpoint<
-      {
-        __headers?: { [key: string]: string }
-        __retry?: boolean
-        __alias?: string
-        __args: CreateSessionArgs
-      } & SessionOutputSelection,
-      DeepRequired<SessionOutput>,
-      AllEnums
-    >
-    revokeSession: Endpoint<
-      {
-        __headers?: { [key: string]: string }
-        __retry?: boolean
-        __alias?: string
-        __args: RevokeSessionArgs
-      } & SessionOutputSelection,
-      DeepRequired<SessionOutput>,
-      AllEnums
-    >
     ForkAtlas: Endpoint<
       {
         __headers?: { [key: string]: string }
@@ -5335,8 +5150,8 @@ export declare const client: {
         __retry?: boolean
         __alias?: string
         __args: AddDriveArgs
-      } & DocumentDrive_DocumentDriveStateSelection,
-      DeepRequired<DocumentDrive_DocumentDriveState>,
+      } & AddDriveResultSelection,
+      DeepRequired<AddDriveResult>,
       AllEnums
     >
     setDriveIcon: Endpoint<

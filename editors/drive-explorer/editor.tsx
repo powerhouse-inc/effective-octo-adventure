@@ -3,9 +3,11 @@ import {
   type DriveEditorProps,
   DriveContextProvider,
 } from "@powerhousedao/reactor-browser";
-import { DriverLayout } from "./components/driver-layout.js";
 import { type DocumentDriveDocument } from "document-drive";
 import { WagmiContext } from "@powerhousedao/design-system";
+import { AnalyticsProvider } from "@powerhousedao/reactor-browser/analytics/context";
+
+import { DriverLayout } from "./components/driver-layout.js";
 import { getRemoteDriveUrl } from "../shared/utils/utils.js";
 
 export type IProps = DriveEditorProps<DocumentDriveDocument>;
@@ -15,7 +17,7 @@ export function BaseEditor(props: IProps) {
     <div className="atlas-drive-explorer" style={{ height: "100%" }}>
       <DriverLayout
         context={props.context}
-        driveId={props.document.state.global.id}
+        driveId={props.document.id}
         nodes={props.document.state.global.nodes}
         driveUrl={getRemoteDriveUrl(props.document)}
       >
@@ -46,7 +48,9 @@ export default function Editor(props: IProps) {
   return (
     <DriveContextProvider value={props.context}>
       <WagmiContext>
-        <BaseEditor {...props} />
+        <AnalyticsProvider databaseName={props.context.analyticsDatabaseName}>
+          <BaseEditor {...props} />
+        </AnalyticsProvider>
       </WagmiContext>
     </DriveContextProvider>
   );

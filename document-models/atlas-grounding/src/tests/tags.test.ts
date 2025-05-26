@@ -4,7 +4,6 @@
  */
 
 import { generateMock } from "@powerhousedao/codegen";
-import { hashKey } from "document-model";
 
 import utils from "../../gen/utils.js";
 import {
@@ -24,9 +23,6 @@ describe("Tags Operations", () => {
   });
 
   it("should handle addTags operation", () => {
-    // generate a random id
-    // const id = hashKey();
-
     const input: AddTagsInput = generateMock(z.AddTagsInputSchema());
 
     const updatedDocument = reducer(document, creators.addTags(input));
@@ -37,9 +33,6 @@ describe("Tags Operations", () => {
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle removeTags operation", () => {
-    // generate a random id
-    // const id = hashKey();
-
     const input: RemoveTagsInput = generateMock(z.RemoveTagsInputSchema());
 
     const updatedDocument = reducer(document, creators.removeTags(input));

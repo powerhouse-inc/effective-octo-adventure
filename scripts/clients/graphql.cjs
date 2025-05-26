@@ -1372,35 +1372,6 @@ const typesTree = {
         }
       };
     },
-    get createChallenge() {
-      return {
-        __args: {
-          address: "String!"
-        }
-      };
-    },
-    get solveChallenge() {
-      return {
-        __args: {
-          nonce: "String!",
-          signature: "String!"
-        }
-      };
-    },
-    get createSession() {
-      return {
-        __args: {
-          session: "SessionInput!"
-        }
-      };
-    },
-    get revokeSession() {
-      return {
-        __args: {
-          sessionId: "String!"
-        }
-      };
-    },
     get ForkAtlas() {
       return {
         __args: {
@@ -1411,9 +1382,11 @@ const typesTree = {
     },
     get addDrive() {
       return {
-        __fields: typesTree.DocumentDrive_DocumentDriveState,
         __args: {
-          global: "DocumentDriveStateInput!",
+          name: "String!",
+          icon: "String",
+          id: "String",
+          slug: "String",
           preferredEditor: "String"
         }
       };
@@ -1483,8 +1456,6 @@ const typesTree = {
         __fields: typesTree.AtlasSetQueries
       };
     },
-    me: {},
-    sessions: {},
     drives: {}
   },
   AnalyticsPeriod: {
@@ -1498,11 +1469,13 @@ const typesTree = {
     dimensions: {}
   },
   AtlasExploratory_AtlasExploratoryState: {
+    parent: {},
     globalTags: {},
     originalContextData: {},
     findings: {}
   },
   AtlasExploratoryState: {
+    parent: {},
     globalTags: {},
     originalContextData: {},
     findings: {}
@@ -1671,8 +1644,6 @@ const client = {
     AtlasMultiParent: apiEndpoint("query", "AtlasMultiParent"),
     AtlasScope: apiEndpoint("query", "AtlasScope"),
     AtlasSet: apiEndpoint("query", "AtlasSet"),
-    me: apiEndpoint("query", "me"),
-    sessions: apiEndpoint("query", "sessions"),
     drives: apiEndpoint("query", "drives"),
     driveIdBySlug: apiEndpoint("query", "driveIdBySlug")
   },
@@ -1755,10 +1726,6 @@ const client = {
     AtlasSet_setSetName: apiEndpoint("mutation", "AtlasSet_setSetName"),
     AtlasSet_setSetParent: apiEndpoint("mutation", "AtlasSet_setSetParent"),
     AtlasSet_setNotionId: apiEndpoint("mutation", "AtlasSet_setNotionId"),
-    createChallenge: apiEndpoint("mutation", "createChallenge"),
-    solveChallenge: apiEndpoint("mutation", "solveChallenge"),
-    createSession: apiEndpoint("mutation", "createSession"),
-    revokeSession: apiEndpoint("mutation", "revokeSession"),
     ForkAtlas: apiEndpoint("mutation", "ForkAtlas"),
     addDrive: apiEndpoint("mutation", "addDrive"),
     setDriveIcon: apiEndpoint("mutation", "setDriveIcon"),

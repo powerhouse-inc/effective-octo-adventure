@@ -23,9 +23,6 @@ describe("General Operations", () => {
   });
 
   it("should handle setSetName operation", () => {
-    // generate a random id
-    // const id = documentModelUtils.hashKey();
-
     const input: SetSetNameInput = generateMock(z.SetSetNameInputSchema());
 
     const updatedDocument = reducer(document, creators.setSetName(input));
@@ -36,9 +33,6 @@ describe("General Operations", () => {
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle setSetParent operation", () => {
-    // generate a random id
-    // const id = documentModelUtils.hashKey();
-
     const input: SetSetParentInput = generateMock(z.SetSetParentInputSchema());
 
     const updatedDocument = reducer(document, creators.setSetParent(input));
@@ -49,9 +43,6 @@ describe("General Operations", () => {
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle setNotionId operation", () => {
-    // generate a random id
-    // const id = documentModelUtils.hashKey();
-
     const input: SetNotionIdInput = generateMock(z.SetNotionIdInputSchema());
 
     const updatedDocument = reducer(document, creators.setNotionId(input));

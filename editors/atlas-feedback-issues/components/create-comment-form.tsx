@@ -1,4 +1,4 @@
-import { hashKey } from "document-model";
+import { generateId } from "document-model";
 import {
   type AtlasFeedbackIssue as TIssue,
   type CreateCommentInput,
@@ -23,7 +23,7 @@ export function CreateCommentForm(props: {
     content: "",
     notionId,
     issuePhid: issue.phid,
-    phid: hashKey(),
+    phid: generateId(),
   };
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),

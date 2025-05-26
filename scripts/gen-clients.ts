@@ -32,7 +32,7 @@ async function main() {
 
   await Promise.all([
     generateClient(endpointBase, "graphql"),
-    generateClient(endpointBase, "system"),
+    generateClient(endpointBase, "graphql/system"),
   ]);
 
   // Rename .js files to .cjs in clients directory

@@ -100,6 +100,8 @@ export function ScopeForm({
           <div className={cn("flex flex-col gap-4")}>
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <MultiUrlForm
+                baseValue={""}
+                viewMode={mode}
                 label="Original Context Data"
                 data={documentState.originalContextData.map((element) => {
                   return {

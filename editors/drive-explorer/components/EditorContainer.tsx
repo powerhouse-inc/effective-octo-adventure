@@ -2,30 +2,24 @@ import {
   useDriveContext,
   exportDocument,
   type User,
+  type DriveEditorContext,
 } from "@powerhousedao/reactor-browser";
 import {
+  type EditorModule,
   type DocumentModelModule,
   type EditorContext,
-  type EditorProps,
   type PHDocument,
 } from "document-model";
 import {
   DocumentToolbar,
   RevisionHistory,
   DefaultEditorLoader,
+  type TimelineItem,
 } from "@powerhousedao/design-system";
-import { useState, Suspense, type FC, useCallback, lazy } from "react";
-import { ViewModeProvider } from "../../shared/providers/ViewModeProvider.js";
+import { useState, Suspense, useCallback } from "react";
+import { getRevisionFromDate, useTimelineItems } from "@powerhousedao/common";
 
-import {
-  AtlasExploratory,
-  AtlasFoundation,
-  AtlasGrounding,
-  AtlasMultiParent,
-  AtlasScope,
-  AtlasFeedbackIssues,
-  AtlasSet,
-} from "../../../document-models/index.js";
+import { ViewModeProvider } from "../../shared/providers/ViewModeProvider.js";
 
 export interface EditorContainerProps {
   driveId: string;
@@ -33,76 +27,32 @@ export interface EditorContainerProps {
   documentType: string;
   onClose: () => void;
   title: string;
-  context: EditorContext;
-}
-
-const documentModelsMap = {
-  [AtlasExploratory.documentModel.id]: AtlasExploratory,
-  [AtlasFoundation.documentModel.id]: AtlasFoundation,
-  [AtlasGrounding.documentModel.id]: AtlasGrounding,
-  [AtlasMultiParent.documentModel.id]: AtlasMultiParent,
-  [AtlasScope.documentModel.id]: AtlasScope,
-  [AtlasFeedbackIssues.documentModel.id]: AtlasFeedbackIssues,
-  [AtlasSet.documentModel.id]: AtlasSet,
-};
-
-const documentEditorMap2 = {
-  [AtlasExploratory.documentModel.id]: lazy(() =>
-    import("../../atlas-exploratory-editor/index.js").then((m) => ({
-      default: m.default.Component,
-    })),
-  ),
-  [AtlasFoundation.documentModel.id]: lazy(() =>
-    import("../../atlas-foundation-editor/index.js").then((m) => ({
-      default: m.default.Component,
-    })),
-  ),
-  [AtlasGrounding.documentModel.id]: lazy(() =>
-    import("../../atlas-grounding-editor/index.js").then((m) => ({
-      default: m.default.Component,
-    })),
-  ),
-  [AtlasMultiParent.documentModel.id]: lazy(() =>
-    import("../../atlas-multi-parent-editor/index.js").then((m) => ({
-      default: m.default.Component,
-    })),
-  ),
-  [AtlasScope.documentModel.id]: lazy(() =>
-    import("../../atlas-scope-editor/index.js").then((m) => ({
-      default: m.default.Component,
-    })),
-  ),
-  [AtlasFeedbackIssues.documentModel.id]: lazy(() =>
-    import("../../atlas-feedback-issues/index.js").then((m) => ({
-      default: m.default.Component,
-    })),
-  ),
-  [AtlasSet.documentModel.id]: lazy(() =>
-    import("../../atlas-set-editor/index.js").then((m) => ({
-      default: m.default.Component,
-    })),
-  ),
-} as const;
-
-function getDocumentModel(documentType: string) {
-  return documentModelsMap[documentType];
-}
-
-function getDocumentEditor(documentType: string) {
-  return documentEditorMap2[documentType];
+  context: Omit<DriveEditorContext, "getDocumentRevision"> &
+    Pick<EditorContext, "getDocumentRevision">;
+  documentModelModule: DocumentModelModule<PHDocument>;
+  editorModule: EditorModule;
 }
 
 export const EditorContainer: React.FC<EditorContainerProps> = (props) => {
-  const { driveId, documentId, documentType, onClose, title, context } = props;
+  const {
+    driveId,
+    documentId,
+    documentType,
+    onClose,
+    title,
+    context,
+    documentModelModule,
+    editorModule,
+  } = props;
 
   const [showRevisionHistory, setShowRevisionHistory] = useState(false);
+  const [selectedTimelineItem, setSelectedTimelineItem] =
+    useState<TimelineItem | null>(null);
 
   const { useDocumentEditorProps } = useDriveContext();
   const user = context.user as User | undefined;
 
-  const documentModelModule = getDocumentModel(
-    documentType,
-  ) as DocumentModelModule<PHDocument>;
+  const timelineItems = useTimelineItems(documentId);
 
   const { dispatch, error, document } = useDocumentEditorProps({
     documentId,
@@ -127,17 +77,8 @@ export const EditorContainer: React.FC<EditorContainerProps> = (props) => {
 
   if (!document) return loadingContent;
 
-  const Editor = getDocumentEditor(documentType);
-
-  if (!Editor) {
-    console.error("No editor found for document type:", documentType);
-    return (
-      <div className="flex-1">
-        No editor found for document type: {documentType}
-      </div>
-    );
-  }
-  const EditorComponent = Editor as FC<EditorProps<PHDocument>>;
+  const moduleWithComponent = editorModule as EditorModule<PHDocument>;
+  const EditorComponent = moduleWithComponent.Component;
 
   return (
     <ViewModeProvider>
@@ -158,9 +99,20 @@ export const EditorContainer: React.FC<EditorContainerProps> = (props) => {
             onShowRevisionHistory={() => setShowRevisionHistory(true)}
             onSwitchboardLinkClick={() => {}}
             title={title}
+            timelineItems={timelineItems.data}
+            onTimelineItemClick={setSelectedTimelineItem}
+            timelineButtonVisible={moduleWithComponent.config.timelineEnabled}
           />
           <EditorComponent
-            context={context}
+            context={{
+              ...context,
+              readMode: !!selectedTimelineItem,
+              selectedTimelineRevision: getRevisionFromDate(
+                selectedTimelineItem?.startDate,
+                selectedTimelineItem?.endDate,
+                document.operations.global,
+              ),
+            }}
             dispatch={dispatch}
             document={document}
             error={error}

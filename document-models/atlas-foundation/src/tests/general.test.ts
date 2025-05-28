@@ -4,7 +4,6 @@
  */
 
 import { generateMock } from "@powerhousedao/codegen";
-import { hashKey } from "document-model";
 
 import utils from "../../gen/utils.js";
 import {
@@ -27,9 +26,6 @@ describe("General Operations", () => {
   });
 
   it("should handle setFoundationName operation", () => {
-    // generate a random id
-    // const id = hashKey();
-
     const input: SetFoundationNameInput = generateMock(
       z.SetFoundationNameInputSchema(),
     );
@@ -47,9 +43,6 @@ describe("General Operations", () => {
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle setDocNumber operation", () => {
-    // generate a random id
-    // const id = hashKey();
-
     const input: SetDocNumberInput = generateMock(z.SetDocNumberInputSchema());
 
     const updatedDocument = reducer(document, creators.setDocNumber(input));
@@ -60,9 +53,6 @@ describe("General Operations", () => {
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle setContent operation", () => {
-    // generate a random id
-    // const id = hashKey();
-
     const input: SetContentInput = generateMock(z.SetContentInputSchema());
 
     const updatedDocument = reducer(document, creators.setContent(input));
@@ -73,9 +63,6 @@ describe("General Operations", () => {
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle setMasterStatus operation", () => {
-    // generate a random id
-    // const id = hashKey();
-
     const input: SetMasterStatusInput = generateMock(
       z.SetMasterStatusInputSchema(),
     );
@@ -88,9 +75,6 @@ describe("General Operations", () => {
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   // it("should handle setReferences operation", () => {
-  //   // generate a random id
-  //   // const id = hashKey();
-
   //   const input: SetReferencesInput = generateMock(
   //     z.SetReferencesInputSchema(),
   //   );
@@ -103,9 +87,6 @@ describe("General Operations", () => {
   //   expect(updatedDocument.operations.global[0].index).toEqual(0);
   // });
   it("should handle setAtlasType operation", () => {
-    // generate a random id
-    // const id = hashKey();
-
     const input: SetAtlasTypeInput = generateMock(z.SetAtlasTypeInputSchema());
 
     const updatedDocument = reducer(document, creators.setAtlasType(input));

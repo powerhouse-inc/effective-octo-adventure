@@ -15,7 +15,6 @@ import type { IProps } from "../editor.js";
 import {
   actions,
   type GAtlasType,
-  type GGlobalTag,
 } from "../../../document-models/atlas-grounding/index.js";
 import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
@@ -216,7 +215,7 @@ export function GroundingForm({
               value={documentState.globalTags}
               baselineValue={[]} // TODO: add the baseline value
               onSave={(value) => {
-                const newTags = value as GGlobalTag[];
+                const newTags = value;
                 const currentTags = documentState.globalTags;
 
                 if (value === null) {

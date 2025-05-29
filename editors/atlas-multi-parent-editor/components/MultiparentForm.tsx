@@ -13,7 +13,6 @@ import type { IProps } from "../editor.js";
 import {
   actions,
   type MAtlasType,
-  type MGlobalTag,
 } from "../../../document-models/atlas-multi-parent/index.js";
 import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
@@ -195,7 +194,7 @@ export function MultiParentForm({
               value={documentState.globalTags}
               baselineValue={[]}
               onSave={(value) => {
-                const newTags = value as MGlobalTag[];
+                const newTags = value;
                 const currentTags = documentState.globalTags;
 
                 if (value === null) {

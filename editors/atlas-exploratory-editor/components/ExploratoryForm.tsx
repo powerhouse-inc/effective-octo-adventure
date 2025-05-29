@@ -14,7 +14,6 @@ import { DocNoForm } from "../../shared/components/forms/DocNoForm.js";
 import type { IProps } from "../editor.js";
 import {
   actions,
-  type EGlobalTag,
   type EAtlasType,
 } from "../../../document-models/atlas-exploratory/index.js";
 import { Toggle } from "@powerhousedao/document-engineering/ui";
@@ -261,7 +260,7 @@ export function ExploratoryForm({
               value={documentState.globalTags}
               baselineValue={[]} // TODO: add the baseline value
               onSave={(value) => {
-                const newTags = value as EGlobalTag[];
+                const newTags = value;
                 const currentTags = documentState.globalTags;
 
                 if (value === null) {

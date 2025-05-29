@@ -87,7 +87,7 @@ export function SetForm({
                       actions.setSetParent({
                         id: "",
                         title: "",
-                      })
+                      }),
                     );
                   } else {
                     const newParentId = value.split(":")[1];
@@ -96,7 +96,7 @@ export function SetForm({
                       actions.setSetParent({
                         id: newParentId,
                         title: newParentData?.title ?? "",
-                      })
+                      }),
                     );
                   }
                 }}

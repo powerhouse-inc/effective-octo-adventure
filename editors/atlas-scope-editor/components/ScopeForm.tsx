@@ -15,14 +15,10 @@ import {
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { DocNoForm } from "../../shared/components/forms/DocNoForm.js";
 import type { IProps } from "../editor.js";
-import {
-  actions,
-  type GlobalTag,
-} from "../../../document-models/atlas-scope/index.js";
+import { actions } from "../../../document-models/atlas-scope/index.js";
 import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
-import { globalScopeTagsEnumOptions } from "../../shared/utils/common-options.js";
 import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import { transformUrl } from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
@@ -133,11 +129,10 @@ export function ScopeForm({
             </div>
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <GlobalTagsForm
-                options={globalScopeTagsEnumOptions}
                 value={documentState.globalTags}
                 baselineValue={[]}
                 onSave={(value) => {
-                  const newTags = value as GlobalTag[];
+                  const newTags = value;
                   const currentTags = documentState.globalTags;
 
                   if (value === null) {

@@ -1,15 +1,21 @@
 import { Form, EnumField } from "@powerhousedao/document-engineering/scalars";
 import { type SelectOption } from "@powerhousedao/document-engineering/ui";
 import { useFormMode } from "../../../providers/FormModeProvider.js";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import type { FieldValues, UseFormReturn } from "react-hook-form";
 import { useRef } from "react";
+import globalTags from "../../../../../data/global-tags.json" with { type: "json" };
+
+interface RawTag {
+  id: string;
+  name: string;
+  nameAsConstant: string;
+}
 
 type GenericEnumFormProps = {
   label: string;
   placeholder: string;
   required?: boolean;
-  options: SelectOption[];
 } & (
   | {
       multiple: true;
@@ -28,7 +34,6 @@ type GenericEnumFormProps = {
 const GenericEnumForm = ({
   label,
   placeholder,
-  options,
   value,
   baselineValue,
   onSave,
@@ -49,6 +54,16 @@ const GenericEnumForm = ({
       formRef.current.reset({ genericEnum: value });
     }
   }, [value]);
+
+  const options = useMemo(() => {
+    return (globalTags as RawTag[]).map(
+      (tag) =>
+        ({
+          label: tag.name,
+          value: tag.nameAsConstant,
+        }) as SelectOption,
+    );
+  }, []);
 
   return (
     <Form

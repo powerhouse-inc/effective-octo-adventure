@@ -1,12 +1,10 @@
 import { systemClient as writeClient } from "../clients/index.js";
 
 type AddDriveArgs = {
-  global: {
-    id: string;
-    name?: string;
-    slug?: string;
-    icon?: string;
-  };
+  id: string;
+  name?: string;
+  slug?: string;
+  icon?: string;
   preferredEditor?: string;
 };
 
@@ -27,12 +25,10 @@ export class SystemGraphClient {
   ) {
     const args: AddDriveArgs = {
       preferredEditor: preferredEditor,
-      global: {
-        id,
-        name,
-        slug,
-        icon,
-      },
+      id,
+      name,
+      slug,
+      icon,
     };
 
     const result = await this.writeClient.mutations.addDrive({

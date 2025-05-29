@@ -38,7 +38,8 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
   }
 
   console.log("Loading drive documents cache...");
-  const driveNodes = await readClient.getDriveNodes();
+  const driveNodes = await readClient.getDocumentDriveNodes(config.driveName);
+  
   const documentsCache = new DocumentsCache(driveNodes);
 
   const clientRegistry = createClientRegistry(config, documentsCache, readClient);

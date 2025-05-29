@@ -2,6 +2,12 @@ import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import docsIndex from "../../../scripts/apply-changes/data/index.json" with { type: "json" };
 import type { DocumentDriveDocument } from "document-drive";
 import { type ViewMode } from "@powerhousedao/document-engineering/scalars";
+import { type AtlasExploratoryDocument } from "../../../document-models/atlas-exploratory/index.js";
+import { type AtlasFoundationDocument } from "../../../document-models/atlas-foundation/index.js";
+import { type AtlasGroundingDocument } from "../../../document-models/atlas-grounding/index.js";
+import { type AtlasMultiParentDocument } from "../../../document-models/atlas-multi-parent/index.js";
+import { type AtlasScopeDocument } from "../../../document-models/atlas-scope/index.js";
+import { type AtlasSetDocument } from "../../../document-models/atlas-set/index.js";
 
 const filterPHIDOptions = (
   options: PHIDOption[],
@@ -103,4 +109,32 @@ export const parseTitleText = (title: string) => {
 
 export const transformUrl = (url: string): string => {
   return encodeURIComponent(url).replace(/\./g, "%2E");
+};
+
+export const getBaseDocumentTimestamp = (
+  document:
+    | AtlasExploratoryDocument
+    | AtlasFoundationDocument
+    | AtlasGroundingDocument
+    | AtlasMultiParentDocument
+    | AtlasScopeDocument
+    | AtlasSetDocument,
+): string => {
+  const firstOperation = document.operations?.global?.find(
+    (operation) => operation.index === 0,
+  );
+
+  if (firstOperation) {
+    // add 30s of margin
+    const resultDate = new Date(firstOperation.timestamp);
+    resultDate.setUTCSeconds(resultDate.getUTCSeconds() + 30);
+    return resultDate.toISOString();
+  }
+
+  if (document.initialState?.created) {
+    return document.initialState.created;
+  }
+
+  // fallback to current datetime if nothing is available
+  return new Date().toISOString();
 };

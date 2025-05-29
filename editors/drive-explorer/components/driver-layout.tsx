@@ -11,21 +11,24 @@ import {
   type SidebarNode,
 } from "@powerhousedao/document-engineering/ui";
 import { useCallback, useState, useRef, useMemo } from "react";
-import { useDriveContext } from "@powerhousedao/reactor-browser";
+import {
+  useDriveContext,
+  type DriveEditorContext,
+} from "@powerhousedao/reactor-browser";
 import { type AtlasFeedbackIssue, type AtlasArticle } from "./types.js";
 import { EditorContainer } from "./EditorContainer.js";
 import { type DocumentModelModule, type EditorContext } from "document-model";
 import { CreateDocument } from "./create-document.js";
 import { Home } from "./home.js";
 import { documentModel as AtlasFeedbackIssues } from "../../../document-models/atlas-feedback-issues/gen/document-model.js";
-import type { Node } from "document-drive";
+import type { GetDocumentOptions, Node } from "document-drive";
 import { ShareDrive } from "../../shared/components/share-drive.js";
 import { buildSidebarTree } from "../sidebar-utils.js";
 
 export interface DriverLayoutProps {
   readonly driveId: string;
   readonly children: React.ReactNode;
-  readonly context: EditorContext;
+  readonly context: DriveEditorContext;
   readonly nodes: Node[];
   readonly driveUrl?: string | null;
 }
@@ -37,6 +40,7 @@ export function DriverLayout({
   nodes: driveNodes,
   driveUrl,
 }: DriverLayoutProps) {
+  const { getDocumentRevision } = context;
   const { useDriveDocumentStates, addDocument, documentModels } =
     useDriveContext();
   const [activeNodeId, setActiveNodeId] = useState<string | undefined>();
@@ -123,9 +127,25 @@ export function DriverLayout({
     setOpenModal(true);
   };
 
+  const onGetDocumentRevision = useCallback(
+    (options?: GetDocumentOptions) => {
+      if (!activeNodeId) return;
+      return getDocumentRevision?.(activeNodeId, options);
+    },
+    [getDocumentRevision, activeNodeId],
+  );
+
   const filteredDocumentModels = documentModels.filter(
     (docModel) => docModel.documentModel.id !== "powerhouse/document-model",
   );
+
+  const documentModelModule = activeNodeId
+    ? context.getDocumentModelModule(state[activeNodeId].documentType)
+    : null;
+
+  const editorModule = activeNodeId
+    ? context.getEditor(state[activeNodeId].documentType)
+    : null;
 
   return (
     <SidebarProvider>
@@ -147,15 +167,20 @@ export function DriverLayout({
         />
         <div className="flex-1 bg-gray-50 p-4 dark:bg-slate-800 overflow-y-auto">
           <>
-            {activeNodeId ? (
+            {activeNodeId && documentModelModule && editorModule ? (
               <EditorContainer
-                context={context}
+                context={{
+                  ...context,
+                  getDocumentRevision: onGetDocumentRevision,
+                }}
                 documentId={activeNodeId}
                 documentType={state[activeNodeId].documentType}
                 driveId={driveId}
                 key={activeNodeId}
                 onClose={onEditorClose}
                 title={title}
+                documentModelModule={documentModelModule}
+                editorModule={editorModule}
               />
             ) : (
               <>

@@ -181,6 +181,8 @@ export function GroundingForm({
             />
 
             <MultiUrlForm
+              baseValue={""}
+              viewMode={mode}
               label="Original Context Data"
               data={documentState.originalContextData.map((element) => {
                 return {

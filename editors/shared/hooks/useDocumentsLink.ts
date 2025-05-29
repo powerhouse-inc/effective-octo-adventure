@@ -36,7 +36,18 @@ export type FilterFn = (node: DocumentLink) => boolean;
  * @returns The documents link
  */
 export function useDocumentsLink(filterFn?: FilterFn) {
-  const { selectedNode, useDriveDocumentStates } = useDriveContext();
+  let driveContext;
+  // check if the context is available before using it
+  try {
+    driveContext = useDriveContext();
+  } catch {
+    console.warn(
+      "DriveContext not available, returning an empty documents list",
+    );
+    return [];
+  }
+
+  const { selectedNode, useDriveDocumentStates } = driveContext;
 
   const [state] = useDriveDocumentStates({
     driveId: selectedNode?.id ?? "",

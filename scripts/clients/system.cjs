@@ -366,7 +366,10 @@ const typesTree = {
       return {
         __fields: typesTree.DocumentDrive_DocumentDriveState,
         __args: {
-          global: "DocumentDriveStateInput!",
+          name: "String!",
+          icon: "String",
+          id: "String",
+          slug: "String",
           preferredEditor: "String"
         }
       };

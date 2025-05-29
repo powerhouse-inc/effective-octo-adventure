@@ -25,9 +25,6 @@ describe("Issues Operations", () => {
   });
 
   it("should handle createIssue operation", () => {
-    // generate a random id
-    // const id = documentModelUtils.hashKey();
-
     const input: CreateIssueInput = generateMock(z.CreateIssueInputSchema());
 
     const updatedDocument = reducer(document, creators.createIssue(input));
@@ -38,9 +35,6 @@ describe("Issues Operations", () => {
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle deleteIssue operation", () => {
-    // generate a random id
-    // const id = documentModelUtils.hashKey();
-
     const input: DeleteIssueInput = generateMock(z.DeleteIssueInputSchema());
 
     const updatedDocument = reducer(document, creators.deleteIssue(input));
@@ -51,9 +45,6 @@ describe("Issues Operations", () => {
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle addNotionId operation", () => {
-    // generate a random id
-    // const id = documentModelUtils.hashKey();
-
     const input: AddNotionIdInput = generateMock(z.AddNotionIdInputSchema());
 
     const updatedDocument = reducer(document, creators.addNotionId(input));
@@ -64,9 +55,6 @@ describe("Issues Operations", () => {
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle removeNotionId operation", () => {
-    // generate a random id
-    // const id = documentModelUtils.hashKey();
-
     const input: RemoveNotionIdInput = generateMock(
       z.RemoveNotionIdInputSchema(),
     );

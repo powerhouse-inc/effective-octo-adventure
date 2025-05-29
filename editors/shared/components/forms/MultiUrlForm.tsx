@@ -3,6 +3,7 @@ import { ArrayField, type ArrayFieldProps } from "../ArrayField.js";
 import { useFormMode } from "../../providers/FormModeProvider.js";
 import {
   UrlField,
+  type WithDifference,
   type UrlFieldProps,
 } from "@powerhousedao/document-engineering/scalars";
 
@@ -13,9 +14,10 @@ type CommonDataProps = {
 
 interface MultiUrlFormProps
   extends Omit<
-    ArrayFieldProps<string, UrlFieldProps>,
-    "fields" | "componentProps" | "component"
-  > {
+      ArrayFieldProps<string, UrlFieldProps>,
+      "fields" | "componentProps" | "component"
+    >,
+    WithDifference<string> {
   data: CommonDataProps[];
 }
 
@@ -25,8 +27,9 @@ const MultiUrlForm = ({
   onAdd,
   onRemove,
   onUpdate,
+  baseValue,
+  viewMode,
 }: MultiUrlFormProps) => {
-  const viewMode = useFormMode();
   // boolean flag to trigger callback recreation only when needed
   const [renderComponentTrigger, setRenderComponentTrigger] = useState(false);
 
@@ -48,6 +51,9 @@ const MultiUrlForm = ({
     (props: UrlFieldProps) => {
       return (
         <UrlField
+          viewMode={viewMode}
+          diffMode={"sentences"}
+          baseValue={baseValue}
           {...props}
           platformIcons={{
             "example.com": "File",
@@ -55,7 +61,7 @@ const MultiUrlForm = ({
         />
       );
     },
-    [renderComponentTrigger],
+    [renderComponentTrigger, baseValue, viewMode],
   );
 
   // split rendering into two phases: this effect runs after data changes are complete,
@@ -77,7 +83,6 @@ const MultiUrlForm = ({
       component={renderComponent}
       componentProps={{
         placeholder: "https://www.example.com",
-        // viewMode: viewMode,
         validators: [
           (value: string, formState) => {
             if (!value) return true;

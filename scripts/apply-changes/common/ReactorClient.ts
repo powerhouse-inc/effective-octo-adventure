@@ -13,6 +13,17 @@ export type DriveResult = {
   drive: DriveNodes;
 };
 
+export type DocumentDriveResult = {
+  document: {
+    id: string;
+    state: {
+      icon: string;
+      name: string;
+      nodes: DriveResultNode[];
+    };
+  };
+};
+
 export type DriveIdsResult = {
   drives: string[];
 };
@@ -81,35 +92,39 @@ export class ReactorClient {
     return result.drives;
   }
 
-  public async getDriveNodes(): Promise<DriveNodes> {
-    const result = await queryGraphQL<DriveResult>(
+  public async getDocumentDriveNodes(driveId: string): Promise<DriveNodes> {
+    const result = await queryGraphQL<DocumentDriveResult>(
       this.driveEndpointUrl,
       gql`
-        query getDriveNodes {
-          drive {
+        query getDocumentDriveNodes($driveId: String!) {
+          document(id: $driveId) {
             id
-            slug
-            name
-            icon
-            nodes {
-              ... on DocumentDrive_FolderNode {
-                id
-                parentFolder
+            ... on DocumentDrive {
+              state {
+                icon
                 name
-              }
-              ... on DocumentDrive_FileNode {
-                id
-                documentType
-                parentFolder
-                name
+                nodes {
+                  ... on DocumentDrive_FolderNode {
+                    id
+                    parentFolder
+                    name
+                  }
+                  ... on DocumentDrive_FileNode {
+                    id
+                    documentType
+                    parentFolder
+                    name
+                  }
+                }
               }
             }
           }
         }
       `,
+      { driveId },
     );
 
-    if (!result.drive) {
+    if (!result.document) {
       if (result.errors) {
         throw new Error(`GraphQL error when querying ${this.endpointUrl}`, {
           cause: result.errors,
@@ -119,6 +134,14 @@ export class ReactorClient {
       }
     }
 
-    return result.drive;
+    const mappedResult: DriveNodes = {
+      id: result.document.id,
+      slug: result.document.id,
+      icon: result.document.state.icon,
+      name: result.document.state.name,
+      nodes: result.document.state.nodes,
+    };
+
+    return mappedResult;
   }
 }

@@ -2,8 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { type Subgraph } from "@powerhousedao/reactor-api";
 import { syncDocuments } from "../../scripts/apply-changes/syncDocuments.js";
-import { GraphQLError } from "graphql";
-import errorMap from "zod/locales/en.js";
 
 if (process.env.NODE_ENV === "development") {
   const dotenv = await import("dotenv");
@@ -83,12 +81,12 @@ export const getResolvers = (subgraph: Subgraph) => {
               {
                 branch: "main",
                 scope: "global",
-                syncId: hashKey(),
+                syncId: generateId(),
               },
               {
                 branch: "main",
                 scope: "local",
-                syncId: hashKey(),
+                syncId: generateId(),
               },
             ],
           }),

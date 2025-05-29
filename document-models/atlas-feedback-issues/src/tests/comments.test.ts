@@ -24,9 +24,6 @@ describe("Comments Operations", () => {
   });
 
   it("should handle createComment operation", () => {
-    // generate a random id
-    // const id = documentModelUtils.hashKey();
-
     const input: CreateCommentInput = generateMock(
       z.CreateCommentInputSchema(),
     );
@@ -39,9 +36,6 @@ describe("Comments Operations", () => {
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle deleteComment operation", () => {
-    // generate a random id
-    // const id = documentModelUtils.hashKey();
-
     const input: DeleteCommentInput = generateMock(
       z.DeleteCommentInputSchema(),
     );
@@ -54,9 +48,6 @@ describe("Comments Operations", () => {
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle editComment operation", () => {
-    // generate a random id
-    // const id = documentModelUtils.hashKey();
-
     const input: EditCommentInput = generateMock(z.EditCommentInputSchema());
 
     const updatedDocument = reducer(document, creators.editComment(input));

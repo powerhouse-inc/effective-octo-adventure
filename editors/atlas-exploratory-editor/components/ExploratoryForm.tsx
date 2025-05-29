@@ -226,6 +226,9 @@ export function ExploratoryForm({
             )}
           >
             <MultiUrlForm
+              // TODO: add the correct baseline value
+              baseValue={""}
+              viewMode={mode}
               label="Original Context Data"
               data={documentState.originalContextData.map((element) => {
                 return {

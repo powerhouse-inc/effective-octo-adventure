@@ -35,7 +35,7 @@ export const schema: DocumentNode = gql`
     """
     Document tags managed by the Atlas Axis facilitator group for classification.
     """
-    globalTags: [GGlobalTag!]!
+    globalTags: [String!]!
 
     """
     List of Atlas documents that were relevant for the creation of this Grounding document.
@@ -78,26 +78,6 @@ export const schema: DocumentNode = gql`
     APPROVED
     DEFERRED
     ARCHIVED
-  }
-
-  """
-  These global tags are used for classification in Grounding documents.
-  """
-  enum GGlobalTag {
-    SCOPE_ADVISOR
-    AVC
-    CAIS
-    ML_LOW_PRIORITY
-    EXTERNAL_REFERENCE
-    DAO_TOOLKIT
-    ML_DEFER
-    PURPOSE_SYSTEM
-    NEWCHAIN
-    ML_SUPPORT_DOCS_NEEDED
-    TWO_STAGE_BRIDGE
-    ECOSYSTEM_INTELLIGENCE
-    RECURSIVE_IMPROVEMENT
-    LEGACY_TERM_USE_APPROVED
   }
 
   """
@@ -211,10 +191,10 @@ export const schema: DocumentNode = gql`
   Module: Tags
   """
   input AtlasGrounding_AddTagsInput {
-    tags: [GGlobalTag!]!
+    tags: [String!]!
   }
   input AtlasGrounding_RemoveTagsInput {
-    tags: [GGlobalTag!]!
+    tags: [String!]!
   }
 
   """

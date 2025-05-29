@@ -5,7 +5,6 @@ import { type ReactorClient } from "../common/ReactorClient.js";
 
 import {
   AtlasScopeState,
-  GlobalTag,
   Status,
   type SetContentInput,
   type SetDocNumberInput,
@@ -79,7 +78,7 @@ export class AtlasScopeClient extends AtlasBaseClient<
       ) as Status,
       content: processMarkdownContent(input.markdownContent),
       notionId: input.id,
-      globalTags: input.globalTags as GlobalTag[],
+      globalTags: input.globalTags,
       originalContextData: input.originalContextData,
     };
   }
@@ -122,7 +121,7 @@ export class AtlasScopeClient extends AtlasBaseClient<
         break;
       case "globalTags":
         await patch.AtlasScope_addTags(
-          arg<any>({ newTags: target as GlobalTag[] })
+          arg<any>({ newTags: target })
         );
         break;
       case "originalContextData": {

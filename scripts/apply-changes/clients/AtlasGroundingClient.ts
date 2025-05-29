@@ -2,7 +2,6 @@ import {
   AtlasGroundingState,
   GAtlasType,
   GDocumentLink,
-  GGlobalTag,
   GStatus,
   SetContentInput,
   SetDocNumberInput,
@@ -117,7 +116,7 @@ export class AtlasGroundingClient extends AtlasBaseClient<
         documentType: parent.documentType ?? "",
         icon: parent.icon ?? "",
       },
-      globalTags: input.globalTags as GGlobalTag[],
+      globalTags: input.globalTags,
       originalContextData: input.originalContextData,
     };
   }
@@ -162,7 +161,7 @@ export class AtlasGroundingClient extends AtlasBaseClient<
         break;
       case "globalTags":
         await patch.AtlasGrounding_addTags(
-          arg<any>({ newTags: target as GGlobalTag[] })
+          arg<any>({ tags: target })
         );
         break;
       case "originalContextData": {

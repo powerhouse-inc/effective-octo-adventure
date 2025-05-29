@@ -41,23 +41,6 @@ export declare enum AtlasExploratory_EAtlasType {
   scenarioVariation = "SCENARIO_VARIATION",
 }
 
-export declare enum AtlasExploratory_EGlobalTag {
-  avc = "AVC",
-  cais = "CAIS",
-  daoToolkit = "DAO_TOOLKIT",
-  ecosystemIntelligence = "ECOSYSTEM_INTELLIGENCE",
-  externalReference = "EXTERNAL_REFERENCE",
-  legacyTermUseApproved = "LEGACY_TERM_USE_APPROVED",
-  mlDefer = "ML_DEFER",
-  mlLowPriority = "ML_LOW_PRIORITY",
-  mlSupportDocsNeeded = "ML_SUPPORT_DOCS_NEEDED",
-  newchain = "NEWCHAIN",
-  purposeSystem = "PURPOSE_SYSTEM",
-  recursiveImprovement = "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor = "SCOPE_ADVISOR",
-  twoStageBridge = "TWO_STAGE_BRIDGE",
-}
-
 export declare enum AtlasExploratory_EStatus {
   approved = "APPROVED",
   archived = "ARCHIVED",
@@ -71,23 +54,6 @@ export declare enum AtlasFoundation_FAtlasType {
   article = "ARTICLE",
   core = "CORE",
   section = "SECTION",
-}
-
-export declare enum AtlasFoundation_FGlobalTag {
-  avc = "AVC",
-  cais = "CAIS",
-  daoToolkit = "DAO_TOOLKIT",
-  ecosystemIntelligence = "ECOSYSTEM_INTELLIGENCE",
-  externalReference = "EXTERNAL_REFERENCE",
-  legacyTermUseApproved = "LEGACY_TERM_USE_APPROVED",
-  mlDefer = "ML_DEFER",
-  mlLowPriority = "ML_LOW_PRIORITY",
-  mlSupportDocsNeeded = "ML_SUPPORT_DOCS_NEEDED",
-  newchain = "NEWCHAIN",
-  purposeSystem = "PURPOSE_SYSTEM",
-  recursiveImprovement = "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor = "SCOPE_ADVISOR",
-  twoStageBridge = "TWO_STAGE_BRIDGE",
 }
 
 export declare enum AtlasFoundation_FStatus {
@@ -104,23 +70,6 @@ export declare enum AtlasGrounding_GAtlasType {
   tenet = "TENET",
 }
 
-export declare enum AtlasGrounding_GGlobalTag {
-  avc = "AVC",
-  cais = "CAIS",
-  daoToolkit = "DAO_TOOLKIT",
-  ecosystemIntelligence = "ECOSYSTEM_INTELLIGENCE",
-  externalReference = "EXTERNAL_REFERENCE",
-  legacyTermUseApproved = "LEGACY_TERM_USE_APPROVED",
-  mlDefer = "ML_DEFER",
-  mlLowPriority = "ML_LOW_PRIORITY",
-  mlSupportDocsNeeded = "ML_SUPPORT_DOCS_NEEDED",
-  newchain = "NEWCHAIN",
-  purposeSystem = "PURPOSE_SYSTEM",
-  recursiveImprovement = "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor = "SCOPE_ADVISOR",
-  twoStageBridge = "TWO_STAGE_BRIDGE",
-}
-
 export declare enum AtlasGrounding_GStatus {
   approved = "APPROVED",
   archived = "ARCHIVED",
@@ -134,55 +83,12 @@ export declare enum AtlasMultiParent_MAtlasType {
   neededResearch = "NEEDED_RESEARCH",
 }
 
-export declare enum AtlasMultiParent_MGlobalTag {
-  avc = "AVC",
-  cais = "CAIS",
-  daoToolkit = "DAO_TOOLKIT",
-  ecosystemIntelligence = "ECOSYSTEM_INTELLIGENCE",
-  externalReference = "EXTERNAL_REFERENCE",
-  legacyTermUseApproved = "LEGACY_TERM_USE_APPROVED",
-  mlDefer = "ML_DEFER",
-  mlLowPriority = "ML_LOW_PRIORITY",
-  mlSupportDocsNeeded = "ML_SUPPORT_DOCS_NEEDED",
-  newchain = "NEWCHAIN",
-  purposeSystem = "PURPOSE_SYSTEM",
-  recursiveImprovement = "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor = "SCOPE_ADVISOR",
-  twoStageBridge = "TWO_STAGE_BRIDGE",
-}
-
 export declare enum AtlasMultiParent_MStatus {
   approved = "APPROVED",
   archived = "ARCHIVED",
   deferred = "DEFERRED",
   placeholder = "PLACEHOLDER",
   provisional = "PROVISIONAL",
-}
-
-export declare enum AtlasScope_GlobalTag {
-  anonWorkforce = "ANON_WORKFORCE",
-  avc = "AVC",
-  cais = "CAIS",
-  daoToolkit = "DAO_TOOLKIT",
-  ecosystemIntelligence = "ECOSYSTEM_INTELLIGENCE",
-  externalReference = "EXTERNAL_REFERENCE",
-  facilitatordao = "FACILITATORDAO",
-  internalReference = "INTERNAL_REFERENCE",
-  legacyTermUseApproved = "LEGACY_TERM_USE_APPROVED",
-  mlDefer = "ML_DEFER",
-  mlHighPriority = "ML_HIGH_PRIORITY",
-  mlLowPriority = "ML_LOW_PRIORITY",
-  mlMedPriority = "ML_MED_PRIORITY",
-  mlSupportDocsNeeded = "ML_SUPPORT_DOCS_NEEDED",
-  newchain = "NEWCHAIN",
-  p0HubEntryNeeded = "P0_HUB_ENTRY_NEEDED",
-  purposeSystem = "PURPOSE_SYSTEM",
-  recursiveImprovement = "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor = "SCOPE_ADVISOR",
-  subdaoIncubation = "SUBDAO_INCUBATION",
-  subdaoRewards = "SUBDAO_REWARDS",
-  twoStageBridge = "TWO_STAGE_BRIDGE",
-  v1Mip = "V1_MIP",
 }
 
 export declare enum AtlasScope_Status {
@@ -211,23 +117,6 @@ export declare enum EAtlasType {
   scenarioVariation = "SCENARIO_VARIATION",
 }
 
-export declare enum EGlobalTag {
-  avc = "AVC",
-  cais = "CAIS",
-  daoToolkit = "DAO_TOOLKIT",
-  ecosystemIntelligence = "ECOSYSTEM_INTELLIGENCE",
-  externalReference = "EXTERNAL_REFERENCE",
-  legacyTermUseApproved = "LEGACY_TERM_USE_APPROVED",
-  mlDefer = "ML_DEFER",
-  mlLowPriority = "ML_LOW_PRIORITY",
-  mlSupportDocsNeeded = "ML_SUPPORT_DOCS_NEEDED",
-  newchain = "NEWCHAIN",
-  purposeSystem = "PURPOSE_SYSTEM",
-  recursiveImprovement = "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor = "SCOPE_ADVISOR",
-  twoStageBridge = "TWO_STAGE_BRIDGE",
-}
-
 export declare enum EStatus {
   approved = "APPROVED",
   archived = "ARCHIVED",
@@ -241,23 +130,6 @@ export declare enum FAtlasType {
   article = "ARTICLE",
   core = "CORE",
   section = "SECTION",
-}
-
-export declare enum FGlobalTag {
-  avc = "AVC",
-  cais = "CAIS",
-  daoToolkit = "DAO_TOOLKIT",
-  ecosystemIntelligence = "ECOSYSTEM_INTELLIGENCE",
-  externalReference = "EXTERNAL_REFERENCE",
-  legacyTermUseApproved = "LEGACY_TERM_USE_APPROVED",
-  mlDefer = "ML_DEFER",
-  mlLowPriority = "ML_LOW_PRIORITY",
-  mlSupportDocsNeeded = "ML_SUPPORT_DOCS_NEEDED",
-  newchain = "NEWCHAIN",
-  purposeSystem = "PURPOSE_SYSTEM",
-  recursiveImprovement = "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor = "SCOPE_ADVISOR",
-  twoStageBridge = "TWO_STAGE_BRIDGE",
 }
 
 export declare enum FStatus {
@@ -274,49 +146,6 @@ export declare enum GAtlasType {
   tenet = "TENET",
 }
 
-export declare enum GGlobalTag {
-  avc = "AVC",
-  cais = "CAIS",
-  daoToolkit = "DAO_TOOLKIT",
-  ecosystemIntelligence = "ECOSYSTEM_INTELLIGENCE",
-  externalReference = "EXTERNAL_REFERENCE",
-  legacyTermUseApproved = "LEGACY_TERM_USE_APPROVED",
-  mlDefer = "ML_DEFER",
-  mlLowPriority = "ML_LOW_PRIORITY",
-  mlSupportDocsNeeded = "ML_SUPPORT_DOCS_NEEDED",
-  newchain = "NEWCHAIN",
-  purposeSystem = "PURPOSE_SYSTEM",
-  recursiveImprovement = "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor = "SCOPE_ADVISOR",
-  twoStageBridge = "TWO_STAGE_BRIDGE",
-}
-
-export declare enum GlobalTag {
-  anonWorkforce = "ANON_WORKFORCE",
-  avc = "AVC",
-  cais = "CAIS",
-  daoToolkit = "DAO_TOOLKIT",
-  ecosystemIntelligence = "ECOSYSTEM_INTELLIGENCE",
-  externalReference = "EXTERNAL_REFERENCE",
-  facilitatordao = "FACILITATORDAO",
-  internalReference = "INTERNAL_REFERENCE",
-  legacyTermUseApproved = "LEGACY_TERM_USE_APPROVED",
-  mlDefer = "ML_DEFER",
-  mlHighPriority = "ML_HIGH_PRIORITY",
-  mlLowPriority = "ML_LOW_PRIORITY",
-  mlMedPriority = "ML_MED_PRIORITY",
-  mlSupportDocsNeeded = "ML_SUPPORT_DOCS_NEEDED",
-  newchain = "NEWCHAIN",
-  p0HubEntryNeeded = "P0_HUB_ENTRY_NEEDED",
-  purposeSystem = "PURPOSE_SYSTEM",
-  recursiveImprovement = "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor = "SCOPE_ADVISOR",
-  subdaoIncubation = "SUBDAO_INCUBATION",
-  subdaoRewards = "SUBDAO_REWARDS",
-  twoStageBridge = "TWO_STAGE_BRIDGE",
-  v1Mip = "V1_MIP",
-}
-
 export declare enum GStatus {
   approved = "APPROVED",
   archived = "ARCHIVED",
@@ -328,23 +157,6 @@ export declare enum GStatus {
 export declare enum MAtlasType {
   annotation = "ANNOTATION",
   neededResearch = "NEEDED_RESEARCH",
-}
-
-export declare enum MGlobalTag {
-  avc = "AVC",
-  cais = "CAIS",
-  daoToolkit = "DAO_TOOLKIT",
-  ecosystemIntelligence = "ECOSYSTEM_INTELLIGENCE",
-  externalReference = "EXTERNAL_REFERENCE",
-  legacyTermUseApproved = "LEGACY_TERM_USE_APPROVED",
-  mlDefer = "ML_DEFER",
-  mlLowPriority = "ML_LOW_PRIORITY",
-  mlSupportDocsNeeded = "ML_SUPPORT_DOCS_NEEDED",
-  newchain = "NEWCHAIN",
-  purposeSystem = "PURPOSE_SYSTEM",
-  recursiveImprovement = "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor = "SCOPE_ADVISOR",
-  twoStageBridge = "TWO_STAGE_BRIDGE",
 }
 
 export declare enum MStatus {
@@ -366,33 +178,23 @@ export declare enum Status {
 type AllEnums =
   | AnalyticsGranularity
   | AtlasExploratory_EAtlasType
-  | AtlasExploratory_EGlobalTag
   | AtlasExploratory_EStatus
   | AtlasFoundation_FAtlasType
-  | AtlasFoundation_FGlobalTag
   | AtlasFoundation_FStatus
   | AtlasGrounding_GAtlasType
-  | AtlasGrounding_GGlobalTag
   | AtlasGrounding_GStatus
   | AtlasMultiParent_MAtlasType
-  | AtlasMultiParent_MGlobalTag
   | AtlasMultiParent_MStatus
-  | AtlasScope_GlobalTag
   | AtlasScope_Status
   | DocumentDrive_TransmitterType
   | DocumentDrive_TriggerType
   | EAtlasType
-  | EGlobalTag
   | EStatus
   | FAtlasType
-  | FGlobalTag
   | FStatus
   | GAtlasType
-  | GGlobalTag
-  | GlobalTag
   | GStatus
   | MAtlasType
-  | MGlobalTag
   | MStatus
   | Status
 
@@ -926,7 +728,7 @@ export interface AtlasExploratory_AddContextDataInput {
  */
 
 export interface AtlasExploratory_AddTagsInput {
-  newTags: EGlobalTag[]
+  newTags: string[]
 }
 
 /**
@@ -940,7 +742,7 @@ export interface AtlasExploratory_AtlasExploratoryState {
   atlasType: AtlasExploratory_EAtlasType
   content?: string
   masterStatus: AtlasExploratory_EStatus
-  globalTags: AtlasExploratory_EGlobalTag[]
+  globalTags: string[]
   originalContextData: string[]
   notionId?: string
   findings: AtlasExploratory_Finding
@@ -980,7 +782,7 @@ export interface AtlasExploratory_RemoveContextDataInput {
  */
 
 export interface AtlasExploratory_RemoveTagsInput {
-  tags: EGlobalTag[]
+  tags: string[]
 }
 
 /**
@@ -1088,7 +890,7 @@ export interface AtlasExploratoryState {
   atlasType: EAtlasType
   content?: string
   masterStatus: EStatus
-  globalTags: EGlobalTag[]
+  globalTags: string[]
   originalContextData: string[]
   notionId?: string
   findings: Finding
@@ -1261,7 +1063,7 @@ export interface AtlasFoundation_AddContextDataInput {
  */
 
 export interface AtlasFoundation_AddTagsInput {
-  tags: FGlobalTag[]
+  tags: string[]
 }
 
 /**
@@ -1275,7 +1077,7 @@ export interface AtlasFoundation_AtlasFoundationState {
   atlasType: AtlasFoundation_FAtlasType
   content?: string
   masterStatus: AtlasFoundation_FStatus
-  globalTags: AtlasFoundation_FGlobalTag[]
+  globalTags: string[]
   originalContextData: string[]
   notionId?: string
 }
@@ -1305,7 +1107,7 @@ export interface AtlasFoundation_RemoveContextDataInput {
  */
 
 export interface AtlasFoundation_RemoveTagsInput {
-  tags: FGlobalTag[]
+  tags: string[]
 }
 
 /**
@@ -1397,7 +1199,7 @@ export interface AtlasFoundationState {
   atlasType: FAtlasType
   content?: string
   masterStatus: FStatus
-  globalTags: FGlobalTag[]
+  globalTags: string[]
   originalContextData: string[]
   notionId?: string
 }
@@ -1432,7 +1234,7 @@ export interface AtlasGrounding_AddContextDataInput {
  */
 
 export interface AtlasGrounding_AddTagsInput {
-  tags: GGlobalTag[]
+  tags: string[]
 }
 
 /**
@@ -1446,7 +1248,7 @@ export interface AtlasGrounding_AtlasGroundingState {
   atlasType: AtlasGrounding_GAtlasType
   content?: string
   masterStatus: AtlasGrounding_GStatus
-  globalTags: AtlasGrounding_GGlobalTag[]
+  globalTags: string[]
   originalContextData: string[]
   notionId?: string
 }
@@ -1476,7 +1278,7 @@ export interface AtlasGrounding_RemoveContextDataInput {
  */
 
 export interface AtlasGrounding_RemoveTagsInput {
-  tags: GGlobalTag[]
+  tags: string[]
 }
 
 /**
@@ -1568,7 +1370,7 @@ export interface AtlasGroundingState {
   atlasType: GAtlasType
   content?: string
   masterStatus: GStatus
-  globalTags: GGlobalTag[]
+  globalTags: string[]
   originalContextData: string[]
   notionId?: string
 }
@@ -1615,7 +1417,7 @@ export interface AtlasMultiParent_AddParentInput {
  */
 
 export interface AtlasMultiParent_AddTagsInput {
-  tags: MGlobalTag[]
+  tags: string[]
 }
 
 /**
@@ -1628,7 +1430,7 @@ export interface AtlasMultiParent_AtlasMultiParentState {
   atlasType: AtlasMultiParent_MAtlasType
   content?: string
   masterStatus: AtlasMultiParent_MStatus
-  globalTags: AtlasMultiParent_MGlobalTag[]
+  globalTags: string[]
   originalContextData: string[]
   notionId?: string
 }
@@ -1666,7 +1468,7 @@ export interface AtlasMultiParent_RemoveParentInput {
  */
 
 export interface AtlasMultiParent_RemoveTagsInput {
-  tags: MGlobalTag[]
+  tags: string[]
 }
 
 /**
@@ -1750,7 +1552,7 @@ export interface AtlasMultiParentState {
   atlasType: MAtlasType
   content?: string
   masterStatus: MStatus
-  globalTags: MGlobalTag[]
+  globalTags: string[]
   originalContextData: string[]
   notionId?: string
 }
@@ -1785,7 +1587,7 @@ export interface AtlasScope_AddContextDataInput {
  */
 
 export interface AtlasScope_AddTagsInput {
-  newTags: GlobalTag[]
+  newTags: string[]
 }
 
 /**
@@ -1797,7 +1599,7 @@ export interface AtlasScope_AtlasScopeState {
   name?: OLabel
   content?: string
   masterStatus: AtlasScope_Status
-  globalTags: AtlasScope_GlobalTag[]
+  globalTags: string[]
   originalContextData: string[]
   notionId?: string
 }
@@ -1827,7 +1629,7 @@ export interface AtlasScope_RemoveContextDataInput {
  */
 
 export interface AtlasScope_RemoveTagsInput {
-  tags: GlobalTag[]
+  tags: string[]
 }
 
 /**
@@ -1897,7 +1699,7 @@ export interface AtlasScopeState {
   name?: OLabel
   content?: string
   masterStatus: Status
-  globalTags: GlobalTag[]
+  globalTags: string[]
   originalContextData: string[]
   notionId?: string
 }

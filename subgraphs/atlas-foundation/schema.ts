@@ -39,7 +39,7 @@ export const schema: DocumentNode = gql`
     """
     Document tags managed by the Atlas Axis facilitator group for classification.
     """
-    globalTags: [FGlobalTag!]!
+    globalTags: [String!]!
 
     """
     List of Atlas documents that were relevant for the creation of this Foundation document.
@@ -79,26 +79,6 @@ export const schema: DocumentNode = gql`
     APPROVED
     DEFERRED
     ARCHIVED
-  }
-
-  """
-  These global tags differ from the ones in Scopes.
-  """
-  enum FGlobalTag {
-    SCOPE_ADVISOR
-    AVC
-    CAIS
-    ML_LOW_PRIORITY
-    EXTERNAL_REFERENCE
-    DAO_TOOLKIT
-    ML_DEFER
-    PURPOSE_SYSTEM
-    NEWCHAIN
-    ML_SUPPORT_DOCS_NEEDED
-    TWO_STAGE_BRIDGE
-    ECOSYSTEM_INTELLIGENCE
-    RECURSIVE_IMPROVEMENT
-    LEGACY_TERM_USE_APPROVED
   }
 
   """
@@ -211,10 +191,10 @@ export const schema: DocumentNode = gql`
   Module: Tags
   """
   input AtlasFoundation_AddTagsInput {
-    tags: [FGlobalTag!]!
+    tags: [String!]!
   }
   input AtlasFoundation_RemoveTagsInput {
-    tags: [FGlobalTag!]!
+    tags: [String!]!
   }
 
   """

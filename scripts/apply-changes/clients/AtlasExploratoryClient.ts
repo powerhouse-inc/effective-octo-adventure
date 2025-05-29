@@ -2,9 +2,7 @@ import type {
   AtlasExploratoryState,
   EAtlasType,
   EDocumentLink,
-  EGlobalTag,
   EStatus,
-  Maybe,
   SetContentInput,
   SetDocNumberInput,
   SetExploratoryNameInput,
@@ -121,7 +119,7 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
         documentType: parent.documentType ?? "",
         icon: parent.icon ?? "",
       },
-      globalTags: input.globalTags as EGlobalTag[],
+      globalTags: input.globalTags,
       originalContextData: input.originalContextData
     };
   }
@@ -164,7 +162,7 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
         break;
       case "globalTags":
         await patch.AtlasExploratory_addTags(
-          arg<any>({ newTags: target as EGlobalTag[] }),
+          arg<any>({ newTags: target }),
         );
         break;
       case "originalContextData": {

@@ -1,6 +1,5 @@
 import {
   FAtlasType,
-  FGlobalTag,
   type AtlasFoundationState,
   type FDocumentLink,
   type FStatus,
@@ -125,7 +124,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<
         documentType: parent.documentType ?? "",
         icon: parent.icon ?? "",
       },
-      globalTags: input.globalTags as FGlobalTag[],
+      globalTags: input.globalTags,
       originalContextData: input.originalContextData,
     };
   }
@@ -168,7 +167,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<
         break;
       case "globalTags":
         await patch.AtlasFoundation_addTags(
-          arg<any>({ newTags: target as FGlobalTag[] }),
+          arg<any>({ tags: target }),
         );
         break;
       case "originalContextData": {
@@ -203,6 +202,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<
   }
 
   public canHandle(node: ViewNodeExtended): boolean {
+    // TODO: add typeSpecification type
     return ["article", "section", "core", "activeDataController"].includes(
       node.type,
     );

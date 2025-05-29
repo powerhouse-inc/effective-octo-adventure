@@ -5,7 +5,9 @@ import {
 } from "@powerhousedao/reactor-browser";
 import { type DocumentDriveDocument } from "document-drive";
 import { WagmiContext } from "@powerhousedao/design-system";
-import { AnalyticsProvider } from "@powerhousedao/reactor-browser/analytics/context";
+
+// TODO: enable this after Web Worker implementation
+// import { AnalyticsProvider } from "@powerhousedao/reactor-browser/analytics/context";
 
 import { DriverLayout } from "./components/driver-layout.js";
 import { getRemoteDriveUrl } from "../shared/utils/utils.js";
@@ -44,13 +46,25 @@ export function BaseEditor(props: IProps) {
   );
 }
 
+// TODO: enable this after Web Worker implementation
+// export default function Editor(props: IProps) {
+//   return (
+//     <DriveContextProvider value={props.context}>
+//       <WagmiContext>
+//         <AnalyticsProvider databaseName={props.context.analyticsDatabaseName}>
+//           <BaseEditor {...props} />
+//         </AnalyticsProvider>
+//       </WagmiContext>
+//     </DriveContextProvider>
+//   );
+// }
+
+// TODO: remove this after Web Worker implementation
 export default function Editor(props: IProps) {
   return (
     <DriveContextProvider value={props.context}>
       <WagmiContext>
-        <AnalyticsProvider databaseName={props.context.analyticsDatabaseName}>
-          <BaseEditor {...props} />
-        </AnalyticsProvider>
+        <BaseEditor {...props} />
       </WagmiContext>
     </DriveContextProvider>
   );

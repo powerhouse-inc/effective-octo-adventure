@@ -52,7 +52,13 @@ export const EditorContainer: React.FC<EditorContainerProps> = (props) => {
   const { useDocumentEditorProps } = useDriveContext();
   const user = context.user as User | undefined;
 
-  const timelineItems = useTimelineItems(documentId);
+  // TODO: enable this after Web Worker implementation
+  // const timelineItems = useTimelineItems(documentId);
+
+  // TODO: remove this after Web Worker implementation
+  const timelineItems = {
+    data: [],
+  };
 
   const { dispatch, error, document } = useDocumentEditorProps({
     documentId,

@@ -104,6 +104,9 @@ export class AtlasFoundationClient extends AtlasBaseClient<
       case "section":
         atlasType = "SECTION";
         break;
+      case "typeSpecification":
+        atlasType = "TYPE_SPECIFICATION";
+        break;
       default:
         throw new Error(`Unsupported atlas type: ${input.type}`);
     }

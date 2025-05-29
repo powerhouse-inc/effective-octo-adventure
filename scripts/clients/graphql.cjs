@@ -69,7 +69,8 @@ const AtlasFoundation_FAtlasType = {
   activeDataController: "ACTIVE_DATA_CONTROLLER",
   article: "ARTICLE",
   core: "CORE",
-  section: "SECTION"
+  section: "SECTION",
+  typeSpecification: "TYPE_SPECIFICATION"
 };
 const AtlasFoundation_FStatus = {
   approved: "APPROVED",
@@ -132,7 +133,8 @@ const FAtlasType = {
   activeDataController: "ACTIVE_DATA_CONTROLLER",
   article: "ARTICLE",
   core: "CORE",
-  section: "SECTION"
+  section: "SECTION",
+  typeSpecification: "TYPE_SPECIFICATION"
 };
 const FStatus = {
   approved: "APPROVED",

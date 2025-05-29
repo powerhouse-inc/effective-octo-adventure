@@ -79,6 +79,7 @@ export declare enum AtlasFoundation_FAtlasType {
   article = "ARTICLE",
   core = "CORE",
   section = "SECTION",
+  typeSpecification = "TYPE_SPECIFICATION",
 }
 
 export declare enum AtlasFoundation_FStatus {

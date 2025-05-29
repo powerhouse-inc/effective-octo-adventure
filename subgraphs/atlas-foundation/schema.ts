@@ -71,6 +71,7 @@ export const schema: DocumentNode = gql`
     SECTION
     CORE
     ACTIVE_DATA_CONTROLLER
+    TYPE_SPECIFICATION
   }
 
   enum FStatus {

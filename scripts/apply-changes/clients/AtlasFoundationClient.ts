@@ -202,8 +202,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<
   }
 
   public canHandle(node: ViewNodeExtended): boolean {
-    // TODO: add typeSpecification type
-    return ["article", "section", "core", "activeDataController"].includes(
+    return ["article", "section", "core", "activeDataController", "typeSpecification"].includes(
       node.type,
     );
   }

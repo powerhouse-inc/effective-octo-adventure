@@ -83,6 +83,7 @@ enum FAtlasType {
   SECTION
   CORE
   ACTIVE_DATA_CONTROLLER
+  TYPE_SPECIFICATION
 }
 
 enum FStatus {

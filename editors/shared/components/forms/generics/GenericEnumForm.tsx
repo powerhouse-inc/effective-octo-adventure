@@ -4,18 +4,12 @@ import { useFormMode } from "../../../providers/FormModeProvider.js";
 import { useEffect, useMemo } from "react";
 import type { FieldValues, UseFormReturn } from "react-hook-form";
 import { useRef } from "react";
-import globalTags from "../../../../../data/global-tags.json" with { type: "json" };
-
-interface RawTag {
-  id: string;
-  name: string;
-  nameAsConstant: string;
-}
 
 type GenericEnumFormProps = {
   label: string;
   placeholder: string;
   required?: boolean;
+  options?: SelectOption[];
 } & (
   | {
       multiple: true;
@@ -35,6 +29,7 @@ const GenericEnumForm = ({
   label,
   placeholder,
   value,
+  options,
   baselineValue,
   onSave,
   required = false,
@@ -54,16 +49,6 @@ const GenericEnumForm = ({
       formRef.current.reset({ genericEnum: value });
     }
   }, [value]);
-
-  const options = useMemo(() => {
-    return (globalTags as RawTag[]).map(
-      (tag) =>
-        ({
-          label: tag.name,
-          value: tag.nameAsConstant,
-        }) as SelectOption,
-    );
-  }, []);
 
   return (
     <Form

@@ -18,18 +18,13 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var stdin_exports = {};
 __export(stdin_exports, {
   AtlasExploratory_EAtlasType: () => AtlasExploratory_EAtlasType,
-  AtlasExploratory_EGlobalTag: () => AtlasExploratory_EGlobalTag,
   AtlasExploratory_EStatus: () => AtlasExploratory_EStatus,
   AtlasFoundation_FAtlasType: () => AtlasFoundation_FAtlasType,
-  AtlasFoundation_FGlobalTag: () => AtlasFoundation_FGlobalTag,
   AtlasFoundation_FStatus: () => AtlasFoundation_FStatus,
   AtlasGrounding_GAtlasType: () => AtlasGrounding_GAtlasType,
-  AtlasGrounding_GGlobalTag: () => AtlasGrounding_GGlobalTag,
   AtlasGrounding_GStatus: () => AtlasGrounding_GStatus,
   AtlasMultiParent_MAtlasType: () => AtlasMultiParent_MAtlasType,
-  AtlasMultiParent_MGlobalTag: () => AtlasMultiParent_MGlobalTag,
   AtlasMultiParent_MStatus: () => AtlasMultiParent_MStatus,
-  AtlasScope_GlobalTag: () => AtlasScope_GlobalTag,
   AtlasScope_Status: () => AtlasScope_Status,
   DocumentDrive_TransmitterType: () => DocumentDrive_TransmitterType,
   DocumentDrive_TriggerType: () => DocumentDrive_TriggerType,
@@ -55,31 +50,6 @@ const AtlasScope_Status = {
   placeholder: "PLACEHOLDER",
   provisional: "PROVISIONAL"
 };
-const AtlasScope_GlobalTag = {
-  anonWorkforce: "ANON_WORKFORCE",
-  avc: "AVC",
-  cais: "CAIS",
-  daoToolkit: "DAO_TOOLKIT",
-  ecosystemIntelligence: "ECOSYSTEM_INTELLIGENCE",
-  externalReference: "EXTERNAL_REFERENCE",
-  facilitatordao: "FACILITATORDAO",
-  internalReference: "INTERNAL_REFERENCE",
-  legacyTermUseApproved: "LEGACY_TERM_USE_APPROVED",
-  mlDefer: "ML_DEFER",
-  mlHighPriority: "ML_HIGH_PRIORITY",
-  mlLowPriority: "ML_LOW_PRIORITY",
-  mlMedPriority: "ML_MED_PRIORITY",
-  mlSupportDocsNeeded: "ML_SUPPORT_DOCS_NEEDED",
-  newchain: "NEWCHAIN",
-  p0HubEntryNeeded: "P0_HUB_ENTRY_NEEDED",
-  purposeSystem: "PURPOSE_SYSTEM",
-  recursiveImprovement: "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor: "SCOPE_ADVISOR",
-  subdaoIncubation: "SUBDAO_INCUBATION",
-  subdaoRewards: "SUBDAO_REWARDS",
-  twoStageBridge: "TWO_STAGE_BRIDGE",
-  v1Mip: "V1_MIP"
-};
 const AtlasMultiParent_MAtlasType = {
   annotation: "ANNOTATION",
   neededResearch: "NEEDED_RESEARCH"
@@ -90,22 +60,6 @@ const AtlasMultiParent_MStatus = {
   deferred: "DEFERRED",
   placeholder: "PLACEHOLDER",
   provisional: "PROVISIONAL"
-};
-const AtlasMultiParent_MGlobalTag = {
-  avc: "AVC",
-  cais: "CAIS",
-  daoToolkit: "DAO_TOOLKIT",
-  ecosystemIntelligence: "ECOSYSTEM_INTELLIGENCE",
-  externalReference: "EXTERNAL_REFERENCE",
-  legacyTermUseApproved: "LEGACY_TERM_USE_APPROVED",
-  mlDefer: "ML_DEFER",
-  mlLowPriority: "ML_LOW_PRIORITY",
-  mlSupportDocsNeeded: "ML_SUPPORT_DOCS_NEEDED",
-  newchain: "NEWCHAIN",
-  purposeSystem: "PURPOSE_SYSTEM",
-  recursiveImprovement: "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor: "SCOPE_ADVISOR",
-  twoStageBridge: "TWO_STAGE_BRIDGE"
 };
 const AtlasExploratory_EAtlasType = {
   scenario: "SCENARIO",
@@ -118,27 +72,12 @@ const AtlasExploratory_EStatus = {
   placeholder: "PLACEHOLDER",
   provisional: "PROVISIONAL"
 };
-const AtlasExploratory_EGlobalTag = {
-  avc: "AVC",
-  cais: "CAIS",
-  daoToolkit: "DAO_TOOLKIT",
-  ecosystemIntelligence: "ECOSYSTEM_INTELLIGENCE",
-  externalReference: "EXTERNAL_REFERENCE",
-  legacyTermUseApproved: "LEGACY_TERM_USE_APPROVED",
-  mlDefer: "ML_DEFER",
-  mlLowPriority: "ML_LOW_PRIORITY",
-  mlSupportDocsNeeded: "ML_SUPPORT_DOCS_NEEDED",
-  newchain: "NEWCHAIN",
-  purposeSystem: "PURPOSE_SYSTEM",
-  recursiveImprovement: "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor: "SCOPE_ADVISOR",
-  twoStageBridge: "TWO_STAGE_BRIDGE"
-};
 const AtlasFoundation_FAtlasType = {
   activeDataController: "ACTIVE_DATA_CONTROLLER",
   article: "ARTICLE",
   core: "CORE",
-  section: "SECTION"
+  section: "SECTION",
+  typeSpecification: "TYPE_SPECIFICATION"
 };
 const AtlasFoundation_FStatus = {
   approved: "APPROVED",
@@ -146,22 +85,6 @@ const AtlasFoundation_FStatus = {
   deferred: "DEFERRED",
   placeholder: "PLACEHOLDER",
   provisional: "PROVISIONAL"
-};
-const AtlasFoundation_FGlobalTag = {
-  avc: "AVC",
-  cais: "CAIS",
-  daoToolkit: "DAO_TOOLKIT",
-  ecosystemIntelligence: "ECOSYSTEM_INTELLIGENCE",
-  externalReference: "EXTERNAL_REFERENCE",
-  legacyTermUseApproved: "LEGACY_TERM_USE_APPROVED",
-  mlDefer: "ML_DEFER",
-  mlLowPriority: "ML_LOW_PRIORITY",
-  mlSupportDocsNeeded: "ML_SUPPORT_DOCS_NEEDED",
-  newchain: "NEWCHAIN",
-  purposeSystem: "PURPOSE_SYSTEM",
-  recursiveImprovement: "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor: "SCOPE_ADVISOR",
-  twoStageBridge: "TWO_STAGE_BRIDGE"
 };
 const AtlasGrounding_GAtlasType = {
   activeData: "ACTIVE_DATA",
@@ -174,22 +97,6 @@ const AtlasGrounding_GStatus = {
   deferred: "DEFERRED",
   placeholder: "PLACEHOLDER",
   provisional: "PROVISIONAL"
-};
-const AtlasGrounding_GGlobalTag = {
-  avc: "AVC",
-  cais: "CAIS",
-  daoToolkit: "DAO_TOOLKIT",
-  ecosystemIntelligence: "ECOSYSTEM_INTELLIGENCE",
-  externalReference: "EXTERNAL_REFERENCE",
-  legacyTermUseApproved: "LEGACY_TERM_USE_APPROVED",
-  mlDefer: "ML_DEFER",
-  mlLowPriority: "ML_LOW_PRIORITY",
-  mlSupportDocsNeeded: "ML_SUPPORT_DOCS_NEEDED",
-  newchain: "NEWCHAIN",
-  purposeSystem: "PURPOSE_SYSTEM",
-  recursiveImprovement: "RECURSIVE_IMPROVEMENT",
-  scopeAdvisor: "SCOPE_ADVISOR",
-  twoStageBridge: "TWO_STAGE_BRIDGE"
 };
 const typesTree = {
   DocumentDrive: {
@@ -385,11 +292,9 @@ const typesTree = {
   Mutation: {
     get addDrive() {
       return {
+        __fields: typesTree.DocumentDrive_DocumentDriveState,
         __args: {
-          name: "String!",
-          icon: "String",
-          id: "String",
-          slug: "String",
+          global: "DocumentDriveStateInput!",
           preferredEditor: "String"
         }
       };

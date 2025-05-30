@@ -6,7 +6,6 @@ import type {
   SetExploratoryNameInput,
   MDocumentLink,
   MAtlasType,
-  MGlobalTag,
 } from "document-models/atlas-multi-parent/index.js";
 import { gql } from "graphql-request";
 import {
@@ -110,7 +109,7 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
       content: processMarkdownContent(input.markdownContent),
       atlasType,
       notionId: input.id,
-      globalTags: input.globalTags as MGlobalTag[],
+      globalTags: input.globalTags,
       originalContextData: input.originalContextData,
       parents: parent ? [parent]: [] ,
     };
@@ -151,7 +150,7 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
         break;
       case "globalTags":
         await patch.AtlasMultiParent_addTags(
-          arg<any>({ newTags: target as MGlobalTag[] })
+          arg<any>({ tags: target })
         );
         break;
       case "originalContextData": {

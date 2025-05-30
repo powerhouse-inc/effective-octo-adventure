@@ -1,7 +1,7 @@
 import { Form, EnumField } from "@powerhousedao/document-engineering/scalars";
 import { type SelectOption } from "@powerhousedao/document-engineering/ui";
 import { useFormMode } from "../../../providers/FormModeProvider.js";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import type { FieldValues, UseFormReturn } from "react-hook-form";
 import { useRef } from "react";
 
@@ -9,7 +9,7 @@ type GenericEnumFormProps = {
   label: string;
   placeholder: string;
   required?: boolean;
-  options: SelectOption[];
+  options?: SelectOption[];
 } & (
   | {
       multiple: true;
@@ -28,8 +28,8 @@ type GenericEnumFormProps = {
 const GenericEnumForm = ({
   label,
   placeholder,
-  options,
   value,
+  options,
   baselineValue,
   onSave,
   required = false,

@@ -36,7 +36,7 @@ export const schema: DocumentNode = gql`
     """
     Document tags managed by the Atlas Axis facilitator group for classification.
     """
-    globalTags: [MGlobalTag!]!
+    globalTags: [String!]!
 
     """
       List of Atlas documents that were relevant for the creation of this MultiParent document.
@@ -88,26 +88,6 @@ export const schema: DocumentNode = gql`
     APPROVED
     DEFERRED
     ARCHIVED
-  }
-
-  """
-  These global tags are used for classification in MultiParent documents.
-  """
-  enum MGlobalTag {
-    SCOPE_ADVISOR
-    AVC
-    CAIS
-    ML_LOW_PRIORITY
-    EXTERNAL_REFERENCE
-    DAO_TOOLKIT
-    ML_DEFER
-    PURPOSE_SYSTEM
-    NEWCHAIN
-    ML_SUPPORT_DOCS_NEEDED
-    TWO_STAGE_BRIDGE
-    ECOSYSTEM_INTELLIGENCE
-    RECURSIVE_IMPROVEMENT
-    LEGACY_TERM_USE_APPROVED
   }
 
   """
@@ -233,10 +213,10 @@ export const schema: DocumentNode = gql`
   Module: Tags
   """
   input AtlasMultiParent_AddTagsInput {
-    tags: [MGlobalTag!]!
+    tags: [String!]!
   }
   input AtlasMultiParent_RemoveTagsInput {
-    tags: [MGlobalTag!]!
+    tags: [String!]!
   }
 
   """

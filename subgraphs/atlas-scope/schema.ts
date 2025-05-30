@@ -27,7 +27,7 @@ export const schema: DocumentNode = gql`
     """
     Document tags as managed by the Atlas Axis facilitator group.
     """
-    globalTags: [GlobalTag!]!
+    globalTags: [String!]!
     """
     List of Atlas documents that were relevant for the creation of the scope document.
     """
@@ -55,32 +55,6 @@ export const schema: DocumentNode = gql`
     APPROVED
     DEFERRED
     ARCHIVED
-  }
-
-  enum GlobalTag {
-    RECURSIVE_IMPROVEMENT
-    SCOPE_ADVISOR
-    DAO_TOOLKIT
-    PURPOSE_SYSTEM
-    ML_LOW_PRIORITY
-    EXTERNAL_REFERENCE
-    ML_DEFER
-    SUBDAO_INCUBATION
-    V1_MIP
-    ML_HIGH_PRIORITY
-    ECOSYSTEM_INTELLIGENCE
-    LEGACY_TERM_USE_APPROVED
-    CAIS
-    INTERNAL_REFERENCE
-    FACILITATORDAO
-    ML_MED_PRIORITY
-    AVC
-    P0_HUB_ENTRY_NEEDED
-    ANON_WORKFORCE
-    NEWCHAIN
-    ML_SUPPORT_DOCS_NEEDED
-    SUBDAO_REWARDS
-    TWO_STAGE_BRIDGE
   }
 
   """
@@ -176,11 +150,11 @@ export const schema: DocumentNode = gql`
   """
   input AtlasScope_AddTagsInput {
     "Tags to be added"
-    newTags: [GlobalTag!]!
+    newTags: [String!]!
   }
   input AtlasScope_RemoveTagsInput {
     "Tags to be removed"
-    tags: [GlobalTag!]!
+    tags: [String!]!
   }
 
   """

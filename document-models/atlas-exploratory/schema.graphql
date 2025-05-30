@@ -44,7 +44,7 @@ type AtlasExploratoryState {
   """
   Document tags managed by the Atlas Axis facilitator group for classification.  
   """
-  globalTags: [EGlobalTag!]!
+  globalTags: [String!]!
   """
   List of Atlas documents that were relevant for the creation of this Exploratory document.  
   """
@@ -99,25 +99,6 @@ enum EStatus {
   ARCHIVED
 }
 
-"""
-These global tags are used for classification in Exploratory documents.  
-"""
-enum EGlobalTag {
-  SCOPE_ADVISOR
-  AVC
-  CAIS
-  ML_LOW_PRIORITY
-  EXTERNAL_REFERENCE
-  DAO_TOOLKIT
-  ML_DEFER
-  PURPOSE_SYSTEM
-  NEWCHAIN
-  ML_SUPPORT_DOCS_NEEDED
-  TWO_STAGE_BRIDGE
-  ECOSYSTEM_INTELLIGENCE
-  RECURSIVE_IMPROVEMENT
-  LEGACY_TERM_USE_APPROVED
-}
 
 
 
@@ -158,11 +139,11 @@ input SetDocNumberInput {
 # tags
 
 input AddTagsInput {
-  newTags: [EGlobalTag!]!
+  newTags: [String!]!
 }
 
 input RemoveTagsInput {
-  tags: [EGlobalTag!]!
+  tags: [String!]!
 }
 
 # context

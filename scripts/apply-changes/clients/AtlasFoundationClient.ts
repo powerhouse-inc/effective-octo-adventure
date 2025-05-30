@@ -1,6 +1,5 @@
 import {
   FAtlasType,
-  FGlobalTag,
   type AtlasFoundationState,
   type FDocumentLink,
   type FStatus,
@@ -105,6 +104,9 @@ export class AtlasFoundationClient extends AtlasBaseClient<
       case "section":
         atlasType = "SECTION";
         break;
+      case "typeSpecification":
+        atlasType = "TYPE_SPECIFICATION";
+        break;
       default:
         throw new Error(`Unsupported atlas type: ${input.type}`);
     }
@@ -125,7 +127,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<
         documentType: parent.documentType ?? "",
         icon: parent.icon ?? "",
       },
-      globalTags: input.globalTags as FGlobalTag[],
+      globalTags: input.globalTags,
       originalContextData: input.originalContextData,
     };
   }
@@ -168,7 +170,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<
         break;
       case "globalTags":
         await patch.AtlasFoundation_addTags(
-          arg<any>({ newTags: target as FGlobalTag[] }),
+          arg<any>({ tags: target }),
         );
         break;
       case "originalContextData": {
@@ -203,7 +205,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<
   }
 
   public canHandle(node: ViewNodeExtended): boolean {
-    return ["article", "section", "core", "activeDataController"].includes(
+    return ["article", "section", "core", "activeDataController", "typeSpecification"].includes(
       node.type,
     );
   }

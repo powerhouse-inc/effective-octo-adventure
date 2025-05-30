@@ -12,10 +12,7 @@ import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/at
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { DocNoForm } from "../../shared/components/forms/DocNoForm.js";
 import type { IProps } from "../editor.js";
-import {
-  actions,
-  type FGlobalTag,
-} from "../../../document-models/atlas-foundation/index.js";
+import { actions } from "../../../document-models/atlas-foundation/index.js";
 import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
@@ -207,7 +204,7 @@ export function FoundationForm({
               value={documentState.globalTags}
               baselineValue={[]} // TODO: add the baseline value
               onSave={(value) => {
-                const newTags = value as FGlobalTag[];
+                const newTags = value;
                 const currentTags = documentState.globalTags;
 
                 if (value === null) {

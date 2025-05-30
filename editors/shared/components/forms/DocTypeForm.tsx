@@ -22,6 +22,7 @@ const foundationOptions = [
   },
   { value: "CORE", label: "CORE" },
   { value: "SECTION", label: "SECTION" },
+  { value: "TYPE_SPECIFICATION", label: "TYPE_SPECIFICATION" },
 ];
 
 const DocTypeForm = ({

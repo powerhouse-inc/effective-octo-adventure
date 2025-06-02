@@ -19,6 +19,7 @@ export default function Editor(props: IProps) {
           <SplitView
             left={
               <MultiParentForm
+                context={props.context}
                 document={props.document}
                 dispatch={props.dispatch}
                 isSplitMode={isSplitMode}
@@ -27,6 +28,7 @@ export default function Editor(props: IProps) {
             }
             right={
               <MultiParentForm
+                context={props.context}
                 document={props.document}
                 dispatch={props.dispatch}
                 isSplitMode={isSplitMode}
@@ -36,6 +38,7 @@ export default function Editor(props: IProps) {
           />
         ) : (
           <MultiParentForm
+            context={props.context}
             document={props.document}
             dispatch={props.dispatch}
             mode={isEditMode ? "edition" : "mixed"}

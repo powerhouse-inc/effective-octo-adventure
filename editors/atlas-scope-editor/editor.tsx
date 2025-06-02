@@ -18,6 +18,7 @@ export default function Editor(props: IProps) {
           <SplitView
             left={
               <ScopeForm
+                context={props.context}
                 document={props.document}
                 dispatch={props.dispatch}
                 mode={isEditMode ? "edition" : "removal"}
@@ -26,6 +27,7 @@ export default function Editor(props: IProps) {
             }
             right={
               <ScopeForm
+                context={props.context}
                 document={props.document}
                 dispatch={props.dispatch}
                 mode={isEditMode ? "mixed" : "addition"}
@@ -35,6 +37,7 @@ export default function Editor(props: IProps) {
           />
         ) : (
           <ScopeForm
+            context={props.context}
             document={props.document}
             dispatch={props.dispatch}
             mode={isEditMode ? "edition" : "mixed"}

@@ -21,6 +21,7 @@ export default function Editor(props: IProps) {
           <SplitView
             left={
               <ExploratoryForm
+                context={props.context}
                 document={props.document}
                 dispatch={props.dispatch}
                 isSplitMode={isSplitMode}
@@ -29,6 +30,7 @@ export default function Editor(props: IProps) {
             }
             right={
               <ExploratoryForm
+                context={props.context}
                 document={props.document}
                 dispatch={props.dispatch}
                 isSplitMode={isSplitMode}
@@ -38,6 +40,7 @@ export default function Editor(props: IProps) {
           />
         ) : (
           <ExploratoryForm
+            context={props.context}
             document={props.document}
             dispatch={props.dispatch}
             mode={isEditMode ? "edition" : "mixed"}

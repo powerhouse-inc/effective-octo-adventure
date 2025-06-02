@@ -33,13 +33,15 @@ import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 import { transformUrl } from "../../shared/utils/utils.js";
 
-interface ExploratoryFormProps extends Pick<IProps, "document" | "dispatch"> {
+interface ExploratoryFormProps
+  extends Pick<IProps, "context" | "document" | "dispatch"> {
   mode: ViewMode;
   isSplitMode?: boolean;
   isAligned?: boolean;
 }
 
 export function ExploratoryForm({
+  context,
   document,
   dispatch,
   mode,
@@ -226,9 +228,8 @@ export function ExploratoryForm({
             )}
           >
             <MultiUrlForm
-              // TODO: add the correct baseline value
-              baseValue={""}
               viewMode={mode}
+              baselineValue={[]} // TODO: add the correct baseline value
               label="Original Context Data"
               data={documentState.originalContextData.map((element) => {
                 return {

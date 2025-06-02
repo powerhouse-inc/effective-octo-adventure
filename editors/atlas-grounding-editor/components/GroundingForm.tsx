@@ -31,12 +31,14 @@ import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 import { transformUrl } from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 
-interface GroundingFormProps extends Pick<IProps, "document" | "dispatch"> {
+interface GroundingFormProps
+  extends Pick<IProps, "context" | "document" | "dispatch"> {
   mode: ViewMode;
   isSplitMode?: boolean;
 }
 
 export function GroundingForm({
+  context,
   document,
   dispatch,
   mode,
@@ -181,8 +183,8 @@ export function GroundingForm({
             />
 
             <MultiUrlForm
-              baseValue={""}
               viewMode={mode}
+              baselineValue={[]} // TODO: add the correct baseline value
               label="Original Context Data"
               data={documentState.originalContextData.map((element) => {
                 return {

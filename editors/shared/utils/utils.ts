@@ -124,17 +124,14 @@ export const getBaseDocumentTimestamp = (
     (operation) => operation.index === 0,
   );
 
-  if (firstOperation) {
-    // add 30s of margin
-    const resultDate = new Date(firstOperation.timestamp);
-    resultDate.setUTCSeconds(resultDate.getUTCSeconds() + 30);
-    return resultDate.toISOString();
+  if (firstOperation !== undefined) {
+    return firstOperation.timestamp;
   }
 
   if (document.initialState?.created) {
     return document.initialState.created;
   }
 
-  // fallback to current datetime if nothing is available
+  // fallback to current date if nothing is available
   return new Date().toISOString();
 };

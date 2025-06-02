@@ -30,12 +30,14 @@ import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import { transformUrl } from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 
-interface MultiParentFormProps extends Pick<IProps, "document" | "dispatch"> {
+interface MultiParentFormProps
+  extends Pick<IProps, "context" | "document" | "dispatch"> {
   mode: ViewMode;
   isSplitMode?: boolean;
 }
 
 export function MultiParentForm({
+  context,
   document,
   dispatch,
   mode,
@@ -160,8 +162,8 @@ export function MultiParentForm({
             />
 
             <MultiUrlForm
-              baseValue={""}
               viewMode={mode}
+              baselineValue={[]} // TODO: add the correct baseline value
               label="Original Context Data"
               data={documentState.originalContextData.map((element) => {
                 return {

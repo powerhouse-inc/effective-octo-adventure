@@ -1,10 +1,9 @@
 import { useEffect, useCallback, useMemo, useState } from "react";
 import { ArrayField, type ArrayFieldProps } from "../ArrayField.js";
-import { useFormMode } from "../../providers/FormModeProvider.js";
 import {
   UrlField,
-  type WithDifference,
   type UrlFieldProps,
+  type ViewMode,
 } from "@powerhousedao/document-engineering/scalars";
 
 type CommonDataProps = {
@@ -14,11 +13,12 @@ type CommonDataProps = {
 
 interface MultiUrlFormProps
   extends Omit<
-      ArrayFieldProps<string, UrlFieldProps>,
-      "fields" | "componentProps" | "component"
-    >,
-    WithDifference<string> {
+    ArrayFieldProps<string, UrlFieldProps>,
+    "fields" | "componentProps" | "component"
+  > {
   data: CommonDataProps[];
+  viewMode: ViewMode;
+  baselineValue: string[];
 }
 
 const MultiUrlForm = ({
@@ -27,8 +27,8 @@ const MultiUrlForm = ({
   onAdd,
   onRemove,
   onUpdate,
-  baseValue,
   viewMode,
+  baselineValue,
 }: MultiUrlFormProps) => {
   // boolean flag to trigger callback recreation only when needed
   const [renderComponentTrigger, setRenderComponentTrigger] = useState(false);
@@ -49,19 +49,30 @@ const MultiUrlForm = ({
   // not on every data change, but still has access to latest data
   const renderComponent = useCallback(
     (props: UrlFieldProps) => {
+      let baseValue = "";
+
+      if (props.name !== "item-new") {
+        const fieldId = props.name?.replace("item-", "");
+        const fieldIndex = data.findIndex((d) => d.id === fieldId);
+        baseValue =
+          fieldIndex >= 0 && fieldIndex < baselineValue.length
+            ? baselineValue[fieldIndex]
+            : "";
+      }
+
       return (
         <UrlField
+          {...props}
           viewMode={viewMode}
           diffMode={"sentences"}
           baseValue={baseValue}
-          {...props}
           platformIcons={{
             "example.com": "File",
           }}
         />
       );
     },
-    [renderComponentTrigger, baseValue, viewMode],
+    [renderComponentTrigger, viewMode, baselineValue],
   );
 
   // split rendering into two phases: this effect runs after data changes are complete,

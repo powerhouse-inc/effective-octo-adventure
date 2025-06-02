@@ -22,12 +22,14 @@ import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import { transformUrl } from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 
-interface ScopeFormProps extends Pick<IProps, "document" | "dispatch"> {
+interface ScopeFormProps
+  extends Pick<IProps, "context" | "document" | "dispatch"> {
   mode: ViewMode;
   isSplitMode?: boolean;
 }
 
 export function ScopeForm({
+  context,
   document,
   dispatch,
   mode,
@@ -96,8 +98,8 @@ export function ScopeForm({
           <div className={cn("flex flex-col gap-4")}>
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <MultiUrlForm
-                baseValue={""}
                 viewMode={mode}
+                baselineValue={[]} // TODO: add the correct baseline value
                 label="Original Context Data"
                 data={documentState.originalContextData.map((element) => {
                   return {

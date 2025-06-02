@@ -15,12 +15,14 @@ import { type IProps } from "../editor.js";
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 
-interface SetFormProps extends Pick<IProps, "document" | "dispatch"> {
+interface SetFormProps
+  extends Pick<IProps, "context" | "document" | "dispatch"> {
   mode: ViewMode;
   isSplitMode?: boolean;
 }
 
 export function SetForm({
+  context,
   document,
   dispatch,
   mode,

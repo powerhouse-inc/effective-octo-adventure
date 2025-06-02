@@ -7,8 +7,6 @@ import {
   getTagText,
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
-import { getOriginalNotionDocument } from "../../../document-models/utils.js";
-import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { DocNoForm } from "../../shared/components/forms/DocNoForm.js";
 import type { IProps } from "../editor.js";
@@ -18,7 +16,6 @@ import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
-import { useState } from "react";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
@@ -27,13 +24,16 @@ import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 import { transformUrl } from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
+import { useBaseDocument } from "../../shared/hooks/useBaseDocument.js";
 
-interface FoundationFormProps extends Pick<IProps, "document" | "dispatch"> {
+interface FoundationFormProps
+  extends Pick<IProps, "context" | "document" | "dispatch"> {
   mode: ViewMode;
   isSplitMode?: boolean;
 }
 
 export function FoundationForm({
+  context,
   document,
   dispatch,
   mode,
@@ -49,10 +49,12 @@ export function FoundationForm({
     ? `phd:${originalDocumentState.parent.id}`
     : "";
   const parentTitle = originalDocumentState.parent?.title ?? "";
+  const parentType = originalDocumentState.parent?.documentType ?? "";
 
   const parentPHIDInitialOption: PHIDOption = {
     icon: "File",
     title: parentTitle,
+    path: parentType,
     value: parentId,
   };
 
@@ -61,13 +63,7 @@ export function FoundationForm({
     parent: parentId,
   };
 
-  // baseline node state
-  const [originalNodeState] = useState(() =>
-    getOriginalNotionDocument(
-      (documentState.notionId as string) || "notion-id-not-set",
-      (documentState.atlasType as ParsedNotionDocumentType) || "article",
-    ),
-  );
+  const baseDocument = useBaseDocument(document, context);
 
   return (
     <FormModeProvider mode={mode}>
@@ -77,7 +73,7 @@ export function FoundationForm({
             <div className={cn("flex-1")}>
               <DocNoForm
                 value={documentState.docNo}
-                baselineValue={originalNodeState.docNo}
+                baselineValue={baseDocument.state.global.docNo}
                 onSave={(value) => {
                   dispatch(actions.setDocNumber({ docNo: value }));
                 }}
@@ -86,7 +82,7 @@ export function FoundationForm({
             <div className={cn("flex-1")}>
               <DocNameForm
                 value={documentState.name}
-                baselineValue={originalNodeState.name}
+                baselineValue={baseDocument.state.global.name}
                 onSave={(value) => {
                   dispatch(
                     actions.setFoundationName({
@@ -101,7 +97,7 @@ export function FoundationForm({
             <div className={cn("flex-1")}>
               <DocTypeForm
                 value={documentState.atlasType}
-                baselineValue={originalNodeState.type?.toUpperCase()}
+                baselineValue={baseDocument.state.global.atlasType}
                 onSave={(value) => {
                   dispatch(actions.setAtlasType({ atlasType: value }));
                 }}
@@ -110,7 +106,7 @@ export function FoundationForm({
             <div className={cn("flex-1")}>
               <MasterStatusForm
                 value={documentState.masterStatus}
-                baselineValue={originalNodeState.masterStatusNames[0]?.toUpperCase()}
+                baselineValue={baseDocument.state.global.masterStatus}
                 onSave={(value) => {
                   dispatch(actions.setMasterStatus({ masterStatus: value }));
                 }}
@@ -120,7 +116,7 @@ export function FoundationForm({
           <div className={cn("flex-1 min-h-[350px]")}>
             <MarkdownContentForm
               value={documentState.content ?? ""}
-              baselineValue={""}
+              baselineValue={baseDocument.state.global.content ?? ""}
               onSave={(value) => {
                 dispatch(actions.setContent({ content: value }));
               }}
@@ -137,15 +133,16 @@ export function FoundationForm({
               label="Parent Document"
               value={documentState.parent}
               fetchOptionsCallback={fetchOptionsCallback}
-              // TODO: add the correct baseline value
               baselineValue={
-                originalNodeState.parents?.[0] ??
-                "phd:687933ce-87eb-4f35-a171-30333b31a462"
+                baseDocument.state.global.parent?.id
+                  ? `phd:${baseDocument.state.global.parent.id}`
+                  : ""
               }
-              baselineIcon={undefined} // TODO: add the correct baseline icon
-              baselineTitle={"Original title"} // TODO: add the correct baseline title
-              baselineType={"original/type"} // TODO: add the correct baseline type
-              baselineDescription={"original description"} // TODO: add the correct baseline description
+              baselineIcon={baseDocument.state.global.parent?.icon ?? ""}
+              baselineTitle={baseDocument.state.global.parent?.title ?? ""}
+              baselineType={
+                baseDocument.state.global.parent?.documentType ?? ""
+              }
               onSave={(value) => {
                 if (value === null || value === "") {
                   dispatch(
@@ -156,10 +153,15 @@ export function FoundationForm({
                 } else {
                   const newParentId = value.split(":")[1];
                   const newParentData = fetchSelectedPHIDOption(value);
+                  const documentType =
+                    typeof newParentData?.path === "object"
+                      ? newParentData.path.text
+                      : newParentData?.path;
                   dispatch(
                     actions.setParent({
                       id: newParentId,
                       title: newParentData?.title ?? "",
+                      documentType: documentType ?? "",
                     }),
                   );
                 }
@@ -168,8 +170,8 @@ export function FoundationForm({
             />
 
             <MultiUrlForm
-              baseValue={""}
               viewMode={mode}
+              baselineValue={baseDocument.state.global.originalContextData}
               label="Original Context Data"
               data={documentState.originalContextData.map((element) => {
                 return {
@@ -202,7 +204,7 @@ export function FoundationForm({
 
             <GlobalTagsForm
               value={documentState.globalTags}
-              baselineValue={[]} // TODO: add the baseline value
+              baselineValue={baseDocument.state.global.globalTags}
               onSave={(value) => {
                 const newTags = value;
                 const currentTags = documentState.globalTags;

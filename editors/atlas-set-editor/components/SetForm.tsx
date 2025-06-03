@@ -6,7 +6,6 @@ import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js"
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { getFlexLayoutClassName } from "../../shared/utils/styles.js";
 import {
-  fetchSelectedPHIDOption,
   getCardVariant,
   getStringValue,
   getTagText,
@@ -14,6 +13,7 @@ import {
 import { type IProps } from "../editor.js";
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
+import { useBaseDocument } from "../../shared/hooks/useBaseDocument.js";
 
 interface SetFormProps
   extends Pick<IProps, "context" | "document" | "dispatch"> {
@@ -37,6 +37,8 @@ export function SetForm({
     ? `phd:${document.state.global.parent.id}`
     : "";
   const parentTitle = document.state.global.parent?.title ?? "";
+  const parentType = document.state.global.parent?.documentType ?? "";
+
   const documentState = {
     ...document.state.global,
     parent: parentId,
@@ -45,13 +47,11 @@ export function SetForm({
   const parentPHIDInitialOption: PHIDOption = {
     icon: "File",
     title: parentTitle,
+    path: parentType,
     value: parentId,
   };
 
-  const originalNodeState = {
-    name: "",
-    parent: "",
-  };
+  const baseDocument = useBaseDocument(document, context);
 
   return (
     <FormModeProvider mode={mode}>
@@ -61,7 +61,7 @@ export function SetForm({
             <div className={cn("flex-1")}>
               <DocNameForm
                 value={documentState.name}
-                baselineValue={originalNodeState.name}
+                baselineValue={baseDocument.state.global.name}
                 onSave={(value) => {
                   dispatch(actions.setSetName({ name: getStringValue(value) }));
                 }}
@@ -74,30 +74,35 @@ export function SetForm({
                 label="Parent Document"
                 value={documentState.parent}
                 fetchOptionsCallback={fetchOptionsCallback}
-                // TODO: add the correct baseline value
                 baselineValue={
-                  originalNodeState.parent ??
-                  "phd:687933ce-87eb-4f35-a171-30333b31a462"
+                  baseDocument.state.global.parent?.id
+                    ? `phd:${baseDocument.state.global.parent.id}`
+                    : ""
                 }
-                baselineIcon={undefined} // TODO: add the correct baseline icon
-                baselineTitle={"Original title"} // TODO: add the correct baseline title
-                baselineType={"original/type"} // TODO: add the correct baseline type
-                baselineDescription={"original description"} // TODO: add the correct baseline description
+                baselineIcon={baseDocument.state.global.parent?.icon ?? ""}
+                baselineTitle={baseDocument.state.global.parent?.title ?? ""}
+                baselineType={
+                  baseDocument.state.global.parent?.documentType ?? ""
+                }
                 onSave={(value) => {
                   if (value === null || value === "") {
                     dispatch(
                       actions.setSetParent({
                         id: "",
-                        title: "",
                       }),
                     );
                   } else {
                     const newParentId = value.split(":")[1];
-                    const newParentData = fetchSelectedPHIDOption(value);
+                    const newParentData = fetchOptionsCallback(value)[0];
+                    const documentType =
+                      typeof newParentData?.path === "object"
+                        ? newParentData.path.text
+                        : newParentData?.path;
                     dispatch(
                       actions.setSetParent({
                         id: newParentId,
                         title: newParentData?.title ?? "",
+                        documentType: documentType ?? "",
                       }),
                     );
                   }

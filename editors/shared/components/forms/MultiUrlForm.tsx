@@ -49,15 +49,17 @@ const MultiUrlForm = ({
   // not on every data change, but still has access to latest data
   const renderComponent = useCallback(
     (props: UrlFieldProps) => {
-      let baseValue = "";
+      let baseValue = undefined;
 
       if (props.name !== "item-new") {
         const fieldId = props.name?.replace("item-", "");
-        const fieldIndex = data.findIndex((d) => d.id === fieldId);
-        baseValue =
-          fieldIndex >= 0 && fieldIndex < baselineValue.length
-            ? baselineValue[fieldIndex]
-            : "";
+        const element = data.find((d) => d.id === fieldId);
+
+        if (element !== undefined) {
+          baseValue = baselineValue.find(
+            (baseUrl) => baseUrl === element.value,
+          );
+        }
       }
 
       return (

@@ -1,13 +1,10 @@
 import { cn, type ViewMode } from "@powerhousedao/document-engineering/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
-  fetchSelectedPHIDOption,
   getCardVariant,
   getStringValue,
   getTagText,
 } from "../../shared/utils/utils.js";
-import { getOriginalNotionDocument } from "../../../document-models/utils.js";
-import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import type { IProps } from "../editor.js";
 import {
@@ -18,7 +15,6 @@ import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { DocTypeForm } from "../../shared/components/forms/DocTypeForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
-import { useState } from "react";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
@@ -29,6 +25,7 @@ import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import { transformUrl } from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
+import { useBaseDocument } from "../../shared/hooks/useBaseDocument.js";
 
 interface MultiParentFormProps
   extends Pick<IProps, "context" | "document" | "dispatch"> {
@@ -49,13 +46,7 @@ export function MultiParentForm({
 
   const fetchOptionsCallback = useParentOptions("sky/atlas-multiparent");
 
-  // baseline node state
-  const [originalNodeState] = useState(() =>
-    getOriginalNotionDocument(
-      (documentState.notionId as string) || "notion-id-not-set",
-      (documentState.atlasType as ParsedNotionDocumentType) || "annotation",
-    ),
-  );
+  const baseDocument = useBaseDocument(document, context);
 
   return (
     <FormModeProvider mode={mode}>
@@ -65,7 +56,7 @@ export function MultiParentForm({
             <div className={cn("flex-1")}>
               <DocNameForm
                 value={documentState.name}
-                baselineValue={originalNodeState.name}
+                baselineValue={baseDocument.state.global.name}
                 onSave={(value) => {
                   dispatch(
                     actions.setExploratoryName({
@@ -78,7 +69,7 @@ export function MultiParentForm({
             <div className={cn("flex-1")}>
               <DocTypeForm
                 value={documentState.atlasType}
-                baselineValue={originalNodeState.type?.toUpperCase()}
+                baselineValue={baseDocument.state.global.atlasType}
                 options={[
                   { value: "ANNOTATION", label: "ANNOTATION" },
                   { value: "NEEDED_RESEARCH", label: "NEEDED_RESEARCH" },
@@ -95,7 +86,7 @@ export function MultiParentForm({
             <div className={cn("flex-1")}>
               <MasterStatusForm
                 value={documentState.masterStatus}
-                baselineValue={originalNodeState.masterStatusNames[0]?.toUpperCase()}
+                baselineValue={baseDocument.state.global.masterStatus}
                 onSave={(value) => {
                   dispatch(actions.setMasterStatus({ masterStatus: value }));
                 }}
@@ -105,7 +96,7 @@ export function MultiParentForm({
           <div className={cn("flex-1 min-h-[350px]")}>
             <MarkdownContentForm
               value={documentState.content ?? ""}
-              baselineValue={""}
+              baselineValue={baseDocument.state.global.content ?? ""}
               onSave={(value) => {
                 dispatch(actions.setContent({ content: value }));
               }}
@@ -124,6 +115,7 @@ export function MultiParentForm({
                 const initialOption: PHIDOption = {
                   icon: "File",
                   title: element.title ?? "",
+                  path: element.documentType ?? "",
                   value: `phd:${element.id}`,
                 };
 
@@ -133,13 +125,19 @@ export function MultiParentForm({
                 };
               })}
               fetchOptionsCallback={fetchOptionsCallback}
+              baselineValue={baseDocument.state.global.parents}
               onAdd={(value) => {
-                const newData = fetchSelectedPHIDOption(value);
+                const newData = fetchOptionsCallback(value)[0];
                 const newId = value.split(":")[1];
+                const documentType =
+                  typeof newData?.path === "object"
+                    ? newData.path.text
+                    : newData?.path;
                 dispatch(
                   actions.addParent({
                     id: newId,
                     title: newData?.title ?? "",
+                    documentType: documentType ?? "",
                   }),
                 );
               }}
@@ -148,14 +146,19 @@ export function MultiParentForm({
                 dispatch(actions.removeParent({ id }));
               }}
               onUpdate={({ previousValue, value }) => {
-                const newData = fetchSelectedPHIDOption(value);
+                const newData = fetchOptionsCallback(value)[0];
                 const prevId = previousValue.split(":")[1];
                 const newId = value.split(":")[1];
+                const documentType =
+                  typeof newData?.path === "object"
+                    ? newData.path.text
+                    : newData?.path;
                 dispatch(
                   actions.replaceParent({
                     prevID: prevId,
                     id: newId,
                     title: newData?.title ?? "",
+                    documentType: documentType ?? "",
                   }),
                 );
               }}
@@ -163,7 +166,7 @@ export function MultiParentForm({
 
             <MultiUrlForm
               viewMode={mode}
-              baselineValue={[]} // TODO: add the correct baseline value
+              baselineValue={baseDocument.state.global.originalContextData}
               label="Original Context Data"
               data={documentState.originalContextData.map((element) => {
                 return {
@@ -196,7 +199,7 @@ export function MultiParentForm({
 
             <GlobalTagsForm
               value={documentState.globalTags}
-              baselineValue={[]}
+              baselineValue={baseDocument.state.global.globalTags}
               onSave={(value) => {
                 const newTags = value;
                 const currentTags = documentState.globalTags;

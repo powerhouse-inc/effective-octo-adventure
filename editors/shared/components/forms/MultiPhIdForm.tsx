@@ -1,15 +1,13 @@
 import { useEffect, useCallback, useMemo, useState } from "react";
 import { ArrayField, type ArrayFieldProps } from "../ArrayField.js";
 import { useFormMode } from "../../providers/FormModeProvider.js";
-import {
-  fetchPHIDOptions,
-  fetchSelectedPHIDOption,
-} from "../../utils/utils.js";
+import { fetchSelectedPHIDOption } from "../../utils/utils.js";
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import {
   PHIDField,
   type PHIDFieldProps,
 } from "@powerhousedao/document-engineering/scalars";
+import type { MDocumentLink } from "document-models/atlas-multi-parent/index.js";
 
 type CommonDataProps = {
   id: string;
@@ -23,6 +21,7 @@ interface MultiPhIdFormProps
   > {
   data: CommonDataProps[];
   fetchOptionsCallback: (value: string) => PHIDOption[];
+  baselineValue: MDocumentLink[];
 }
 
 const MultiPhIdForm = ({
@@ -32,6 +31,7 @@ const MultiPhIdForm = ({
   onRemove,
   onUpdate,
   fetchOptionsCallback,
+  baselineValue,
 }: MultiPhIdFormProps) => {
   const viewMode = useFormMode();
   // boolean flag to trigger callback recreation only when needed
@@ -44,6 +44,7 @@ const MultiPhIdForm = ({
         data.map((item) => ({
           id: item.id,
           title: item.initialOptions?.[0]?.title,
+          path: item.initialOptions?.[0]?.path,
         })),
       ),
     [data],
@@ -62,21 +63,22 @@ const MultiPhIdForm = ({
       const fieldId = props.name?.replace("item-", "");
       const element = data.find((d) => d.id === fieldId);
 
+      const baseValue = baselineValue.find(
+        (baseItem) => baseItem.id === fieldId,
+      );
+
       return (
         <PHIDField
           {...props}
           initialOptions={element?.initialOptions}
           viewMode={viewMode}
-          // TODO: add the correct base values
-          baseValue={"phd:687933ce-87eb-4f35-a171-30333b31a462"}
-          basePreviewIcon={undefined}
-          basePreviewTitle={"Original title"}
-          basePreviewPath={"original/type"}
-          basePreviewDescription={"original description"}
+          baseValue={baseValue?.id}
+          basePreviewTitle={baseValue?.title ?? undefined}
+          basePreviewPath={baseValue?.documentType ?? undefined}
         />
       );
     },
-    [renderComponentTrigger],
+    [renderComponentTrigger, baselineValue],
   );
 
   // split rendering into two phases: this effect runs after data changes are complete,

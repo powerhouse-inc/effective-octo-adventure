@@ -1,7 +1,6 @@
 import { cn, type ViewMode } from "@powerhousedao/document-engineering/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
-  fetchSelectedPHIDOption,
   getCardVariant,
   getStringValue,
   getTagText,
@@ -152,7 +151,7 @@ export function FoundationForm({
                   );
                 } else {
                   const newParentId = value.split(":")[1];
-                  const newParentData = fetchSelectedPHIDOption(value);
+                  const newParentData = fetchOptionsCallback(value)[0];
                   const documentType =
                     typeof newParentData?.path === "object"
                       ? newParentData.path.text

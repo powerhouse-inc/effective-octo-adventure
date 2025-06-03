@@ -5,8 +5,6 @@ import {
   getStringValue,
   getTagText,
 } from "../../shared/utils/utils.js";
-import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
-import { getOriginalNotionDocument } from "../../../document-models/utils.js";
 import {
   getFlexLayoutClassName,
   getWidthClassName,
@@ -21,6 +19,7 @@ import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js"
 import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import { transformUrl } from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
+import { useBaseDocument } from "../../shared/hooks/useBaseDocument.js";
 
 interface ScopeFormProps
   extends Pick<IProps, "context" | "document" | "dispatch"> {
@@ -40,12 +39,7 @@ export function ScopeForm({
 
   const documentState = document.state.global;
 
-  // baseline document state
-  const originalNodeState = getOriginalNotionDocument(
-    (documentState.notionId as string) || "notion-id-not-set",
-    // @ts-ignore
-    (documentState.atlasType as ParsedNotionDocumentType) || "article",
-  );
+  const baseDocument = useBaseDocument(document, context);
 
   return (
     <FormModeProvider mode={mode}>
@@ -55,7 +49,7 @@ export function ScopeForm({
             <div className="flex-1">
               <DocNoForm
                 value={documentState.docNo}
-                baselineValue={originalNodeState.docNo}
+                baselineValue={baseDocument.state.global.docNo}
                 onSave={(value) => {
                   dispatch(actions.setDocNumber({ docNo: value }));
                 }}
@@ -64,7 +58,7 @@ export function ScopeForm({
             <div className="flex-1 min-w-[200px]">
               <DocNameForm
                 value={documentState.name}
-                baselineValue={originalNodeState.name}
+                baselineValue={baseDocument.state.global.name}
                 onSave={(value) => {
                   dispatch(
                     actions.setScopeName({ name: getStringValue(value) }),
@@ -78,7 +72,7 @@ export function ScopeForm({
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <MasterStatusForm
                 value={documentState.masterStatus}
-                baselineValue={originalNodeState.masterStatus[0]?.toUpperCase()}
+                baselineValue={baseDocument.state.global.masterStatus}
                 onSave={(value) => {
                   dispatch(actions.setMasterStatus({ masterStatus: value }));
                 }}
@@ -88,7 +82,7 @@ export function ScopeForm({
           <div className={cn("flex-1 min-h-[350px]")}>
             <MarkdownContentForm
               value={documentState.content ?? ""}
-              baselineValue={""}
+              baselineValue={baseDocument.state.global.content ?? ""}
               onSave={(value) => {
                 dispatch(actions.setContent({ content: value }));
               }}
@@ -99,7 +93,7 @@ export function ScopeForm({
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <MultiUrlForm
                 viewMode={mode}
-                baselineValue={[]} // TODO: add the correct baseline value
+                baselineValue={baseDocument.state.global.originalContextData}
                 label="Original Context Data"
                 data={documentState.originalContextData.map((element) => {
                   return {
@@ -133,7 +127,7 @@ export function ScopeForm({
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <GlobalTagsForm
                 value={documentState.globalTags}
-                baselineValue={[]}
+                baselineValue={baseDocument.state.global.globalTags}
                 onSave={(value) => {
                   const newTags = value;
                   const currentTags = documentState.globalTags;

@@ -1,5 +1,4 @@
 import {
-  type ParsedNotionDocumentType,
   type ParsedNotionDocument,
   type ParsedNotionDocumentContent,
   type ViewTreeContentValue,
@@ -18,36 +17,6 @@ export const getAtlasData = async () => {
   const jsonPath = path.resolve(__dirname, "../data/atlas-data-extended.json");
   const raw = fs.readFileSync(jsonPath, "utf-8");
   return JSON.parse(raw) as ViewNodeExtended[];
-};
-
-export const getEmptyNotionDocument = (
-  notionId: string,
-  type: ParsedNotionDocumentType,
-): ParsedNotionDocument => ({
-  id: notionId,
-  type: type,
-  docNo: "",
-  name: "",
-  content: [],
-  children: [],
-  files: [],
-  masterStatus: [],
-  masterStatusNames: [],
-  hubUrls: [],
-  parents: [],
-  number: null,
-});
-
-export const getOriginalNotionDocument = (
-  notionId: string,
-  type: ParsedNotionDocumentType,
-) => {
-  // TODO: get the right original notion document
-  // const notionDoc =
-  //   documentIndex[notionId] || getEmptyNotionDocument(notionId, type);
-  const notionDoc = getEmptyNotionDocument(notionId, type);
-
-  return notionDoc;
 };
 
 export const getPNDTitle = (

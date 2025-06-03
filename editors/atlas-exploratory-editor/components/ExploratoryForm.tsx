@@ -1,14 +1,11 @@
 import { cn, type ViewMode } from "@powerhousedao/document-engineering/scalars";
 import ContentCard from "../../shared/components/content-card.js";
 import {
-  fetchSelectedPHIDOption,
   getCardVariant,
   getStringValue,
   getTagText,
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
-import { getOriginalNotionDocument } from "../../../document-models/utils.js";
-import { type ParsedNotionDocumentType } from "../../../scripts/apply-changes/atlas-base/NotionTypes.js";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { DocNoForm } from "../../shared/components/forms/DocNoForm.js";
 import type { IProps } from "../editor.js";
@@ -23,7 +20,6 @@ import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm
 import { AdditionalGuidance } from "./AdditionalGuidance.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import { SinglePhIdForm } from "../../shared/components/forms/SinglePhIdForm.js";
-import { useState } from "react";
 import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import {
   getFlexLayoutClassName,
@@ -32,6 +28,7 @@ import {
 import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 import { transformUrl } from "../../shared/utils/utils.js";
+import { useBaseDocument } from "../../shared/hooks/useBaseDocument.js";
 
 interface ExploratoryFormProps
   extends Pick<IProps, "context" | "document" | "dispatch"> {
@@ -51,17 +48,19 @@ export function ExploratoryForm({
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
 
-  const fetchOptionsCallback = useParentOptions("sky/atlas-foundation");
+  const fetchOptionsCallback = useParentOptions("sky/atlas-exploratory");
 
   const originalDocumentState = document.state.global;
   const parentId = originalDocumentState.parent?.id
     ? `phd:${originalDocumentState.parent.id}`
     : "";
   const parentTitle = originalDocumentState.parent?.title ?? "";
+  const parentType = originalDocumentState.parent?.documentType ?? "";
 
   const parentPHIDInitialOption: PHIDOption = {
     icon: "File",
     title: parentTitle,
+    path: parentType,
     value: parentId,
   };
 
@@ -70,13 +69,7 @@ export function ExploratoryForm({
     parent: parentId,
   };
 
-  // baseline node state
-  const [originalNodeState] = useState(() =>
-    getOriginalNotionDocument(
-      (documentState.notionId as string) || "notion-id-not-set",
-      (documentState.atlasType as ParsedNotionDocumentType) || "scenario",
-    ),
-  );
+  const baseDocument = useBaseDocument(document, context);
 
   return (
     <FormModeProvider mode={mode}>
@@ -86,7 +79,7 @@ export function ExploratoryForm({
             <div className={cn("flex-1")}>
               <DocNoForm
                 value={documentState.docNo}
-                baselineValue={originalNodeState.docNo}
+                baselineValue={baseDocument.state.global.docNo}
                 onSave={(value) => {
                   dispatch(actions.setDocNumber({ docNo: value }));
                 }}
@@ -95,7 +88,7 @@ export function ExploratoryForm({
             <div className={cn("flex-1")}>
               <DocNameForm
                 value={documentState.name}
-                baselineValue={originalNodeState.name}
+                baselineValue={baseDocument.state.global.name}
                 onSave={(value) => {
                   dispatch(
                     actions.setExploratoryName({
@@ -110,7 +103,7 @@ export function ExploratoryForm({
             <div className={cn("flex-1")}>
               <DocTypeForm
                 value={documentState.atlasType}
-                baselineValue={originalNodeState.type?.toUpperCase()}
+                baselineValue={baseDocument.state.global.atlasType}
                 options={[
                   { value: "SCENARIO", label: "SCENARIO" },
                   {
@@ -128,7 +121,7 @@ export function ExploratoryForm({
             <div className={cn("flex-1")}>
               <MasterStatusForm
                 value={documentState.masterStatus}
-                baselineValue={originalNodeState.masterStatus[0]?.toUpperCase()}
+                baselineValue={baseDocument.state.global.masterStatus}
                 onSave={(value) => {
                   dispatch(actions.setMasterStatus({ masterStatus: value }));
                 }}
@@ -138,7 +131,7 @@ export function ExploratoryForm({
           <div className={cn("flex-1 min-h-[350px]")}>
             <MarkdownContentForm
               value={documentState.content ?? ""}
-              baselineValue={""}
+              baselineValue={baseDocument.state.global.content ?? ""}
               onSave={(value) => {
                 dispatch(actions.setContent({ content: value }));
               }}
@@ -155,15 +148,16 @@ export function ExploratoryForm({
               label="Parent Document"
               value={documentState.parent}
               fetchOptionsCallback={fetchOptionsCallback}
-              // TODO: add the correct baseline value
               baselineValue={
-                originalNodeState.parents?.[0] ??
-                "phd:687933ce-87eb-4f35-a171-30333b31a462"
+                baseDocument.state.global.parent?.id
+                  ? `phd:${baseDocument.state.global.parent.id}`
+                  : ""
               }
-              baselineIcon={undefined} // TODO: add the correct baseline icon
-              baselineTitle={"Original title"} // TODO: add the correct baseline title
-              baselineType={"original/type"} // TODO: add the correct baseline type
-              baselineDescription={"original description"} // TODO: add the correct baseline description
+              baselineIcon={baseDocument.state.global.parent?.icon ?? ""}
+              baselineTitle={baseDocument.state.global.parent?.title ?? ""}
+              baselineType={
+                baseDocument.state.global.parent?.documentType ?? ""
+              }
               onSave={(value) => {
                 if (value === null || value === "") {
                   dispatch(
@@ -173,11 +167,16 @@ export function ExploratoryForm({
                   );
                 } else {
                   const newParentId = value.split(":")[1];
-                  const newParentData = fetchSelectedPHIDOption(value);
+                  const newParentData = fetchOptionsCallback(value)[0];
+                  const documentType =
+                    typeof newParentData?.path === "object"
+                      ? newParentData.path.text
+                      : newParentData?.path;
                   dispatch(
                     actions.setParent({
                       id: newParentId,
                       title: newParentData?.title ?? "",
+                      documentType: documentType ?? "",
                     }),
                   );
                 }
@@ -190,8 +189,7 @@ export function ExploratoryForm({
             <div className="flex items-center gap-2">
               <Toggle
                 value={documentState.findings.isAligned}
-                // TODO:Add correct base line
-                baseValue={false}
+                baseValue={baseDocument.state.global.findings.isAligned}
                 optionalLabel="Misaligned"
                 viewMode={mode}
                 label="Aligned"
@@ -210,8 +208,7 @@ export function ExploratoryForm({
 
           <AdditionalGuidance
             value={documentState.additionalGuidance}
-            // TODO: add the right baseline value
-            baselineValue={""}
+            baselineValue={baseDocument.state.global.additionalGuidance}
             onSave={(value) => {
               dispatch(
                 actions.setAdditionalGuidance({
@@ -229,7 +226,7 @@ export function ExploratoryForm({
           >
             <MultiUrlForm
               viewMode={mode}
-              baselineValue={[]} // TODO: add the correct baseline value
+              baselineValue={baseDocument.state.global.originalContextData}
               label="Original Context Data"
               data={documentState.originalContextData.map((element) => {
                 return {
@@ -262,7 +259,7 @@ export function ExploratoryForm({
 
             <GlobalTagsForm
               value={documentState.globalTags}
-              baselineValue={[]} // TODO: add the baseline value
+              baselineValue={baseDocument.state.global.globalTags}
               onSave={(value) => {
                 const newTags = value;
                 const currentTags = documentState.globalTags;

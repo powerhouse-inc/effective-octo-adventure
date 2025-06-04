@@ -43,7 +43,7 @@ export function ScopeForm({
 
   return (
     <FormModeProvider mode={mode}>
-      <ContentCard tagText={tagText} variant={cardVariant} className="mt-4">
+      <ContentCard tagText={tagText} variant={cardVariant}>
         <div className="flex flex-col gap-4">
           <div className={cn(getFlexLayoutClassName(isSplitMode ?? false))}>
             <div className="flex-1">

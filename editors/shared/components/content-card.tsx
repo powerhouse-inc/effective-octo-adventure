@@ -18,7 +18,7 @@ const ContentCard = ({
   return (
     <div
       className={cn(
-        "flex flex-col w-full mt-2 border border-gray-200 rounded-md bg-gray-50",
+        "flex flex-col w-full border border-gray-200 rounded-md bg-gray-50",
         className,
       )}
     >

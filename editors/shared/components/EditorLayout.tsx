@@ -80,7 +80,7 @@ const EditorLayoutContent = ({
   return (
     <div className="min-h-screen h-screen bg-white flex flex-col rounded-2xl p-6 gap-4 mt-4">
       <header>
-        <div className="flex justify-between w-full">
+        <div className="flex justify-between items-center w-full h-9">
           <div>
             <h1 className="text-xl font-semibold">{title}</h1>
           </div>
@@ -99,7 +99,7 @@ const EditorLayoutContent = ({
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div
             className={cn(
-              "flex w-full ",
+              "flex w-full flex-1",
               nodePath.length > 2
                 ? "xl:w-[calc(100%-300px)]"
                 : "lg:w-[calc(100%-300px)]",

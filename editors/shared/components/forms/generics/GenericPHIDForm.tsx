@@ -1,6 +1,5 @@
 import { Form, PHIDField } from "@powerhousedao/document-engineering/scalars";
 import { useFormMode } from "../../../providers/FormModeProvider.js";
-import { fetchSelectedPHIDOption } from "../../../utils/utils.js";
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import type React from "react";
 import { useEffect } from "react";
@@ -69,7 +68,7 @@ const GenericPHIDForm = ({
           initialOptions={initialOptions}
           fetchOptionsCallback={fetchOptionsCallback}
           fetchSelectedOptionCallback={(val) => {
-            const result = fetchSelectedPHIDOption(val);
+            const result = fetchOptionsCallback(val)[0];
             if (result !== undefined) {
               if (result.title !== initialOptions?.[0].title) {
                 onSave(result.value);

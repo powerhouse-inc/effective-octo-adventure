@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import {
-  DocumentLink,
-  FilterFn,
+  type DocumentLink,
+  type FilterFn,
   useDocumentsLink,
 } from "./useDocumentsLink.js";
 import { documentLinksToPHIDOptions } from "../utils/phids.js";
@@ -14,7 +14,9 @@ type AllowedDocumentType =
   | "sky/atlas-set";
 
 function foundationFilterFn(doc: DocumentLink): boolean {
-  return ["sky/atlas-scope", "sky/atlas-foundation", "sky/atlas-set"].includes(doc.documentType);
+  return ["sky/atlas-scope", "sky/atlas-foundation", "sky/atlas-set"].includes(
+    doc.documentType,
+  );
 }
 
 function groundingFilterFn(doc: DocumentLink): boolean {
@@ -27,7 +29,10 @@ function groundingFilterFn(doc: DocumentLink): boolean {
 function exploratoryFilterFn(doc: DocumentLink): boolean {
   if (doc.documentType === "sky/atlas-exploratory") {
     return true;
-  } else if (doc.documentType === "sky/atlas-grounding" && doc.atlasType === "TENET") {
+  } else if (
+    doc.documentType === "sky/atlas-grounding" &&
+    doc.atlasType === "TENET"
+  ) {
     return true;
   }
 
@@ -37,9 +42,15 @@ function exploratoryFilterFn(doc: DocumentLink): boolean {
 function multiparentFilterFn(doc: DocumentLink): boolean {
   if (["sky/atlas-exploratory"].includes(doc.documentType)) {
     return true;
-  } else if (doc.documentType === "sky/atlas-grounding" && doc.atlasType === "TENET") {
-    return true
-  } else if (doc.documentType === "sky/atlas-foundation" && ["SECTION", "CORE"].includes(doc.atlasType ?? "")) {
+  } else if (
+    doc.documentType === "sky/atlas-grounding" &&
+    doc.atlasType === "TENET"
+  ) {
+    return true;
+  } else if (
+    doc.documentType === "sky/atlas-foundation" &&
+    ["SECTION", "CORE"].includes(doc.atlasType ?? "")
+  ) {
     return true;
   }
 
@@ -62,11 +73,18 @@ export function useParentOptions(documentType: AllowedDocumentType) {
   const documentsLink = useDocumentsLink(filterFnMap[documentType]);
   const fetchOptionsCallback = useCallback(
     (value: string) => {
-      return documentLinksToPHIDOptions(documentsLink).filter((doc) =>
-        doc.value.startsWith(value)
-      );
+      const lowerCaseValue = value.toLowerCase();
+      return documentLinksToPHIDOptions(documentsLink).filter((doc) => {
+        const pathText =
+          typeof doc.path === "object" ? doc.path.text : doc.path;
+        return (
+          doc.title?.toLowerCase().includes(lowerCaseValue) ||
+          pathText?.toLowerCase().includes(lowerCaseValue) ||
+          doc.value.toLowerCase().includes(lowerCaseValue)
+        );
+      });
     },
-    [documentsLink]
+    [documentsLink],
   );
 
   return fetchOptionsCallback;

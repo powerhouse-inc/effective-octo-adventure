@@ -1,7 +1,6 @@
 import { useEffect, useCallback, useMemo, useState } from "react";
 import { ArrayField, type ArrayFieldProps } from "../ArrayField.js";
 import { useFormMode } from "../../providers/FormModeProvider.js";
-import { fetchSelectedPHIDOption } from "../../utils/utils.js";
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import {
   PHIDField,
@@ -104,7 +103,7 @@ const MultiPhIdForm = ({
         allowUris: true,
         fetchOptionsCallback,
         fetchSelectedOptionCallback: (val) => {
-          const result = fetchSelectedPHIDOption(val);
+          const result = fetchOptionsCallback(val)[0];
           const element = data.find((d) => d.id === val);
           const elementIndex = data.findIndex((d) => d.id === val);
 

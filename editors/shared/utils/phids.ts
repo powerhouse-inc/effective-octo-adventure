@@ -1,8 +1,8 @@
-import { PHIDOption } from "@powerhousedao/document-engineering/ui";
-import { DocumentLink } from "../hooks/useDocumentsLink.js";
+import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
+import { type DocumentLink } from "../hooks/useDocumentsLink.js";
 
 export function documentLinksToPHIDOptions(
-  documents: DocumentLink[]
+  documents: DocumentLink[],
 ): PHIDOption[] {
   return documents.map((doc) => ({
     path: doc.documentType,

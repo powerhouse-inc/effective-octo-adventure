@@ -54,8 +54,7 @@ const MarkdownContentForm: React.FC<MarkdownContentFormProps> = ({
   return (
     <div className="flex flex-col gap-2">
       <FormLabel disabled={true}>Content</FormLabel>
-
-      <FakeInput multiline rows={14.9}>
+      <FakeInput multiline rows={14.6}>
         <DiffText
           baseline={baselineValue}
           value={contentValue}

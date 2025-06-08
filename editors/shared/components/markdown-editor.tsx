@@ -30,7 +30,12 @@ export function MarkdownEditor({
   onBlur,
   height = 350,
   label = "Content",
-  labelStyle = { fontSize: "14px", marginBottom: "10px", fontWeight: 500 },
+  labelStyle = {
+    fontSize: "14px",
+    lineHeight: "16px",
+    marginBottom: "12px",
+    fontWeight: 500,
+  },
   readOnly = false,
 }: MarkdownEditorProps) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

@@ -21,10 +21,15 @@ export const FakeInput = ({
         "flex w-full font-sans rounded-md text-sm font-normal leading-5 text-gray-600",
         "border border-gray-300 bg-transparent px-3 py-[7px] cursor-not-allowed",
         !multiline && ellipsis && "truncate [&>span]:truncate",
+        multiline && "overflow-y-auto overflow-x-hidden whitespace-pre-wrap",
         className,
       )}
       style={{
         minHeight: multiline ? `${rows * 1.5}rem` : "2.25rem",
+        maxHeight: multiline ? `${rows * 1.5}rem` : "2.25rem",
+        ...(multiline && {
+          wordBreak: "break-word",
+        }),
       }}
     >
       {children}

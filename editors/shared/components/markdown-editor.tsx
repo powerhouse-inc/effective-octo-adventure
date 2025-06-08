@@ -21,7 +21,6 @@ interface MarkdownEditorProps {
   height?: number;
   label?: string;
   labelStyle?: React.CSSProperties;
-  readOnly?: boolean;
 }
 
 export function MarkdownEditor({
@@ -30,8 +29,12 @@ export function MarkdownEditor({
   onBlur,
   height = 350,
   label = "Content",
-  labelStyle = { fontSize: "14px", marginBottom: "10px", fontWeight: 500 },
-  readOnly = false,
+  labelStyle = {
+    fontSize: "14px",
+    lineHeight: "16px",
+    marginBottom: "12px",
+    fontWeight: 500,
+  },
 }: MarkdownEditorProps) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [MDEditor, setMDEditor] = useState<any>(null);
@@ -106,10 +109,8 @@ export function MarkdownEditor({
             onChange={handleContentChange}
             onBlur={handleContentBlur}
             previewOptions={previewOptions}
-            hideToolbar={readOnly}
             enableScroll={true}
             preview="live"
-            extraCommands={[]}
             textareaProps={{
               placeholder: "Write your content here...",
             }}

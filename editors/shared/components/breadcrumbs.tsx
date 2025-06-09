@@ -32,10 +32,6 @@ export function Breadcrumbs({
 }: BreadcrumbsProps) {
   const [open, setOpen] = useState<boolean>(false);
 
-  if (breadcrumbs.length === 0) {
-    return null;
-  }
-
   const { items, firstItem, middleItems, lastTwoItems } = useMemo(() => {
     if (breadcrumbs.length <= ITEMS_TO_DISPLAY) {
       return {
@@ -53,6 +49,10 @@ export function Breadcrumbs({
       lastTwoItems,
     };
   }, [breadcrumbs]);
+
+  if (breadcrumbs.length === 0) {
+    return null;
+  }
 
   return (
     <Breadcrumb className="max-w-full">

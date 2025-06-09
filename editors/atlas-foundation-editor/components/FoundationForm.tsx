@@ -72,7 +72,7 @@ export function FoundationForm({
             <div className={cn("flex-1")}>
               <DocNoForm
                 value={documentState.docNo}
-                baselineValue={baseDocument.state.global.docNo}
+                baselineValue={baseDocument?.state.global.docNo ?? ""}
                 onSave={(value) => {
                   dispatch(actions.setDocNumber({ docNo: value }));
                 }}
@@ -81,7 +81,7 @@ export function FoundationForm({
             <div className={cn("flex-1")}>
               <DocNameForm
                 value={documentState.name}
-                baselineValue={baseDocument.state.global.name}
+                baselineValue={baseDocument?.state.global.name ?? ""}
                 onSave={(value) => {
                   dispatch(
                     actions.setFoundationName({
@@ -96,7 +96,7 @@ export function FoundationForm({
             <div className={cn("flex-1")}>
               <DocTypeForm
                 value={documentState.atlasType}
-                baselineValue={baseDocument.state.global.atlasType}
+                baselineValue={baseDocument?.state.global.atlasType ?? ""}
                 onSave={(value) => {
                   dispatch(actions.setAtlasType({ atlasType: value }));
                 }}
@@ -105,7 +105,7 @@ export function FoundationForm({
             <div className={cn("flex-1")}>
               <MasterStatusForm
                 value={documentState.masterStatus}
-                baselineValue={baseDocument.state.global.masterStatus}
+                baselineValue={baseDocument?.state.global.masterStatus ?? ""}
                 onSave={(value) => {
                   dispatch(actions.setMasterStatus({ masterStatus: value }));
                 }}
@@ -115,7 +115,7 @@ export function FoundationForm({
           <div className={cn("flex-1 min-h-[350px]")}>
             <MarkdownContentForm
               value={documentState.content ?? ""}
-              baselineValue={baseDocument.state.global.content ?? ""}
+              baselineValue={baseDocument?.state.global.content ?? ""}
               onSave={(value) => {
                 dispatch(actions.setContent({ content: value }));
               }}
@@ -133,14 +133,14 @@ export function FoundationForm({
               value={documentState.parent}
               fetchOptionsCallback={fetchOptionsCallback}
               baselineValue={
-                baseDocument.state.global.parent?.id
+                baseDocument?.state.global.parent?.id
                   ? `phd:${baseDocument.state.global.parent.id}`
                   : ""
               }
-              baselineIcon={baseDocument.state.global.parent?.icon ?? ""}
-              baselineTitle={baseDocument.state.global.parent?.title ?? ""}
+              baselineIcon={baseDocument?.state.global.parent?.icon ?? ""}
+              baselineTitle={baseDocument?.state.global.parent?.title ?? ""}
               baselineType={
-                baseDocument.state.global.parent?.documentType ?? ""
+                baseDocument?.state.global.parent?.documentType ?? ""
               }
               onSave={(value) => {
                 if (value === null || value === "") {
@@ -170,7 +170,9 @@ export function FoundationForm({
 
             <MultiUrlForm
               viewMode={mode}
-              baselineValue={baseDocument.state.global.originalContextData}
+              baselineValue={
+                baseDocument?.state.global.originalContextData ?? []
+              }
               label="Original Context Data"
               data={documentState.originalContextData.map((element) => {
                 return {
@@ -203,7 +205,7 @@ export function FoundationForm({
 
             <GlobalTagsForm
               value={documentState.globalTags}
-              baselineValue={baseDocument.state.global.globalTags}
+              baselineValue={baseDocument?.state.global.globalTags ?? []}
               onSave={(value) => {
                 const newTags = value;
                 const currentTags = documentState.globalTags;

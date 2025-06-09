@@ -20,8 +20,8 @@ type AtlasDocument =
 export function useBaseDocument<T extends AtlasDocument>(
   document: T,
   context: EditorContext,
-): T {
-  const [baseDocument, setBaseDocument] = useState<T>(document);
+): T | null {
+  const [baseDocument, setBaseDocument] = useState<T | null>(null);
 
   const { getDocumentRevision } = context;
 

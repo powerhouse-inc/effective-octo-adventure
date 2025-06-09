@@ -61,7 +61,7 @@ export function SetForm({
             <div className={cn("flex-1")}>
               <DocNameForm
                 value={documentState.name}
-                baselineValue={baseDocument.state.global.name}
+                baselineValue={baseDocument?.state.global.name ?? ""}
                 onSave={(value) => {
                   dispatch(actions.setSetName({ name: getStringValue(value) }));
                 }}
@@ -75,14 +75,14 @@ export function SetForm({
                 value={documentState.parent}
                 fetchOptionsCallback={fetchOptionsCallback}
                 baselineValue={
-                  baseDocument.state.global.parent?.id
+                  baseDocument?.state.global.parent?.id
                     ? `phd:${baseDocument.state.global.parent.id}`
                     : ""
                 }
-                baselineIcon={baseDocument.state.global.parent?.icon ?? ""}
-                baselineTitle={baseDocument.state.global.parent?.title ?? ""}
+                baselineIcon={baseDocument?.state.global.parent?.icon ?? ""}
+                baselineTitle={baseDocument?.state.global.parent?.title ?? ""}
                 baselineType={
-                  baseDocument.state.global.parent?.documentType ?? ""
+                  baseDocument?.state.global.parent?.documentType ?? ""
                 }
                 onSave={(value) => {
                   if (value === null || value === "") {

@@ -49,7 +49,7 @@ export function ScopeForm({
             <div className="flex-1">
               <DocNoForm
                 value={documentState.docNo}
-                baselineValue={baseDocument.state.global.docNo}
+                baselineValue={baseDocument?.state.global.docNo ?? ""}
                 onSave={(value) => {
                   dispatch(actions.setDocNumber({ docNo: value }));
                 }}
@@ -58,7 +58,7 @@ export function ScopeForm({
             <div className="flex-1 min-w-[200px]">
               <DocNameForm
                 value={documentState.name}
-                baselineValue={baseDocument.state.global.name}
+                baselineValue={baseDocument?.state.global.name ?? ""}
                 onSave={(value) => {
                   dispatch(
                     actions.setScopeName({ name: getStringValue(value) }),
@@ -72,7 +72,7 @@ export function ScopeForm({
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <MasterStatusForm
                 value={documentState.masterStatus}
-                baselineValue={baseDocument.state.global.masterStatus}
+                baselineValue={baseDocument?.state.global.masterStatus ?? ""}
                 onSave={(value) => {
                   dispatch(actions.setMasterStatus({ masterStatus: value }));
                 }}
@@ -82,7 +82,7 @@ export function ScopeForm({
           <div className={cn("flex-1 min-h-[350px]")}>
             <MarkdownContentForm
               value={documentState.content ?? ""}
-              baselineValue={baseDocument.state.global.content ?? ""}
+              baselineValue={baseDocument?.state.global.content ?? ""}
               onSave={(value) => {
                 dispatch(actions.setContent({ content: value }));
               }}
@@ -93,7 +93,9 @@ export function ScopeForm({
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <MultiUrlForm
                 viewMode={mode}
-                baselineValue={baseDocument.state.global.originalContextData}
+                baselineValue={
+                  baseDocument?.state.global.originalContextData ?? []
+                }
                 label="Original Context Data"
                 data={documentState.originalContextData.map((element) => {
                   return {
@@ -127,7 +129,7 @@ export function ScopeForm({
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <GlobalTagsForm
                 value={documentState.globalTags}
-                baselineValue={baseDocument.state.global.globalTags}
+                baselineValue={baseDocument?.state.global.globalTags ?? []}
                 onSave={(value) => {
                   const newTags = value;
                   const currentTags = documentState.globalTags;

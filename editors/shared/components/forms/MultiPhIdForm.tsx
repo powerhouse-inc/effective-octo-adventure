@@ -33,12 +33,11 @@ const MultiPhIdForm = ({
   baselineValue,
 }: MultiPhIdFormProps) => {
   const viewMode = useFormMode();
-  // Create refs to store latest values
+
   const dataRef = useRef(data);
   const baselineValueRef = useRef(baselineValue);
   const viewModeRef = useRef(viewMode);
 
-  // Update refs when values change
   useEffect(() => {
     dataRef.current = data;
     baselineValueRef.current = baselineValue;

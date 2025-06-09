@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { getRevisionFromDate } from "@powerhousedao/common";
 import { getBaseDocumentTimestamp } from "../utils/utils.js";
 import type { EditorContext } from "document-model";

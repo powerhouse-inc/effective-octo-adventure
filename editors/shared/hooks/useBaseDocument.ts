@@ -57,7 +57,7 @@ export function useBaseDocument<T extends AtlasDocument>(
     };
 
     loadBaseDocument();
-  }, [getDocumentRevision, document]);
+  }, []);
 
   return baseDocument;
 }

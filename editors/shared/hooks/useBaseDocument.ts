@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { getRevisionFromDate } from "@powerhousedao/common";
 import { getBaseDocumentTimestamp } from "../utils/utils.js";
 import type { EditorContext } from "document-model";
@@ -25,6 +25,11 @@ export function useBaseDocument<T extends AtlasDocument>(
 
   const { getDocumentRevision } = context;
 
+  // Memoize the base document computation
+  const memoizedBaseDocument = useMemo(() => {
+    return baseDocument;
+  }, [baseDocument]);
+  console.log(memoizedBaseDocument);
   useEffect(() => {
     const loadBaseDocument = async () => {
       if (getDocumentRevision === undefined) {
@@ -57,7 +62,7 @@ export function useBaseDocument<T extends AtlasDocument>(
     };
 
     loadBaseDocument();
-  }, [getDocumentRevision, document]);
+  }, []);
 
-  return baseDocument;
+  return memoizedBaseDocument;
 }

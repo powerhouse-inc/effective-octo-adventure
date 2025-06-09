@@ -25,11 +25,6 @@ export function useBaseDocument<T extends AtlasDocument>(
 
   const { getDocumentRevision } = context;
 
-  // Memoize the base document computation
-  const memoizedBaseDocument = useMemo(() => {
-    return baseDocument;
-  }, [baseDocument]);
-  console.log(memoizedBaseDocument);
   useEffect(() => {
     const loadBaseDocument = async () => {
       if (getDocumentRevision === undefined) {
@@ -64,5 +59,5 @@ export function useBaseDocument<T extends AtlasDocument>(
     loadBaseDocument();
   }, []);
 
-  return memoizedBaseDocument;
+  return baseDocument;
 }

@@ -30,11 +30,11 @@ export function Breadcrumbs({
   breadcrumbs,
   onBreadcrumbSelected,
 }: BreadcrumbsProps) {
-  const [open, setOpen] = useState<boolean>(false);
-
   if (breadcrumbs.length === 0) {
     return null;
   }
+
+  const [open, setOpen] = useState<boolean>(false);
 
   const { items, firstItem, middleItems, lastTwoItems } = useMemo(() => {
     if (breadcrumbs.length <= ITEMS_TO_DISPLAY) {

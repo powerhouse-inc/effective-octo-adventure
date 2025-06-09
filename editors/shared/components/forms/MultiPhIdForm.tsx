@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useMemo, useState } from "react";
+import { useEffect, useCallback, useMemo, useRef } from "react";
 import { ArrayField, type ArrayFieldProps } from "../ArrayField.js";
 import { useFormMode } from "../../providers/FormModeProvider.js";
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
@@ -33,58 +33,45 @@ const MultiPhIdForm = ({
   baselineValue,
 }: MultiPhIdFormProps) => {
   const viewMode = useFormMode();
-  // boolean flag to trigger callback recreation only when needed
-  const [renderComponentTrigger, setRenderComponentTrigger] = useState(false);
+  // Create refs to store latest values
+  const dataRef = useRef(data);
+  const baselineValueRef = useRef(baselineValue);
+  const viewModeRef = useRef(viewMode);
 
-  // string value of latest data
-  const dataSignature = useMemo(
-    () =>
-      JSON.stringify(
-        data.map((item) => ({
-          id: item.id,
-          title: item.initialOptions?.[0]?.title,
-          path: item.initialOptions?.[0]?.path,
-        })),
-      ),
-    [data],
-  );
+  // Update refs when values change
+  useEffect(() => {
+    dataRef.current = data;
+    baselineValueRef.current = baselineValue;
+    viewModeRef.current = viewMode;
+  }, [data, baselineValue, viewMode]);
 
   // this callback only recreates when renderComponentTrigger changes,
   // not on every data change, but still has access to latest data
-  const renderComponent = useCallback(
-    (props: PHIDFieldProps) => {
-      // the new item not have initialOptions
-      if (props.name === "item-new") {
-        return <PHIDField {...props} />;
-      }
+  const renderComponent = useCallback((props: PHIDFieldProps) => {
+    // the new item not have initialOptions
+    if (props.name === "item-new") {
+      return <PHIDField {...props} />;
+    }
 
-      // for existing fields, use the initialOptions of the corresponding element
-      const fieldId = props.name?.replace("item-", "");
-      const element = data.find((d) => d.id === fieldId);
+    // for existing fields, use the initialOptions of the corresponding element
+    const fieldId = props.name?.replace("item-", "");
+    const element = dataRef.current.find((d) => d.id === fieldId);
 
-      const baseValue = baselineValue.find(
-        (baseItem) => baseItem.id === fieldId,
-      );
+    const baseValue = baselineValueRef.current.find(
+      (baseItem) => baseItem.id === fieldId,
+    );
 
-      return (
-        <PHIDField
-          {...props}
-          initialOptions={element?.initialOptions}
-          viewMode={viewMode}
-          baseValue={baseValue?.id}
-          basePreviewTitle={baseValue?.title ?? undefined}
-          basePreviewPath={baseValue?.documentType ?? undefined}
-        />
-      );
-    },
-    [renderComponentTrigger, baselineValue],
-  );
-
-  // split rendering into two phases: this effect runs after data changes are complete,
-  // then triggers a new render cycle by updating the boolean flag
-  useEffect(() => {
-    setRenderComponentTrigger(!renderComponentTrigger);
-  }, [dataSignature]);
+    return (
+      <PHIDField
+        {...props}
+        initialOptions={element?.initialOptions}
+        viewMode={viewModeRef.current}
+        baseValue={baseValue?.id}
+        basePreviewTitle={baseValue?.title ?? undefined}
+        basePreviewPath={baseValue?.documentType ?? undefined}
+      />
+    );
+  }, []);
 
   return (
     <ArrayField<string, PHIDFieldProps>

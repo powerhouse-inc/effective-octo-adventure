@@ -10,7 +10,9 @@ export function Login({ forbidden = false }: LoginProps) {
     console.log("login");
   }, []);
 
-  const content = forbidden ? "You don't have the right credentials to get access to this document." : (
+  const content = forbidden ? (
+    "You don't have the right credentials to get access to this document."
+  ) : (
     <>
       <span>Please login with</span>
       <span style={{ position: "relative", bottom: "4px" }}>
@@ -19,7 +21,7 @@ export function Login({ forbidden = false }: LoginProps) {
       <span>to get access to this document</span>
     </>
   );
-    
+
   return (
     <div className="bg-gray-50 flex justify-center gap-x-4 items-center justify-items-center h-full">
       <div className="bg-white rounded-2xl drop-shadow-sm p-6">

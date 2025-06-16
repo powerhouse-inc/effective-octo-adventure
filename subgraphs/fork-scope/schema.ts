@@ -5,9 +5,6 @@ export const schema = gql`
   Mutations: AtlasScope
   """
   type Mutation {
-    ForkAtlas(
-    driveId: String
-    docId: PHID
-  ): String
+    ForkAtlas(driveId: String, docId: PHID): String
   }
 `;

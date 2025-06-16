@@ -292,9 +292,11 @@ const typesTree = {
   Mutation: {
     get addDrive() {
       return {
-        __fields: typesTree.DocumentDrive_DocumentDriveState,
         __args: {
-          global: "DocumentDriveStateInput!",
+          name: "String!",
+          icon: "String",
+          id: "String",
+          slug: "String",
           preferredEditor: "String"
         }
       };

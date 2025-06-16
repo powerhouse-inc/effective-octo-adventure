@@ -92,7 +92,7 @@ export const pageIds = {
 } as const;
 
 export const apiKey = process.env.API_KEY;
-export const importApiKey = process.env.IMPORT_API_KEY; 
+export const importApiKey = process.env.IMPORT_API_KEY;
 export const importApiUrl = process.env.IMPORT_API_URL;
 export const dataPath = "./data";
 export const outputPath = "./output";
@@ -110,5 +110,5 @@ export const allowedPageFieldTypes = [
   "relation",
   "number",
   "url",
-  "files"
+  "files",
 ] as const;

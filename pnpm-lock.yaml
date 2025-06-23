@@ -65,9 +65,15 @@ importers:
       graphql-ts-client:
         specifier: ^10.4.0
         version: 10.4.0(typescript@5.8.3)
+      knex:
+        specifier: ^3.1.0
+        version: 3.1.0(pg@8.16.0)(sqlite3@5.1.7)
       kysely:
         specifier: ^0.28.2
         version: 0.28.2
+      kysely-knex:
+        specifier: ^0.2.0
+        version: 0.2.0(knex@3.1.0(pg@8.16.0)(sqlite3@5.1.7))(kysely@0.28.2)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -7513,6 +7519,12 @@ packages:
         optional: true
       tedious:
         optional: true
+
+  kysely-knex@0.2.0:
+    resolution: {integrity: sha512-kaZSKXdRf+VM+FOEQqqBF1wq3N76xGozdqjOtYWAqfSgzMqD1bdEMN8Z0l/dAmfayMtB3oNN0vcMz7OADNxECA==}
+    peerDependencies:
+      knex: '>= 3.0.0 < 4'
+      kysely: '>= 0.24.0 < 1'
 
   kysely@0.28.2:
     resolution: {integrity: sha512-4YAVLoF0Sf0UTqlhgQMFU9iQECdah7n+13ANkiuVfRvlK+uI0Etbgd7bVP36dKlG+NXWbhGua8vnGt+sdhvT7A==}
@@ -18065,7 +18077,7 @@ snapshots:
 
   axios@1.9.0:
     dependencies:
-      follow-redirects: 1.15.9
+      follow-redirects: 1.15.9(debug@4.3.7)
       form-data: 4.0.2
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -20077,8 +20089,6 @@ snapshots:
     dependencies:
       tabbable: 6.2.0
 
-  follow-redirects@1.15.9: {}
-
   follow-redirects@1.15.9(debug@4.3.7):
     optionalDependencies:
       debug: 4.3.7
@@ -21653,6 +21663,11 @@ snapshots:
       sqlite3: 5.1.7
     transitivePeerDependencies:
       - supports-color
+
+  kysely-knex@0.2.0(knex@3.1.0(pg@8.16.0)(sqlite3@5.1.7))(kysely@0.28.2):
+    dependencies:
+      knex: 3.1.0(pg@8.16.0)(sqlite3@5.1.7)
+      kysely: 0.28.2
 
   kysely@0.28.2: {}
 

@@ -5,7 +5,10 @@ import {
 import { type AtlasArticle } from "./components/types.js";
 import { type AtlasMultiParentState } from "../../document-models/atlas-multi-parent/index.js";
 
-export function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
+export function buildSidebarTree(
+  allNodes: Record<string, AtlasArticle>,
+  nodeStatusMap: Record<string, NodeStatus>,
+) {
   const nodesById: Record<string, SidebarNode> = {};
 
   for (const [key, node] of Object.entries(allNodes)) {
@@ -31,14 +34,7 @@ export function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
       };
     }
 
-    let status = "UNCHANGED";
-
-    if (!node.global.notionId) {
-      status = "CREATED";
-    } else if (node.revision.global > 7) {
-      status = "MODIFIED";
-    }
-
+    const status = nodeStatusMap[key] || ("UNCHANGED" as NodeStatus);
     // get the right title for the node depending on the document type
     const title =
       "sky/atlas-set" === node.documentType
@@ -51,7 +47,7 @@ export function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
       id: key,
       title,
       children: [],
-      status: status as NodeStatus,
+      status,
       ...icons,
     };
   }

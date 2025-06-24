@@ -24,6 +24,7 @@ import { documentModel as AtlasFeedbackIssues } from "../../../document-models/a
 import type { GetDocumentOptions, Node } from "document-drive";
 import { ShareDrive } from "../../shared/components/share-drive.js";
 import { buildSidebarTree } from "../sidebar-utils.js";
+import { useNodeStatusMap } from "../hooks/index.js";
 
 export interface DriverLayoutProps {
   readonly driveId: string;
@@ -46,6 +47,7 @@ export function DriverLayout({
   const [activeNodeId, setActiveNodeId] = useState<string | undefined>();
   const [openModal, setOpenModal] = useState(false);
   const selectedDocumentModel = useRef<DocumentModelModule | null>(null);
+  const nodeStatusMap = useNodeStatusMap("2025-06-23", driveId); // TODO: change start date
 
   const [state, fetchDocuments] = useDriveDocumentStates({ driveId });
   const { atlasNodes, feedbackIssues } = useMemo(() => {
@@ -67,8 +69,8 @@ export function DriverLayout({
   }, [state]);
 
   const nodes = useMemo(() => {
-    return buildSidebarTree(atlasNodes);
-  }, [atlasNodes]);
+    return buildSidebarTree(atlasNodes, nodeStatusMap);
+  }, [atlasNodes, nodeStatusMap]);
 
   const selectedNode = activeNodeId
     ? (state[activeNodeId] as AtlasArticle | AtlasFeedbackIssue) // TODO: atlas set doesn't have a docNo

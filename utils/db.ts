@@ -2,41 +2,11 @@ import { Kysely } from "kysely";
 import type { Knex } from "knex";
 import { KyselyKnexDialect, PGColdDialect } from "kysely-knex";
 import { type Db } from "@powerhousedao/reactor-api";
+import { Migrator } from "kysely";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { type Database } from "./generated/database-types.js";
-
-/**
- * Dynamically loads and runs all migration files from the migrations directory
- */
-async function runAllMigrations(db: Kysely<any>): Promise<void> {
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
-  const migrationsDir = path.join(__dirname, "../migrations");
-
-  try {
-    const migrationFiles = fs
-      .readdirSync(migrationsDir)
-      .filter((file) => file.endsWith(".ts") || file.endsWith(".js"))
-      .sort(); // Ensure migrations run in order
-
-    for (const file of migrationFiles) {
-      const migrationPath = path.join(migrationsDir, file);
-      const migration = (await import(migrationPath)) as {
-        up?: (db: Kysely<any>) => Promise<void>;
-      };
-
-      if (typeof migration.up === "function") {
-        console.log(`Running migration: ${file}`);
-        await migration.up(db);
-      }
-    }
-  } catch (error) {
-    console.error("Error running migrations:", error);
-    throw error;
-  }
-}
 
 /**
  * Creates a Kysely database instance with the given database connection
@@ -50,23 +20,57 @@ export const getDb = async (db: Db): Promise<Kysely<Database>> => {
     }),
   });
 
-  // Run all migrations before returning the database
-  await runAllMigrations(kysely);
+  // Set up migrator
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const migrationsDir = path.join(__dirname, "../migrations");
+
+  const migrator = new Migrator({
+    db: kysely,
+    provider: {
+      async getMigrations() {
+        const migrationFiles = fs
+          .readdirSync(migrationsDir)
+          .filter((file) => file.endsWith(".ts") || file.endsWith(".js"))
+          .sort();
+
+        const migrations: Record<
+          string,
+          {
+            up: (db: Kysely<any>) => Promise<void>;
+            down?: (db: Kysely<any>) => Promise<void>;
+          }
+        > = {};
+        for (const file of migrationFiles) {
+          const name = file.replace(/\.(ts|js)$/, "");
+          const migrationPath = path.join(migrationsDir, file);
+          const migrationModule = (await import(migrationPath)) as {
+            up: (db: Kysely<any>) => Promise<void>;
+            down?: (db: Kysely<any>) => Promise<void>;
+          };
+          migrations[name] = migrationModule;
+        }
+        return migrations;
+      },
+    },
+  });
+
+  // Run all pending migrations
+  const { error, results } = await migrator.migrateToLatest();
+
+  if (error) {
+    console.error("Migration error:", error);
+    throw new Error(error as string);
+  }
+
+  if (results && results.length > 0) {
+    console.log(
+      "Applied migrations:",
+      results.map((r) => r.migrationName),
+    );
+  }
 
   return kysely;
-};
-
-/**
- * Creates a Kysely database instance with the given database connection
- * without running migrations (useful for testing or when migrations are handled elsewhere)
- */
-export const getDbWithoutMigrations = (db: Db): Kysely<Database> => {
-  return new Kysely<Database>({
-    dialect: new KyselyKnexDialect({
-      knex: db,
-      kyselySubDialect: new PGColdDialect(),
-    }),
-  });
 };
 
 /**

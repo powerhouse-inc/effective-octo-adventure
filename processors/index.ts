@@ -7,7 +7,7 @@ export const processorFactory =
     console.log(module);
     return [
       {
-        processor: new SearchIndexerProcessor(module.operationalStore as Db),
+        processor: new SearchIndexerProcessor(module.db),
         filter: {
           branch: ["main"],
           documentId: ["*"],

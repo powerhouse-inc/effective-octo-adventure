@@ -9,12 +9,14 @@ import { useRef } from "react";
 
 export const useNodeStatusFromDiffAnalytics = (
   from?: string,
+  to?: string,
   driveId?: string,
+  logAnalytics = false,
 ) => {
   const statusMapRef = useRef<Record<string, NodeStatus>>({});
 
   const start = from ? DateTime.fromISO(from) : DateTime.now().startOf("day");
-  const end = DateTime.now().endOf("day");
+  const end = to ? DateTime.fromISO(to) : DateTime.now().endOf("day");
 
   const driveSelect = driveId
     ? AnalyticsPath.fromString(`drive/${driveId}`)
@@ -32,6 +34,10 @@ export const useNodeStatusFromDiffAnalytics = (
       drive: [driveSelect],
     },
   });
+
+  if (logAnalytics) {
+    console.log(">>> diff analytics", result.data);
+  }
 
   const rows = result.data?.flatMap((item) => item.rows);
   const statusMap = rows?.reduce<Record<string, NodeStatus>>((acc, row) => {

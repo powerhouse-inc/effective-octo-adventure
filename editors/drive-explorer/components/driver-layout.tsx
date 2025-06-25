@@ -32,6 +32,15 @@ export interface DriverLayoutProps {
   readonly context: DriveEditorContext;
   readonly nodes: Node[];
   readonly driveUrl?: string | null;
+  readonly startDate?: string;
+  readonly endDate?: string;
+  readonly logAnalytics?: {
+    diff?: boolean;
+    drive?: boolean;
+    diffStatusMap?: boolean;
+    driveStatusMap?: boolean;
+    nodeStatusMap?: boolean;
+  };
 }
 
 export function DriverLayout({
@@ -40,6 +49,9 @@ export function DriverLayout({
   context,
   nodes: driveNodes,
   driveUrl,
+  startDate,
+  endDate,
+  logAnalytics = {},
 }: DriverLayoutProps) {
   const { getDocumentRevision } = context;
   const { useDriveDocumentStates, addDocument, documentModels } =
@@ -47,7 +59,12 @@ export function DriverLayout({
   const [activeNodeId, setActiveNodeId] = useState<string | undefined>();
   const [openModal, setOpenModal] = useState(false);
   const selectedDocumentModel = useRef<DocumentModelModule | null>(null);
-  const nodeStatusMap = useNodeStatusMap("2025-06-23", driveId); // TODO: change start date
+  const nodeStatusMap = useNodeStatusMap(
+    startDate,
+    endDate,
+    driveId,
+    logAnalytics,
+  );
 
   const [state, fetchDocuments] = useDriveDocumentStates({ driveId });
   const { atlasNodes, feedbackIssues } = useMemo(() => {

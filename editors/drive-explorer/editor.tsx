@@ -3,9 +3,9 @@ import {
   type DriveEditorProps,
   DriveContextProvider,
 } from "@powerhousedao/reactor-browser";
-import { type DocumentDriveDocument } from "document-drive";
+import { type DocumentDriveDocument, deleteNode } from "document-drive";
 import { WagmiContext } from "@powerhousedao/design-system";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 // TODO: enable this after Web Worker implementation
 // import { AnalyticsProvider } from "@powerhousedao/reactor-browser/analytics/context";
@@ -18,6 +18,8 @@ import { DateTime } from "@powerhousedao/reactor-browser/analytics";
 export type IProps = DriveEditorProps<DocumentDriveDocument>;
 
 export function BaseEditor(props: IProps) {
+  const { dispatch } = props;
+
   const [logAnalytics, setLogAnalytics] = useState({
     diff: false,
     drive: false,
@@ -31,6 +33,13 @@ export function BaseEditor(props: IProps) {
   );
   const [endDate, setEndDate] = useState<string | undefined>(
     DateTime.now().endOf("day").toISO(),
+  );
+
+  const onDeleteNode = useCallback(
+    (nodeId: string) => {
+      dispatch(deleteNode({ id: nodeId }));
+    },
+    [dispatch],
   );
 
   return (
@@ -64,11 +73,12 @@ export function BaseEditor(props: IProps) {
         </style>
       </DriverLayout>
       <AnalyticsMenu
-        startDate={startDate}
         endDate={endDate}
+        startDate={startDate}
+        onDeleteNode={onDeleteNode}
+        logAnalytics={logAnalytics}
         onEndDateChange={setEndDate}
         onStartDateChange={setStartDate}
-        logAnalytics={logAnalytics}
         onLogAnalyticsChange={setLogAnalytics}
       />
     </div>

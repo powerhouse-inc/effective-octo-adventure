@@ -285,20 +285,20 @@ packages:
     peerDependencies:
       graphql: 14.x || 15.x || 16.x
 
-  '@apollo/composition@2.11.1':
-    resolution: {integrity: sha512-q4w+tpf486dXsNlA14rDTO4WNlKq1GQ583OQLOQWdSU/Jxd5fYPlEuhqZDNL5J5uOYIf2NfgW+5xgxNHLuwGaw==}
+  '@apollo/composition@2.11.2':
+    resolution: {integrity: sha512-ut/Kj/YMUXtV+VwsHFOoT0hvvZAJwOltkuMVZJUY1O0deecrc4Ceq8VeogPKXF/jeR59kMr6na1ZPHBRBe/rqQ==}
     engines: {node: '>=14.15.0'}
     peerDependencies:
       graphql: ^16.5.0
 
-  '@apollo/federation-internals@2.11.1':
-    resolution: {integrity: sha512-jPYmUjr89HM9LDSde4E7pqBIhoILzaiQSXvKr6tmhjVhGry4MtPhRuLOfXeggxtLUJtwaenMzmNYE+AnZek+gQ==}
+  '@apollo/federation-internals@2.11.2':
+    resolution: {integrity: sha512-GSFGL2fLox3EBszWKJvRkVLFA0hkJF9PHGMQH+WdB/12KVB3QHKwDyW1T9VZtxe2SJhNU3puleSxCsO16Bf3iA==}
     engines: {node: '>=14.15.0'}
     peerDependencies:
       graphql: ^16.5.0
 
-  '@apollo/gateway@2.11.1':
-    resolution: {integrity: sha512-nq1BPwwCLB0OPsGoQIFZ4PYL3SlpC3xBQGOp8lNurwrX0+vs3rXVDVPBiEbZMIFW/fQkvFNYoyGWXDkUvI9cGw==}
+  '@apollo/gateway@2.11.2':
+    resolution: {integrity: sha512-QeE/aVYUhYJFxXJK0vF6zr0x6yRKpaSr5b9q7vxWVktihrzsAVS+GwALbcliU/hkGgntXwO+jvXwz9mEKrdwnw==}
     engines: {node: '>=14.15.0'}
     peerDependencies:
       graphql: ^16.5.0
@@ -307,14 +307,14 @@ packages:
     resolution: {integrity: sha512-Lahx5zntHPZia35myYDBRuF58tlwPskwHc5CWBZC/4bMKB6siTBWwtMrkqXcsNwQiFSzSx5hKdRPUmemrEp3Gg==}
     hasBin: true
 
-  '@apollo/query-graphs@2.11.1':
-    resolution: {integrity: sha512-2xfwcsmsIwCH56qN85rzRfYK9As5p/NzByeb/lMelQH4s8qCv4GwVs/Z0DisSGSEpaLP3CoGAL+UpqJt+Vfmew==}
+  '@apollo/query-graphs@2.11.2':
+    resolution: {integrity: sha512-LwGumh0XkOMSA4+RhSVYY1Yd4wa3Mi8ylDk8GyhMl4kpFAOb2x+SRIka+kEDNPufu9wNSl457/rVeAxNw1zZ1Q==}
     engines: {node: '>=14.15.0'}
     peerDependencies:
       graphql: ^16.5.0
 
-  '@apollo/query-planner@2.11.1':
-    resolution: {integrity: sha512-bNm+YhafvIZueJVKjgvkVQ0uSefDM2hF4cqFD37a2aulhotMMopms+0wCP+MhUIGPyAV9OFSBjQT8BEPXraa9g==}
+  '@apollo/query-planner@2.11.2':
+    resolution: {integrity: sha512-wrJ10uryy+Ir5V3tOjDbuXOgHZMgI4/O5IcBYIayEFPrZBG2TaDWVNN14b0Ri0j27p+foxbGErs8t1Daphvbjg==}
     engines: {node: '>=14.15.0'}
     peerDependencies:
       graphql: ^16.5.0
@@ -330,8 +330,8 @@ packages:
     peerDependencies:
       graphql: ^16.6.0
 
-  '@apollo/subgraph@2.11.1':
-    resolution: {integrity: sha512-EdoJwfnhKq1tQZunScG56sXU63VU7geXOy1X56X9H8OP7SeeprRnY0ev1Ii7MW2spRBsSaYjDBvRd1y6c3JE2g==}
+  '@apollo/subgraph@2.11.2':
+    resolution: {integrity: sha512-S14osF5Zc8pd6lzeNtX1QHboMcQK5PXcN9EumZyRYBF0TRbnEFLF8Me9zMcfR3QP7GCiggjd6PA2IAaPC9uCSQ==}
     engines: {node: '>=14.15.0'}
     peerDependencies:
       graphql: ^16.5.0
@@ -11105,13 +11105,13 @@ snapshots:
     dependencies:
       graphql: 16.11.0
 
-  '@apollo/composition@2.11.1(graphql@16.11.0)':
+  '@apollo/composition@2.11.2(graphql@16.11.0)':
     dependencies:
-      '@apollo/federation-internals': 2.11.1(graphql@16.11.0)
-      '@apollo/query-graphs': 2.11.1(graphql@16.11.0)
+      '@apollo/federation-internals': 2.11.2(graphql@16.11.0)
+      '@apollo/query-graphs': 2.11.2(graphql@16.11.0)
       graphql: 16.11.0
 
-  '@apollo/federation-internals@2.11.1(graphql@16.11.0)':
+  '@apollo/federation-internals@2.11.2(graphql@16.11.0)':
     dependencies:
       '@types/uuid': 9.0.8
       chalk: 4.1.2
@@ -11119,11 +11119,11 @@ snapshots:
       js-levenshtein: 1.1.6
       uuid: 9.0.1
 
-  '@apollo/gateway@2.11.1(encoding@0.1.13)(graphql@16.11.0)':
+  '@apollo/gateway@2.11.2(encoding@0.1.13)(graphql@16.11.0)':
     dependencies:
-      '@apollo/composition': 2.11.1(graphql@16.11.0)
-      '@apollo/federation-internals': 2.11.1(graphql@16.11.0)
-      '@apollo/query-planner': 2.11.1(graphql@16.11.0)
+      '@apollo/composition': 2.11.2(graphql@16.11.0)
+      '@apollo/federation-internals': 2.11.2(graphql@16.11.0)
+      '@apollo/query-planner': 2.11.2(graphql@16.11.0)
       '@apollo/server-gateway-interface': 1.1.1(graphql@16.11.0)
       '@apollo/usage-reporting-protobuf': 4.1.1
       '@apollo/utils.createhash': 2.0.2
@@ -11159,18 +11159,18 @@ snapshots:
       '@types/long': 4.0.2
       long: 4.0.0
 
-  '@apollo/query-graphs@2.11.1(graphql@16.11.0)':
+  '@apollo/query-graphs@2.11.2(graphql@16.11.0)':
     dependencies:
-      '@apollo/federation-internals': 2.11.1(graphql@16.11.0)
+      '@apollo/federation-internals': 2.11.2(graphql@16.11.0)
       deep-equal: 2.2.3
       graphql: 16.11.0
       ts-graphviz: 1.8.2
       uuid: 9.0.1
 
-  '@apollo/query-planner@2.11.1(graphql@16.11.0)':
+  '@apollo/query-planner@2.11.2(graphql@16.11.0)':
     dependencies:
-      '@apollo/federation-internals': 2.11.1(graphql@16.11.0)
-      '@apollo/query-graphs': 2.11.1(graphql@16.11.0)
+      '@apollo/federation-internals': 2.11.2(graphql@16.11.0)
+      '@apollo/query-graphs': 2.11.2(graphql@16.11.0)
       '@apollo/utils.keyvaluecache': 2.1.1
       chalk: 4.1.2
       deep-equal: 2.2.3
@@ -11216,10 +11216,10 @@ snapshots:
       - encoding
       - supports-color
 
-  '@apollo/subgraph@2.11.1(graphql@16.11.0)':
+  '@apollo/subgraph@2.11.2(graphql@16.11.0)':
     dependencies:
       '@apollo/cache-control-types': 1.0.3(graphql@16.11.0)
-      '@apollo/federation-internals': 2.11.1(graphql@16.11.0)
+      '@apollo/federation-internals': 2.11.2(graphql@16.11.0)
       graphql: 16.11.0
 
   '@apollo/usage-reporting-protobuf@4.1.1':
@@ -14728,7 +14728,7 @@ snapshots:
       react-hook-form: 7.56.4(react@18.3.1)
       resolve.exports: 2.0.3
       tailwind-merge: 3.3.0
-      tailwindcss: 4.1.10
+      tailwindcss: 4.1.7
       thememirror: 2.0.1(@codemirror/language@6.11.1)(@codemirror/state@6.5.2)(@codemirror/view@6.37.2)
       usehooks-ts: 3.1.1(react@18.3.1)
       uuid: 11.1.0
@@ -15276,9 +15276,9 @@ snapshots:
 
   '@powerhousedao/reactor-api@3.2.0-dev.4(@libsql/client@0.14.0(bufferutil@4.0.9)(utf-8-validate@5.0.10))(@opentelemetry/api@1.9.0)(@parcel/watcher@2.5.1)(@prisma/client@5.17.0(prisma@5.17.0))(@tanstack/query-core@5.77.2)(@types/node@22.15.21)(@types/pg@8.15.4)(@types/react-dom@19.1.5(@types/react@18.3.22))(@types/react@18.3.22)(bufferutil@4.0.9)(crossws@0.3.5)(encoding@0.1.13)(prisma@5.17.0)(react-dom@18.3.1(react@18.3.1))(react-native@0.80.0(@babel/core@7.27.1)(@types/react@18.3.22)(bufferutil@4.0.9)(react@18.3.1)(utf-8-validate@5.0.10))(react@18.3.1)(sqlite3@5.1.7)(typescript@5.8.3)(utf-8-validate@5.0.10)':
     dependencies:
-      '@apollo/gateway': 2.11.1(encoding@0.1.13)(graphql@16.11.0)
+      '@apollo/gateway': 2.11.2(encoding@0.1.13)(graphql@16.11.0)
       '@apollo/server': 4.12.2(encoding@0.1.13)(graphql@16.11.0)
-      '@apollo/subgraph': 2.11.1(graphql@16.11.0)
+      '@apollo/subgraph': 2.11.2(graphql@16.11.0)
       '@electric-sql/pglite': 0.2.17
       '@powerhousedao/analytics-engine-core': 0.5.0
       '@powerhousedao/analytics-engine-graphql': 0.4.0(@powerhousedao/analytics-engine-core@0.5.0)
@@ -15447,7 +15447,7 @@ snapshots:
 
   '@powerhousedao/reactor-local@3.2.0-dev.4(@opentelemetry/api@1.9.0)(@parcel/watcher@2.5.1)(@prisma/client@5.17.0(prisma@5.17.0))(@tanstack/query-core@5.77.2)(@types/node@22.15.21)(@types/pg@8.15.4)(@types/react-dom@19.1.5(@types/react@18.3.22))(@types/react@18.3.22)(bufferutil@4.0.9)(crossws@0.3.5)(encoding@0.1.13)(jiti@2.4.2)(lightningcss@1.30.1)(pg@8.16.2)(prisma@5.17.0)(react-dom@18.3.1(react@18.3.1))(react-native@0.80.0(@babel/core@7.27.1)(@types/react@18.3.22)(bufferutil@4.0.9)(react@18.3.1)(utf-8-validate@5.0.10))(react@18.3.1)(sqlite3@5.1.7)(terser@5.39.2)(typescript@5.8.3)(utf-8-validate@5.0.10)(yaml@2.8.0)':
     dependencies:
-      '@apollo/subgraph': 2.11.1(graphql@16.11.0)
+      '@apollo/subgraph': 2.11.2(graphql@16.11.0)
       '@electric-sql/pglite': 0.2.17
       '@libsql/client': 0.14.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@originjs/vite-plugin-commonjs': 1.0.3
@@ -17144,7 +17144,7 @@ snapshots:
 
   '@types/pg-pool@2.0.6':
     dependencies:
-      '@types/pg': 8.15.4
+      '@types/pg': 8.6.1
 
   '@types/pg@8.15.4':
     dependencies:
@@ -18313,7 +18313,7 @@ snapshots:
 
   axios@1.9.0:
     dependencies:
-      follow-redirects: 1.15.9(debug@4.3.7)
+      follow-redirects: 1.15.9
       form-data: 4.0.2
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -19043,7 +19043,7 @@ snapshots:
     dependencies:
       cipher-base: 1.0.6
       inherits: 2.0.4
-      ripemd160: 2.0.2
+      ripemd160: 2.0.1
       sha.js: 2.4.11
 
   create-hash@1.2.0:
@@ -20488,6 +20488,8 @@ snapshots:
   focus-trap@7.6.4:
     dependencies:
       tabbable: 6.2.0
+
+  follow-redirects@1.15.9: {}
 
   follow-redirects@1.15.9(debug@4.3.7):
     optionalDependencies:

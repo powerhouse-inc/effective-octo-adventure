@@ -1,7 +1,11 @@
 import { Button } from "@powerhousedao/design-system";
 import { Icon } from "@powerhousedao/design-system";
 import { useState } from "react";
-import { DateTimePicker, Checkbox } from "@powerhousedao/document-engineering";
+import {
+  DateTimePicker,
+  Checkbox,
+  Input,
+} from "@powerhousedao/document-engineering";
 
 export interface AnalyticsMenuProps {
   startDate?: string;
@@ -22,6 +26,7 @@ export interface AnalyticsMenuProps {
     driveStatusMap: boolean;
     nodeStatusMap: boolean;
   }) => void;
+  onDeleteNode: (nodeId: string) => void;
 }
 
 export const AnalyticsMenu = (props: AnalyticsMenuProps) => {
@@ -32,8 +37,18 @@ export const AnalyticsMenu = (props: AnalyticsMenuProps) => {
     onEndDateChange,
     logAnalytics,
     onLogAnalyticsChange,
+    onDeleteNode,
   } = props;
+
   const [isOpen, setIsOpen] = useState(false);
+  const [nodeId, setNodeId] = useState("");
+
+  const handleDeleteNode = () => {
+    if (nodeId) {
+      onDeleteNode(nodeId);
+      setNodeId("");
+    }
+  };
 
   const closeContent = () => (
     <Button size="small" color="dark" onClick={() => setIsOpen(true)}>
@@ -97,6 +112,23 @@ export const AnalyticsMenu = (props: AnalyticsMenuProps) => {
           }
           label="Log node status map"
         />
+        <div className="mt-3">
+          <span className="text-sm font-bold">Delete node:</span>
+          <div className="flex gap-2">
+            <Input
+              placeholder="Node id"
+              value={nodeId}
+              onChange={(e) => setNodeId(e.target.value)}
+            />
+            <Button
+              size="small"
+              className="bg-red-600 hover:bg-red-800"
+              onClick={handleDeleteNode}
+            >
+              Delete
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

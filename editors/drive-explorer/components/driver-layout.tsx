@@ -6,6 +6,7 @@ import {
   CreateDocumentModal,
 } from "@powerhousedao/design-system";
 import {
+  type NodeStatus,
   Sidebar,
   SidebarProvider,
   type SidebarNode,
@@ -32,15 +33,7 @@ export interface DriverLayoutProps {
   readonly context: DriveEditorContext;
   readonly nodes: Node[];
   readonly driveUrl?: string | null;
-  readonly startDate?: string;
-  readonly endDate?: string;
-  readonly logAnalytics?: {
-    diff?: boolean;
-    drive?: boolean;
-    diffStatusMap?: boolean;
-    driveStatusMap?: boolean;
-    nodeStatusMap?: boolean;
-  };
+  readonly nodeStatusMap?: Record<string, NodeStatus>;
 }
 
 export function DriverLayout({
@@ -49,9 +42,7 @@ export function DriverLayout({
   context,
   nodes: driveNodes,
   driveUrl,
-  startDate,
-  endDate,
-  logAnalytics = {},
+  nodeStatusMap = {},
 }: DriverLayoutProps) {
   const { getDocumentRevision } = context;
   const { useDriveDocumentStates, addDocument, documentModels } =
@@ -59,12 +50,6 @@ export function DriverLayout({
   const [activeNodeId, setActiveNodeId] = useState<string | undefined>();
   const [openModal, setOpenModal] = useState(false);
   const selectedDocumentModel = useRef<DocumentModelModule | null>(null);
-  const nodeStatusMap = useNodeStatusMap(
-    startDate,
-    endDate,
-    driveId,
-    logAnalytics,
-  );
 
   const [state, fetchDocuments] = useDriveDocumentStates({ driveId });
   const { atlasNodes, feedbackIssues } = useMemo(() => {
@@ -114,7 +99,9 @@ export function DriverLayout({
   }, [selectedNode]);
 
   const onActiveNodeChange = useCallback((node: SidebarNode) => {
-    setActiveNodeId(node.id);
+    if (node.status !== ("REMOVED" as NodeStatus)) {
+      setActiveNodeId(node.id);
+    }
   }, []);
 
   const onEditorClose = useCallback(() => {

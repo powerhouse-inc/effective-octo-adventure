@@ -87,7 +87,20 @@ export function buildSidebarTree(
     (node) => !childrenIds.has(node.id),
   );
 
-  return sortSidebarNodes(result);
+  const sortedNodes = sortSidebarNodes(result);
+  // Add removed nodes to the root level
+  Object.entries(nodeStatusMap).forEach(([key, status]) => {
+    if (status === ("REMOVED" as NodeStatus) && !allNodes[key]) {
+      sortedNodes.push({
+        id: key,
+        title: key, // Use the deleted id as the name
+        children: [],
+        status: "REMOVED" as NodeStatus,
+      });
+    }
+  });
+
+  return sortedNodes;
 }
 
 function sortSidebarNodes(nodes: SidebarNode[]): SidebarNode[] {

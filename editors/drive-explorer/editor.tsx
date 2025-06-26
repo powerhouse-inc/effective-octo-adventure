@@ -14,6 +14,7 @@ import { DriverLayout } from "./components/driver-layout.js";
 import { getRemoteDriveUrl } from "../shared/utils/utils.js";
 import { AnalyticsMenu } from "./components/AnalyticsMenu.js";
 import { DateTime } from "@powerhousedao/reactor-browser/analytics";
+import { useNodeStatusMap } from "./hooks/index.js";
 
 export type IProps = DriveEditorProps<DocumentDriveDocument>;
 
@@ -42,6 +43,13 @@ export function BaseEditor(props: IProps) {
     [dispatch],
   );
 
+  const nodeStatusMap = useNodeStatusMap(
+    startDate,
+    endDate,
+    props.document.id,
+    logAnalytics,
+  );
+
   return (
     <div className="atlas-drive-explorer" style={{ height: "100%" }}>
       <DriverLayout
@@ -49,9 +57,7 @@ export function BaseEditor(props: IProps) {
         driveId={props.document.id}
         nodes={props.document.state.global.nodes}
         driveUrl={getRemoteDriveUrl(props.document)}
-        startDate={startDate}
-        endDate={endDate}
-        logAnalytics={logAnalytics}
+        nodeStatusMap={nodeStatusMap}
       >
         <style>
           {`

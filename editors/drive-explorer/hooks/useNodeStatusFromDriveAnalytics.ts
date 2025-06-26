@@ -22,26 +22,31 @@ export const useNodeStatusFromDriveAnalytics = (
     ? AnalyticsPath.fromString(`drive/${driveId}`)
     : AnalyticsPath.fromString("drive");
 
-  const result = useAnalyticsQuery({
-    start,
-    end,
-    metrics: ["DriveOperations"],
-    granularity: AnalyticsGranularity.Daily,
-    lod: {
-      target: 2,
-      actionType: 3,
+  const result = useAnalyticsQuery(
+    {
+      start,
+      end,
+      metrics: ["DriveOperations"],
+      granularity: AnalyticsGranularity.Daily,
+      lod: {
+        target: 2,
+        actionType: 3,
+      },
+      select: {
+        drive: [driveSelect],
+        target: [AnalyticsPath.fromString("target/NODE")],
+        actionType: [
+          AnalyticsPath.fromString("actionType/CREATED"),
+          AnalyticsPath.fromString("actionType/DUPLICATED"),
+          AnalyticsPath.fromString("actionType/REMOVED"),
+          AnalyticsPath.fromString("actionType/MOVED"),
+        ],
+      },
     },
-    select: {
-      drive: [driveSelect],
-      target: [AnalyticsPath.fromString("target/NODE")],
-      actionType: [
-        AnalyticsPath.fromString("actionType/CREATED"),
-        AnalyticsPath.fromString("actionType/DUPLICATED"),
-        AnalyticsPath.fromString("actionType/REMOVED"),
-        AnalyticsPath.fromString("actionType/MOVED"),
-      ],
+    {
+      sources: [AnalyticsPath.fromString(`ph/${driveSelect.toString()}`)],
     },
-  });
+  );
 
   if (logAnalytics) {
     console.log(">>> drive analytics", result.data);

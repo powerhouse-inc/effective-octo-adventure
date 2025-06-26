@@ -19,21 +19,26 @@ export const useNodeStatusFromDiffAnalytics = (
   const end = to ? DateTime.fromISO(to) : DateTime.now().endOf("day");
 
   const driveSelect = driveId
-    ? AnalyticsPath.fromString(`drive/${driveId}`)
-    : AnalyticsPath.fromString("drive");
+    ? AnalyticsPath.fromString(`ph/diff/drive/${driveId}`)
+    : AnalyticsPath.fromString("ph/diff/drive");
 
-  const result = useAnalyticsQuery({
-    start,
-    end,
-    granularity: AnalyticsGranularity.Daily,
-    metrics: ["Count"],
-    lod: {
-      drive: 3,
+  const result = useAnalyticsQuery(
+    {
+      start,
+      end,
+      granularity: AnalyticsGranularity.Daily,
+      metrics: ["Count"],
+      lod: {
+        drive: 5,
+      },
+      select: {
+        drive: [driveSelect],
+      },
     },
-    select: {
-      drive: [driveSelect],
+    {
+      sources: [AnalyticsPath.fromString(`ph/diff/${driveId}`)],
     },
-  });
+  );
 
   if (logAnalytics) {
     console.log(">>> diff analytics", result.data);
@@ -41,7 +46,8 @@ export const useNodeStatusFromDiffAnalytics = (
 
   const rows = result.data?.flatMap((item) => item.rows);
   const statusMap = rows?.reduce<Record<string, NodeStatus>>((acc, row) => {
-    const [, , nodeId] = row.dimensions.drive.path.toString().split("/");
+    const nodeId = row.dimensions.drive.path.toString().split("/").at(-1);
+    if (!nodeId) return acc;
     acc[nodeId] = "MODIFIED" as NodeStatus;
     return acc;
   }, {});

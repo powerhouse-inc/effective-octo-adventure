@@ -15,6 +15,7 @@ import { getRemoteDriveUrl } from "../shared/utils/utils.js";
 import { AnalyticsMenu } from "./components/AnalyticsMenu.js";
 import { DateTime } from "@powerhousedao/reactor-browser/analytics";
 import { useNodeStatusMap } from "./hooks/index.js";
+import { convertToDateTimeLocal } from "./utils/index.js";
 
 export type IProps = DriveEditorProps<DocumentDriveDocument>;
 
@@ -32,10 +33,10 @@ export function BaseEditor(props: IProps) {
   });
 
   const [startDate, setStartDate] = useState<string | undefined>(
-    props.document.created,
+    convertToDateTimeLocal(props.document.created),
   );
   const [endDate, setEndDate] = useState<string | undefined>(
-    DateTime.now().endOf("day").toISO(),
+    convertToDateTimeLocal(DateTime.now().endOf("day").toISO()),
   );
 
   const onDeleteNode = useCallback(

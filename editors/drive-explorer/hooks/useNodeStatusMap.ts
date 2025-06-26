@@ -1,6 +1,7 @@
 import { type NodeStatus } from "@powerhousedao/document-engineering/ui";
-import { useNodeStatusFromDiffAnalytics } from "./useNodeStatusFromDiffAnalytics.js";
+// import { useNodeStatusFromDiffAnalytics } from "./useNodeStatusFromDiffAnalytics.js";
 import { useNodeStatusFromDriveAnalytics } from "./useNodeStatusFromDriveAnalytics.js";
+import { useNodeStatusFromDocumentAnalytics } from "./useNodeStatusFromDocumentAnalytics.js";
 
 export const useNodeStatusMap = (
   from?: string,
@@ -14,17 +15,24 @@ export const useNodeStatusMap = (
     nodeStatusMap?: boolean;
   } = {},
 ) => {
-  const diffStatusMap = useNodeStatusFromDiffAnalytics(
-    from,
-    to,
-    driveId,
-    logAnalytics.diff,
-  );
+  // const diffStatusMap = useNodeStatusFromDiffAnalytics(
+  //   from,
+  //   to,
+  //   driveId,
+  //   logAnalytics.diff,
+  // );
   const originalDriveStatusMap = useNodeStatusFromDriveAnalytics(
     from,
     to,
     driveId,
     logAnalytics.drive,
+  );
+
+  const documentStatusMap = useNodeStatusFromDocumentAnalytics(
+    from,
+    to,
+    driveId,
+    logAnalytics.diff,
   );
 
   // Split driveStatusMap into two objects
@@ -39,7 +47,7 @@ export const useNodeStatusMap = (
   });
 
   if (logAnalytics.diffStatusMap) {
-    console.log(">>> diffStatusMap", diffStatusMap);
+    console.log(">>> documentStatusMap", documentStatusMap);
   }
 
   if (logAnalytics.driveStatusMap) {
@@ -47,17 +55,15 @@ export const useNodeStatusMap = (
     console.log(">>> deletedDriveStatusMap", deletedDriveStatusMap);
   }
 
-  if (logAnalytics.nodeStatusMap) {
-    console.log(">>> nodeStatusMap", {
-      ...driveStatusMap,
-      ...diffStatusMap,
-      ...deletedDriveStatusMap,
-    });
-  }
-
-  return {
+  const nodeStatusMap = {
     ...driveStatusMap,
-    ...diffStatusMap,
+    ...documentStatusMap,
     ...deletedDriveStatusMap,
   };
+
+  if (logAnalytics.nodeStatusMap) {
+    console.log(">>> nodeStatusMap", nodeStatusMap);
+  }
+
+  return nodeStatusMap;
 };

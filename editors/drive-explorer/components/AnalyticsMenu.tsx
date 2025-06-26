@@ -1,11 +1,7 @@
 import { Button } from "@powerhousedao/design-system";
 import { Icon } from "@powerhousedao/design-system";
 import { useState } from "react";
-import {
-  DateTimePicker,
-  Checkbox,
-  Input,
-} from "@powerhousedao/document-engineering";
+import { Checkbox, Input } from "@powerhousedao/document-engineering";
 
 export interface AnalyticsMenuProps {
   startDate?: string;
@@ -65,18 +61,24 @@ export const AnalyticsMenu = (props: AnalyticsMenuProps) => {
         </button>
       </div>
       <div className="flex flex-col gap-4">
-        <DateTimePicker
-          name="startDate"
-          label="Start Date:"
-          value={startDate}
-          onChange={(e) => onStartDateChange(e.target.value)}
-        />
-        <DateTimePicker
-          name="endDate"
-          label="End Date:"
-          value={endDate}
-          onChange={(e) => onEndDateChange(e.target.value)}
-        />
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-bold">Start Date:</label>
+          <input
+            type="datetime-local"
+            value={startDate}
+            className="border border-gray-300 rounded-md p-2"
+            onChange={(e) => onStartDateChange(e.target.value)}
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-bold">End Date:</label>
+          <input
+            type="datetime-local"
+            value={endDate}
+            className="border border-gray-300 rounded-md p-2"
+            onChange={(e) => onEndDateChange(e.target.value)}
+          />
+        </div>
         <Checkbox
           value={logAnalytics.diff}
           onChange={(val: boolean) =>

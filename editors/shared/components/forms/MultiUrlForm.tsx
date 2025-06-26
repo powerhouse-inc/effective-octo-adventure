@@ -71,6 +71,9 @@ const MultiUrlForm = ({
           platformIcons={{
             "example.com": "File",
           }}
+          style={{
+            paddingLeft: "32px",
+          }}
         />
       );
     },

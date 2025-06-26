@@ -21,6 +21,7 @@ export declare type Amount_Fiat = string
 export declare type Amount_Currency = string
 export declare type Amount_Crypto = string
 export declare type Amount = string
+export declare type Unknown = string
 export declare type ID = string
 export declare type _FieldSet = string
 export declare type _Any = string
@@ -124,7 +125,10 @@ export interface DriveIdBySlugArgs {
 }
 export interface ServiceArgs {}
 export interface AddDriveArgs {
-  global: DocumentDriveStateInput
+  name: string
+  icon?: string
+  id?: string
+  slug?: string
   preferredEditor?: string
 }
 export interface SetDriveIconArgs {
@@ -230,11 +234,9 @@ export interface DocumentDrive_FileNode {
  */
 
 export interface DocumentDrive_DocumentDriveState {
-  id: ID
   name: string
   nodes: []
   icon?: string
-  slug?: string
 }
 
 /**
@@ -670,9 +672,21 @@ export interface Query {
  */
 
 export interface Mutation {
-  addDrive?: DocumentDrive_DocumentDriveState
+  addDrive?: AddDriveResult
   setDriveIcon?: boolean
   setDriveName?: boolean
+}
+
+/**
+ * @deprecated Avoid directly using this interface. Instead, create a type alias based on the query/mutation return type.
+ */
+
+export interface AddDriveResult {
+  id: string
+  slug: string
+  name: string
+  icon?: string
+  preferredEditor?: string
 }
 
 /**
@@ -752,11 +766,9 @@ export interface DocumentDrive_FileNodeSelection {
 }
 
 export interface DocumentDrive_DocumentDriveStateSelection {
-  id?: boolean
   name?: boolean
   nodes?: boolean
   icon?: boolean
-  slug?: boolean
 }
 
 export interface DocumentDrive_ListenerFilterSelection {
@@ -1103,8 +1115,14 @@ export interface MutationSelection {
     __headers?: { [key: string]: string }
     __retry?: boolean
     __alias?: string
-    __args: { global: DocumentDriveStateInput; preferredEditor?: string }
-  } & DocumentDrive_DocumentDriveStateSelection
+    __args: {
+      name: string
+      icon?: string
+      id?: string
+      slug?: string
+      preferredEditor?: string
+    }
+  } & AddDriveResultSelection
   setDriveIcon?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
@@ -1117,6 +1135,14 @@ export interface MutationSelection {
     __alias?: string
     __args: { id: string; name: string }
   }
+}
+
+export interface AddDriveResultSelection {
+  id?: boolean
+  slug?: boolean
+  name?: boolean
+  icon?: boolean
+  preferredEditor?: boolean
 }
 
 export interface DocumentDriveStateInputSelection {
@@ -1177,8 +1203,8 @@ export declare const client: {
         __retry?: boolean
         __alias?: string
         __args: AddDriveArgs
-      } & DocumentDrive_DocumentDriveStateSelection,
-      DeepRequired<DocumentDrive_DocumentDriveState>,
+      } & AddDriveResultSelection,
+      DeepRequired<AddDriveResult>,
       AllEnums
     >
     setDriveIcon: Endpoint<

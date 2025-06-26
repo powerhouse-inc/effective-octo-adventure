@@ -34,6 +34,8 @@ export interface DriverLayoutProps {
   readonly nodes: Node[];
   readonly driveUrl?: string | null;
   readonly nodeStatusMap?: Record<string, NodeStatus>;
+  readonly activeNodeId?: string;
+  readonly setActiveNodeId: (nodeId: string) => void;
 }
 
 export function DriverLayout({
@@ -43,15 +45,16 @@ export function DriverLayout({
   nodes: driveNodes,
   driveUrl,
   nodeStatusMap = {},
+  activeNodeId,
+  setActiveNodeId,
 }: DriverLayoutProps) {
   const { getDocumentRevision } = context;
   const { useDriveDocumentStates, addDocument, documentModels } =
     useDriveContext();
-  const [activeNodeId, setActiveNodeId] = useState<string | undefined>();
   const [openModal, setOpenModal] = useState(false);
   const selectedDocumentModel = useRef<DocumentModelModule | null>(null);
 
-  const [state, fetchDocuments] = useDriveDocumentStates({ driveId });
+  const [state] = useDriveDocumentStates({ driveId });
   const { atlasNodes, feedbackIssues } = useMemo(() => {
     return Object.keys(state).reduce(
       (acc, curr) => {
@@ -122,7 +125,6 @@ export function DriverLayout({
       );
 
       selectedDocumentModel.current = null;
-      await fetchDocuments(driveId, [node.id]);
       setActiveNodeId(node.id);
     },
     [addDocument, driveId, setActiveNodeId],

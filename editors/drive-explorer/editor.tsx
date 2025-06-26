@@ -21,6 +21,8 @@ export type IProps = DriveEditorProps<DocumentDriveDocument>;
 export function BaseEditor(props: IProps) {
   const { dispatch } = props;
 
+  const [activeNodeId, setActiveNodeId] = useState<string | undefined>();
+
   const [logAnalytics, setLogAnalytics] = useState({
     diff: false,
     drive: false,
@@ -38,6 +40,7 @@ export function BaseEditor(props: IProps) {
 
   const onDeleteNode = useCallback(
     (nodeId: string) => {
+      setActiveNodeId(undefined);
       dispatch(deleteNode({ id: nodeId }));
     },
     [dispatch],
@@ -58,6 +61,8 @@ export function BaseEditor(props: IProps) {
         nodes={props.document.state.global.nodes}
         driveUrl={getRemoteDriveUrl(props.document)}
         nodeStatusMap={nodeStatusMap}
+        activeNodeId={activeNodeId}
+        setActiveNodeId={setActiveNodeId}
       >
         <style>
           {`

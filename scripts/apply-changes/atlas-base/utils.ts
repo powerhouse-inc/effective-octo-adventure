@@ -31,7 +31,9 @@ export const findAtlasParentInCache = (
   if (parentDoc) {
     parent = {
       id: parentDoc.id,
-      title: parentDoc.name || "",
+      title: (parentDoc.state as any)?.docNo && parentDoc.name
+        ? ((parentDoc.state as any)?.docNo + " - " + parentDoc.name)
+        : (parentDoc.name ?? ""),
       docNo: (parentDoc.state as any)?.docNo || "",
       documentType: parentDoc.documentType,
       icon: getDocumentIcon(

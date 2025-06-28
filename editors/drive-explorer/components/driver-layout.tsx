@@ -152,7 +152,6 @@ export function DriverLayout({
       <ToastContainer position="bottom-right"></ToastContainer>
       <main className="flex overflow-hidden h-full">
         <Sidebar
-          className="flex-0"
           activeNodeId={activeNodeId}
           enableMacros={4}
           nodes={nodes}

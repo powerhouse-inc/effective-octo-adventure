@@ -1,10 +1,10 @@
 import { type ProcessorRecord } from "document-drive/processors/types";
 import { SearchIndexerProcessor } from "./search-indexer/index.js";
+import { type Db } from "@powerhousedao/reactor-api";
 
 export const processorFactory =
-  (module: any) =>
+  (module: { db: Db }) =>
   (driveId: string): ProcessorRecord[] => {
-    console.log(module);
     return [
       {
         processor: new SearchIndexerProcessor(module.db),

@@ -47,6 +47,7 @@ export class SearchIndexerProcessor implements IProcessor {
     state: AtlasScopeState | AtlasFoundationState,
   ) {
     if ((state as AtlasFoundationState).parent) {
+      // its a foundation doc because it has a parent
       await this.indexAtlasFoundation(state as AtlasFoundationState);
     } else {
       await this.indexAtlasScope(documentId, state as AtlasScopeState);

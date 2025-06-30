@@ -2,16 +2,16 @@ import { Subgraph, type SubgraphArgs } from "@powerhousedao/reactor-api";
 import { gql } from "graphql-tag";
 import { type Kysely } from "kysely";
 import { type Database } from "../../utils/generated/database-types.js";
-import { getDbWithoutMigrations } from "../../utils/db.js";
+import { getDb } from "../../utils/db.js";
 
 export class SearchSubgraph extends Subgraph {
   name = "search";
-  private kysely: Kysely<Database> | null = null;
+  private kysely: Promise<Kysely<Database>> | null = null;
 
   constructor(args: SubgraphArgs) {
     super(args);
     try {
-      this.kysely = getDbWithoutMigrations(this.operationalStore);
+      this.kysely = getDb(this.operationalStore);
     } catch (error) {
       console.warn(
         "Failed to initialize database connection for search subgraph:",
@@ -19,13 +19,6 @@ export class SearchSubgraph extends Subgraph {
       );
       this.kysely = null;
     }
-  }
-
-  private getDb(): Kysely<Database> {
-    if (!this.kysely) {
-      throw new Error("Database connection not available");
-    }
-    return this.kysely;
   }
 
   resolvers = {
@@ -39,7 +32,7 @@ export class SearchSubgraph extends Subgraph {
         ) => {
           try {
             const { query, limit = 50, offset = 0 } = args;
-            const db = this.getDb();
+            const db = await this.kysely!;
 
             // Search in both atlas_scope_docs and atlas_foundation_docs
             const scopeResults = await db
@@ -118,7 +111,7 @@ export class SearchSubgraph extends Subgraph {
         ) => {
           try {
             const { query, limit = 50, offset = 0 } = args;
-            const db = this.getDb();
+            const db = await this.kysely!;
 
             let queryBuilder = db
               .selectFrom("atlas_scope_docs")
@@ -171,7 +164,7 @@ export class SearchSubgraph extends Subgraph {
         ) => {
           try {
             const { query, parentId, atlasType, limit = 50, offset = 0 } = args;
-            const db = this.getDb();
+            const db = await this.kysely!;
 
             let queryBuilder = db
               .selectFrom("atlas_foundation_docs")
@@ -276,23 +269,7 @@ export class SearchSubgraph extends Subgraph {
     }
   `;
 
-  async onSetup() {
-    // Try to initialize database connection if not already done
-    if (!this.kysely) {
-      try {
-        this.kysely = getDbWithoutMigrations(this.operationalStore);
-        console.log("Database connection established for search subgraph");
-      } catch (error) {
-        console.warn(
-          "Failed to establish database connection during setup:",
-          error,
-        );
-      }
-    }
-  }
-
   async onDisconnect() {
-    // Clean up database connection if needed
     this.kysely = null;
   }
 }

@@ -33,10 +33,10 @@ export const useNodeStatusFromDocumentAnalytics = (
       metrics: ["DocumentOperations"],
       granularity: AnalyticsGranularity.Daily,
       lod: {
-        target: 4,
+        target: 6,
       },
       select: {
-        target: [AnalyticsPath.fromString(`target/${driveId}/NODE`)],
+        target: [AnalyticsPath.fromString(`ph/doc/target/${driveId}/NODE`)],
       },
     },
     {
@@ -54,7 +54,7 @@ export const useNodeStatusFromDocumentAnalytics = (
 
   const rows = result.data.flatMap((item) => item.rows);
   const statusMap = rows?.reduce<Record<string, NodeStatus>>((acc, row) => {
-    const [, , , nodeId] = row.dimensions.target.path.toString().split("/");
+    const [, , , , , nodeId] = row.dimensions.target.path.toString().split("/");
 
     if (row.value > 0) {
       acc[nodeId] = "MODIFIED" as NodeStatus;

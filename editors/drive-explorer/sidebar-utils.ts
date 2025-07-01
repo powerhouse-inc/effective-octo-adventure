@@ -41,11 +41,10 @@ export function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
 
     // get the right title for the node depending on the document type
     const title =
-      "sky/atlas-set" === node.documentType
+      "sky/atlas-set" === node.documentType ||
+      "sky/atlas-multiparent" === node.documentType
         ? node.global.name
-        : "sky/atlas-multiparent" === node.documentType
-          ? `${(node.global as unknown as AtlasMultiParentState).parents?.[0]?.docNo} - ${node.global.name}`
-          : `${node.global?.docNo} - ${node.global.name}`;
+        : `${node.global?.docNo} - ${node.global.name}`;
 
     nodesById[key] = {
       id: key,
@@ -63,7 +62,11 @@ export function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
         .parents;
       if (parents && parents.length > 0) {
         for (const parent of parents) {
-          nodesById[parent.id]?.children?.push(nodesById[key]);
+          const nodeWithCorrectTitle = {
+            ...nodesById[key],
+            title: `${parent.docNo} - ${value.global.name}`,
+          };
+          nodesById[parent.id]?.children?.push(nodeWithCorrectTitle);
         }
       }
     } else if (

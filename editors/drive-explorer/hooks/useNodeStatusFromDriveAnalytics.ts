@@ -44,7 +44,7 @@ export const useNodeStatusFromDriveAnalytics = (
       },
     },
     {
-      sources: [AnalyticsPath.fromString(`ph/${driveSelect.toString()}`)],
+      sources: [driveSelect],
     },
   );
 

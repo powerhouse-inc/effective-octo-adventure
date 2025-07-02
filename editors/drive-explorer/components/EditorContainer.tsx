@@ -19,8 +19,6 @@ import {
 import { useState, Suspense, useCallback } from "react";
 import { getRevisionFromDate, useTimelineItems } from "@powerhousedao/common";
 
-import { ViewModeProvider } from "../../shared/providers/ViewModeProvider.js";
-
 export interface EditorContainerProps {
   driveId: string;
   documentId: string;
@@ -86,45 +84,41 @@ export const EditorContainer: React.FC<EditorContainerProps> = (props) => {
   const moduleWithComponent = editorModule as EditorModule<PHDocument>;
   const EditorComponent = moduleWithComponent.Component;
 
-  return (
-    <ViewModeProvider>
-      {showRevisionHistory ? (
-        <RevisionHistory
-          documentId={documentId}
-          documentTitle={title}
-          globalOperations={document.operations.global}
-          key={documentId}
-          localOperations={document.operations.local}
-          onClose={() => setShowRevisionHistory(false)}
-        />
-      ) : (
-        <Suspense fallback={loadingContent}>
-          <DocumentToolbar
-            onClose={onClose}
-            onExport={onExport}
-            onShowRevisionHistory={() => setShowRevisionHistory(true)}
-            onSwitchboardLinkClick={() => {}}
-            title={title}
-            timelineItems={timelineItems.data}
-            onTimelineItemClick={setSelectedTimelineItem}
-            timelineButtonVisible={moduleWithComponent.config.timelineEnabled}
-          />
-          <EditorComponent
-            context={{
-              ...context,
-              readMode: !!selectedTimelineItem,
-              selectedTimelineRevision: getRevisionFromDate(
-                selectedTimelineItem?.startDate,
-                selectedTimelineItem?.endDate,
-                document.operations.global,
-              ),
-            }}
-            dispatch={dispatch}
-            document={document}
-            error={error}
-          />
-        </Suspense>
-      )}
-    </ViewModeProvider>
+  return showRevisionHistory ? (
+    <RevisionHistory
+      documentId={documentId}
+      documentTitle={title}
+      globalOperations={document.operations.global}
+      key={documentId}
+      localOperations={document.operations.local}
+      onClose={() => setShowRevisionHistory(false)}
+    />
+  ) : (
+    <Suspense fallback={loadingContent}>
+      <DocumentToolbar
+        onClose={onClose}
+        onExport={onExport}
+        onShowRevisionHistory={() => setShowRevisionHistory(true)}
+        onSwitchboardLinkClick={() => {}}
+        title={title}
+        timelineItems={timelineItems.data}
+        onTimelineItemClick={setSelectedTimelineItem}
+        timelineButtonVisible={moduleWithComponent.config.timelineEnabled}
+      />
+      <EditorComponent
+        context={{
+          ...context,
+          readMode: !!selectedTimelineItem,
+          selectedTimelineRevision: getRevisionFromDate(
+            selectedTimelineItem?.startDate,
+            selectedTimelineItem?.endDate,
+            document.operations.global,
+          ),
+        }}
+        dispatch={dispatch}
+        document={document}
+        error={error}
+      />
+    </Suspense>
   );
 };

@@ -1,4 +1,5 @@
 import { useEffect, useCallback, useMemo, useState } from "react";
+import { Skeleton } from "../ui/skeleton.js";
 import { ArrayField, type ArrayFieldProps } from "../ArrayField.js";
 import {
   UrlField,
@@ -16,12 +17,14 @@ interface MultiUrlFormProps
     ArrayFieldProps<string, UrlFieldProps>,
     "fields" | "componentProps" | "component"
   > {
+  loading: boolean;
   data: CommonDataProps[];
   viewMode: ViewMode;
   baselineValue: string[];
 }
 
 const MultiUrlForm = ({
+  loading,
   label,
   data,
   onAdd,
@@ -62,7 +65,15 @@ const MultiUrlForm = ({
         }
       }
 
-      return (
+      const isFirstField =
+        (data.length === 0 && props.name === "item-new") ||
+        (props.name !== "item-new" &&
+          data.length > 0 &&
+          data[0].id === props.name?.replace("item-", ""));
+
+      return loading ? (
+        <Skeleton label={isFirstField ? label : undefined} />
+      ) : (
         <UrlField
           {...props}
           viewMode={viewMode}

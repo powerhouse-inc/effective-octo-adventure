@@ -1,4 +1,4 @@
-import { Skeleton } from "../ui/skeleton.js";
+import { FieldSkeleton } from "../field-skeleton.js";
 import { useEffect, useState } from "react";
 import { MarkdownEditor } from "../markdown-editor.js";
 import { useFormMode } from "../../providers/FormModeProvider.js";
@@ -55,7 +55,7 @@ const MarkdownContentForm: React.FC<MarkdownContentFormProps> = ({
   }
 
   return loading ? (
-    <Skeleton label="Content" className="h-[350px]" />
+    <FieldSkeleton className="h-[350px]" />
   ) : (
     <div className="flex flex-col gap-2">
       <FormLabel disabled={true}>Content</FormLabel>

@@ -1,4 +1,5 @@
 import { useEffect, useCallback, useMemo, useState } from "react";
+import { FieldSkeleton } from "../field-skeleton.js";
 import { Skeleton } from "../ui/skeleton.js";
 import { ArrayField, type ArrayFieldProps } from "../ArrayField.js";
 import {
@@ -72,7 +73,11 @@ const MultiUrlForm = ({
           data[0].id === props.name?.replace("item-", ""));
 
       return loading ? (
-        <Skeleton label={isFirstField ? label : undefined} />
+        isFirstField ? (
+          <FieldSkeleton />
+        ) : (
+          <Skeleton />
+        )
       ) : (
         <UrlField
           {...props}

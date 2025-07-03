@@ -1,4 +1,4 @@
-import { Skeleton } from "../ui/skeleton.js";
+import { FieldSkeleton } from "../field-skeleton.js";
 import { GenericTextForm } from "./generics/GenericTextForm.js";
 import type { Maybe } from "document-model";
 
@@ -16,7 +16,7 @@ const DocNoForm = ({
   onSave,
 }: DocNoFormProps) => {
   return loading ? (
-    <Skeleton label="Doc №" />
+    <FieldSkeleton />
   ) : (
     <GenericTextForm
       label="Doc №"

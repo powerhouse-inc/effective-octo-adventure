@@ -1,4 +1,4 @@
-import { Skeleton } from "../ui/skeleton.js";
+import { FieldSkeleton } from "../field-skeleton.js";
 import { type SelectOption } from "@powerhousedao/document-engineering/ui";
 import { GenericEnumForm } from "./generics/GenericEnumForm.js";
 import type { Maybe } from "document-model";
@@ -35,7 +35,7 @@ const GlobalTagsForm = ({
   }, []);
 
   return loading ? (
-    <Skeleton label="Tags" />
+    <FieldSkeleton />
   ) : (
     <GenericEnumForm
       label="Tags"

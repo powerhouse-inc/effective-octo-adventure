@@ -1,4 +1,4 @@
-import { Skeleton } from "../../shared/components/ui/skeleton.js";
+import { FieldSkeleton } from "../../shared/components/field-skeleton.js";
 import { GenericTextForm } from "../../shared/components/forms/generics/GenericTextForm.js";
 
 interface AdditionalGuidanceProps {
@@ -15,7 +15,7 @@ function AdditionalGuidance({
   onSave,
 }: AdditionalGuidanceProps) {
   return loading ? (
-    <Skeleton label="Additional Guidance" className="h-[76px]" />
+    <FieldSkeleton className="h-[76px]" />
   ) : (
     <GenericTextForm
       label="Additional Guidance"

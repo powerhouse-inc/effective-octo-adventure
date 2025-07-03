@@ -1,4 +1,4 @@
-import { Skeleton } from "../ui/skeleton.js";
+import { FieldSkeleton } from "../field-skeleton.js";
 import { GenericEnumForm } from "./generics/GenericEnumForm.js";
 import type { Maybe } from "document-model";
 import { type FStatus } from "../../../../document-models/atlas-foundation/index.js";
@@ -17,7 +17,7 @@ const MasterStatusForm = ({
   onSave,
 }: MasterStatusFormProps) => {
   return loading ? (
-    <Skeleton label="Status *" />
+    <FieldSkeleton />
   ) : (
     <GenericEnumForm
       label="Status"

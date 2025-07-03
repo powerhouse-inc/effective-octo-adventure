@@ -1,4 +1,4 @@
-import { Skeleton } from "../ui/skeleton.js";
+import { FieldSkeleton } from "../field-skeleton.js";
 import { GenericPHIDForm } from "./generics/GenericPHIDForm.js";
 import type { Maybe } from "document-model";
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
@@ -34,7 +34,7 @@ const SinglePhIdForm = ({
   fetchOptionsCallback,
 }: SinglePhIdFormProps) => {
   return loading ? (
-    <Skeleton label={label} className="h-[92px]" />
+    <FieldSkeleton className="h-[92px]" />
   ) : (
     <GenericPHIDForm
       label={label}

@@ -1,4 +1,5 @@
 import { useEffect, useCallback, useMemo, useState } from "react";
+import { FieldSkeleton } from "../field-skeleton.js";
 import { Skeleton } from "../ui/skeleton.js";
 import { ArrayField, type ArrayFieldProps } from "../ArrayField.js";
 import { useFormMode } from "../../providers/FormModeProvider.js";
@@ -59,7 +60,7 @@ const MultiPhIdForm = ({
       // the new item not have initialOptions
       if (props.name === "item-new") {
         return loading ? (
-          <Skeleton label={label} className="h-[92px]" />
+          <FieldSkeleton className="h-[92px]" />
         ) : (
           <PHIDField {...props} />
         );
@@ -77,10 +78,11 @@ const MultiPhIdForm = ({
         data.length > 0 && data[0].id === props.name?.replace("item-", "");
 
       return loading ? (
-        <Skeleton
-          label={isFirstField ? label : undefined}
-          className="h-[92px]"
-        />
+        isFirstField ? (
+          <FieldSkeleton className="h-[92px]" />
+        ) : (
+          <Skeleton className="h-[92px]" />
+        )
       ) : (
         <PHIDField
           {...props}

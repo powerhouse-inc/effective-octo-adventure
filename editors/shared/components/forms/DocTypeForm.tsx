@@ -1,4 +1,4 @@
-import { Skeleton } from "../ui/skeleton.js";
+import { FieldSkeleton } from "../field-skeleton.js";
 import { GenericEnumForm } from "./generics/GenericEnumForm.js";
 import type { Maybe } from "document-model";
 import { type FAtlasType } from "../../../../document-models/atlas-foundation/index.js";
@@ -36,7 +36,7 @@ const DocTypeForm = ({
   options = foundationOptions,
 }: DocTypeFormProps) => {
   return loading ? (
-    <Skeleton label="Doc Type *" />
+    <FieldSkeleton />
   ) : (
     <GenericEnumForm
       label={label}

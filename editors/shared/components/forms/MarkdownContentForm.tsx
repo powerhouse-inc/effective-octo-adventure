@@ -7,7 +7,7 @@ import { FakeInput } from "../diff-fields/fake-input.js";
 import { DiffText } from "../diff-text.js";
 
 interface MarkdownContentFormProps {
-  loading: boolean;
+  loading?: boolean;
   value: string;
   onSave: (newContent: string) => void;
   baselineValue: string;

@@ -17,7 +17,7 @@ interface MultiUrlFormProps
     ArrayFieldProps<string, UrlFieldProps>,
     "fields" | "componentProps" | "component"
   > {
-  loading: boolean;
+  loading?: boolean;
   data: CommonDataProps[];
   viewMode: ViewMode;
   baselineValue: string[];

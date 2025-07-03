@@ -19,7 +19,7 @@ interface MultiPhIdFormProps
     ArrayFieldProps<string, PHIDFieldProps>,
     "fields" | "componentProps" | "component"
   > {
-  loading: boolean;
+  loading?: boolean;
   data: CommonDataProps[];
   fetchOptionsCallback: (value: string) => PHIDOption[];
   baselineValue: MDocumentLink[];

@@ -2,7 +2,7 @@ import { Skeleton } from "../../shared/components/ui/skeleton.js";
 import { GenericTextForm } from "../../shared/components/forms/generics/GenericTextForm.js";
 
 interface AdditionalGuidanceProps {
-  loading: boolean;
+  loading?: boolean;
   value: string;
   baselineValue: string;
   onSave: (value: string) => void;

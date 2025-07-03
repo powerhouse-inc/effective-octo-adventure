@@ -4,6 +4,7 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
+  shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/design-system/ui";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
@@ -71,7 +72,7 @@ export function ExploratoryForm({
   };
 
   const baseDocument = useBaseDocument(document, context);
-  const loading = mode !== "edition" && baseDocument === null;
+  const loading = shouldShowSkeleton(mode, baseDocument);
 
   return (
     <FormModeProvider mode={mode}>
@@ -195,7 +196,7 @@ export function ExploratoryForm({
 
           <div className="flex flex-row justify-end items-center gap-2">
             <div className="flex items-center gap-2">
-              {mode !== "edition" && baseDocument === null ? (
+              {loading ? (
                 <Skeleton className="h-[22px]" />
               ) : (
                 <Toggle

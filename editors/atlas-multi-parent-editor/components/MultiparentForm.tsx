@@ -4,6 +4,7 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
+  shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import type { IProps } from "../editor.js";
@@ -47,7 +48,7 @@ export function MultiParentForm({
   const fetchOptionsCallback = useParentOptions("sky/atlas-multiparent");
 
   const baseDocument = useBaseDocument(document, context);
-  const loading = mode !== "edition" && baseDocument === null;
+  const loading = shouldShowSkeleton(mode, baseDocument);
 
   return (
     <FormModeProvider mode={mode}>

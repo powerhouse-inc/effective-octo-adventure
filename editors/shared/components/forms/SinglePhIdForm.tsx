@@ -5,7 +5,7 @@ import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import type React from "react";
 
 interface SinglePhIdFormProps {
-  loading: boolean;
+  loading?: boolean;
   value: Maybe<string>;
   baselineValue: Maybe<string>;
   baselineIcon?: string | React.ReactElement;

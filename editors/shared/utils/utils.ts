@@ -7,6 +7,14 @@ import { type AtlasMultiParentDocument } from "../../../document-models/atlas-mu
 import { type AtlasScopeDocument } from "../../../document-models/atlas-scope/index.js";
 import { type AtlasSetDocument } from "../../../document-models/atlas-set/index.js";
 
+export type AtlasDocument =
+  | AtlasExploratoryDocument
+  | AtlasFoundationDocument
+  | AtlasGroundingDocument
+  | AtlasMultiParentDocument
+  | AtlasScopeDocument
+  | AtlasSetDocument;
+
 export const getCardVariant = (mode: ViewMode) => {
   return mode === "edition" ? "blue" : mode === "removal" ? "gray" : "green";
 };
@@ -60,15 +68,7 @@ export const transformUrl = (url: string): string => {
   return encodeURIComponent(url).replace(/\./g, "%2E");
 };
 
-export const getBaseDocumentTimestamp = (
-  document:
-    | AtlasExploratoryDocument
-    | AtlasFoundationDocument
-    | AtlasGroundingDocument
-    | AtlasMultiParentDocument
-    | AtlasScopeDocument
-    | AtlasSetDocument,
-): string => {
+export const getBaseDocumentTimestamp = (document: AtlasDocument): string => {
   const firstOperation = document.operations?.global?.find(
     (operation) => operation.index === 0,
   );
@@ -83,4 +83,11 @@ export const getBaseDocumentTimestamp = (
 
   // fallback to current date if nothing is available
   return new Date().toISOString();
+};
+
+export const shouldShowSkeleton = (
+  mode: ViewMode,
+  baseDocument: AtlasDocument | null,
+) => {
+  return mode !== "edition" && baseDocument === null;
 };

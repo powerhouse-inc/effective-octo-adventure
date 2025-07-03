@@ -12,7 +12,7 @@ interface RawTag {
 }
 
 interface GlobalTagsFormProps {
-  loading: boolean;
+  loading?: boolean;
   value: Maybe<string[]>;
   baselineValue: Maybe<string[]>;
   onSave: (value: string[]) => void;

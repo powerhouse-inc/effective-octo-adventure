@@ -3,7 +3,7 @@ import { GenericTextForm } from "./generics/GenericTextForm.js";
 import type { Maybe } from "document-model";
 
 interface DocNoFormProps {
-  loading: boolean;
+  loading?: boolean;
   value: Maybe<string>;
   baselineValue: Maybe<string>;
   onSave: (value: string) => void;

@@ -1,21 +1,10 @@
 import { useState, useEffect } from "react";
 import { getRevisionFromDate } from "@powerhousedao/common";
-import { getBaseDocumentTimestamp } from "../utils/utils.js";
+import {
+  getBaseDocumentTimestamp,
+  type AtlasDocument,
+} from "../utils/utils.js";
 import type { EditorContext } from "document-model";
-import { type AtlasExploratoryDocument } from "../../../document-models/atlas-exploratory/index.js";
-import { type AtlasFoundationDocument } from "../../../document-models/atlas-foundation/index.js";
-import { type AtlasGroundingDocument } from "../../../document-models/atlas-grounding/index.js";
-import { type AtlasMultiParentDocument } from "../../../document-models/atlas-multi-parent/index.js";
-import { type AtlasScopeDocument } from "../../../document-models/atlas-scope/index.js";
-import { type AtlasSetDocument } from "../../../document-models/atlas-set/index.js";
-
-type AtlasDocument =
-  | AtlasExploratoryDocument
-  | AtlasFoundationDocument
-  | AtlasGroundingDocument
-  | AtlasMultiParentDocument
-  | AtlasScopeDocument
-  | AtlasSetDocument;
 
 export function useBaseDocument<T extends AtlasDocument>(
   document: T,

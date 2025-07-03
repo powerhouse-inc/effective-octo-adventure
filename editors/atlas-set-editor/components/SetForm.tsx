@@ -9,6 +9,7 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
+  shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import { type IProps } from "../editor.js";
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
@@ -52,7 +53,7 @@ export function SetForm({
   };
 
   const baseDocument = useBaseDocument(document, context);
-  const loading = mode !== "edition" && baseDocument === null;
+  const loading = shouldShowSkeleton(mode, baseDocument);
 
   return (
     <FormModeProvider mode={mode}>

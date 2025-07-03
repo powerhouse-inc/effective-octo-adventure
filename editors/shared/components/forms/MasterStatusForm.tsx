@@ -4,7 +4,7 @@ import type { Maybe } from "document-model";
 import { type FStatus } from "../../../../document-models/atlas-foundation/index.js";
 
 interface MasterStatusFormProps {
-  loading: boolean;
+  loading?: boolean;
   value: Maybe<string>;
   baselineValue: Maybe<string>;
   onSave: (value: FStatus) => void;

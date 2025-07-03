@@ -5,7 +5,7 @@ import { type FAtlasType } from "../../../../document-models/atlas-foundation/in
 import { type SelectOption } from "@powerhousedao/document-engineering/ui";
 
 interface DocTypeFormProps {
-  loading: boolean;
+  loading?: boolean;
   label?: string;
   value: Maybe<string>;
   baselineValue: Maybe<string>;

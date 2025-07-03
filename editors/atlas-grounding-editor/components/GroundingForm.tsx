@@ -4,6 +4,7 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
+  shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
@@ -66,7 +67,7 @@ export function GroundingForm({
   };
 
   const baseDocument = useBaseDocument(document, context);
-  const loading = mode !== "edition" && baseDocument === null;
+  const loading = shouldShowSkeleton(mode, baseDocument);
 
   return (
     <FormModeProvider mode={mode}>

@@ -4,6 +4,7 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
+  shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import {
   getFlexLayoutClassName,
@@ -40,7 +41,7 @@ export function ScopeForm({
   const documentState = document.state.global;
 
   const baseDocument = useBaseDocument(document, context);
-  const loading = mode !== "edition" && baseDocument === null;
+  const loading = shouldShowSkeleton(mode, baseDocument);
 
   return (
     <FormModeProvider mode={mode}>

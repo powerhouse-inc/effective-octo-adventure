@@ -4,6 +4,7 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
+  shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import type { IProps } from "../editor.js";
@@ -47,6 +48,7 @@ export function MultiParentForm({
   const fetchOptionsCallback = useParentOptions("sky/atlas-multiparent");
 
   const baseDocument = useBaseDocument(document, context);
+  const loading = shouldShowSkeleton(mode, baseDocument);
 
   return (
     <FormModeProvider mode={mode}>
@@ -55,6 +57,7 @@ export function MultiParentForm({
           <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
             <div className={cn("flex-1")}>
               <DocNameForm
+                loading={loading}
                 value={documentState.name}
                 baselineValue={baseDocument?.state.global.name ?? ""}
                 onSave={(value) => {
@@ -68,6 +71,7 @@ export function MultiParentForm({
             </div>
             <div className={cn("flex-1")}>
               <DocTypeForm
+                loading={loading}
                 value={documentState.atlasType}
                 baselineValue={baseDocument?.state.global.atlasType ?? ""}
                 options={[
@@ -85,6 +89,7 @@ export function MultiParentForm({
           <div className={getWidthClassName(isSplitMode ?? false, "flex-1/2")}>
             <div className={cn("flex-1")}>
               <MasterStatusForm
+                loading={loading}
                 value={documentState.masterStatus}
                 baselineValue={baseDocument?.state.global.masterStatus ?? ""}
                 onSave={(value) => {
@@ -95,6 +100,7 @@ export function MultiParentForm({
           </div>
           <div className={cn("flex-1 min-h-[350px]")}>
             <MarkdownContentForm
+              loading={loading}
               value={documentState.content ?? ""}
               baselineValue={baseDocument?.state.global.content ?? ""}
               onSave={(value) => {
@@ -110,6 +116,7 @@ export function MultiParentForm({
             )}
           >
             <MultiPhIdForm
+              loading={loading}
               label="Parent Documents"
               data={documentState.parents.map((element) => {
                 const initialOption: PHIDOption = {
@@ -165,6 +172,7 @@ export function MultiParentForm({
             />
 
             <MultiUrlForm
+              loading={loading}
               viewMode={mode}
               baselineValue={
                 baseDocument?.state.global.originalContextData ?? []
@@ -200,6 +208,7 @@ export function MultiParentForm({
             />
 
             <GlobalTagsForm
+              loading={loading}
               value={documentState.globalTags}
               baselineValue={baseDocument?.state.global.globalTags ?? []}
               onSave={(value) => {

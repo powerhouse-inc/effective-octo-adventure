@@ -4,6 +4,7 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
+  shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
@@ -63,6 +64,7 @@ export function FoundationForm({
   };
 
   const baseDocument = useBaseDocument(document, context);
+  const loading = shouldShowSkeleton(mode, baseDocument);
 
   return (
     <FormModeProvider mode={mode}>
@@ -71,6 +73,7 @@ export function FoundationForm({
           <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
             <div className={cn("flex-1")}>
               <DocNoForm
+                loading={loading}
                 value={documentState.docNo}
                 baselineValue={baseDocument?.state.global.docNo ?? ""}
                 onSave={(value) => {
@@ -80,6 +83,7 @@ export function FoundationForm({
             </div>
             <div className={cn("flex-1")}>
               <DocNameForm
+                loading={loading}
                 value={documentState.name}
                 baselineValue={baseDocument?.state.global.name ?? ""}
                 onSave={(value) => {
@@ -95,6 +99,7 @@ export function FoundationForm({
           <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
             <div className={cn("flex-1")}>
               <DocTypeForm
+                loading={loading}
                 value={documentState.atlasType}
                 baselineValue={baseDocument?.state.global.atlasType ?? ""}
                 onSave={(value) => {
@@ -104,6 +109,7 @@ export function FoundationForm({
             </div>
             <div className={cn("flex-1")}>
               <MasterStatusForm
+                loading={loading}
                 value={documentState.masterStatus}
                 baselineValue={baseDocument?.state.global.masterStatus ?? ""}
                 onSave={(value) => {
@@ -114,6 +120,7 @@ export function FoundationForm({
           </div>
           <div className={cn("flex-1 min-h-[350px]")}>
             <MarkdownContentForm
+              loading={loading}
               value={documentState.content ?? ""}
               baselineValue={baseDocument?.state.global.content ?? ""}
               onSave={(value) => {
@@ -129,6 +136,7 @@ export function FoundationForm({
             )}
           >
             <SinglePhIdForm
+              loading={loading}
               label="Parent Document"
               value={documentState.parent}
               fetchOptionsCallback={fetchOptionsCallback}
@@ -169,6 +177,7 @@ export function FoundationForm({
             />
 
             <MultiUrlForm
+              loading={loading}
               viewMode={mode}
               baselineValue={
                 baseDocument?.state.global.originalContextData ?? []
@@ -204,6 +213,7 @@ export function FoundationForm({
             />
 
             <GlobalTagsForm
+              loading={loading}
               value={documentState.globalTags}
               baselineValue={baseDocument?.state.global.globalTags ?? []}
               onSave={(value) => {

@@ -1,9 +1,11 @@
+import { Skeleton } from "../ui/skeleton.js";
 import { GenericPHIDForm } from "./generics/GenericPHIDForm.js";
 import type { Maybe } from "document-model";
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import type React from "react";
 
 interface SinglePhIdFormProps {
+  loading?: boolean;
   value: Maybe<string>;
   baselineValue: Maybe<string>;
   baselineIcon?: string | React.ReactElement;
@@ -18,6 +20,7 @@ interface SinglePhIdFormProps {
 }
 
 const SinglePhIdForm = ({
+  loading,
   value,
   baselineValue,
   baselineIcon,
@@ -30,7 +33,9 @@ const SinglePhIdForm = ({
   initialOptions,
   fetchOptionsCallback,
 }: SinglePhIdFormProps) => {
-  return (
+  return loading ? (
+    <Skeleton label={label} className="h-[92px]" />
+  ) : (
     <GenericPHIDForm
       label={label}
       placeholder={placeholder}

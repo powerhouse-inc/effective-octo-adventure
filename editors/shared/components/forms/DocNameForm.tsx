@@ -1,7 +1,9 @@
+import { Skeleton } from "../ui/skeleton.js";
 import { GenericTextForm } from "./generics/GenericTextForm.js";
 import type { Maybe } from "document-model";
 
 interface DocNameFormProps {
+  loading?: boolean;
   value: Maybe<string>;
   baselineValue: Maybe<string>;
   onSave: (value: string) => void;
@@ -9,12 +11,15 @@ interface DocNameFormProps {
 }
 
 const DocNameForm = ({
+  loading,
   value,
   baselineValue,
   onSave,
   placeholder = "Name",
 }: DocNameFormProps) => {
-  return (
+  return loading ? (
+    <Skeleton label="Name" />
+  ) : (
     <GenericTextForm
       label="Name"
       placeholder={placeholder}

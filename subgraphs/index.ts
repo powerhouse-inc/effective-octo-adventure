@@ -7,3 +7,4 @@ export * as AtlasScopeSubgraph from "./atlas-scope/index.js";
 export * as ForkSubgraph from "./fork-scope/index.js";
 export * as AtlasMultiParentSubgraph from "./atlas-multi-parent/index.js";
 export * as AtlasSetSubgraph from "./atlas-set/index.js";
+export * as SearchSubgraph from "./search/index.js";

@@ -29,7 +29,7 @@ import {
 import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 import { transformUrl } from "../../shared/utils/utils.js";
-import { useBaseDocument } from "../../shared/hooks/useBaseDocument.js";
+import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
 import { Skeleton } from "../../shared/components/ui/skeleton.js";
 
 interface ExploratoryFormProps
@@ -71,7 +71,7 @@ export function ExploratoryForm({
     parent: parentId,
   };
 
-  const baseDocument = useBaseDocument(document, context);
+  const baseDocument = useBaseDocumentCached(document, context);
   const loading = shouldShowSkeleton(mode, baseDocument);
 
   return (

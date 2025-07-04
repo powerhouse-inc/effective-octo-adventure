@@ -14,7 +14,7 @@ import {
 import { type IProps } from "../editor.js";
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
-import { useBaseDocument } from "../../shared/hooks/useBaseDocument.js";
+import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
 
 interface SetFormProps
   extends Pick<IProps, "context" | "document" | "dispatch"> {
@@ -52,7 +52,7 @@ export function SetForm({
     value: parentId,
   };
 
-  const baseDocument = useBaseDocument(document, context);
+  const baseDocument = useBaseDocumentCached(document, context);
   const loading = shouldShowSkeleton(mode, baseDocument);
 
   return (

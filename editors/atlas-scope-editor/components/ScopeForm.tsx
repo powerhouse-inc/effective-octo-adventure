@@ -20,7 +20,7 @@ import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js"
 import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import { transformUrl } from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
-import { useBaseDocument } from "../../shared/hooks/useBaseDocument.js";
+import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
 
 interface ScopeFormProps
   extends Pick<IProps, "context" | "document" | "dispatch"> {
@@ -40,7 +40,7 @@ export function ScopeForm({
 
   const documentState = document.state.global;
 
-  const baseDocument = useBaseDocument(document, context);
+  const baseDocument = useBaseDocumentCached(document, context);
   const loading = shouldShowSkeleton(mode, baseDocument);
 
   return (

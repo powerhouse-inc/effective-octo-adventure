@@ -27,7 +27,6 @@ jobs:
       - name: Generate document models
         run: |
           pnpm script:generate-all
-          pnpm generate ./docmodel-zips/AtlasFeedbackIssues.phdm.zip
 
       - name: Build
         run: pnpm run build
@@ -52,7 +51,6 @@ jobs:
       - name: Generate document models
         run: |
           pnpm script:generate-all
-          pnpm generate ./docmodel-zips/AtlasFeedbackIssues.phdm.zip
 
       - name: Lint
         run: pnpm run lint
@@ -80,7 +78,6 @@ jobs:
     - name: Generate document models
       run: |
         pnpm script:generate-all
-        pnpm generate ./docmodel-zips/AtlasFeedbackIssues.phdm.zip
       
     - name: Run tests
       run: pnpm test

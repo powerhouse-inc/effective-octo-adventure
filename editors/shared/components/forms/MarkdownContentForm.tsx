@@ -2,7 +2,7 @@ import { FieldSkeleton } from "../field-skeleton.js";
 import { useEffect, useState } from "react";
 import { MarkdownEditor } from "../markdown-editor.js";
 import { useFormMode } from "../../providers/FormModeProvider.js";
-import { FormLabel } from "@powerhousedao/design-system/scalars";
+import { FormLabel } from "@powerhousedao/document-engineering/scalars";
 import { FakeInput } from "../diff-fields/fake-input.js";
 import { DiffText } from "../diff-text.js";
 

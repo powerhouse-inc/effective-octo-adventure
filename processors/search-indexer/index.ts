@@ -1,39 +1,85 @@
-import { type Db } from "@powerhousedao/reactor-api";
-import { type IProcessor } from "document-drive/processors/types";
-
+import { OperationalProcessor } from "document-drive/processors/operational-processor";
 import { type InternalTransmitterUpdate } from "document-drive/server/listener/transmitter/internal";
 import {
-  type AtlasFoundationState,
   type AtlasFoundationDocument,
+  type AtlasFoundationState,
 } from "document-models/atlas-foundation/index.js";
 import {
-  type AtlasScopeState,
   type AtlasScopeDocument,
+  type AtlasScopeState,
 } from "document-models/atlas-scope/index.js";
-import { type Kysely } from "kysely";
 import { sql } from "kysely";
-import { getDb } from "../../utils/db.js";
-import { type Database } from "../../utils/generated/database-types.js";
+import { type DB } from "../../src/db/schema.js";
 
 type TDocument = AtlasScopeDocument | AtlasFoundationDocument;
 
-export class SearchIndexerProcessor implements IProcessor {
-  private kysely: Promise<Kysely<Database>>;
+export class SearchIndexerProcessor extends OperationalProcessor<DB> {
+  async initAndUpgrade(): Promise<void> {
+    await this.operationalStore.schema
+      .createTable("atlas_scope_docs")
+      .addColumn("drive_id", "varchar(255)")
+      .addColumn("document_id", "varchar(255)")
+      .addColumn("doc_no", "varchar(255)")
+      .addColumn("name", "varchar(255)")
+      .addColumn("content", "text")
+      .addColumn("master_status", "varchar(50)")
+      .addColumn("global_tags", "text")
+      .addColumn("original_context_data", "text")
+      .addColumn("notion_id", "varchar(255)")
+      .addColumn("created_at", "timestamp", (col) =>
+        col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull(),
+      )
+      .addPrimaryKeyConstraint("atlas_scope_docs_pkey", [
+        "drive_id",
+        "document_id",
+      ])
+      .ifNotExists()
+      .execute();
 
-  constructor(private readonly operationalStore: Db) {
-    this.kysely = getDb(this.operationalStore);
+    // Create table for Atlas foundation documents
+    await this.operationalStore.schema
+      .createTable("atlas_foundation_docs")
+      .addColumn("drive_id", "varchar(255)")
+      .addColumn("document_id", "varchar(255)")
+      .addColumn("doc_no", "varchar(255)")
+      .addColumn("parent_id", "varchar(255)")
+      .addColumn("name", "varchar(255)")
+      .addColumn("content", "text")
+      .addColumn("atlas_type", "varchar(100)")
+      .addColumn("master_status", "varchar(50)")
+      .addColumn("global_tags", "text")
+      .addColumn("original_context_data", "text")
+      .addColumn("notion_id", "varchar(255)")
+      .addColumn("created_at", "timestamp", (col) =>
+        col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull(),
+      )
+      .addPrimaryKeyConstraint("atlas_foundation_docs_pkey", [
+        "drive_id",
+        "document_id",
+      ])
+      .ifNotExists()
+      .execute();
+
+    // // Create index for efficient search on content
+    // await this.operationalStore.schema
+    //   .createIndex("atlas_foundation_docs_content_idx")
+    //   .on("atlas_foundation_docs")
+    //   .column("content")
+    //   .ifNotExists()
+    //   .execute();
   }
 
   async onStrands(
     strands: InternalTransmitterUpdate<TDocument>[],
   ): Promise<void> {
     for (const strand of strands) {
-      const { state, documentId, driveId } = strand;
+      const { state, documentId, driveId, documentType } = strand;
 
       // its always global scope due to filter
       await this.indexState(
         documentId,
         driveId,
+        documentType,
         state as AtlasScopeState | AtlasFoundationState,
       );
     }
@@ -44,17 +90,27 @@ export class SearchIndexerProcessor implements IProcessor {
   private async indexState(
     documentId: string,
     driveId: string,
+    documentType: string,
     state: AtlasScopeState | AtlasFoundationState,
   ) {
-    if ((state as AtlasFoundationState).parent) {
+    if (documentType === "sky/atlas-foundation") {
       // its a foundation doc because it has a parent
-      await this.indexAtlasFoundation(state as AtlasFoundationState);
+
+      await this.indexAtlasFoundation(
+        driveId,
+        documentId,
+        state as AtlasFoundationState,
+      );
     } else {
-      await this.indexAtlasScope(documentId, state as AtlasScopeState);
+      await this.indexAtlasScope(driveId, documentId, state as AtlasScopeState);
     }
   }
 
-  private async indexAtlasFoundation(state: AtlasFoundationState) {
+  private async indexAtlasFoundation(
+    driveId: string,
+    documentId: string,
+    state: AtlasFoundationState,
+  ) {
     const {
       docNo,
       parent,
@@ -67,11 +123,13 @@ export class SearchIndexerProcessor implements IProcessor {
       notionId,
     } = state;
 
-    const db = await this.kysely;
+    const parentId = parent?.id || "";
 
-    await db
+    await this.operationalStore
       .insertInto("atlas_foundation_docs")
       .columns([
+        "drive_id",
+        "document_id",
         "doc_no",
         "parent_id",
         "name",
@@ -81,23 +139,26 @@ export class SearchIndexerProcessor implements IProcessor {
         "global_tags",
         "original_context_data",
         "notion_id",
-        "created_at",
       ])
       .values({
+        drive_id: driveId,
+        document_id: documentId,
         doc_no: docNo || "",
-        parent_id: parent!.id,
+        parent_id: parentId,
         name: name || "",
         content: content || "",
-        atlas_type: atlasType?.toString() || "",
-        master_status: masterStatus?.toString() || "",
+        atlas_type: atlasType || "",
+        master_status: masterStatus || "",
         global_tags: JSON.stringify(globalTags || []),
         original_context_data: JSON.stringify(originalContextData || []),
-        notion_id: notionId || null,
-        created_at: sql`CURRENT_TIMESTAMP`,
+        notion_id: notionId || "",
       })
       .onConflict((oc) =>
-        oc.column("doc_no").doUpdateSet({
+        oc.constraint("atlas_foundation_docs_pkey").doUpdateSet({
+          drive_id: sql`EXCLUDED.drive_id`,
+          document_id: sql`EXCLUDED.document_id`,
           parent_id: sql`EXCLUDED.parent_id`,
+          doc_no: sql`EXCLUDED.doc_no`,
           name: sql`EXCLUDED.name`,
           content: sql`EXCLUDED.content`,
           atlas_type: sql`EXCLUDED.atlas_type`,
@@ -110,7 +171,11 @@ export class SearchIndexerProcessor implements IProcessor {
       .execute();
   }
 
-  private async indexAtlasScope(documentId: string, state: AtlasScopeState) {
+  private async indexAtlasScope(
+    driveId: string,
+    documentId: string,
+    state: AtlasScopeState,
+  ) {
     const {
       docNo,
       name,
@@ -121,11 +186,11 @@ export class SearchIndexerProcessor implements IProcessor {
       notionId,
     } = state;
 
-    const db = await this.kysely;
-
-    await db
+    await this.operationalStore
       .insertInto("atlas_scope_docs")
       .columns([
+        "drive_id",
+        "document_id",
         "doc_no",
         "name",
         "content",
@@ -136,6 +201,8 @@ export class SearchIndexerProcessor implements IProcessor {
         "created_at",
       ])
       .values({
+        drive_id: driveId,
+        document_id: documentId,
         doc_no: docNo || "",
         name: name || "",
         content: content || "",
@@ -143,10 +210,10 @@ export class SearchIndexerProcessor implements IProcessor {
         global_tags: JSON.stringify(globalTags || []),
         original_context_data: JSON.stringify(originalContextData || []),
         notion_id: notionId || null,
-        created_at: sql`CURRENT_TIMESTAMP`,
       })
       .onConflict((oc) =>
-        oc.column("doc_no").doUpdateSet({
+        oc.constraint("atlas_scope_docs_pkey").doUpdateSet({
+          doc_no: sql`EXCLUDED.doc_no`,
           name: sql`EXCLUDED.name`,
           content: sql`EXCLUDED.content`,
           master_status: sql`EXCLUDED.master_status`,

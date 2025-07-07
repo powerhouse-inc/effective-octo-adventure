@@ -4,6 +4,8 @@ export async function up(db: Kysely<any>): Promise<void> {
   // Create table for Atlas scope documents
   await db.schema
     .createTable("atlas_scope_docs")
+    .addColumn("drive_id", "varchar(255)", (col) => col.notNull())
+    .addColumn("document_id", "varchar(255)", (col) => col.notNull())
     .addColumn("doc_no", "varchar(255)", (col) => col.primaryKey())
     .addColumn("name", "varchar(255)", (col) => col.notNull())
     .addColumn("content", "text", (col) => col.notNull())
@@ -19,6 +21,8 @@ export async function up(db: Kysely<any>): Promise<void> {
   // Create table for Atlas foundation documents
   await db.schema
     .createTable("atlas_foundation_docs")
+    .addColumn("drive_id", "varchar(255)", (col) => col.notNull())
+    .addColumn("document_id", "varchar(255)", (col) => col.notNull())
     .addColumn("doc_no", "varchar(255)", (col) => col.primaryKey())
     .addColumn("parent_id", "varchar(255)", (col) => col.notNull())
     .addColumn("name", "varchar(255)", (col) => col.notNull())

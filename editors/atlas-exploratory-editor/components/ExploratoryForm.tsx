@@ -6,7 +6,7 @@ import {
   getTagText,
   shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
-import { type PHIDOption } from "@powerhousedao/design-system/ui";
+import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { DocNoForm } from "../../shared/components/forms/DocNoForm.js";
 import type { IProps } from "../editor.js";

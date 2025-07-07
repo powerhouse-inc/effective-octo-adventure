@@ -35,7 +35,7 @@ export interface DriverLayoutProps {
   readonly driveUrl?: string | null;
   readonly nodeStatusMap?: Record<string, NodeStatus>;
   readonly activeNodeId?: string;
-  readonly setActiveNodeId: (nodeId: string) => void;
+  readonly setActiveNodeId: (nodeId: string | undefined) => void;
 }
 
 export function DriverLayout({
@@ -60,9 +60,9 @@ export function DriverLayout({
       (acc, curr) => {
         const document = state[curr];
         if (document.documentType.startsWith("sky/atlas")) {
-          acc.atlasNodes[curr] = document as AtlasArticle;
+          acc.atlasNodes[curr] = document as unknown as AtlasArticle;
         } else if (document.documentType === AtlasFeedbackIssues.id) {
-          acc.feedbackIssues[curr] = document as AtlasFeedbackIssue;
+          acc.feedbackIssues[curr] = document as unknown as AtlasFeedbackIssue;
         }
         return acc;
       },

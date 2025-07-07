@@ -13,7 +13,7 @@ describe("Atlas Feedback Issues Document Model", () => {
     const document = utils.createDocument();
 
     expect(document).toBeDefined();
-    expect(document.documentType).toBe("makerdao/feedback-issues");
+    expect(document.header.documentType).toBe("makerdao/feedback-issues");
   });
 
   it("should create a new Atlas Feedback Issues document with a valid initial state", () => {

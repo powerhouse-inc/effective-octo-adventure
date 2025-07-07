@@ -33,7 +33,7 @@ export function BaseEditor(props: IProps) {
   });
 
   const [startDate, setStartDate] = useState<string | undefined>(
-    convertToDateTimeLocal(props.document.created),
+    convertToDateTimeLocal(props.document.header.createdAtUtcIso),
   );
   const [endDate, setEndDate] = useState<string | undefined>(
     convertToDateTimeLocal(DateTime.now().endOf("day").toISO()),
@@ -50,7 +50,7 @@ export function BaseEditor(props: IProps) {
   const nodeStatusMap = useNodeStatusMap(
     startDate,
     endDate,
-    props.document.id,
+    props.document.header.id,
     logAnalytics,
   );
 
@@ -58,7 +58,7 @@ export function BaseEditor(props: IProps) {
     <div className="atlas-drive-explorer" style={{ height: "100%" }}>
       <DriverLayout
         context={props.context}
-        driveId={props.document.id}
+        driveId={props.document.header.id}
         nodes={props.document.state.global.nodes}
         driveUrl={getRemoteDriveUrl(props.document)}
         nodeStatusMap={nodeStatusMap}

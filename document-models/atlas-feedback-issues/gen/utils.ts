@@ -6,6 +6,7 @@ import {
   baseSaveToFileHandle,
   baseLoadFromFile,
   baseLoadFromInput,
+  generateId,
 } from "document-model";
 import {
   type AtlasFeedbackIssuesDocument,
@@ -28,16 +29,20 @@ const utils: DocumentModelUtils<AtlasFeedbackIssuesDocument> = {
     };
   },
   createExtendedState(extendedState) {
-    return baseCreateExtendedState(
-      { ...extendedState, documentType: "makerdao/feedback-issues" },
-      utils.createState,
-    );
+    return baseCreateExtendedState({ ...extendedState }, utils.createState);
   },
   createDocument(state) {
-    return baseCreateDocument(
+    const document = baseCreateDocument(
       utils.createExtendedState(state),
       utils.createState,
     );
+
+    document.header.documentType = "makerdao/feedback-issues";
+
+    // for backwards compatibility, but this is NOT a valid signed document id
+    document.header.id = generateId();
+
+    return document;
   },
   saveToFile(document, path, name) {
     return baseSaveToFile(document, path, ".phdm", name);

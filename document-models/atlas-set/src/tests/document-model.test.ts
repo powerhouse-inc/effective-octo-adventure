@@ -13,7 +13,7 @@ describe("Atlas Set Document Model", () => {
     const document = utils.createDocument();
 
     expect(document).toBeDefined();
-    expect(document.documentType).toBe("sky/atlas-set");
+    expect(document.header.documentType).toBe("sky/atlas-set");
   });
 
   it("should create a new Atlas Set document with a valid initial state", () => {

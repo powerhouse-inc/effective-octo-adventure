@@ -13,7 +13,7 @@ describe("Atlas Scope Document Model", () => {
     const document = utils.createDocument();
 
     expect(document).toBeDefined();
-    expect(document.documentType).toBe("sky/atlas-scope");
+    expect(document.header.documentType).toBe("sky/atlas-scope");
   });
 
   it("should create a new Atlas Scope document with a valid initial state", () => {

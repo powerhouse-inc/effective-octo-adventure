@@ -1,4 +1,5 @@
 import { writeFile } from "fs/promises";
+import fs from "fs";
 
 async function fetchData (url: string, outputPath: string) {
     const response = await fetch(url);
@@ -8,8 +9,12 @@ async function fetchData (url: string, outputPath: string) {
 
 
 async function main () {
-    const atlasDataUrl = process.env.ATLAS_DATA_URL ?? "https://sky-atlas-local.vercel.app";
+    const atlasDataUrl = process.env.ATLAS_DATA_URL ?? "https://sky-atlas.powerhouse.io";
     const outputPath = process.env.OUTPUT_PATH ?? "data";
+
+    if (!fs.existsSync(outputPath)) {
+        fs.mkdirSync(outputPath, { recursive: true });
+    }
 
     console.log("Fetching Atlas Data");
     try {

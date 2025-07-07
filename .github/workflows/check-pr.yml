@@ -28,6 +28,12 @@ jobs:
         run: |
           pnpm script:generate-all
 
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Fetch data
+        run: pnpm script:fetch-data
+
       - name: Build
         run: pnpm run build
 

@@ -24,7 +24,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
               ...doc,
               state: doc.state.global,
               stateJSON: doc.state.global,
-              revision: doc.header.revision?.global,
+              revision: doc.header.revision["global"],
             };
           },
           getDocuments: async (args: any) => {
@@ -38,7 +38,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
                   ...doc,
                   state: doc.state.global,
                   stateJSON: doc.state.global,
-                  revision: doc.header.revision?.global,
+                  revision: doc.header.revision["global"],
                 };
               }),
             );
@@ -90,7 +90,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setExploratoryName({ ...args.input }),
         );
 
-        return doc.header.revision?.global + 1;
+        return doc.header.revision["global"] + 1;
       },
 
       AtlasExploratory_setContent: async (_: any, args: any) => {
@@ -104,7 +104,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setContent({ ...args.input }),
         );
 
-        return doc.header.revision?.global + 1;
+        return doc.header.revision["global"] + 1;
       },
 
       AtlasExploratory_setMasterStatus: async (_: any, args: any) => {
@@ -118,7 +118,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setMasterStatus({ ...args.input }),
         );
 
-        return doc.header.revision?.global + 1;
+        return doc.header.revision["global"] + 1;
       },
 
       AtlasExploratory_setParent: async (_: any, args: any) => {
@@ -132,7 +132,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setParent({ ...args.input }),
         );
 
-        return doc.header.revision?.global + 1;
+        return doc.header.revision["global"] + 1;
       },
 
       AtlasExploratory_setAtlasType: async (_: any, args: any) => {
@@ -146,7 +146,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setAtlasType({ ...args.input }),
         );
 
-        return doc.header.revision?.global + 1;
+        return doc.header.revision["global"] + 1;
       },
 
       AtlasExploratory_setFindings: async (_: any, args: any) => {
@@ -160,7 +160,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setFindings({ ...args.input }),
         );
 
-        return doc.header.revision?.global + 1;
+        return doc.header.revision["global"] + 1;
       },
 
       AtlasExploratory_setDocNumber: async (_: any, args: any) => {
@@ -174,7 +174,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setDocNumber({ ...args.input }),
         );
 
-        return doc.header.revision?.global + 1;
+        return doc.header.revision["global"] + 1;
       },
 
       AtlasExploratory_addTags: async (_: any, args: any) => {
@@ -188,7 +188,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.addTags({ ...args.input }),
         );
 
-        return doc.header.revision?.global + 1;
+        return doc.header.revision["global"] + 1;
       },
 
       AtlasExploratory_removeTags: async (_: any, args: any) => {
@@ -202,7 +202,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.removeTags({ ...args.input }),
         );
 
-        return doc.header.revision?.global + 1;
+        return doc.header.revision["global"] + 1;
       },
 
       AtlasExploratory_addContextData: async (_: any, args: any) => {
@@ -216,7 +216,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.addContextData({ ...args.input }),
         );
 
-        return doc.header.revision?.global + 1;
+        return doc.header.revision["global"] + 1;
       },
 
       AtlasExploratory_removeContextData: async (_: any, args: any) => {
@@ -230,7 +230,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.removeContextData({ ...args.input }),
         );
 
-        return doc.header.revision?.global + 1;
+        return doc.header.revision["global"] + 1;
       },
 
       AtlasExploratory_setNotionId: async (_: any, args: any) => {
@@ -244,7 +244,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setNotionId({ ...args.input }),
         );
 
-        return doc.header.revision?.global + 1;
+        return doc.header.revision["global"] + 1;
       },
 
       AtlasExploratory_setAdditionalGuidance: async (_: any, args: any) => {
@@ -258,7 +258,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setAdditionalGuidance({ ...args.input }),
         );
 
-        return doc.header.revision?.global + 1;
+        return doc.header.revision["global"] + 1;
       },
 
       AtlasExploratory_replaceContextData: async (_: any, args: any) => {
@@ -272,7 +272,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.replaceContextData({ ...args.input }),
         );
 
-        return doc.header.revision?.global + 1;
+        return doc.header.revision["global"] + 1;
       },
     },
   };

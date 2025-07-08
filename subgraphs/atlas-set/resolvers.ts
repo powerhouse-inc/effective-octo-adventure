@@ -24,7 +24,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
               ...doc,
               state: doc.state.global,
               stateJSON: doc.state.global,
-              revision: doc.header.revision?.global,
+              revision: doc.header.revision["global"],
             };
           },
           getDocuments: async (args: any) => {
@@ -38,7 +38,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
                   ...doc,
                   state: doc.state.global,
                   stateJSON: doc.state.global,
-                  revision: doc.header.revision?.global,
+                  revision: doc.header.revision["global"],
                 };
               }),
             );
@@ -90,7 +90,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setSetName({ ...args.input }),
         );
 
-        return doc.header.revision?.global + 1;
+        return doc.header.revision["global"] + 1;
       },
 
       AtlasSet_setSetParent: async (_: any, args: any) => {
@@ -104,7 +104,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setSetParent({ ...args.input }),
         );
 
-        return doc.header.revision?.global + 1;
+        return doc.header.revision["global"] + 1;
       },
 
       AtlasSet_setNotionId: async (_: any, args: any) => {
@@ -118,7 +118,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setNotionId({ ...args.input }),
         );
 
-        return doc.header.revision?.global + 1;
+        return doc.header.revision["global"] + 1;
       },
     },
   };

@@ -64,7 +64,8 @@
     "script:apply-changes": "bun run ./scripts/apply-changes.ts",
     "script:fetch-data": "bun run ./scripts/fetch-data.ts",
     "script:generate-gql-clients": "bun run ./scripts/gen-clients.ts",
-    "script:generate-all": "bash ./docmodel-zips/generate-all.sh"
+    "script:generate-all": "bash ./docmodel-zips/generate-all.sh",
+    "script:generate-db-types": "bun run ./scripts/generate-db-types.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -86,6 +87,10 @@
     "document-drive": "dev",
     "document-model": "dev",
     "graphql-ts-client": "^10.4.0",
+    "knex": "^3.1.0",
+    "kysely": "^0.28.2",
+    "kysely-knex": "^0.2.0",
+    "kysely-pglite": "^0.6.1",
     "lodash": "^4.17.21",
     "lucide-react": "^0.487.0",
     "notion-to-md": "^4.0.0-alpha.4",

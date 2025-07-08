@@ -1,28 +1,24 @@
 import { type InternalTransmitterUpdate } from "document-drive";
 import {
+  type AtlasFoundationDocument,
+  type AtlasFoundationState,
+} from "document-models/atlas-foundation/index.js";
+import {
   type AtlasScopeDocument,
   type AtlasScopeState,
 } from "document-models/atlas-scope/index.js";
 import { Kysely } from "kysely";
 import { KyselyPGlite } from "kysely-pglite";
-import { type OperationalProcessor } from "../../powerhouse/packages/document-drive/dist/src/processors/operational-processor.js";
-import { type IOperationalStore } from "../../powerhouse/packages/document-drive/dist/src/processors/types.js";
 import { SearchIndexerProcessor } from "../processors/search-indexer/index.js";
-import {
-  type AtlasFoundationDocument,
-  type AtlasFoundationState,
-} from "document-models/atlas-foundation/index.js";
-import { DB } from "../src/db/schema.js";
 
 describe("search-indexer", () => {
-  let db: IOperationalStore<any>;
   let processor: SearchIndexerProcessor;
   const namespace = "search-indexer-test";
 
   beforeAll(async () => {
     try {
       const { dialect } = await KyselyPGlite.create();
-      db = new Kysely<any>({ dialect });
+      const db = new Kysely<unknown>({ dialect });
       processor = (await SearchIndexerProcessor.build(
         namespace,
         db,

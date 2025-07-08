@@ -1,38 +1,51 @@
-import { Subgraph, type SubgraphArgs } from "@powerhousedao/reactor-api";
+import { Subgraph } from "@powerhousedao/reactor-api";
 import { gql } from "graphql-tag";
-import { type Kysely } from "kysely";
-import { type Database } from "../../utils/generated/database-types.js";
-import { getDb } from "../../utils/db.js";
 
-export class SearchSubgraph extends Subgraph {
+export class AtlasDocumentsSubgraph extends Subgraph {
   name = "search";
-  private kysely: Promise<Kysely<Database>> | null = null;
-
-  constructor(args: SubgraphArgs) {
-    super(args);
-    try {
-      this.kysely = getDb(this.operationalStore);
-    } catch (error) {
-      console.warn(
-        "Failed to initialize database connection for search subgraph:",
-        error,
-      );
-      this.kysely = null;
-    }
-  }
 
   resolvers = {
     Query: {
       AtlasDocuments: {
         resolve: async (
           parent: unknown,
-          args: { query: string; limit?: number; offset?: number },
+          args: {
+            query?: string;
+            limit?: number;
+            offset?: number;
+            parent?: string;
+          },
           context: unknown,
           info: unknown,
         ) => {
           try {
+            if (args.parent) {
+              const foundationResults = await this.operationalStore
+                .selectFrom("atlas_foundation_docs")
+                .selectAll()
+                .where("parent_id", "=", args.parent)
+                .execute();
+              const foundationDocuments = foundationResults.map((doc) => ({
+                __typename: "AtlasFoundationDocument",
+                id: doc.doc_no,
+                name: doc.name,
+                content: doc.content,
+                parentId: doc.parent_id,
+                atlasType: doc.atlas_type,
+                masterStatus: doc.master_status,
+                globalTags: JSON.parse(doc.global_tags || "[]") as string[],
+                originalContextData: JSON.parse(
+                  doc.original_context_data || "[]",
+                ) as string[],
+                notionId: doc.notion_id,
+                createdAt: doc.created_at,
+              }));
+
+              return foundationDocuments;
+            }
+
             const { query, limit = 50, offset = 0 } = args;
-            const db = await this.kysely!;
+            const db = await this.operationalStore;
 
             // Search in both atlas_scope_docs and atlas_foundation_docs
             const scopeResults = await db
@@ -40,9 +53,9 @@ export class SearchSubgraph extends Subgraph {
               .selectAll()
               .where((eb) =>
                 eb.or([
-                  eb("name", "ilike", `%${query}%`),
-                  eb("content", "ilike", `%${query}%`),
-                  eb("global_tags", "ilike", `%${query}%`),
+                  eb("name", "ilike", `%${query ?? ""}%`),
+                  eb("content", "ilike", `%${query ?? ""}%`),
+                  eb("global_tags", "ilike", `%${query ?? ""}%`),
                 ]),
               )
               .limit(limit)
@@ -54,10 +67,10 @@ export class SearchSubgraph extends Subgraph {
               .selectAll()
               .where((eb) =>
                 eb.or([
-                  eb("name", "ilike", `%${query}%`),
-                  eb("content", "ilike", `%${query}%`),
-                  eb("global_tags", "ilike", `%${query}%`),
-                  eb("atlas_type", "ilike", `%${query}%`),
+                  eb("name", "ilike", `%${query ?? ""}%`),
+                  eb("content", "ilike", `%${query ?? ""}%`),
+                  eb("global_tags", "ilike", `%${query ?? ""}%`),
+                  eb("atlas_type", "ilike", `%${query ?? ""}%`),
                 ]),
               )
               .limit(limit)
@@ -253,7 +266,12 @@ export class SearchSubgraph extends Subgraph {
     }
 
     type Query {
-      AtlasDocuments(query: String!, limit: Int, offset: Int): [AtlasDocument!]!
+      AtlasDocuments(
+        query: String
+        limit: Int
+        offset: Int
+        parent: String
+      ): [AtlasDocument!]!
       AtlasScopeDocuments(
         query: String
         limit: Int

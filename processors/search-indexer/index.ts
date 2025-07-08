@@ -1,4 +1,8 @@
-import { OperationalProcessor } from "document-drive/processors/operational-processor";
+import {
+  OperationalProcessor,
+  type OperationalProcessorFilter,
+  sql,
+} from "document-drive/processors/operational-processor";
 import { type InternalTransmitterUpdate } from "document-drive/server/listener/transmitter/internal";
 import {
   type AtlasFoundationDocument,
@@ -8,70 +12,28 @@ import {
   type AtlasScopeDocument,
   type AtlasScopeState,
 } from "document-models/atlas-scope/index.js";
-import { sql } from "kysely";
-import { type DB } from "../../src/db/schema.js";
-
+import { up } from "./migrations.js";
+import { type DB } from "./schema.js";
 type TDocument = AtlasScopeDocument | AtlasFoundationDocument;
 
 export class SearchIndexerProcessor extends OperationalProcessor<DB> {
+  get filter(): OperationalProcessorFilter {
+    return {
+      branch: ["main"],
+      documentId: ["*"],
+      documentType: ["sky/atlas-scope", "sky/atlas-foundation"],
+      scope: ["global"],
+    };
+  }
+
   async initAndUpgrade(): Promise<void> {
-    await this.operationalStore.schema
-      .createTable("atlas_scope_docs")
-      .addColumn("drive_id", "varchar(255)")
-      .addColumn("document_id", "varchar(255)")
-      .addColumn("doc_no", "varchar(255)")
-      .addColumn("name", "varchar(255)")
-      .addColumn("content", "text")
-      .addColumn("master_status", "varchar(50)")
-      .addColumn("global_tags", "text")
-      .addColumn("original_context_data", "text")
-      .addColumn("notion_id", "varchar(255)")
-      .addColumn("created_at", "timestamp", (col) =>
-        col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull(),
-      )
-      .addPrimaryKeyConstraint("atlas_scope_docs_pkey", [
-        "drive_id",
-        "document_id",
-      ])
-      .ifNotExists()
-      .execute();
-
-    // Create table for Atlas foundation documents
-    await this.operationalStore.schema
-      .createTable("atlas_foundation_docs")
-      .addColumn("drive_id", "varchar(255)")
-      .addColumn("document_id", "varchar(255)")
-      .addColumn("doc_no", "varchar(255)")
-      .addColumn("parent_id", "varchar(255)")
-      .addColumn("name", "varchar(255)")
-      .addColumn("content", "text")
-      .addColumn("atlas_type", "varchar(100)")
-      .addColumn("master_status", "varchar(50)")
-      .addColumn("global_tags", "text")
-      .addColumn("original_context_data", "text")
-      .addColumn("notion_id", "varchar(255)")
-      .addColumn("created_at", "timestamp", (col) =>
-        col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull(),
-      )
-      .addPrimaryKeyConstraint("atlas_foundation_docs_pkey", [
-        "drive_id",
-        "document_id",
-      ])
-      .ifNotExists()
-      .execute();
-
-    // // Create index for efficient search on content
-    // await this.operationalStore.schema
-    //   .createIndex("atlas_foundation_docs_content_idx")
-    //   .on("atlas_foundation_docs")
-    //   .column("content")
-    //   .ifNotExists()
-    //   .execute();
+    await up(this.operationalStore);
   }
 
   async onStrands(
     strands: InternalTransmitterUpdate<TDocument>[],
   ): Promise<void> {
+    console.log("onStrands", strands);
     for (const strand of strands) {
       const { state, documentId, driveId, documentType } = strand;
 
@@ -124,6 +86,7 @@ export class SearchIndexerProcessor extends OperationalProcessor<DB> {
     } = state;
 
     const parentId = parent?.id || "";
+    console.log("parentId", parentId);
 
     await this.operationalStore
       .insertInto("atlas_foundation_docs")
@@ -169,6 +132,14 @@ export class SearchIndexerProcessor extends OperationalProcessor<DB> {
         }),
       )
       .execute();
+
+    const entries = await this.operationalStore
+      .selectFrom("atlas_foundation_docs")
+      .where("drive_id", "=", driveId)
+      .selectAll()
+      .execute();
+
+    console.log(entries);
   }
 
   private async indexAtlasScope(
@@ -223,5 +194,13 @@ export class SearchIndexerProcessor extends OperationalProcessor<DB> {
         }),
       )
       .execute();
+
+    const entries = await this.operationalStore
+      .selectFrom("atlas_scope_docs")
+      .where("drive_id", "=", driveId)
+      .selectAll()
+      .execute();
+
+    console.log(entries);
   }
 }

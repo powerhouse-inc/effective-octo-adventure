@@ -44,6 +44,9 @@
     },
     "./style.css": "./dist/style.css"
   },
+  "bin": {
+    "script:fetch-data": "./dist/scripts/fetch-data.js"
+  },
   "scripts": {
     "lint": "eslint .",
     "build:tsc": "tsc",
@@ -62,7 +65,7 @@
     "service-startup": "bash ./node_modules/@powerhousedao/ph-cli/dist/scripts/service-startup.sh",
     "service-unstartup": "bash ./node_modules/@powerhousedao/ph-cli/dist/scripts/service-unstartup.sh",
     "script:apply-changes": "bun run ./scripts/apply-changes.ts",
-    "script:fetch-data": "bun run ./scripts/fetch-data.ts",
+    "script:fetch-data": "bun run ./scripts/fetch-data/script.ts",
     "script:generate-gql-clients": "bun run ./scripts/gen-clients.ts",
     "script:generate-all": "bash ./docmodel-zips/generate-all.sh"
   },

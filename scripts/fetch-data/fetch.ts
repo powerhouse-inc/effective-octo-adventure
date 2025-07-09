@@ -1,17 +1,16 @@
-import { writeFile } from "fs/promises";
 import fs from "fs";
-
-const atlasDataUrl =
-  process.env.ATLAS_DATA_URL ?? "https://sky-atlas.powerhouse.io";
-const outputPath = process.env.OUTPUT_PATH ?? "data";
 
 export async function fetchData(url: string, outputPath: string) {
   const response = await fetch(url);
   const data = await response.json();
-  await writeFile(outputPath, JSON.stringify(data, null, 2));
+  fs.writeFileSync(outputPath, JSON.stringify(data, null, 2));
 }
 
 export async function fetchAllData() {
+  const atlasDataUrl =
+    process.env.ATLAS_DATA_URL ?? "https://sky-atlas.powerhouse.io";
+  const outputPath = process.env.OUTPUT_PATH ?? "data";
+
   if (!fs.existsSync(outputPath)) {
     fs.mkdirSync(outputPath, { recursive: true });
   }

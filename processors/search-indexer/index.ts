@@ -132,14 +132,6 @@ export class SearchIndexerProcessor extends OperationalProcessor<DB> {
         }),
       )
       .execute();
-
-    const entries = await this.operationalStore
-      .selectFrom("atlas_foundation_docs")
-      .where("drive_id", "=", driveId)
-      .selectAll()
-      .execute();
-
-    console.log(entries);
   }
 
   private async indexAtlasScope(
@@ -194,13 +186,5 @@ export class SearchIndexerProcessor extends OperationalProcessor<DB> {
         }),
       )
       .execute();
-
-    const entries = await this.operationalStore
-      .selectFrom("atlas_scope_docs")
-      .where("drive_id", "=", driveId)
-      .selectAll()
-      .execute();
-
-    console.log(entries);
   }
 }

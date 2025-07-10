@@ -15,28 +15,6 @@ export async function fetchAllData() {
     fs.mkdirSync(outputPath, { recursive: true });
   }
 
-  console.log("Fetching Atlas Data");
-  try {
-    await fetchData(
-      `${atlasDataUrl}/api/atlas-data-json`,
-      `${outputPath}/atlas-data.json`
-    );
-    console.log("Atlas Data fetched successfully");
-  } catch (error) {
-    console.error("Error fetching Atlas Data", error);
-  }
-
-  console.log("Fetching Node Map");
-  try {
-    await fetchData(
-      `${atlasDataUrl}/api/view-node-map`,
-      `${outputPath}/view-node-map.json`
-    );
-    console.log("Node Map fetched successfully");
-  } catch (error) {
-    console.error("Error fetching Node Map", error);
-  }
-
   console.log("Fetching Extended Data");
   try {
     await fetchData(

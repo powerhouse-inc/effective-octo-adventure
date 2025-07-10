@@ -174,7 +174,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setDocNumber({ ...args.input }),
         );
 
-        return doc.header.revision["global"] + 1;
+        return (doc.header.revision["global"] ?? 0) + 1;
       },
 
       AtlasExploratory_addTags: async (_: any, args: any) => {

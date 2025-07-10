@@ -202,7 +202,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.addContextData({ ...args.input }),
         );
 
-        return doc.header.revision["global"] + 1;
+        return (doc.header.revision["global"] ?? 0) + 1;
       },
 
       AtlasGrounding_removeContextData: async (_: any, args: any) => {

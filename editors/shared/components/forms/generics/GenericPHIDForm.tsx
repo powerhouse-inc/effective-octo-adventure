@@ -79,9 +79,8 @@ const GenericPHIDForm = ({
           }}
           onBlur={triggerSubmit}
           viewMode={viewMode}
-          diffMode="sentences"
           baseValue={baselineValue}
-          basePreviewIcon={baselineIcon}
+          basePreviewIcon={baselineIcon as PHIDOption["icon"]}
           basePreviewTitle={baselineTitle}
           basePreviewPath={baselineType}
           basePreviewDescription={baselineDescription}

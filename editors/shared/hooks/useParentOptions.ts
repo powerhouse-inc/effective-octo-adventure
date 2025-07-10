@@ -5,6 +5,7 @@ import {
   useDocumentsLink,
 } from "./useDocumentsLink.js";
 import { documentLinksToPHIDOptions } from "../utils/phids.js";
+import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
 
 type AllowedDocumentType =
   | "sky/atlas-foundation"
@@ -69,7 +70,9 @@ const filterFnMap: Record<AllowedDocumentType, FilterFn> = {
   "sky/atlas-set": (doc) => setFilterFn(doc),
 };
 
-export function useParentOptions(documentType: AllowedDocumentType) {
+export function useParentOptions(
+  documentType: AllowedDocumentType,
+): (value: string) => PHIDOption[] {
   const documentsLink = useDocumentsLink(filterFnMap[documentType]);
   const fetchOptionsCallback = useCallback(
     (value: string) => {

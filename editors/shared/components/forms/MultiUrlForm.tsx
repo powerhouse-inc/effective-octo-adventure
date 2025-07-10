@@ -82,7 +82,6 @@ const MultiUrlForm = ({
         <UrlField
           {...props}
           viewMode={viewMode}
-          diffMode={"sentences"}
           baseValue={baseValue}
           platformIcons={{
             "example.com": "File",

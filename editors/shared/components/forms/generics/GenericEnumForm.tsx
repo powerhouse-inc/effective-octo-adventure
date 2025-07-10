@@ -68,7 +68,6 @@ const GenericEnumForm = ({
           multiple={multiple}
           onBlur={triggerSubmit}
           viewMode={viewMode}
-          diffMode="sentences"
           baseValue={
             Array.isArray(baselineValue)
               ? baselineValue.join(", ")

@@ -1,0 +1,48 @@
+name: NPM Release
+
+on:
+  workflow_dispatch:
+
+env:
+  NX_ISOLATE_PLUGINS: false
+  HUSKY: 0
+
+jobs:
+  release:
+    name: NPM Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write # needed for provenance data generation
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Generate document models
+        run: pnpm script:generate-all
+
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Fetch data
+        run: pnpm script:fetch-data
+
+      - name: Build
+        run: pnpm run build
+  
+      - name: Release
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm run release

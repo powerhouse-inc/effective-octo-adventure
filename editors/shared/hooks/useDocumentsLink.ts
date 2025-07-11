@@ -1,4 +1,4 @@
-import { type IconName } from "@powerhousedao/design-system";
+import { type IconName } from "@powerhousedao/document-engineering/ui";
 import { useDriveContext } from "@powerhousedao/reactor-browser";
 import { useMemo } from "react";
 import { type HookState } from "@powerhousedao/reactor-browser/hooks/document-state";

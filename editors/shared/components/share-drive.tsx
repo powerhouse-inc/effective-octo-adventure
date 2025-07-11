@@ -1,4 +1,4 @@
-import { Button, Icon, toast } from "@powerhousedao/design-system";
+import { toast } from "@powerhousedao/design-system";
 import { useCallback } from "react";
 import { Link2 } from "lucide-react";
 import { cn } from "@powerhousedao/document-engineering/scalars";

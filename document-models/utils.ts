@@ -7,7 +7,7 @@ import {
 import type { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
 import path from "path";
 import fs from "fs";
-import { type IconName } from "@powerhousedao/design-system";
+import { type IconName } from "@powerhousedao/document-engineering/ui";
 import { fetchAllData } from "../scripts/fetch-data/fetch.js";
 
 /**

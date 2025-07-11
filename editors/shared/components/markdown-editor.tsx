@@ -98,6 +98,16 @@ export function MarkdownEditor({
           .w-md-editor-preview th {
             background-color: #f5f5f5;
           }
+         
+        .w-md-editor-text-pre code, .w-md-editor-text-pre div {
+            font-size: 16px !important;
+            line-height: 24px !important;
+          }
+          .w-md-editor-text-input {
+            font-size: 16px !important;
+            line-height: 24px !important;
+          }
+            
         `}
       </style>
       {label && <p style={labelStyle}>{label}</p>}

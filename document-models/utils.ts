@@ -25,6 +25,7 @@ export const getAtlasData = async () => {
   }
 
   const jsonPath = path.resolve(__dirname, "../data/atlas-data-extended.json");
+  console.log(`Reading Atlas Data from file: ${jsonPath}`);
   const raw = fs.readFileSync(jsonPath, "utf-8");
   return JSON.parse(raw) as ViewNodeExtended[];
 };

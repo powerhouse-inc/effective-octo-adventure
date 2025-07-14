@@ -1,0 +1,41 @@
+name: Production Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get package version
+        id: package-version
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Connect and Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /root/sky-production
+            echo $(pwd)
+
+            export NVM_DIR=~/.nvm
+            export PNPM_HOME="$HOME/.local/share/pnpm"
+            export PATH="$PNPM_HOME:$PATH"
+            source ~/.nvm/nvm.sh
+
+            echo "Updating @sky-ph/atlas to version ${{ steps.package-version.outputs.version }}..."
+            pnpm add @sky-ph/atlas@${{ steps.package-version.outputs.version }}
+
+            echo "Restarting service..."
+            ph service restart
+            echo "Update and restart completed successfully!"

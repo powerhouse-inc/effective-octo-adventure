@@ -28,7 +28,8 @@ jobs:
             cd /root/sky-staging
 
             echo "Updating @sky-ph/atlas to version ${{ steps.package-version.outputs.version }}..."
-            # pnpm update @sky-ph/atlas@${{ steps.package-version.outputs.version }}
+            pnpm add @sky-ph/atlas@${{ steps.package-version.outputs.version }}
+
             echo "Restarting service..."
-            # ph service restart
+            ph service restart
             echo "Update and restart completed successfully!"

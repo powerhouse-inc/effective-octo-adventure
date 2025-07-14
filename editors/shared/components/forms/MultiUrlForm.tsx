@@ -57,12 +57,11 @@ const MultiUrlForm = ({
 
       if (props.name !== "item-new") {
         const fieldId = props.name?.replace("item-", "");
-        const element = data.find((d) => d.id === fieldId);
 
-        if (element !== undefined) {
-          baseValue = baselineValue.find(
-            (baseUrl) => baseUrl === element.value,
-          );
+        const elementIndex = data.findIndex((d) => d.id === fieldId);
+
+        if (elementIndex >= 0 && elementIndex < baselineValue.length) {
+          baseValue = baselineValue[elementIndex];
         }
       }
 

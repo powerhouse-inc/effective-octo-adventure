@@ -9,6 +9,9 @@ jobs:
     environment: staging
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Get package version
         id: package-version
         run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT

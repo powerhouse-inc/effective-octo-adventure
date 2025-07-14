@@ -26,6 +26,10 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd /root/sky-staging
+            echo $(pwd)
+
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
 
             echo "Updating @sky-ph/atlas to version ${{ steps.package-version.outputs.version }}..."
             pnpm add @sky-ph/atlas@${{ steps.package-version.outputs.version }}

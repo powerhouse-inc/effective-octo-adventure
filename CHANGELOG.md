@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.3.0...v1.3.1) (2025-07-14)
+
+
+### Bug Fixes
+
+* complete migration to document engineering ([0a148a8](https://github.com/powerhouse-inc/effective-octo-adventure/commit/0a148a8c8250b6641823743114e02b82f23b29dc))
+
 # [1.3.0](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.2.30...v1.3.0) (2025-07-11)
 
 

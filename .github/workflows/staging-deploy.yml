@@ -28,12 +28,14 @@ jobs:
             cd /root/sky-staging
             echo $(pwd)
 
-            bash -l -c "$(cat <<- EOF
+            export NVM_DIR=~/.nvm
+            export PNPM_HOME="$HOME/.local/share/pnpm"
+            export PATH="$PNPM_HOME:$PATH"
+            source ~/.nvm/nvm.sh
+
             echo "Updating @sky-ph/atlas to version ${{ steps.package-version.outputs.version }}..."
             pnpm add @sky-ph/atlas@${{ steps.package-version.outputs.version }}
 
             echo "Restarting service..."
             ph service restart
             echo "Update and restart completed successfully!"
-            EOF
-            )"

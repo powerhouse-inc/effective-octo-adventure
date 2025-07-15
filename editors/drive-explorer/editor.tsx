@@ -13,7 +13,10 @@ import { useCallback, useState } from "react";
 import { DriverLayout } from "./components/driver-layout.js";
 import { getRemoteDriveUrl } from "../shared/utils/utils.js";
 import { AnalyticsMenu } from "./components/AnalyticsMenu.js";
-import { DateTime } from "@powerhousedao/reactor-browser/analytics";
+import {
+  AnalyticsProvider,
+  DateTime,
+} from "@powerhousedao/reactor-browser/analytics";
 import { useNodeStatusMap } from "./hooks/index.js";
 import { convertToDateTimeLocal } from "./utils/index.js";
 
@@ -115,7 +118,11 @@ export default function Editor(props: IProps) {
   return (
     <DriveContextProvider value={props.context}>
       <WagmiContext>
-        <BaseEditor {...props} />
+        <AnalyticsProvider
+          options={{ databaseName: props.context.analyticsDatabaseName }}
+        >
+          <BaseEditor {...props} />
+        </AnalyticsProvider>
       </WagmiContext>
     </DriveContextProvider>
   );

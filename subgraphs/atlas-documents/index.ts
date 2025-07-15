@@ -1,5 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Subgraph } from "@powerhousedao/reactor-api";
 import { gql } from "graphql-tag";
+import { type ExpressionBuilder } from "kysely";
+import { type DB } from "../../processors/search-indexer/schema.js";
 
 export class AtlasDocumentsSubgraph extends Subgraph {
   name = "search";
@@ -25,7 +30,7 @@ export class AtlasDocumentsSubgraph extends Subgraph {
                 .selectAll()
                 .where("parent_id", "=", args.parent)
                 .execute();
-              const foundationDocuments = foundationResults.map((doc) => ({
+              const foundationDocuments = foundationResults.map((doc: any) => ({
                 __typename: "AtlasFoundationDocument",
                 id: doc.doc_no,
                 name: doc.name,
@@ -45,13 +50,13 @@ export class AtlasDocumentsSubgraph extends Subgraph {
             }
 
             const { query, limit = 50, offset = 0 } = args;
-            const db = await this.operationalStore;
+            const db = this.operationalStore;
 
             // Search in both atlas_scope_docs and atlas_foundation_docs
             const scopeResults = await db
               .selectFrom("atlas_scope_docs")
               .selectAll()
-              .where((eb) =>
+              .where((eb: ExpressionBuilder<DB, "atlas_scope_docs">) =>
                 eb.or([
                   eb("name", "ilike", `%${query ?? ""}%`),
                   eb("content", "ilike", `%${query ?? ""}%`),
@@ -65,7 +70,7 @@ export class AtlasDocumentsSubgraph extends Subgraph {
             const foundationResults = await db
               .selectFrom("atlas_foundation_docs")
               .selectAll()
-              .where((eb) =>
+              .where((eb: ExpressionBuilder<DB, "atlas_foundation_docs">) =>
                 eb.or([
                   eb("name", "ilike", `%${query ?? ""}%`),
                   eb("content", "ilike", `%${query ?? ""}%`),
@@ -78,7 +83,7 @@ export class AtlasDocumentsSubgraph extends Subgraph {
               .execute();
 
             // Transform results to match GraphQL schema
-            const scopeDocuments = scopeResults.map((doc) => ({
+            const scopeDocuments = scopeResults.map((doc: any) => ({
               __typename: "AtlasScopeDocument",
               id: doc.doc_no,
               name: doc.name,
@@ -92,7 +97,7 @@ export class AtlasDocumentsSubgraph extends Subgraph {
               createdAt: doc.created_at,
             }));
 
-            const foundationDocuments = foundationResults.map((doc) => ({
+            const foundationDocuments = foundationResults.map((doc: any) => ({
               __typename: "AtlasFoundationDocument",
               id: doc.doc_no,
               name: doc.name,
@@ -124,7 +129,7 @@ export class AtlasDocumentsSubgraph extends Subgraph {
         ) => {
           try {
             const { query, limit = 50, offset = 0 } = args;
-            const db = await this.kysely!;
+            const db = this.operationalStore;
 
             let queryBuilder = db
               .selectFrom("atlas_scope_docs")
@@ -133,18 +138,19 @@ export class AtlasDocumentsSubgraph extends Subgraph {
               .offset(offset);
 
             if (query) {
-              queryBuilder = queryBuilder.where((eb) =>
-                eb.or([
-                  eb("name", "ilike", `%${query}%`),
-                  eb("content", "ilike", `%${query}%`),
-                  eb("global_tags", "ilike", `%${query}%`),
-                ]),
+              queryBuilder = queryBuilder.where(
+                (eb: ExpressionBuilder<DB, "atlas_scope_docs">) =>
+                  eb.or([
+                    eb("name", "ilike", `%${query}%`),
+                    eb("content", "ilike", `%${query}%`),
+                    eb("global_tags", "ilike", `%${query}%`),
+                  ]),
               );
             }
 
             const results = await queryBuilder.execute();
 
-            return results.map((doc) => ({
+            return results.map((doc: any) => ({
               id: doc.doc_no,
               name: doc.name,
               content: doc.content,
@@ -177,7 +183,7 @@ export class AtlasDocumentsSubgraph extends Subgraph {
         ) => {
           try {
             const { query, parentId, atlasType, limit = 50, offset = 0 } = args;
-            const db = await this.kysely!;
+            const db = this.operationalStore;
 
             let queryBuilder = db
               .selectFrom("atlas_foundation_docs")
@@ -194,19 +200,20 @@ export class AtlasDocumentsSubgraph extends Subgraph {
             }
 
             if (query) {
-              queryBuilder = queryBuilder.where((eb) =>
-                eb.or([
-                  eb("name", "ilike", `%${query}%`),
-                  eb("content", "ilike", `%${query}%`),
-                  eb("global_tags", "ilike", `%${query}%`),
-                  eb("atlas_type", "ilike", `%${query}%`),
-                ]),
+              queryBuilder = queryBuilder.where(
+                (eb: ExpressionBuilder<DB, "atlas_foundation_docs">) =>
+                  eb.or([
+                    eb("name", "ilike", `%${query}%`),
+                    eb("content", "ilike", `%${query}%`),
+                    eb("global_tags", "ilike", `%${query}%`),
+                    eb("atlas_type", "ilike", `%${query}%`),
+                  ]),
               );
             }
 
             const results = await queryBuilder.execute();
 
-            return results.map((doc) => ({
+            return results.map((doc: any) => ({
               id: doc.doc_no,
               name: doc.name,
               content: doc.content,
@@ -287,7 +294,5 @@ export class AtlasDocumentsSubgraph extends Subgraph {
     }
   `;
 
-  async onDisconnect() {
-    this.kysely = null;
-  }
+  async onDisconnect() {}
 }

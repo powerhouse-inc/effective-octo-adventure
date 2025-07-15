@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
+import { useLocalStorage } from "usehooks-ts";
 import "@uiw/react-md-editor/markdown-editor.css";
 
 // Custom preview renderer to make links open in new tabs and ensure proper list rendering
@@ -13,6 +14,7 @@ const previewOptions = {
   rehypePlugins: [rehypeSlug],
   remarkPlugins: [remarkGfm],
 };
+export type MarkdownEditorMode = "preview" | "edit" | "live";
 
 interface MarkdownEditorProps {
   value: string;
@@ -40,6 +42,9 @@ export function MarkdownEditor({
   const [MDEditor, setMDEditor] = useState<any>(null);
   const [contentValue, setContentValue] = useState<string>(value || "");
 
+  const [viewMarkdownMode, setViewMarkdownMode] =
+    useLocalStorage<MarkdownEditorMode>("markdown-editor-view-mode", "live");
+
   // Load the MDEditor component dynamically
   useEffect(() => {
     import("@uiw/react-md-editor").then((module) => {
@@ -51,6 +56,37 @@ export function MarkdownEditor({
   useEffect(() => {
     setContentValue(value || "");
   }, [value]);
+
+  useEffect(() => {
+    if (!MDEditor) return;
+
+    const handleViewButtonClick = (event: Event) => {
+      const buttonLive = document.querySelector("button[data-name='live']");
+      const buttonEdit = document.querySelector("button[data-name='edit']");
+      const buttonPreview = document.querySelector(
+        "button[data-name='preview']",
+      );
+
+      const liveLi = buttonLive?.closest("li");
+      const editLi = buttonEdit?.closest("li");
+      const previewLi = buttonPreview?.closest("li");
+
+      if (previewLi && previewLi.classList.contains("active")) {
+        setViewMarkdownMode("preview");
+      }
+      if (editLi && editLi.classList.contains("active")) {
+        setViewMarkdownMode("edit");
+      }
+      if (liveLi && liveLi.classList.contains("active")) {
+        setViewMarkdownMode("live");
+      }
+    };
+
+    document.addEventListener("click", handleViewButtonClick, true);
+    return () => {
+      document.removeEventListener("click", handleViewButtonClick, true);
+    };
+  }, [MDEditor, setViewMarkdownMode]);
 
   // Handle content changes
   const handleContentChange = (newValue: string | undefined) => {
@@ -110,6 +146,7 @@ export function MarkdownEditor({
             
         `}
       </style>
+
       {label && <p style={labelStyle}>{label}</p>}
       {MDEditor && (
         <div data-color-mode="light">
@@ -120,7 +157,7 @@ export function MarkdownEditor({
             onBlur={handleContentBlur}
             previewOptions={previewOptions}
             enableScroll={true}
-            preview="live"
+            preview={viewMarkdownMode}
             textareaProps={{
               placeholder: "Write your content here...",
             }}

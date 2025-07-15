@@ -42,7 +42,6 @@ export function MarkdownEditor({
   const [MDEditor, setMDEditor] = useState<any>(null);
   const [contentValue, setContentValue] = useState<string>(value || "");
 
-  // Use localStorage to persist markdown view mode
   const [viewMarkdownMode, setViewMarkdownMode] =
     useLocalStorage<MarkdownEditorMode>("markdown-editor-view-mode", "live");
 
@@ -62,14 +61,12 @@ export function MarkdownEditor({
     if (!MDEditor) return;
 
     const handleViewButtonClick = (event: Event) => {
-      // Find buttons by data-name attribute
       const buttonLive = document.querySelector("button[data-name='live']");
       const buttonEdit = document.querySelector("button[data-name='edit']");
       const buttonPreview = document.querySelector(
         "button[data-name='preview']",
       );
 
-      // Check if the parent li has the active class
       const liveLi = buttonLive?.closest("li");
       const editLi = buttonEdit?.closest("li");
       const previewLi = buttonPreview?.closest("li");

@@ -1,15 +1,8 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-  createContext,
-  useContext,
-  type ReactNode,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
+import { useLocalStorage } from "usehooks-ts";
 import "@uiw/react-md-editor/markdown-editor.css";
-import { useMarkdownEditorMode } from "./MarkdonwViewProvider.js";
 
 // Custom preview renderer to make links open in new tabs and ensure proper list rendering
 const previewOptions = {
@@ -21,6 +14,7 @@ const previewOptions = {
   rehypePlugins: [rehypeSlug],
   remarkPlugins: [remarkGfm],
 };
+export type MarkdownEditorMode = "preview" | "edit" | "live";
 
 interface MarkdownEditorProps {
   value: string;
@@ -48,7 +42,9 @@ export function MarkdownEditor({
   const [MDEditor, setMDEditor] = useState<any>(null);
   const [contentValue, setContentValue] = useState<string>(value || "");
 
-  const { viewMarkdownMode, setViewMarkdownMode } = useMarkdownEditorMode();
+  // Use localStorage to persist markdown view mode
+  const [viewMarkdownMode, setViewMarkdownMode] =
+    useLocalStorage<MarkdownEditorMode>("markdown-editor-view-mode", "live");
 
   // Load the MDEditor component dynamically
   useEffect(() => {

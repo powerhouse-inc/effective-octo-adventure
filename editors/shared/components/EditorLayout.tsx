@@ -13,7 +13,6 @@ import {
   ViewModeProvider,
 } from "../providers/ViewModeProvider.js";
 import { BaseDocumentCacheProvider } from "../providers/BaseDocumentCacheProvider.js";
-import { MarkdownEditorProvider } from "./MarkdonwViewProvider.js";
 
 export type ChildrenFn = ({
   isSplitMode,
@@ -148,20 +147,14 @@ export const EditorLayout = (props: EditorLayoutProps) => {
 
   // if there is a ViewModeProvider, use directly EditorLayoutContent
   if (viewModeContext) {
-    return (
-      <MarkdownEditorProvider>
-        <EditorLayoutContent {...props} />
-      </MarkdownEditorProvider>
-    );
+    return <EditorLayoutContent {...props} />;
   }
 
   // if there is no ViewModeProvider, wrap with a new one
   return (
     <BaseDocumentCacheProvider>
       <ViewModeProvider>
-        <MarkdownEditorProvider>
-          <EditorLayoutContent {...props} />
-        </MarkdownEditorProvider>
+        <EditorLayoutContent {...props} />
       </ViewModeProvider>
     </BaseDocumentCacheProvider>
   );

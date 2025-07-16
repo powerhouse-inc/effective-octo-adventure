@@ -11,6 +11,7 @@ import {
 type CommonDataProps = {
   id: string;
   value: string;
+  baselineIndex?: number | null;
 };
 
 interface MultiUrlFormProps
@@ -58,10 +59,17 @@ const MultiUrlForm = ({
       if (props.name !== "item-new") {
         const fieldId = props.name?.replace("item-", "");
 
-        const elementIndex = data.findIndex((d) => d.id === fieldId);
-
-        if (elementIndex >= 0 && elementIndex < baselineValue.length) {
-          baseValue = baselineValue[elementIndex];
+        if (fieldId) {
+          // Handle stable baseline IDs
+          if (fieldId.startsWith("baseline-")) {
+            const baselineIndex = parseInt(
+              fieldId.replace("baseline-", ""),
+              10,
+            );
+            if (baselineIndex >= 0 && baselineIndex < baselineValue.length) {
+              baseValue = baselineValue[baselineIndex];
+            }
+          }
         }
       }
 

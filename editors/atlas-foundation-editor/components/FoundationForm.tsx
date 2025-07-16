@@ -22,7 +22,7 @@ import {
 } from "../../shared/utils/styles.js";
 import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
-import { transformUrl } from "../../shared/utils/utils.js";
+import { useStableUrlIds } from "../../shared/hooks/useStableUrlIds.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
 
@@ -65,6 +65,12 @@ export function FoundationForm({
 
   const baseDocument = useBaseDocumentCached(document, context);
   const loading = shouldShowSkeleton(mode, baseDocument);
+
+  // Use the stable URL IDs hook
+  const stableUrlData = useStableUrlIds(
+    documentState.originalContextData,
+    baseDocument?.state.global.originalContextData ?? [],
+  );
 
   return (
     <FormModeProvider mode={mode}>
@@ -183,12 +189,7 @@ export function FoundationForm({
                 baseDocument?.state.global.originalContextData ?? []
               }
               label="Original Context Data"
-              data={documentState.originalContextData.map((element) => {
-                return {
-                  id: transformUrl(element),
-                  value: element,
-                };
-              })}
+              data={stableUrlData}
               onAdd={(value) => {
                 dispatch(
                   actions.addContextData({

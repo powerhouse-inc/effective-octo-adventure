@@ -5,6 +5,7 @@ import { useTypedQuery } from "../hooks/index.js";
 
 type ContentProps = {
   searchTerm: string;
+  driveId: string;
 };
 
 type QueryResult = {
@@ -13,12 +14,13 @@ type QueryResult = {
   content: string | null;
 };
 
-const Content = ({ searchTerm }: ContentProps) => {
+const Content = ({ searchTerm, driveId }: ContentProps) => {
   const {
     isLoading: scopeLoading,
     error: scopeError,
     result: scopeResult,
   } = useTypedQuery(
+    driveId,
     (db, params) => {
       return db
         .selectFrom("atlas_scope_docs")
@@ -35,6 +37,7 @@ const Content = ({ searchTerm }: ContentProps) => {
     error: foundationError,
     result: foundationResult,
   } = useTypedQuery(
+    driveId,
     (db, params) => {
       return db
         .selectFrom("atlas_foundation_docs")
@@ -80,7 +83,11 @@ const Content = ({ searchTerm }: ContentProps) => {
   );
 };
 
-export const SearchByContent = () => {
+export type SearchByContentProps = {
+  driveId: string;
+};
+
+export const SearchByContent = ({ driveId }: SearchByContentProps) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
@@ -92,7 +99,7 @@ export const SearchByContent = () => {
       />
       {searchTerm && (
         <div className="mt-4">
-          <Content searchTerm={searchTerm} />
+          <Content searchTerm={searchTerm} driveId={driveId} />
         </div>
       )}
     </div>

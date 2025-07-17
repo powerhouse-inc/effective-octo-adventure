@@ -6,6 +6,7 @@
 import {
   type ProcessorRecord,
   type IProcessorHostModule,
+  type ProcessorFactory,
 } from "document-drive/processors/types";
 
 // Import other processor factories here as they are generated
@@ -13,7 +14,7 @@ import { searchIndexerProcessorFactory } from "./search-indexer/factory.js";
 
 export const processorFactory = (module: IProcessorHostModule) => {
   // Initialize all processor factories once with the module
-  const factories: Array<(driveId: string) => ProcessorRecord[]> = [];
+  const factories: Array<ProcessorFactory> = [];
 
   // Add all processor factories
 
@@ -21,12 +22,12 @@ export const processorFactory = (module: IProcessorHostModule) => {
   factories.push(searchIndexerProcessorFactory(module));
 
   // Return the inner function that will be called for each drive
-  return (driveId: string): ProcessorRecord[] => {
+  return async (driveId: string) => {
     const processors: ProcessorRecord[] = [];
 
     // Call each cached factory with the driveId
     for (const factory of factories) {
-      processors.push(...factory(driveId));
+      processors.push(...(await factory(driveId)));
     }
 
     return processors;

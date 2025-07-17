@@ -1,6 +1,7 @@
-import { sql } from "document-drive/processors/operational-processor";
+import { sql } from "kysely";
+import { type IRelationalDb } from "document-drive/processors/types";
 
-export async function up(db) {
+export async function up(db: IRelationalDb<any>): Promise<void> {
   // Create table for Atlas scope documents
   await db.schema
     .createTable("atlas_scope_docs")
@@ -14,7 +15,7 @@ export async function up(db) {
     .addColumn("original_context_data", "text")
     .addColumn("notion_id", "varchar(255)")
     .addColumn("created_at", "timestamp", (col) =>
-      col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
+      col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull(),
     )
     .addPrimaryKeyConstraint("atlas_scope_docs_pkey", [
       "drive_id",
@@ -38,7 +39,7 @@ export async function up(db) {
     .addColumn("original_context_data", "text")
     .addColumn("notion_id", "varchar(255)")
     .addColumn("created_at", "timestamp", (col) =>
-      col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull()
+      col.defaultTo(sql`CURRENT_TIMESTAMP`).notNull(),
     )
     .addPrimaryKeyConstraint("atlas_foundation_docs_pkey", [
       "drive_id",
@@ -48,7 +49,7 @@ export async function up(db) {
     .execute();
 }
 
-export async function down(db) {
+export async function down(db: IRelationalDb<any>): Promise<void> {
   await db.schema.dropIndex("atlas_foundation_docs_content_idx").execute();
   await db.schema.dropTable("atlas_foundation_docs").execute();
   await db.schema.dropTable("atlas_scope_docs").execute();

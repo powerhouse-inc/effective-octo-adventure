@@ -1,8 +1,4 @@
-import {
-  OperationalProcessor,
-  type OperationalProcessorFilter,
-  sql,
-} from "document-drive/processors/operational-processor";
+import { RelationalDbProcessor } from "document-drive/processors/relational";
 import { type InternalTransmitterUpdate } from "document-drive/server/listener/transmitter/internal";
 import {
   type AtlasFoundationDocument,
@@ -14,10 +10,16 @@ import {
 } from "document-models/atlas-scope/index.js";
 import { up } from "./migrations.js";
 import { type DB } from "./schema.js";
+import { sql } from "kysely";
+
 type TDocument = AtlasScopeDocument | AtlasFoundationDocument;
 
-export class SearchIndexerProcessor extends OperationalProcessor<DB> {
-  get filter(): OperationalProcessorFilter {
+export class SearchIndexerProcessor extends RelationalDbProcessor<DB> {
+  static override getNamespace(driveId: string): string {
+    return super.getNamespace(driveId);
+  }
+
+  override get filter() {
     return {
       branch: ["main"],
       documentId: ["*"],
@@ -26,11 +28,11 @@ export class SearchIndexerProcessor extends OperationalProcessor<DB> {
     };
   }
 
-  async initAndUpgrade(): Promise<void> {
-    await up(this.operationalStore);
+  override async initAndUpgrade(): Promise<void> {
+    await up(this.relationalDb);
   }
 
-  async onStrands(
+  override async onStrands(
     strands: InternalTransmitterUpdate<TDocument>[],
   ): Promise<void> {
     console.log("onStrands", strands);
@@ -57,7 +59,6 @@ export class SearchIndexerProcessor extends OperationalProcessor<DB> {
   ) {
     if (documentType === "sky/atlas-foundation") {
       // its a foundation doc because it has a parent
-
       await this.indexAtlasFoundation(
         driveId,
         documentId,
@@ -88,7 +89,7 @@ export class SearchIndexerProcessor extends OperationalProcessor<DB> {
     const parentId = parent?.id || "";
     console.log("parentId", parentId);
 
-    await this.operationalStore
+    await this.relationalDb
       .insertInto("atlas_foundation_docs")
       .columns([
         "drive_id",
@@ -149,7 +150,7 @@ export class SearchIndexerProcessor extends OperationalProcessor<DB> {
       notionId,
     } = state;
 
-    await this.operationalStore
+    await this.relationalDb
       .insertInto("atlas_scope_docs")
       .columns([
         "drive_id",

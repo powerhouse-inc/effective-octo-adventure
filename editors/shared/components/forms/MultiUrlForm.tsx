@@ -105,10 +105,13 @@ const MultiUrlForm = ({
       onAdd={onAdd}
       onRemove={onRemove}
       onUpdate={onUpdate}
-      fields={data.map((element) => ({
-        id: element.id,
-        value: element.value,
-      }))}
+      fields={data
+        // Filter out the deleted values to avoid index mismatch
+        .filter((element) => element.value !== "")
+        .map((element) => ({
+          id: element.id,
+          value: element.value,
+        }))}
       label={label}
       component={renderComponent}
       componentProps={{

@@ -6,9 +6,9 @@ export const reducer: AtlasFoundationContextOperations = {
   },
 
   removeContextDataOperation(state, action) {
-    state.originalContextData = state.originalContextData.filter(
-      (contextData) => contextData !== action.input.id,
-    );
+    // Mark the value as deleted to filter it out in the form
+    const index = state.originalContextData.indexOf(action.input.id);
+    state.originalContextData[index] = "";
   },
 
   replaceContextDataOperation(state, action) {

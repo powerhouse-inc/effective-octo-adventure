@@ -44,10 +44,9 @@ export function MultiParentForm({
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
   const documentState = document.state.global;
+  const baseDocument = useBaseDocumentCached(document, context);
 
   const fetchOptionsCallback = useParentOptions("sky/atlas-multiparent");
-
-  const baseDocument = useBaseDocumentCached(document, context);
   const loading = shouldShowSkeleton(mode, baseDocument);
 
   return (
@@ -178,9 +177,9 @@ export function MultiParentForm({
                 baseDocument?.state.global.originalContextData ?? []
               }
               label="Original Context Data"
-              data={documentState.originalContextData.map((element) => {
+              data={documentState.originalContextData.map((element, index) => {
                 return {
-                  id: transformUrl(element),
+                  id: `${transformUrl(element)}-${index}`,
                   value: element,
                 };
               })}

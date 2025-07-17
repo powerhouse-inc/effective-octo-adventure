@@ -8,7 +8,7 @@ export type IProps = EditorProps<AtlasScopeDocument>;
 export default function Editor(props: IProps) {
   return (
     <EditorLayout
-      title="Atlas Explorer - The Support Scope"
+      title="Atlas Scope"
       notionId={props.document.state.global.notionId}
       readOnlyModeEnabled={true}
       splitModeEnabled={true}

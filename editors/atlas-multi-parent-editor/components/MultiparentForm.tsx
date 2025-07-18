@@ -27,7 +27,6 @@ import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import { transformUrl } from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
-import { extractDocNoFromTitle } from "../utils.js";
 
 interface MultiParentFormProps
   extends Pick<IProps, "context" | "document" | "dispatch"> {
@@ -146,7 +145,12 @@ export function MultiParentForm({
                     id: newId,
                     title: newData?.title ?? "",
                     documentType: documentType ?? "",
-                    docNo: newData?.docNo || undefined,
+                    docNo:
+                      newData &&
+                      typeof newData === "object" &&
+                      "docNo" in newData
+                        ? (newData as { docNo?: string }).docNo
+                        : undefined,
                   }),
                 );
               }}

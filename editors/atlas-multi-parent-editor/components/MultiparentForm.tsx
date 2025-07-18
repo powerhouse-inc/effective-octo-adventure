@@ -141,13 +141,12 @@ export function MultiParentForm({
                   typeof newData?.path === "object"
                     ? newData.path.text
                     : newData?.path;
-                const docNo = extractDocNoFromTitle(newData?.title ?? "");
                 dispatch(
                   actions.addParent({
                     id: newId,
                     title: newData?.title ?? "",
-                    docNo: docNo,
                     documentType: documentType ?? "",
+                    docNo: (newData?.docNo ?? "") as string,
                   }),
                 );
               }}
@@ -163,13 +162,12 @@ export function MultiParentForm({
                   typeof newData?.path === "object"
                     ? newData.path.text
                     : newData?.path;
-                const docNo = extractDocNoFromTitle(newData?.title ?? "");
+
                 dispatch(
                   actions.replaceParent({
                     prevID: prevId,
                     id: newId,
                     title: newData?.title ?? "",
-                    docNo: docNo,
                     documentType: documentType ?? "",
                   }),
                 );

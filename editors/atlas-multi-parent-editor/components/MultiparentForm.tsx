@@ -146,7 +146,7 @@ export function MultiParentForm({
                     id: newId,
                     title: newData?.title ?? "",
                     documentType: documentType ?? "",
-                    docNo: (newData?.docNo ?? "") as string,
+                    docNo: newData?.docNo ?? "",
                   }),
                 );
               }}

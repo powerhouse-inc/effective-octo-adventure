@@ -5,6 +5,7 @@ import { Subgraph } from "@powerhousedao/reactor-api";
 import { gql } from "graphql-tag";
 import { type ExpressionBuilder } from "kysely";
 import { type DB } from "../../processors/search-indexer/schema.js";
+import { type IRelationalDb } from "document-drive/processors/types";
 
 export class AtlasDocumentsSubgraph extends Subgraph {
   name = "search";
@@ -25,7 +26,9 @@ export class AtlasDocumentsSubgraph extends Subgraph {
         ) => {
           try {
             if (args.parent) {
-              const foundationResults = await this.operationalStore
+              const foundationResults = await (
+                this.relationalDb as unknown as IRelationalDb<DB>
+              )
                 .selectFrom("atlas_foundation_docs")
                 .selectAll()
                 .where("parent_id", "=", args.parent)
@@ -50,7 +53,7 @@ export class AtlasDocumentsSubgraph extends Subgraph {
             }
 
             const { query, limit = 50, offset = 0 } = args;
-            const db = this.operationalStore;
+            const db = this.relationalDb as unknown as IRelationalDb<DB>;
 
             // Search in both atlas_scope_docs and atlas_foundation_docs
             const scopeResults = await db
@@ -129,7 +132,7 @@ export class AtlasDocumentsSubgraph extends Subgraph {
         ) => {
           try {
             const { query, limit = 50, offset = 0 } = args;
-            const db = this.operationalStore;
+            const db = this.relationalDb as unknown as IRelationalDb<DB>;
 
             let queryBuilder = db
               .selectFrom("atlas_scope_docs")
@@ -183,7 +186,7 @@ export class AtlasDocumentsSubgraph extends Subgraph {
         ) => {
           try {
             const { query, parentId, atlasType, limit = 50, offset = 0 } = args;
-            const db = this.operationalStore;
+            const db = this.relationalDb as unknown as IRelationalDb<DB>;
 
             let queryBuilder = db
               .selectFrom("atlas_foundation_docs")

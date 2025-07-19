@@ -9,5 +9,6 @@ export function documentLinksToPHIDOptions(
     value: `phd:${doc.documentId}`,
     title: doc.title,
     icon: doc.icon,
+    docNo: doc.docNo ?? "",
   }));
 }

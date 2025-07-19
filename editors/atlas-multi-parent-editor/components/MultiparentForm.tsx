@@ -145,6 +145,12 @@ export function MultiParentForm({
                     id: newId,
                     title: newData?.title ?? "",
                     documentType: documentType ?? "",
+                    docNo:
+                      newData &&
+                      typeof newData === "object" &&
+                      "docNo" in newData
+                        ? (newData as { docNo?: string }).docNo
+                        : undefined,
                   }),
                 );
               }}
@@ -160,6 +166,7 @@ export function MultiParentForm({
                   typeof newData?.path === "object"
                     ? newData.path.text
                     : newData?.path;
+
                 dispatch(
                   actions.replaceParent({
                     prevID: prevId,

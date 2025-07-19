@@ -17,7 +17,7 @@ export function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
         icon: "FolderClose",
         expandedIcon: "FolderOpen",
       };
-    } else if (type === "neededResearch") {
+    } else if (type === "needed_research") {
       icons = {
         icon: "Tube",
       };

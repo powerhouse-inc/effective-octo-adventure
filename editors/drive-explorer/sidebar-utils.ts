@@ -62,7 +62,7 @@ export function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
       ...icons,
     };
   }
-  console.log("nodesById", nodesById);
+
   // Build the tree
   for (const [key, value] of Object.entries(allNodes)) {
     if (value.documentType === "sky/atlas-multiparent") {

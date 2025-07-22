@@ -40,18 +40,11 @@ export function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
     }
 
     // get the right title for the node depending on the document type
-    const title =
-      "sky/atlas-set" === node.documentType ||
-      "sky/atlas-multiparent" === node.documentType
-        ? node.global.name
-        : `${node.global?.docNo || "Doc No"} - ${node.global.name || "Name"}`;
+    const title = `${node.global?.docNo || "Doc No"} - ${node.global.name || "Name"}`;
 
     const isNewDocs = node.global?.docNo === "" && node.global.name === "";
     // check if the document is a new document with no docNo in the name to add placeholder
-    const isNewDocsWithNoDocNoInTitle =
-      node.documentType !== "sky/atlas-set" &&
-      node.documentType !== "sky/atlas-multiparent" &&
-      isNewDocs;
+    const isNewDocsWithNoDocNoInTitle = isNewDocs;
 
     nodesById[key] = {
       id: key,

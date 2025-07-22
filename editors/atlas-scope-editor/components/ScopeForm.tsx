@@ -104,12 +104,14 @@ export function ScopeForm({
                   baseDocument?.state.global.originalContextData ?? []
                 }
                 label="Original Context Data"
-                data={documentState.originalContextData.map((element) => {
-                  return {
-                    id: transformUrl(element),
-                    value: element,
-                  };
-                })}
+                data={documentState.originalContextData.map(
+                  (element, index) => {
+                    return {
+                      id: `${transformUrl(element)}-${index}`,
+                      value: element,
+                    };
+                  },
+                )}
                 onAdd={(value) => {
                   dispatch(
                     actions.addContextData({

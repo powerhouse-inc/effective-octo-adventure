@@ -183,9 +183,9 @@ export function FoundationForm({
                 baseDocument?.state.global.originalContextData ?? []
               }
               label="Original Context Data"
-              data={documentState.originalContextData.map((element) => {
+              data={documentState.originalContextData.map((element, index) => {
                 return {
-                  id: transformUrl(element),
+                  id: `${transformUrl(element)}-${index}`,
                   value: element,
                 };
               })}

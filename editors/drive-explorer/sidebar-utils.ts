@@ -39,9 +39,10 @@ export function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
       status = "MODIFIED";
     }
 
-    // get the right title for the node depending on the document type
-    const title = `${node.global?.docNo || "Doc No"} - ${node.global.name || "Name"}`;
-
+    let title = `${node.global?.docNo || "Doc No"} - ${node.global.name || "Name"}`;
+    if (node.documentType === "sky/atlas-multiparent") {
+      title = node.global.name || "Name";
+    }
     const isNewDocs = node.global?.docNo === "" && node.global.name === "";
     // check if the document is a new document with no docNo in the name to add placeholder
     const isNewDocsWithNoDocNoInTitle = isNewDocs;
@@ -65,7 +66,9 @@ export function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
         for (const parent of parents) {
           const nodeWithCorrectTitle = {
             ...nodesById[key],
-            title: `${parent.docNo} - ${value.global.name}`,
+            title: parent.docNo
+              ? `${parent.docNo} - ${value.global.name || "Name"}`
+              : `${value.global.name || "Name"}`,
           };
           nodesById[parent.id]?.children?.push(nodeWithCorrectTitle);
         }

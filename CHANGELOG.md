@@ -1,3 +1,22 @@
+## [1.3.2](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.3.1...v1.3.2) (2025-07-22)
+
+
+### Bug Fixes
+
+* **atalas:** fix the lint error ([eb62afd](https://github.com/powerhouse-inc/effective-octo-adventure/commit/eb62afd1d7a883cab9871cc43f7cf643205b2026))
+* **atalas:** get the docNo from the IdAutocompleteOption options ([f902cae](https://github.com/powerhouse-inc/effective-octo-adventure/commit/f902cae99b47a83f37714541a7cc4d9ca9ae494b))
+* **atlas:** add correct assertion for docNo ([750170c](https://github.com/powerhouse-inc/effective-octo-adventure/commit/750170c9ef9146b39dfe10dcbfa363b4b21de035))
+* **atlas:** add docNo in the update operation ([20cd881](https://github.com/powerhouse-inc/effective-octo-adventure/commit/20cd8815092d6a601c083ed2c8cae712fad15c9e))
+* **atlas:** add undefined instead of empty array for eslint error ([2337bd9](https://github.com/powerhouse-inc/effective-octo-adventure/commit/2337bd97204e876ca677c71aed68aa473dc8068c))
+* **atlas:** fix the name of scope documents ([f2b2ec5](https://github.com/powerhouse-inc/effective-octo-adventure/commit/f2b2ec594f951e7311ce21fb773772f44f22d5d6))
+* correctly display "Original Context Data" field differences ([bc8a00f](https://github.com/powerhouse-inc/effective-octo-adventure/commit/bc8a00fdb9584d25108a6df9e9b92f2b4a29c57c))
+* **scalars:** add context to keep the state in markdown ([3b04390](https://github.com/powerhouse-inc/effective-octo-adventure/commit/3b0439091270163d2d4800232597619806a1ed53))
+* **scalars:** add local-store-aproach ([29720cb](https://github.com/powerhouse-inc/effective-octo-adventure/commit/29720cbf07110692e7cce6eccc48290a2ba42030))
+* **scalars:** add placeholder and italic documnet without docNo and name ([c3418fb](https://github.com/powerhouse-inc/effective-octo-adventure/commit/c3418fbab05f6c4fd88b197fd683ee1cc7f7336c))
+* **scalars:** fix missing icon in multiparent type needed_research ([1c4cb1d](https://github.com/powerhouse-inc/effective-octo-adventure/commit/1c4cb1d68bdce8dfd1a1aeea33efc02445bf2c50))
+* **scalars:** fix the null parent when create a multiparent ([462871c](https://github.com/powerhouse-inc/effective-octo-adventure/commit/462871cb01135bfd6ae4b6662639ff52d4d6b940))
+* **scalars:** remove the unnecesary commets ([094b2a2](https://github.com/powerhouse-inc/effective-octo-adventure/commit/094b2a279e902a742c82b33b0d15bd90d8fe5fc6))
+
 ## [1.3.1](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.3.0...v1.3.1) (2025-07-14)
 
 

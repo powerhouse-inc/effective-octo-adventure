@@ -16,12 +16,13 @@ type CommonDataProps = {
 interface MultiUrlFormProps
   extends Omit<
     ArrayFieldProps<string, UrlFieldProps>,
-    "fields" | "componentProps" | "component"
+    "fields" | "componentProps" | "component" | "showAddField"
   > {
   loading?: boolean;
   data: CommonDataProps[];
   viewMode: ViewMode;
   baselineValue: string[];
+  showAddField?: boolean;
 }
 
 const MultiUrlForm = ({
@@ -33,6 +34,7 @@ const MultiUrlForm = ({
   onUpdate,
   viewMode,
   baselineValue,
+  showAddField,
 }: MultiUrlFormProps) => {
   // boolean flag to trigger callback recreation only when needed
   const [renderComponentTrigger, setRenderComponentTrigger] = useState(false);
@@ -105,6 +107,7 @@ const MultiUrlForm = ({
       onAdd={onAdd}
       onRemove={onRemove}
       onUpdate={onUpdate}
+      showAddField={showAddField}
       fields={data.map((element) => ({
         id: element.id,
         value: element.value,

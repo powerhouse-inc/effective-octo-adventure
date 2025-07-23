@@ -4,6 +4,7 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
+  shouldShowLastElement,
   shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
@@ -73,6 +74,14 @@ export function ExploratoryForm({
 
   const baseDocument = useBaseDocumentCached(document, context);
   const loading = shouldShowSkeleton(mode, baseDocument);
+
+  const preserveSpace = mode === "mixed" && isSplitMode;
+
+  const showLastElement = shouldShowLastElement({
+    mode,
+    isSplitMode,
+    contextDataLength: documentState.originalContextData.length,
+  });
 
   return (
     <FormModeProvider mode={mode}>
@@ -238,9 +247,14 @@ export function ExploratoryForm({
               getWidthClassName(!!isSplitMode),
             )}
           >
+            {preserveSpace &&
+              documentState.originalContextData.length === 0 && (
+                <div className={cn("h-[63px]")} />
+              )}
             <MultiUrlForm
               loading={loading}
               viewMode={mode}
+              showAddField={showLastElement}
               baselineValue={
                 baseDocument?.state.global.originalContextData ?? []
               }
@@ -273,6 +287,9 @@ export function ExploratoryForm({
                 );
               }}
             />
+            {preserveSpace && documentState.originalContextData.length > 0 && (
+              <div className={cn("h-[36px]")} />
+            )}
 
             <GlobalTagsForm
               loading={loading}

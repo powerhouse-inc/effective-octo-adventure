@@ -29,6 +29,7 @@ export interface ArrayFieldProps<TValue, TProps> {
   label: string;
   component: (props: TProps) => React.ReactNode;
   componentProps: TProps;
+  showAddField?: boolean; // Controlar si mostrar el campo de agregar nuevos elementos
 }
 
 const ArrayField = <TValue, TProps>({
@@ -39,6 +40,7 @@ const ArrayField = <TValue, TProps>({
   label,
   component: Component,
   componentProps,
+  showAddField = true,
 }: ArrayFieldProps<TValue, TProps>) => {
   const formRef = useRef<UseFormReturn<FieldValues>>(null);
 
@@ -72,7 +74,7 @@ const ArrayField = <TValue, TProps>({
         break;
       }
     }
-    if (data["item-new"]) {
+    if (data["item-new"] && showAddField) {
       // create a new field/item
       onAdd(data["item-new"]);
       formRef.current?.reset({ "item-new": "" }); // reset to empty to allow adding another items
@@ -81,15 +83,17 @@ const ArrayField = <TValue, TProps>({
 
   // create a default values object with the values and the new item
   const defaultValues = useMemo(() => {
+    const fieldValues = fields
+      .map((field) => ({
+        [`item-${field.id}`]: field.value,
+      }))
+      .reduce((acc, curr) => ({ ...acc, ...curr }), {});
+
     return {
-      ...fields
-        .map((field) => ({
-          [`item-${field.id}`]: field.value,
-        }))
-        .reduce((acc, curr) => ({ ...acc, ...curr }), {}),
-      [`item-new`]: "",
+      ...fieldValues,
+      ...(showAddField ? { [`item-new`]: "" } : {}),
     };
-  }, [fields]);
+  }, [fields, showAddField]);
 
   // update the form in case the field name changes due to the number of items
   // also keep in sync the values with the state of the form
@@ -123,14 +127,16 @@ const ArrayField = <TValue, TProps>({
             />
           ))}
 
-          {/* Add field */}
-          <Component
-            {...componentProps}
-            label={fields.length === 0 ? label : undefined}
-            name="item-new"
-            onBlur={triggerSubmit}
-            required={false}
-          />
+          {/* Add field - solo mostrar si showAddField es true */}
+          {showAddField && (
+            <Component
+              {...componentProps}
+              label={fields.length === 0 ? label : undefined}
+              name="item-new"
+              onBlur={triggerSubmit}
+              required={false}
+            />
+          )}
         </div>
       )}
     </Form>

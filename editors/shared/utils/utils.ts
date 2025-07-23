@@ -91,3 +91,26 @@ export const shouldShowSkeleton = (
 ) => {
   return mode !== "edition" && baseDocument === null;
 };
+
+interface ShowLastElementOptions {
+  mode: ViewMode;
+  isSplitMode?: boolean;
+  contextDataLength: number;
+}
+
+export function shouldShowLastElement({
+  mode,
+  isSplitMode = false,
+  contextDataLength,
+}: ShowLastElementOptions): boolean {
+  if (mode === "edition") return true;
+
+  const hasNoContextData = contextDataLength === 0;
+  if (!hasNoContextData) return false;
+
+  if ((mode === "addition" || mode === "removal") && isSplitMode) return true;
+
+  if (mode === "mixed" && !isSplitMode) return true;
+
+  return false;
+}

@@ -4,6 +4,7 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
+  shouldShowLastElement,
   shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
@@ -68,6 +69,13 @@ export function GroundingForm({
 
   const baseDocument = useBaseDocumentCached(document, context);
   const loading = shouldShowSkeleton(mode, baseDocument);
+
+  const preserveSpace = mode === "mixed" && isSplitMode;
+  const showLastElement = shouldShowLastElement({
+    mode,
+    isSplitMode,
+    contextDataLength: documentState.originalContextData.length,
+  });
 
   return (
     <FormModeProvider mode={mode}>
@@ -188,9 +196,13 @@ export function GroundingForm({
               }}
               initialOptions={[parentPHIDInitialOption]}
             />
-
+            {preserveSpace &&
+              documentState.originalContextData.length === 0 && (
+                <div className={cn("h-[63px]")} />
+              )}
             <MultiUrlForm
               loading={loading}
+              showAddField={showLastElement}
               viewMode={mode}
               baselineValue={
                 baseDocument?.state.global.originalContextData ?? []
@@ -225,6 +237,9 @@ export function GroundingForm({
               }}
             />
 
+            {preserveSpace && documentState.originalContextData.length > 0 && (
+              <div className={cn("h-[36px]")} />
+            )}
             <GlobalTagsForm
               loading={loading}
               value={documentState.globalTags}

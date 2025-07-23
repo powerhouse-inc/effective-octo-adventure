@@ -55,7 +55,7 @@ export function MultiParentForm({
   const showLastElement = shouldShowLastElement({
     mode,
     isSplitMode,
-    contextDataLength: documentState.originalContextData.length,
+    contextDataLength: documentState?.originalContextData?.length ?? 0,
   });
 
   return (

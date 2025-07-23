@@ -103,14 +103,20 @@ export function shouldShowLastElement({
   isSplitMode = false,
   contextDataLength,
 }: ShowLastElementOptions): boolean {
-  if (mode === "edition") return true;
-
   const hasNoContextData = contextDataLength === 0;
-  if (!hasNoContextData) return false;
 
-  if ((mode === "addition" || mode === "removal") && isSplitMode) return true;
+  switch (mode) {
+    case "edition":
+      return true;
 
-  if (mode === "mixed" && !isSplitMode) return true;
+    case "addition":
+    case "removal":
+      return hasNoContextData && isSplitMode;
 
-  return false;
+    case "mixed":
+      return hasNoContextData && !isSplitMode;
+
+    default:
+      return false;
+  }
 }

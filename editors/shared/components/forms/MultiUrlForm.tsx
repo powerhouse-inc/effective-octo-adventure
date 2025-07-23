@@ -16,13 +16,12 @@ type CommonDataProps = {
 interface MultiUrlFormProps
   extends Omit<
     ArrayFieldProps<string, UrlFieldProps>,
-    "fields" | "componentProps" | "component" | "showAddField"
+    "fields" | "componentProps" | "component"
   > {
   loading?: boolean;
   data: CommonDataProps[];
   viewMode: ViewMode;
   baselineValue: string[];
-  showAddField?: boolean;
 }
 
 const MultiUrlForm = ({

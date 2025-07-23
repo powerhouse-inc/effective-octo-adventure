@@ -29,7 +29,7 @@ export interface ArrayFieldProps<TValue, TProps> {
   label: string;
   component: (props: TProps) => React.ReactNode;
   componentProps: TProps;
-  showAddField?: boolean; // Controlar si mostrar el campo de agregar nuevos elementos
+  showAddField?: boolean;
 }
 
 const ArrayField = <TValue, TProps>({
@@ -126,8 +126,6 @@ const ArrayField = <TValue, TProps>({
               required={false}
             />
           ))}
-
-          {/* Add field - solo mostrar si showAddField es true */}
           {showAddField && (
             <Component
               {...componentProps}

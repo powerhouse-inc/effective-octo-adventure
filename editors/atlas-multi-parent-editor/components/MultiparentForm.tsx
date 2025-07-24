@@ -28,6 +28,7 @@ import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import { transformUrl } from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
+import { useElementVisibility } from "../../shared/hooks/useElementVisibility.js";
 
 interface MultiParentFormProps
   extends Pick<IProps, "context" | "document" | "dispatch"> {
@@ -51,8 +52,7 @@ export function MultiParentForm({
   const baseDocument = useBaseDocumentCached(document, context);
   const loading = shouldShowSkeleton(mode, baseDocument);
 
-  const preserveSpace = mode === "mixed" && isSplitMode;
-  const showLastElement = shouldShowLastElement({
+  const { preserveSpace, showLastElement } = useElementVisibility({
     mode,
     isSplitMode,
     contextDataLength: documentState?.originalContextData?.length ?? 0,

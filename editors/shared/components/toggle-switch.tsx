@@ -14,10 +14,10 @@ export default function ToggleSwitch({
   onChange,
   className,
 }: ToggleProps) {
+  const [selectedIndex, setSelectedIndex] = useState(defaultSelected);
   if (options.length === 0) {
     return null;
   }
-  const [selectedIndex, setSelectedIndex] = useState(defaultSelected);
 
   const handleOptionClick = (index: number) => {
     setSelectedIndex(index);

@@ -4,6 +4,7 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
+  shouldShowLastElement,
   shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
@@ -31,6 +32,7 @@ import { MarkdownContentForm } from "../../shared/components/forms/MarkdownConte
 import { transformUrl } from "../../shared/utils/utils.js";
 import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
 import { Skeleton } from "../../shared/components/ui/skeleton.js";
+import { useElementVisibility } from "../../shared/hooks/useElementVisibility.js";
 
 interface ExploratoryFormProps
   extends Pick<IProps, "context" | "document" | "dispatch"> {
@@ -73,6 +75,12 @@ export function ExploratoryForm({
 
   const baseDocument = useBaseDocumentCached(document, context);
   const loading = shouldShowSkeleton(mode, baseDocument);
+
+  const { preserveSpace, showLastElement } = useElementVisibility({
+    mode,
+    isSplitMode,
+    contextDataLength: documentState?.originalContextData?.length ?? 0,
+  });
 
   return (
     <FormModeProvider mode={mode}>
@@ -238,9 +246,14 @@ export function ExploratoryForm({
               getWidthClassName(!!isSplitMode),
             )}
           >
+            {preserveSpace &&
+              documentState.originalContextData.length === 0 && (
+                <div className={cn("h-[63px]")} />
+              )}
             <MultiUrlForm
               loading={loading}
               viewMode={mode}
+              showAddField={showLastElement}
               baselineValue={
                 baseDocument?.state.global.originalContextData ?? []
               }
@@ -273,6 +286,9 @@ export function ExploratoryForm({
                 );
               }}
             />
+            {preserveSpace && documentState.originalContextData.length > 0 && (
+              <div className={cn("h-[36px]")} />
+            )}
 
             <GlobalTagsForm
               loading={loading}

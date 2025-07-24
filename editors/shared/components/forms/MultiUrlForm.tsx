@@ -33,6 +33,7 @@ const MultiUrlForm = ({
   onUpdate,
   viewMode,
   baselineValue,
+  showAddField,
 }: MultiUrlFormProps) => {
   // boolean flag to trigger callback recreation only when needed
   const [renderComponentTrigger, setRenderComponentTrigger] = useState(false);
@@ -105,6 +106,7 @@ const MultiUrlForm = ({
       onAdd={onAdd}
       onRemove={onRemove}
       onUpdate={onUpdate}
+      showAddField={showAddField}
       fields={data.map((element) => ({
         id: element.id,
         value: element.value,

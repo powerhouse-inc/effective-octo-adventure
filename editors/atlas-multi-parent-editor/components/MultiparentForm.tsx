@@ -4,6 +4,7 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
+  shouldShowLastElement,
   shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
@@ -27,6 +28,7 @@ import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import { transformUrl } from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
+import { useElementVisibility } from "../../shared/hooks/useElementVisibility.js";
 
 interface MultiParentFormProps
   extends Pick<IProps, "context" | "document" | "dispatch"> {
@@ -49,6 +51,12 @@ export function MultiParentForm({
 
   const baseDocument = useBaseDocumentCached(document, context);
   const loading = shouldShowSkeleton(mode, baseDocument);
+
+  const { preserveSpace, showLastElement } = useElementVisibility({
+    mode,
+    isSplitMode,
+    contextDataLength: documentState?.originalContextData?.length ?? 0,
+  });
 
   return (
     <FormModeProvider mode={mode}>
@@ -182,10 +190,15 @@ export function MultiParentForm({
                 );
               }}
             />
+            {preserveSpace &&
+              documentState.originalContextData.length === 0 && (
+                <div className={cn("h-[63px]")} />
+              )}
 
             <MultiUrlForm
               loading={loading}
               viewMode={mode}
+              showAddField={showLastElement}
               baselineValue={
                 baseDocument?.state.global.originalContextData ?? []
               }
@@ -218,7 +231,9 @@ export function MultiParentForm({
                 );
               }}
             />
-
+            {preserveSpace && documentState.originalContextData.length > 0 && (
+              <div className={cn("h-[36px]")} />
+            )}
             <GlobalTagsForm
               loading={loading}
               value={documentState.globalTags}

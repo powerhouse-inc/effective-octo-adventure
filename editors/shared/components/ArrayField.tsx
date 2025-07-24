@@ -29,6 +29,7 @@ export interface ArrayFieldProps<TValue, TProps> {
   label: string;
   component: (props: TProps) => React.ReactNode;
   componentProps: TProps;
+  showAddField?: boolean;
 }
 
 const ArrayField = <TValue, TProps>({
@@ -39,6 +40,7 @@ const ArrayField = <TValue, TProps>({
   label,
   component: Component,
   componentProps,
+  showAddField = true,
 }: ArrayFieldProps<TValue, TProps>) => {
   const formRef = useRef<UseFormReturn<FieldValues>>(null);
 
@@ -65,7 +67,7 @@ const ArrayField = <TValue, TProps>({
         }
       }
     });
-    if (data["item-new"]) {
+    if (data["item-new"] && showAddField) {
       onAdd(data["item-new"]);
       formRef.current?.resetField("item-new", { defaultValue: "" });
     }
@@ -73,15 +75,17 @@ const ArrayField = <TValue, TProps>({
 
   // create a default values object with the values and the new item
   const defaultValues = useMemo(() => {
+    const fieldValues = fields
+      .map((field) => ({
+        [`item-${field.id}`]: field.value,
+      }))
+      .reduce((acc, curr) => ({ ...acc, ...curr }), {});
+
     return {
-      ...fields
-        .map((field) => ({
-          [`item-${field.id}`]: field.value,
-        }))
-        .reduce((acc, curr) => ({ ...acc, ...curr }), {}),
-      [`item-new`]: "",
+      ...fieldValues,
+      ...(showAddField ? { [`item-new`]: "" } : {}),
     };
-  }, [fields]);
+  }, [fields, showAddField]);
 
   // update the form in case the field name changes due to the number of items
   // also keep in sync the values with the state of the form
@@ -114,15 +118,15 @@ const ArrayField = <TValue, TProps>({
               required={false}
             />
           ))}
-
-          {/* Add field */}
-          <Component
-            {...componentProps}
-            label={fields.length === 0 ? label : undefined}
-            name="item-new"
-            onBlur={triggerSubmit}
-            required={false}
-          />
+          {showAddField && (
+            <Component
+              {...componentProps}
+              label={fields.length === 0 ? label : undefined}
+              name="item-new"
+              onBlur={triggerSubmit}
+              required={false}
+            />
+          )}
         </div>
       )}
     </Form>

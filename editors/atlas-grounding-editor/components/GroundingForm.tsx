@@ -4,6 +4,7 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
+  shouldShowLastElement,
   shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
@@ -28,6 +29,7 @@ import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 import { transformUrl } from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
+import { useElementVisibility } from "../../shared/hooks/useElementVisibility.js";
 
 interface GroundingFormProps
   extends Pick<IProps, "context" | "document" | "dispatch"> {
@@ -68,6 +70,12 @@ export function GroundingForm({
 
   const baseDocument = useBaseDocumentCached(document, context);
   const loading = shouldShowSkeleton(mode, baseDocument);
+
+  const { preserveSpace, showLastElement } = useElementVisibility({
+    mode,
+    isSplitMode,
+    contextDataLength: documentState?.originalContextData?.length ?? 0,
+  });
 
   return (
     <FormModeProvider mode={mode}>
@@ -188,9 +196,13 @@ export function GroundingForm({
               }}
               initialOptions={[parentPHIDInitialOption]}
             />
-
+            {preserveSpace &&
+              documentState.originalContextData.length === 0 && (
+                <div className={cn("h-[63px]")} />
+              )}
             <MultiUrlForm
               loading={loading}
+              showAddField={showLastElement}
               viewMode={mode}
               baselineValue={
                 baseDocument?.state.global.originalContextData ?? []
@@ -225,6 +237,9 @@ export function GroundingForm({
               }}
             />
 
+            {preserveSpace && documentState.originalContextData.length > 0 && (
+              <div className={cn("h-[36px]")} />
+            )}
             <GlobalTagsForm
               loading={loading}
               value={documentState.globalTags}

@@ -24,6 +24,7 @@ interface MultiPhIdFormProps
   data: CommonDataProps[];
   fetchOptionsCallback: (value: string) => PHIDOption[];
   baselineValue: MDocumentLink[];
+  showAddField: boolean;
 }
 
 const MultiPhIdForm = ({
@@ -35,6 +36,7 @@ const MultiPhIdForm = ({
   onUpdate,
   fetchOptionsCallback,
   baselineValue,
+  showAddField,
 }: MultiPhIdFormProps) => {
   const viewMode = useFormMode();
   // boolean flag to trigger callback recreation only when needed
@@ -108,6 +110,7 @@ const MultiPhIdForm = ({
       onAdd={onAdd}
       onRemove={onRemove}
       onUpdate={onUpdate}
+      showAddField={showAddField}
       fields={data.map((element) => ({
         id: element.id,
         value: element.id,

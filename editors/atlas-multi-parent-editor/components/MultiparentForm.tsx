@@ -4,7 +4,6 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
-  shouldShowLastElement,
   shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
@@ -56,6 +55,14 @@ export function MultiParentForm({
     mode,
     isSplitMode,
     contextDataLength: documentState?.originalContextData?.length ?? 0,
+  });
+  const {
+    preserveSpace: preserveSpaceParents,
+    showLastElement: showLastElementParents,
+  } = useElementVisibility({
+    mode,
+    isSplitMode,
+    contextDataLength: documentState.parents.length ?? 0,
   });
 
   return (
@@ -125,6 +132,7 @@ export function MultiParentForm({
           >
             <MultiPhIdForm
               loading={loading}
+              showAddField={showLastElementParents}
               label="Parent Documents"
               data={documentState.parents.map((element) => {
                 const initialOption: PHIDOption = {
@@ -190,6 +198,9 @@ export function MultiParentForm({
                 );
               }}
             />
+            {preserveSpaceParents && documentState.parents.length !== 0 && (
+              <div className={cn("h-[92px]")} />
+            )}
             {preserveSpace &&
               documentState.originalContextData.length === 0 && (
                 <div className={cn("h-[63px]")} />

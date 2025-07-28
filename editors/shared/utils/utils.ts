@@ -112,10 +112,8 @@ export function shouldShowLastElement({
     case "addition":
     case "removal":
       return hasNoContextData && isSplitMode;
-
     case "mixed":
-      return hasNoContextData && !isSplitMode;
-
+      return hasNoContextData;
     default:
       return false;
   }

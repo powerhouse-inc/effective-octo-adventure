@@ -1,3 +1,21 @@
+# [1.4.0](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.3.2...v1.4.0) (2025-07-28)
+
+
+### Bug Fixes
+
+* **altas:** remove the placeholder in diff mode ([68443bd](https://github.com/powerhouse-inc/effective-octo-adventure/commit/68443bd8edc9efdedd7b799d3e1199ca435b051f))
+* **atalas:** remove unnecesary code and improve show element function ([38cb2ce](https://github.com/powerhouse-inc/effective-octo-adventure/commit/38cb2ce75d04fc6c998cfebad185d46fded92a7f))
+* **atlas:** encapsulating the repeated logic into a custom hook ([7285c75](https://github.com/powerhouse-inc/effective-octo-adventure/commit/7285c758ea5ee487ffcc77dc3cf1885a6ae6561f))
+* **atlas:** fix error hooks call conditionally ([7c9ef0f](https://github.com/powerhouse-inc/effective-octo-adventure/commit/7c9ef0fc10f088da5f55d4a4930b35d4cad3d9c3))
+* **atlas:** remove the ! condition and get fields as source of true ([3e93a54](https://github.com/powerhouse-inc/effective-octo-adventure/commit/3e93a54ea8166be73c87cdda70245278a8376e54))
+* **scalars:** add placeholder name for multiparent ([c034134](https://github.com/powerhouse-inc/effective-octo-adventure/commit/c034134454651c4208d069031d5c91523284f1d2))
+* **scalars:** fix the issue generic phID add same placeholder all docs ([4f14f98](https://github.com/powerhouse-inc/effective-octo-adventure/commit/4f14f984bb667ffdcf8f0f4d395cc668fdf334b0))
+
+
+### Features
+
+* **atlas:** add new wallet for atlas feedback ([c257329](https://github.com/powerhouse-inc/effective-octo-adventure/commit/c2573291de812b3c58096f091f4812dd15116870))
+
 ## [1.3.2](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.3.1...v1.3.2) (2025-07-22)
 
 

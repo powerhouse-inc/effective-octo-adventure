@@ -1,7 +1,11 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "cSpell.words": [
-    "powerhousedao"
-  ]
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "prettier.requireConfig": true,
+  "prettier.useEditorConfig": false,
+  "cSpell.words": ["powerhousedao"]
 }

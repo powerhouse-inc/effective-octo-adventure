@@ -4,7 +4,6 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
-  shouldShowLastElement,
   shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/document-engineering/ui";

@@ -19,7 +19,8 @@ export function useElementVisibility({
   contextDataLength,
 }: UseFormUIProps): UseFormUIResult {
   const result = useMemo(() => {
-    const preserveSpace = mode === "mixed" && !!isSplitMode;
+    const preserveSpace =
+      mode === "mixed" && !!isSplitMode && contextDataLength !== 0;
 
     const showLastElement = shouldShowLastElement({
       mode,

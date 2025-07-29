@@ -142,7 +142,7 @@ export function ExploratoryForm({
               />
             </div>
           </div>
-          <div className={cn("flex-1 min-h-[350px]")}>
+          <div className={cn("min-h-[350px] flex-1")}>
             <MarkdownContentForm
               loading={loading}
               value={documentState.content ?? ""}
@@ -201,7 +201,7 @@ export function ExploratoryForm({
             />
           </div>
 
-          <div className="flex flex-row justify-end items-center gap-2">
+          <div className="flex flex-row items-center justify-end gap-2">
             <div className="flex items-center gap-2">
               {loading ? (
                 <Skeleton className="h-[22px]" />
@@ -257,12 +257,8 @@ export function ExploratoryForm({
                 baseDocument?.state.global.originalContextData ?? []
               }
               label="Original Context Data"
-              data={documentState.originalContextData.map((element) => {
-                return {
-                  id: transformUrl(element),
-                  value: element,
-                };
-              })}
+              data={documentState.originalContextData}
+              document={document}
               onAdd={(value) => {
                 dispatch(
                   actions.addContextData({

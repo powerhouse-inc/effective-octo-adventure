@@ -138,7 +138,7 @@ export function GroundingForm({
               />
             </div>
           </div>
-          <div className={cn("flex-1 min-h-[350px]")}>
+          <div className={cn("min-h-[350px] flex-1")}>
             <MarkdownContentForm
               loading={loading}
               value={documentState.content ?? ""}
@@ -207,12 +207,8 @@ export function GroundingForm({
                 baseDocument?.state.global.originalContextData ?? []
               }
               label="Original Context Data"
-              data={documentState.originalContextData.map((element) => {
-                return {
-                  id: transformUrl(element),
-                  value: element,
-                };
-              })}
+              data={documentState.originalContextData}
+              document={document}
               onAdd={(value) => {
                 dispatch(
                   actions.addContextData({

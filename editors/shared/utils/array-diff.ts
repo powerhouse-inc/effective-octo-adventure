@@ -164,26 +164,27 @@ export function getOperations<T extends AtlasDocument>(
  * @param operations - Array of context data operations
  * @returns Array of mapping operations
  */
-export function contextDataToMappingOperations<
-  T extends AtlasDocument["operations"]["global"][number],
->(operations: T[]): MappingOperations[] {
+export function contextDataToMappingOperations(
+  operations: Operation[],
+): MappingOperations[] {
   return operations
     .map((operation) => {
       if (operation.type === "ADD_CONTEXT_DATA") {
         return {
           type: "ADD",
-          value: operation.input.id,
+          value: (operation.input as { id: string }).id,
         };
       } else if (operation.type === "REMOVE_CONTEXT_DATA") {
         return {
           type: "REMOVE",
-          value: operation.input.id,
+          value: (operation.input as { id: string }).id,
         };
       } else if (operation.type === "REPLACE_CONTEXT_DATA") {
         return {
           type: "REPLACE",
-          originalValue: operation.input.prevId,
-          newValue: operation.input.id,
+          originalValue: (operation.input as { prevId: string; id: string })
+            .prevId,
+          newValue: (operation.input as { prevId: string; id: string }).id,
         };
       }
     })

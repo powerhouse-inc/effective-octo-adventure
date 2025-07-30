@@ -20,13 +20,12 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
             const docId: string = args.docId || "";
             const doc = await reactor.getDocument(driveId, docId);
             return {
-              // @ts-ignore
-              id: docId,
               driveId: driveId,
               ...doc,
+              ...doc.header,
               state: doc.state.global,
               stateJSON: doc.state.global,
-              revision: doc.revision.global,
+              revision: doc.header.revision["global"] ?? 0,
             };
           },
           getDocuments: async (args: any) => {
@@ -36,18 +35,19 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
               docsIds.map(async (docId) => {
                 const doc = await reactor.getDocument(driveId, docId);
                 return {
-                  // @ts-ignore
-                  id: docId,
                   driveId: driveId,
                   ...doc,
+                  ...doc.header,
                   state: doc.state.global,
                   stateJSON: doc.state.global,
-                  revision: doc.revision.global,
+                  revision: doc.header.revision["global"] ?? 0,
                 };
               }),
             );
 
-            return docs.filter((doc) => doc.documentType === "sky/atlas-scope");
+            return docs.filter(
+              (doc) => doc.header.documentType === "sky/atlas-scope",
+            );
           },
         };
       },
@@ -92,7 +92,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setScopeName({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc.header.revision["global"] ?? 0) + 1;
       },
 
       AtlasScope_setContent: async (_: any, args: any) => {
@@ -106,7 +106,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setContent({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc.header.revision["global"] ?? 0) + 1;
       },
 
       AtlasScope_setMasterStatus: async (_: any, args: any) => {
@@ -120,7 +120,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setMasterStatus({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc.header.revision["global"] ?? 0) + 1;
       },
 
       AtlasScope_setDocNumber: async (_: any, args: any) => {
@@ -134,7 +134,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setDocNumber({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc.header.revision["global"] ?? 0) + 1;
       },
 
       AtlasScope_addTags: async (_: any, args: any) => {
@@ -148,7 +148,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.addTags({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc.header.revision["global"] ?? 0) + 1;
       },
 
       AtlasScope_removeTags: async (_: any, args: any) => {
@@ -162,7 +162,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.removeTags({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc.header.revision["global"] ?? 0) + 1;
       },
 
       AtlasScope_addContextData: async (_: any, args: any) => {
@@ -176,7 +176,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.addContextData({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc.header.revision["global"] ?? 0) + 1;
       },
 
       AtlasScope_removeContextData: async (_: any, args: any) => {
@@ -190,7 +190,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.removeContextData({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc.header.revision["global"] ?? 0) + 1;
       },
 
       AtlasScope_setNotionId: async (_: any, args: any) => {
@@ -204,7 +204,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setNotionId({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc.header.revision["global"] ?? 0) + 1;
       },
 
       AtlasScope_replaceContextData: async (_: any, args: any) => {
@@ -218,7 +218,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.replaceContextData({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc.header.revision["global"] ?? 0) + 1;
       },
     },
   };

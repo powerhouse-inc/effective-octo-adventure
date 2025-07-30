@@ -13,7 +13,7 @@ describe("Atlas Multi Parent Document Model", () => {
     const document = utils.createDocument();
 
     expect(document).toBeDefined();
-    expect(document.documentType).toBe("sky/atlas-multiparent");
+    expect(document.header.documentType).toBe("sky/atlas-multiparent");
   });
 
   it("should create a new Atlas Multi Parent document with a valid initial state", () => {

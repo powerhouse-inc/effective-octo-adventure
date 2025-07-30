@@ -1205,6 +1205,13 @@ const typesTree = {
         }
       };
     },
+    get deleteDrive() {
+      return {
+        __args: {
+          id: "String!"
+        }
+      };
+    },
     get setDriveIcon() {
       return {
         __args: {
@@ -1542,6 +1549,7 @@ const client = {
     AtlasSet_setNotionId: apiEndpoint("mutation", "AtlasSet_setNotionId"),
     ForkAtlas: apiEndpoint("mutation", "ForkAtlas"),
     addDrive: apiEndpoint("mutation", "addDrive"),
+    deleteDrive: apiEndpoint("mutation", "deleteDrive"),
     setDriveIcon: apiEndpoint("mutation", "setDriveIcon"),
     setDriveName: apiEndpoint("mutation", "setDriveName")
   }

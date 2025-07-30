@@ -301,6 +301,13 @@ const typesTree = {
         }
       };
     },
+    get deleteDrive() {
+      return {
+        __args: {
+          id: "String!"
+        }
+      };
+    },
     get setDriveIcon() {
       return {
         __args: {
@@ -450,6 +457,7 @@ const client = {
   },
   mutations: {
     addDrive: apiEndpoint("mutation", "addDrive"),
+    deleteDrive: apiEndpoint("mutation", "deleteDrive"),
     setDriveIcon: apiEndpoint("mutation", "setDriveIcon"),
     setDriveName: apiEndpoint("mutation", "setDriveName")
   }

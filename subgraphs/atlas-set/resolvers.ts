@@ -20,13 +20,12 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
             const docId: string = args.docId || "";
             const doc = await reactor.getDocument(driveId, docId);
             return {
-              // @ts-ignore
-              id: docId,
               driveId: driveId,
               ...doc,
+              ...doc.header,
               state: doc.state.global,
               stateJSON: doc.state.global,
-              revision: doc.revision.global,
+              revision: doc.header.revision["global"] ?? 0,
             };
           },
           getDocuments: async (args: any) => {
@@ -36,18 +35,19 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
               docsIds.map(async (docId) => {
                 const doc = await reactor.getDocument(driveId, docId);
                 return {
-                  // @ts-ignore
-                  id: docId,
                   driveId: driveId,
                   ...doc,
+                  ...doc.header,
                   state: doc.state.global,
                   stateJSON: doc.state.global,
-                  revision: doc.revision.global,
+                  revision: doc.header.revision["global"] ?? 0,
                 };
               }),
             );
 
-            return docs.filter((doc) => doc.documentType === "sky/atlas-set");
+            return docs.filter(
+              (doc) => doc.header.documentType === "sky/atlas-set",
+            );
           },
         };
       },
@@ -92,7 +92,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setSetName({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc.header.revision["global"] ?? 0) + 1;
       },
 
       AtlasSet_setSetParent: async (_: any, args: any) => {
@@ -106,7 +106,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setSetParent({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc.header.revision["global"] ?? 0) + 1;
       },
 
       AtlasSet_setNotionId: async (_: any, args: any) => {
@@ -120,7 +120,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.setNotionId({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc.header.revision["global"] ?? 0) + 1;
       },
     },
   };

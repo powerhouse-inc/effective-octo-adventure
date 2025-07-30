@@ -4,6 +4,7 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
+  shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import {
   getFlexLayoutClassName,
@@ -19,7 +20,8 @@ import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js"
 import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import { transformUrl } from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
-import { useBaseDocument } from "../../shared/hooks/useBaseDocument.js";
+import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
+import { useElementVisibility } from "../../shared/hooks/useElementVisibility.js";
 
 interface ScopeFormProps
   extends Pick<IProps, "context" | "document" | "dispatch"> {
@@ -39,7 +41,14 @@ export function ScopeForm({
 
   const documentState = document.state.global;
 
-  const baseDocument = useBaseDocument(document, context);
+  const baseDocument = useBaseDocumentCached(document, context);
+  const loading = shouldShowSkeleton(mode, baseDocument);
+
+  const { preserveSpace, showLastElement } = useElementVisibility({
+    mode,
+    isSplitMode,
+    contextDataLength: documentState?.originalContextData?.length ?? 0,
+  });
 
   return (
     <FormModeProvider mode={mode}>
@@ -48,6 +57,7 @@ export function ScopeForm({
           <div className={cn(getFlexLayoutClassName(isSplitMode ?? false))}>
             <div className="flex-1">
               <DocNoForm
+                loading={loading}
                 value={documentState.docNo}
                 baselineValue={baseDocument?.state.global.docNo ?? ""}
                 onSave={(value) => {
@@ -57,6 +67,7 @@ export function ScopeForm({
             </div>
             <div className="flex-1 min-w-[200px]">
               <DocNameForm
+                loading={loading}
                 value={documentState.name}
                 baselineValue={baseDocument?.state.global.name ?? ""}
                 onSave={(value) => {
@@ -71,6 +82,7 @@ export function ScopeForm({
           <div className={cn(getFlexLayoutClassName(isSplitMode ?? false))}>
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <MasterStatusForm
+                loading={loading}
                 value={documentState.masterStatus}
                 baselineValue={baseDocument?.state.global.masterStatus ?? ""}
                 onSave={(value) => {
@@ -81,6 +93,7 @@ export function ScopeForm({
           </div>
           <div className={cn("flex-1 min-h-[350px]")}>
             <MarkdownContentForm
+              loading={loading}
               value={documentState.content ?? ""}
               baselineValue={baseDocument?.state.global.content ?? ""}
               onSave={(value) => {
@@ -91,8 +104,14 @@ export function ScopeForm({
 
           <div className={cn("flex flex-col gap-4")}>
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>
+              {preserveSpace &&
+                documentState.originalContextData.length === 0 && (
+                  <div className={cn("h-[63px]")} />
+                )}
               <MultiUrlForm
+                loading={loading}
                 viewMode={mode}
+                showAddField={showLastElement}
                 baselineValue={
                   baseDocument?.state.global.originalContextData ?? []
                 }
@@ -126,8 +145,12 @@ export function ScopeForm({
                 }}
               />
             </div>
+            {preserveSpace && documentState.originalContextData.length > 0 && (
+              <div className={cn("h-[36px]")} />
+            )}
             <div className={cn(getWidthClassName(isSplitMode ?? false))}>
               <GlobalTagsForm
+                loading={loading}
                 value={documentState.globalTags}
                 baselineValue={baseDocument?.state.global.globalTags ?? []}
                 onSave={(value) => {

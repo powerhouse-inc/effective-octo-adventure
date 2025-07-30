@@ -1,4 +1,6 @@
 import { useEffect, useCallback, useMemo, useState } from "react";
+import { FieldSkeleton } from "../field-skeleton.js";
+import { Skeleton } from "../ui/skeleton.js";
 import { ArrayField, type ArrayFieldProps } from "../ArrayField.js";
 import {
   UrlField,
@@ -16,12 +18,14 @@ interface MultiUrlFormProps
     ArrayFieldProps<string, UrlFieldProps>,
     "fields" | "componentProps" | "component"
   > {
+  loading?: boolean;
   data: CommonDataProps[];
   viewMode: ViewMode;
   baselineValue: string[];
 }
 
 const MultiUrlForm = ({
+  loading,
   label,
   data,
   onAdd,
@@ -29,6 +33,7 @@ const MultiUrlForm = ({
   onUpdate,
   viewMode,
   baselineValue,
+  showAddField,
 }: MultiUrlFormProps) => {
   // boolean flag to trigger callback recreation only when needed
   const [renderComponentTrigger, setRenderComponentTrigger] = useState(false);
@@ -53,23 +58,36 @@ const MultiUrlForm = ({
 
       if (props.name !== "item-new") {
         const fieldId = props.name?.replace("item-", "");
-        const element = data.find((d) => d.id === fieldId);
 
-        if (element !== undefined) {
-          baseValue = baselineValue.find(
-            (baseUrl) => baseUrl === element.value,
-          );
+        const elementIndex = data.findIndex((d) => d.id === fieldId);
+
+        if (elementIndex >= 0 && elementIndex < baselineValue.length) {
+          baseValue = baselineValue[elementIndex];
         }
       }
 
-      return (
+      const isFirstField =
+        (data.length === 0 && props.name === "item-new") ||
+        (props.name !== "item-new" &&
+          data.length > 0 &&
+          data[0].id === props.name?.replace("item-", ""));
+
+      return loading ? (
+        isFirstField ? (
+          <FieldSkeleton />
+        ) : (
+          <Skeleton />
+        )
+      ) : (
         <UrlField
           {...props}
           viewMode={viewMode}
-          diffMode={"sentences"}
           baseValue={baseValue}
           platformIcons={{
             "example.com": "File",
+          }}
+          style={{
+            paddingLeft: "32px",
           }}
         />
       );
@@ -88,6 +106,7 @@ const MultiUrlForm = ({
       onAdd={onAdd}
       onRemove={onRemove}
       onUpdate={onUpdate}
+      showAddField={showAddField}
       fields={data.map((element) => ({
         id: element.id,
         value: element.value,

@@ -1,3 +1,4 @@
+import { FieldSkeleton } from "../field-skeleton.js";
 import { useEffect, useState } from "react";
 import { MarkdownEditor } from "../markdown-editor.js";
 import { useFormMode } from "../../providers/FormModeProvider.js";
@@ -6,12 +7,14 @@ import { FakeInput } from "../diff-fields/fake-input.js";
 import { DiffText } from "../diff-text.js";
 
 interface MarkdownContentFormProps {
+  loading?: boolean;
   value: string;
   onSave: (newContent: string) => void;
   baselineValue: string;
 }
 
 const MarkdownContentForm: React.FC<MarkdownContentFormProps> = ({
+  loading,
   value: originalValue,
   onSave,
   baselineValue,
@@ -51,7 +54,9 @@ const MarkdownContentForm: React.FC<MarkdownContentFormProps> = ({
     );
   }
 
-  return (
+  return loading ? (
+    <FieldSkeleton className="h-[350px]" />
+  ) : (
     <div className="flex flex-col gap-2">
       <FormLabel disabled={true}>Content</FormLabel>
       <FakeInput multiline rows={14.6}>

@@ -20,6 +20,8 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
             const docId: string = args.docId || "";
             const doc = await reactor.getDocument(driveId, docId);
             return {
+              // @ts-ignore
+              id: docId,
               driveId: driveId,
               ...doc,
               state: doc?.state.global,
@@ -34,6 +36,8 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
               (docsIds ?? []).map(async (docId) => {
                 const doc = await reactor.getDocument(driveId, docId);
                 return {
+                  // @ts-ignore
+                  id: docId,
                   driveId: driveId,
                   ...doc,
                   state: doc?.state.global,

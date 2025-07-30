@@ -12,6 +12,7 @@ import {
   ViewModeContext,
   ViewModeProvider,
 } from "../providers/ViewModeProvider.js";
+import { BaseDocumentCacheProvider } from "../providers/BaseDocumentCacheProvider.js";
 
 export type ChildrenFn = ({
   isSplitMode,
@@ -151,8 +152,10 @@ export const EditorLayout = (props: EditorLayoutProps) => {
 
   // if there is no ViewModeProvider, wrap with a new one
   return (
-    <ViewModeProvider>
-      <EditorLayoutContent {...props} />
-    </ViewModeProvider>
+    <BaseDocumentCacheProvider>
+      <ViewModeProvider>
+        <EditorLayoutContent {...props} />
+      </ViewModeProvider>
+    </BaseDocumentCacheProvider>
   );
 };

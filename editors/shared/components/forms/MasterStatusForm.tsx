@@ -1,19 +1,24 @@
+import { FieldSkeleton } from "../field-skeleton.js";
 import { GenericEnumForm } from "./generics/GenericEnumForm.js";
 import type { Maybe } from "document-model";
 import { type FStatus } from "../../../../document-models/atlas-foundation/index.js";
 
 interface MasterStatusFormProps {
+  loading?: boolean;
   value: Maybe<string>;
   baselineValue: Maybe<string>;
   onSave: (value: FStatus) => void;
 }
 
 const MasterStatusForm = ({
+  loading,
   value,
   baselineValue,
   onSave,
 }: MasterStatusFormProps) => {
-  return (
+  return loading ? (
+    <FieldSkeleton />
+  ) : (
     <GenericEnumForm
       label="Status"
       placeholder="Status"

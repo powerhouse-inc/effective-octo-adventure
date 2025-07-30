@@ -4,6 +4,7 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
+  shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import type { IProps } from "../editor.js";
@@ -25,7 +26,8 @@ import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import { transformUrl } from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
-import { useBaseDocument } from "../../shared/hooks/useBaseDocument.js";
+import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
+import { useElementVisibility } from "../../shared/hooks/useElementVisibility.js";
 
 interface MultiParentFormProps
   extends Pick<IProps, "context" | "document" | "dispatch"> {
@@ -46,7 +48,22 @@ export function MultiParentForm({
 
   const fetchOptionsCallback = useParentOptions("sky/atlas-multiparent");
 
-  const baseDocument = useBaseDocument(document, context);
+  const baseDocument = useBaseDocumentCached(document, context);
+  const loading = shouldShowSkeleton(mode, baseDocument);
+
+  const { preserveSpace, showLastElement } = useElementVisibility({
+    mode,
+    isSplitMode,
+    contextDataLength: documentState?.originalContextData?.length ?? 0,
+  });
+  const {
+    preserveSpace: preserveSpaceParents,
+    showLastElement: showLastElementParents,
+  } = useElementVisibility({
+    mode,
+    isSplitMode,
+    contextDataLength: documentState.parents.length ?? 0,
+  });
 
   return (
     <FormModeProvider mode={mode}>
@@ -55,6 +72,7 @@ export function MultiParentForm({
           <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
             <div className={cn("flex-1")}>
               <DocNameForm
+                loading={loading}
                 value={documentState.name}
                 baselineValue={baseDocument?.state.global.name ?? ""}
                 onSave={(value) => {
@@ -68,6 +86,7 @@ export function MultiParentForm({
             </div>
             <div className={cn("flex-1")}>
               <DocTypeForm
+                loading={loading}
                 value={documentState.atlasType}
                 baselineValue={baseDocument?.state.global.atlasType ?? ""}
                 options={[
@@ -85,6 +104,7 @@ export function MultiParentForm({
           <div className={getWidthClassName(isSplitMode ?? false, "flex-1/2")}>
             <div className={cn("flex-1")}>
               <MasterStatusForm
+                loading={loading}
                 value={documentState.masterStatus}
                 baselineValue={baseDocument?.state.global.masterStatus ?? ""}
                 onSave={(value) => {
@@ -95,6 +115,7 @@ export function MultiParentForm({
           </div>
           <div className={cn("flex-1 min-h-[350px]")}>
             <MarkdownContentForm
+              loading={loading}
               value={documentState.content ?? ""}
               baselineValue={baseDocument?.state.global.content ?? ""}
               onSave={(value) => {
@@ -110,6 +131,8 @@ export function MultiParentForm({
             )}
           >
             <MultiPhIdForm
+              loading={loading}
+              showAddField={showLastElementParents}
               label="Parent Documents"
               data={documentState.parents.map((element) => {
                 const initialOption: PHIDOption = {
@@ -138,6 +161,12 @@ export function MultiParentForm({
                     id: newId,
                     title: newData?.title ?? "",
                     documentType: documentType ?? "",
+                    docNo:
+                      newData &&
+                      typeof newData === "object" &&
+                      "docNo" in newData
+                        ? (newData as { docNo?: string }).docNo
+                        : undefined,
                   }),
                 );
               }}
@@ -159,13 +188,28 @@ export function MultiParentForm({
                     id: newId,
                     title: newData?.title ?? "",
                     documentType: documentType ?? "",
+                    docNo:
+                      newData &&
+                      typeof newData === "object" &&
+                      "docNo" in newData
+                        ? (newData as { docNo?: string }).docNo
+                        : undefined,
                   }),
                 );
               }}
             />
+            {preserveSpaceParents && documentState.parents.length !== 0 && (
+              <div className={cn("h-[92px]")} />
+            )}
+            {preserveSpace &&
+              documentState.originalContextData.length === 0 && (
+                <div className={cn("h-[63px]")} />
+              )}
 
             <MultiUrlForm
+              loading={loading}
               viewMode={mode}
+              showAddField={showLastElement}
               baselineValue={
                 baseDocument?.state.global.originalContextData ?? []
               }
@@ -198,8 +242,11 @@ export function MultiParentForm({
                 );
               }}
             />
-
+            {preserveSpace && documentState.originalContextData.length > 0 && (
+              <div className={cn("h-[36px]")} />
+            )}
             <GlobalTagsForm
+              loading={loading}
               value={documentState.globalTags}
               baselineValue={baseDocument?.state.global.globalTags ?? []}
               onSave={(value) => {

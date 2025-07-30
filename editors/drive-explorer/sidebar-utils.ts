@@ -20,7 +20,7 @@ export function buildSidebarTree(
         icon: "FolderClose",
         expandedIcon: "FolderOpen",
       };
-    } else if (type === "neededResearch") {
+    } else if (type === "needed_research") {
       icons = {
         icon: "Tube",
       };
@@ -34,20 +34,28 @@ export function buildSidebarTree(
       };
     }
 
-    const status = nodeStatusMap[key] || ("UNCHANGED" as NodeStatus);
-    // get the right title for the node depending on the document type
-    const title =
-      "sky/atlas-set" === node.documentType
-        ? node.global.name
-        : "sky/atlas-multiparent" === node.documentType
-          ? `${(node.global as unknown as AtlasMultiParentState).parents?.[0]?.docNo} - ${node.global.name}`
-          : `${node.global?.docNo} - ${node.global.name}`;
+    let status = "UNCHANGED";
+
+    if (!node.global.notionId) {
+      status = "CREATED";
+    } else if (node.revision.global > 7) {
+      status = "MODIFIED";
+    }
+
+    let title = `${node.global?.docNo || "Doc No"} - ${node.global.name || "Name"}`;
+    if (node.documentType === "sky/atlas-multiparent") {
+      title = node.global.name || "Name";
+    }
+    const isNewDocs = node.global?.docNo === "" && node.global.name === "";
+    // check if the document is a new document with no docNo in the name to add placeholder
+    const isNewDocsWithNoDocNoInTitle = isNewDocs;
 
     nodesById[key] = {
       id: key,
       title,
       children: [],
-      status,
+      status: status as NodeStatus,
+      className: isNewDocsWithNoDocNoInTitle ? "italic" : "",
       ...icons,
     };
   }
@@ -59,7 +67,13 @@ export function buildSidebarTree(
         .parents;
       if (parents && parents.length > 0) {
         for (const parent of parents) {
-          nodesById[parent.id]?.children?.push(nodesById[key]);
+          const nodeWithCorrectTitle = {
+            ...nodesById[key],
+            title: parent.docNo
+              ? `${parent.docNo} - ${value.global.name || "Name"}`
+              : `${value.global.name || "Name"}`,
+          };
+          nodesById[parent.id]?.children?.push(nodeWithCorrectTitle);
         }
       }
     } else if (

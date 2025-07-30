@@ -1,4 +1,6 @@
 import { useEffect, useCallback, useMemo, useState } from "react";
+import { FieldSkeleton } from "../field-skeleton.js";
+import { Skeleton } from "../ui/skeleton.js";
 import { ArrayField, type ArrayFieldProps } from "../ArrayField.js";
 import { useFormMode } from "../../providers/FormModeProvider.js";
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
@@ -18,12 +20,15 @@ interface MultiPhIdFormProps
     ArrayFieldProps<string, PHIDFieldProps>,
     "fields" | "componentProps" | "component"
   > {
+  loading?: boolean;
   data: CommonDataProps[];
   fetchOptionsCallback: (value: string) => PHIDOption[];
   baselineValue: MDocumentLink[];
+  showAddField: boolean;
 }
 
 const MultiPhIdForm = ({
+  loading,
   label,
   data,
   onAdd,
@@ -31,6 +36,7 @@ const MultiPhIdForm = ({
   onUpdate,
   fetchOptionsCallback,
   baselineValue,
+  showAddField,
 }: MultiPhIdFormProps) => {
   const viewMode = useFormMode();
   // boolean flag to trigger callback recreation only when needed
@@ -55,7 +61,11 @@ const MultiPhIdForm = ({
     (props: PHIDFieldProps) => {
       // the new item not have initialOptions
       if (props.name === "item-new") {
-        return <PHIDField {...props} />;
+        return loading ? (
+          <FieldSkeleton className="h-[92px]" />
+        ) : (
+          <PHIDField {...props} />
+        );
       }
 
       // for existing fields, use the initialOptions of the corresponding element
@@ -66,7 +76,16 @@ const MultiPhIdForm = ({
         (baseItem) => baseItem.id === fieldId,
       );
 
-      return (
+      const isFirstField =
+        data.length > 0 && data[0].id === props.name?.replace("item-", "");
+
+      return loading ? (
+        isFirstField ? (
+          <FieldSkeleton className="h-[92px]" />
+        ) : (
+          <Skeleton className="h-[92px]" />
+        )
+      ) : (
         <PHIDField
           {...props}
           initialOptions={element?.initialOptions}
@@ -91,6 +110,7 @@ const MultiPhIdForm = ({
       onAdd={onAdd}
       onRemove={onRemove}
       onUpdate={onUpdate}
+      showAddField={showAddField}
       fields={data.map((element) => ({
         id: element.id,
         value: element.id,

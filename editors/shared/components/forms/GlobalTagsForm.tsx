@@ -1,3 +1,4 @@
+import { FieldSkeleton } from "../field-skeleton.js";
 import { type SelectOption } from "@powerhousedao/document-engineering/ui";
 import { GenericEnumForm } from "./generics/GenericEnumForm.js";
 import type { Maybe } from "document-model";
@@ -11,12 +12,14 @@ interface RawTag {
 }
 
 interface GlobalTagsFormProps {
+  loading?: boolean;
   value: Maybe<string[]>;
   baselineValue: Maybe<string[]>;
   onSave: (value: string[]) => void;
 }
 
 const GlobalTagsForm = ({
+  loading,
   value,
   baselineValue,
   onSave,
@@ -31,7 +34,9 @@ const GlobalTagsForm = ({
     );
   }, []);
 
-  return (
+  return loading ? (
+    <FieldSkeleton />
+  ) : (
     <GenericEnumForm
       label="Tags"
       placeholder="Tags"

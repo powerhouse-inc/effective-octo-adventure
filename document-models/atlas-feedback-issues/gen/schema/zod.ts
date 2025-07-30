@@ -41,11 +41,9 @@ export function AtlasFeedbackCommentSchema(): z.ZodObject<
     __typename: z.literal("AtlasFeedbackComment").optional(),
     content: z.string(),
     createdAt: z.string().datetime(),
-    creatorAddress: z
-      .string()
-      .regex(/^0x[a-fA-F0-9]{40}$/, {
-        message: "Invalid Ethereum address format",
-      }),
+    creatorAddress: z.string().regex(/^0x[a-fA-F0-9]{40}$/, {
+      message: "Invalid Ethereum address format",
+    }),
     lastEditedAt: z.string().datetime(),
     notionId: z.string(),
     phid: z.string(),
@@ -59,11 +57,9 @@ export function AtlasFeedbackIssueSchema(): z.ZodObject<
     __typename: z.literal("AtlasFeedbackIssue").optional(),
     comments: z.array(AtlasFeedbackCommentSchema()),
     createdAt: z.string().datetime(),
-    creatorAddress: z
-      .string()
-      .regex(/^0x[a-fA-F0-9]{40}$/, {
-        message: "Invalid Ethereum address format",
-      }),
+    creatorAddress: z.string().regex(/^0x[a-fA-F0-9]{40}$/, {
+      message: "Invalid Ethereum address format",
+    }),
     notionIds: z.array(z.string()),
     phid: z.string(),
   });

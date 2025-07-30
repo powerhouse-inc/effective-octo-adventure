@@ -7,14 +7,25 @@ import {
 import type { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
 import path from "path";
 import fs from "fs";
-import { type IconName } from "@powerhousedao/design-system";
+import { type IconName } from "@powerhousedao/document-engineering/ui";
+import { fetchAllData } from "../scripts/fetch-data/fetch.js";
 
 /**
  * Returns the atlas data from the local file system dynamically.
  */
 export const getAtlasData = async () => {
   const __dirname = path.dirname(new URL(import.meta.url).pathname);
+
+  // if the data is not available, fetch it
+  if (
+    !fs.existsSync(path.resolve(__dirname, "../data/atlas-data-extended.json"))
+  ) {
+    console.log("Fetching Atlas Data");
+    await fetchAllData();
+  }
+
   const jsonPath = path.resolve(__dirname, "../data/atlas-data-extended.json");
+  console.log(`Reading Atlas Data from file: ${jsonPath}`);
   const raw = fs.readFileSync(jsonPath, "utf-8");
   return JSON.parse(raw) as ViewNodeExtended[];
 };

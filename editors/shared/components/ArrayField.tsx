@@ -29,6 +29,7 @@ export interface ArrayFieldProps<TValue, TProps> {
   label: string;
   component: (props: TProps) => React.ReactNode;
   componentProps: TProps;
+  showAddField?: boolean;
 }
 
 const ArrayField = <TValue, TProps>({
@@ -39,57 +40,52 @@ const ArrayField = <TValue, TProps>({
   label,
   component: Component,
   componentProps,
+  showAddField = true,
 }: ArrayFieldProps<TValue, TProps>) => {
   const formRef = useRef<UseFormReturn<FieldValues>>(null);
 
-  const onSubmit = (data: Record<`item-${number}` | "item-new", TValue>) => {
-    for (const [key, value] of Object.entries(data)) {
-      if (key === "item-new") continue;
+  const onSubmit = (data: Record<string, TValue>) => {
+    fields.forEach((field, index) => {
+      const formKey = `item-${field.id}`;
+      if (!(formKey in data)) {
+        return;
+      }
 
-      const id = key.replace("item-", "");
-      const field = fields.find((f) => f.id === id)!;
-      const fieldIndex = fields.indexOf(field);
-      if (value !== field?.value) {
-        if (value === "" || value === null) {
-          // remove the items when the value changes to empty
-          onRemove({
-            value: field.value,
-            id: field.id,
-            index: fieldIndex,
-          }); // remove original value
+      const formValue = data[formKey];
 
-          // unregister the field as it will be removed
-          formRef.current?.unregister(`item-${field.id}`);
+      if (formValue !== field.value) {
+        if (formValue === "" || formValue === null) {
+          onRemove({ value: field.value, id: field.id, index });
+          formRef.current?.unregister(formKey);
         } else {
-          // update the item if the value changed
           onUpdate({
             previousValue: field.value,
-            value,
+            value: formValue,
             id: field.id,
-            index: fieldIndex,
+            index,
           });
         }
-        break;
       }
-    }
-    if (data["item-new"]) {
-      // create a new field/item
+    });
+    if (data["item-new"] && showAddField) {
       onAdd(data["item-new"]);
-      formRef.current?.reset({ "item-new": "" }); // reset to empty to allow adding another items
+      formRef.current?.resetField("item-new", { defaultValue: "" });
     }
   };
 
   // create a default values object with the values and the new item
   const defaultValues = useMemo(() => {
+    const fieldValues = fields
+      .map((field) => ({
+        [`item-${field.id}`]: field.value,
+      }))
+      .reduce((acc, curr) => ({ ...acc, ...curr }), {});
+
     return {
-      ...fields
-        .map((field) => ({
-          [`item-${field.id}`]: field.value,
-        }))
-        .reduce((acc, curr) => ({ ...acc, ...curr }), {}),
-      [`item-new`]: "",
+      ...fieldValues,
+      ...(showAddField ? { [`item-new`]: "" } : {}),
     };
-  }, [fields]);
+  }, [fields, showAddField]);
 
   // update the form in case the field name changes due to the number of items
   // also keep in sync the values with the state of the form
@@ -122,15 +118,15 @@ const ArrayField = <TValue, TProps>({
               required={false}
             />
           ))}
-
-          {/* Add field */}
-          <Component
-            {...componentProps}
-            label={fields.length === 0 ? label : undefined}
-            name="item-new"
-            onBlur={triggerSubmit}
-            required={false}
-          />
+          {showAddField && (
+            <Component
+              {...componentProps}
+              label={fields.length === 0 ? label : undefined}
+              name="item-new"
+              onBlur={triggerSubmit}
+              required={false}
+            />
+          )}
         </div>
       )}
     </Form>

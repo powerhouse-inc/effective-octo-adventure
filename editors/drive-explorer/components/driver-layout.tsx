@@ -18,14 +18,15 @@ import {
 } from "@powerhousedao/reactor-browser";
 import { type AtlasFeedbackIssue, type AtlasArticle } from "./types.js";
 import { EditorContainer } from "./EditorContainer.js";
-import { type DocumentModelModule, type EditorContext } from "document-model";
+import { type DocumentModelModule } from "document-model";
 import { CreateDocument } from "./create-document.js";
 import { Home } from "./home.js";
 import { documentModel as AtlasFeedbackIssues } from "../../../document-models/atlas-feedback-issues/gen/document-model.js";
 import type { GetDocumentOptions, Node } from "document-drive";
 import { ShareDrive } from "../../shared/components/share-drive.js";
 import { buildSidebarTree } from "../sidebar-utils.js";
-import { useNodeStatusMap } from "../hooks/index.js";
+import { BaseDocumentCacheProvider } from "../../shared/providers/BaseDocumentCacheProvider.js";
+import { ViewModeProvider } from "../../shared/providers/ViewModeProvider.js";
 
 export interface DriverLayoutProps {
   readonly driveId: string;
@@ -156,109 +157,122 @@ export function DriverLayout({
     : null;
 
   return (
-    <SidebarProvider>
-      <ToastContainer position="bottom-right"></ToastContainer>
-      <main className="flex overflow-hidden h-full">
-        <Sidebar
-          className="flex-0"
-          activeNodeId={activeNodeId}
-          enableMacros={4}
-          nodes={nodes}
-          onActiveNodeChange={onActiveNodeChange}
-          showStatusFilter
-          sidebarIcon={
-            <div className="flex items-center justify-center rounded-md bg-gray-900 p-2">
-              <Icon className="text-gray-50" name="M" size={16} />
-            </div>
-          }
-          sidebarTitle="Atlas"
-        />
-        <div className="flex-1 bg-gray-50 p-4 dark:bg-slate-800 overflow-y-auto">
-          <>
-            {activeNodeId && documentModelModule && editorModule ? (
-              <EditorContainer
-                context={{
-                  ...context,
-                  getDocumentRevision: onGetDocumentRevision,
-                }}
-                documentId={activeNodeId}
-                documentType={state[activeNodeId].documentType}
-                driveId={driveId}
-                key={activeNodeId}
-                onClose={onEditorClose}
-                title={title}
-                documentModelModule={documentModelModule}
-                editorModule={editorModule}
-              />
-            ) : (
-              <>
-                <div className="flex items-center justify-between mt-1 mb-4 px-1">
-                  <h1 className="text-lg text-gray-900 font-medium dark:text-gray-50">
-                    {title}
-                  </h1>
-                  {driveUrl && <ShareDrive driveUrl={driveUrl} />}
+    <BaseDocumentCacheProvider>
+      <ViewModeProvider>
+        <SidebarProvider>
+          <ToastContainer position="bottom-right"></ToastContainer>
+          <main className="flex overflow-hidden h-full">
+            <Sidebar
+              activeNodeId={activeNodeId}
+              enableMacros={4}
+              nodes={nodes}
+              onActiveNodeChange={onActiveNodeChange}
+              showStatusFilter
+              sidebarIcon={
+                <div className="flex items-center justify-center rounded-md bg-gray-900 p-2">
+                  <Icon className="text-gray-50" name="M" size={16} />
                 </div>
-                <Home driveId={driveId}>
-                  {Object.entries(feedbackIssues).length > 0 && (
-                    <div className="my-4 px-6">
-                      <h2 className="mb-3 mt-4 text-sm font-bold text-gray-600">
-                        Feedback Issues
-                      </h2>
-                      <div className="flex flex-wrap gap-4">
-                        {Object.entries(feedbackIssues).map(([id, issue]) => (
-                          <FileItem
-                            key={id}
-                            uiNode={{
-                              kind: "FILE",
-                              id,
-                              name:
-                                driveNodes.find((node) => node.id === id)
-                                  ?.name || "",
-                              documentType: issue.documentType,
-                              parentFolder: "",
-                              driveId,
-                              syncStatus: undefined,
-                            }}
-                            onSelectNode={(node) => setActiveNodeId(node.id)}
-                            isAllowedToCreateDocuments={false}
-                            onRenameNode={function (
-                              name: string,
-                              uiNode: BaseUiFileNode,
-                            ): void {
-                              throw new Error("Function not implemented.");
-                            }}
-                            onDuplicateNode={function (
-                              uiNode: BaseUiFileNode,
-                            ): void {
-                              throw new Error("Function not implemented.");
-                            }}
-                            onDeleteNode={function (
-                              uiNode: BaseUiFileNode,
-                            ): void {
-                              throw new Error("Function not implemented.");
-                            }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  <CreateDocument
-                    /* @ts-expect-error */
-                    createDocument={onSelectDocumentModel}
-                    documentModels={filteredDocumentModels}
-                  />
-                </Home>
-              </>
-            )}
-            {children}
-            <CreateDocumentModal
-              onContinue={onCreateDocument}
-              onOpenChange={(open) => setOpenModal(open)}
-              open={openModal}
+              }
+              sidebarTitle="Atlas"
             />
-          </>
-        </div>
-      </main>
-    </SidebarProvider>
+            <div className="flex-1 bg-gray-50 p-4 dark:bg-slate-800 overflow-y-auto">
+              <>
+                {activeNodeId && documentModelModule && editorModule ? (
+                  <EditorContainer
+                    context={{
+                      ...context,
+                      getDocumentRevision: onGetDocumentRevision,
+                    }}
+                    documentId={activeNodeId}
+                    documentType={state[activeNodeId].documentType}
+                    driveId={driveId}
+                    key={activeNodeId}
+                    onClose={onEditorClose}
+                    title={title}
+                    documentModelModule={documentModelModule}
+                    editorModule={editorModule}
+                  />
+                ) : (
+                  <>
+                    <div className="flex items-center justify-between mt-1 mb-4 px-1">
+                      <h1 className="text-lg text-gray-900 font-medium dark:text-gray-50">
+                        {title}
+                      </h1>
+                      {driveUrl && <ShareDrive driveUrl={driveUrl} />}
+                    </div>
+                    <Home driveId={driveId}>
+                      {Object.entries(feedbackIssues).length > 0 && (
+                        <div className="my-4 px-6">
+                          <h2 className="mb-3 mt-4 text-sm font-bold text-gray-600">
+                            Feedback Issues
+                          </h2>
+                          <div className="flex flex-wrap gap-4">
+                            {Object.entries(feedbackIssues).map(
+                              ([id, issue]) => (
+                                <FileItem
+                                  key={id}
+                                  uiNode={{
+                                    kind: "FILE",
+                                    id,
+                                    name:
+                                      driveNodes.find((node) => node.id === id)
+                                        ?.name || "",
+                                    documentType: issue.documentType,
+                                    parentFolder: "",
+                                    driveId,
+                                    syncStatus: undefined,
+                                  }}
+                                  onSelectNode={(node) =>
+                                    setActiveNodeId(node.id)
+                                  }
+                                  isAllowedToCreateDocuments={false}
+                                  onRenameNode={function (
+                                    name: string,
+                                    uiNode: BaseUiFileNode,
+                                  ): void {
+                                    throw new Error(
+                                      "Function not implemented.",
+                                    );
+                                  }}
+                                  onDuplicateNode={function (
+                                    uiNode: BaseUiFileNode,
+                                  ): void {
+                                    throw new Error(
+                                      "Function not implemented.",
+                                    );
+                                  }}
+                                  onDeleteNode={function (
+                                    uiNode: BaseUiFileNode,
+                                  ): void {
+                                    throw new Error(
+                                      "Function not implemented.",
+                                    );
+                                  }}
+                                />
+                              ),
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      <CreateDocument
+                        /* @ts-expect-error */
+                        createDocument={onSelectDocumentModel}
+                        documentModels={filteredDocumentModels}
+                      />
+                    </Home>
+                  </>
+                )}
+                {children}
+                <CreateDocumentModal
+                  onContinue={onCreateDocument}
+                  onOpenChange={(open) => setOpenModal(open)}
+                  open={openModal}
+                />
+              </>
+            </div>
+          </main>
+        </SidebarProvider>
+      </ViewModeProvider>
+    </BaseDocumentCacheProvider>
   );
 }

@@ -4,6 +4,7 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
+  shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
@@ -26,7 +27,8 @@ import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 import { transformUrl } from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
-import { useBaseDocument } from "../../shared/hooks/useBaseDocument.js";
+import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
+import { useElementVisibility } from "../../shared/hooks/useElementVisibility.js";
 
 interface GroundingFormProps
   extends Pick<IProps, "context" | "document" | "dispatch"> {
@@ -65,7 +67,14 @@ export function GroundingForm({
     parent: parentId,
   };
 
-  const baseDocument = useBaseDocument(document, context);
+  const baseDocument = useBaseDocumentCached(document, context);
+  const loading = shouldShowSkeleton(mode, baseDocument);
+
+  const { preserveSpace, showLastElement } = useElementVisibility({
+    mode,
+    isSplitMode,
+    contextDataLength: documentState?.originalContextData?.length ?? 0,
+  });
 
   return (
     <FormModeProvider mode={mode}>
@@ -74,6 +83,7 @@ export function GroundingForm({
           <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
             <div className={cn("flex-1")}>
               <DocNoForm
+                loading={loading}
                 value={documentState.docNo}
                 baselineValue={baseDocument?.state.global.docNo ?? ""}
                 onSave={(value) => {
@@ -83,6 +93,7 @@ export function GroundingForm({
             </div>
             <div className={cn("flex-1")}>
               <DocNameForm
+                loading={loading}
                 value={documentState.name}
                 baselineValue={baseDocument?.state.global.name ?? ""}
                 onSave={(value) => {
@@ -98,6 +109,7 @@ export function GroundingForm({
           <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
             <div className={cn("flex-1")}>
               <DocTypeForm
+                loading={loading}
                 value={documentState.atlasType}
                 baselineValue={baseDocument?.state.global.atlasType ?? ""}
                 options={[
@@ -117,6 +129,7 @@ export function GroundingForm({
             </div>
             <div className={cn("flex-1")}>
               <MasterStatusForm
+                loading={loading}
                 value={documentState.masterStatus}
                 baselineValue={baseDocument?.state.global.masterStatus ?? ""}
                 onSave={(value) => {
@@ -127,6 +140,7 @@ export function GroundingForm({
           </div>
           <div className={cn("flex-1 min-h-[350px]")}>
             <MarkdownContentForm
+              loading={loading}
               value={documentState.content ?? ""}
               baselineValue={baseDocument?.state.global.content ?? ""}
               onSave={(value) => {
@@ -142,6 +156,7 @@ export function GroundingForm({
             )}
           >
             <SinglePhIdForm
+              loading={loading}
               label="Parent Document"
               value={documentState.parent}
               fetchOptionsCallback={fetchOptionsCallback}
@@ -180,8 +195,13 @@ export function GroundingForm({
               }}
               initialOptions={[parentPHIDInitialOption]}
             />
-
+            {preserveSpace &&
+              documentState.originalContextData.length === 0 && (
+                <div className={cn("h-[63px]")} />
+              )}
             <MultiUrlForm
+              loading={loading}
+              showAddField={showLastElement}
               viewMode={mode}
               baselineValue={
                 baseDocument?.state.global.originalContextData ?? []
@@ -216,7 +236,11 @@ export function GroundingForm({
               }}
             />
 
+            {preserveSpace && documentState.originalContextData.length > 0 && (
+              <div className={cn("h-[36px]")} />
+            )}
             <GlobalTagsForm
+              loading={loading}
               value={documentState.globalTags}
               baselineValue={baseDocument?.state.global.globalTags ?? []}
               onSave={(value) => {

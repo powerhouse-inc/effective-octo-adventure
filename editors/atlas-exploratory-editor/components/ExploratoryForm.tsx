@@ -4,8 +4,9 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
+  shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
-import { type PHIDOption } from "@powerhousedao/document-engineering";
+import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import { DocNoForm } from "../../shared/components/forms/DocNoForm.js";
 import type { IProps } from "../editor.js";
@@ -28,7 +29,9 @@ import {
 import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 import { transformUrl } from "../../shared/utils/utils.js";
-import { useBaseDocument } from "../../shared/hooks/useBaseDocument.js";
+import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
+import { Skeleton } from "../../shared/components/ui/skeleton.js";
+import { useElementVisibility } from "../../shared/hooks/useElementVisibility.js";
 
 interface ExploratoryFormProps
   extends Pick<IProps, "context" | "document" | "dispatch"> {
@@ -69,7 +72,14 @@ export function ExploratoryForm({
     parent: parentId,
   };
 
-  const baseDocument = useBaseDocument(document, context);
+  const baseDocument = useBaseDocumentCached(document, context);
+  const loading = shouldShowSkeleton(mode, baseDocument);
+
+  const { preserveSpace, showLastElement } = useElementVisibility({
+    mode,
+    isSplitMode,
+    contextDataLength: documentState?.originalContextData?.length ?? 0,
+  });
 
   return (
     <FormModeProvider mode={mode}>
@@ -78,6 +88,7 @@ export function ExploratoryForm({
           <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
             <div className={cn("flex-1")}>
               <DocNoForm
+                loading={loading}
                 value={documentState.docNo}
                 baselineValue={baseDocument?.state.global.docNo ?? ""}
                 onSave={(value) => {
@@ -87,6 +98,7 @@ export function ExploratoryForm({
             </div>
             <div className={cn("flex-1")}>
               <DocNameForm
+                loading={loading}
                 value={documentState.name}
                 baselineValue={baseDocument?.state.global.name ?? ""}
                 onSave={(value) => {
@@ -102,6 +114,7 @@ export function ExploratoryForm({
           <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
             <div className={cn("flex-1")}>
               <DocTypeForm
+                loading={loading}
                 value={documentState.atlasType}
                 baselineValue={baseDocument?.state.global.atlasType ?? ""}
                 options={[
@@ -120,6 +133,7 @@ export function ExploratoryForm({
             </div>
             <div className={cn("flex-1")}>
               <MasterStatusForm
+                loading={loading}
                 value={documentState.masterStatus}
                 baselineValue={baseDocument?.state.global.masterStatus ?? ""}
                 onSave={(value) => {
@@ -130,6 +144,7 @@ export function ExploratoryForm({
           </div>
           <div className={cn("flex-1 min-h-[350px]")}>
             <MarkdownContentForm
+              loading={loading}
               value={documentState.content ?? ""}
               baselineValue={baseDocument?.state.global.content ?? ""}
               onSave={(value) => {
@@ -145,6 +160,7 @@ export function ExploratoryForm({
             )}
           >
             <SinglePhIdForm
+              loading={loading}
               label="Parent Document"
               value={documentState.parent}
               fetchOptionsCallback={fetchOptionsCallback}
@@ -187,26 +203,31 @@ export function ExploratoryForm({
 
           <div className="flex flex-row justify-end items-center gap-2">
             <div className="flex items-center gap-2">
-              <Toggle
-                value={documentState.findings.isAligned}
-                baseValue={baseDocument?.state.global.findings.isAligned}
-                optionalLabel="Misaligned"
-                viewMode={mode}
-                label="Aligned"
-                disabled={mode !== "edition"}
-                name="findings.isAligned"
-                onChange={() => {
-                  dispatch(
-                    actions.setFindings({
-                      isAligned: !documentState.findings.isAligned,
-                    }),
-                  );
-                }}
-              />
+              {loading ? (
+                <Skeleton className="h-[22px]" />
+              ) : (
+                <Toggle
+                  value={documentState.findings.isAligned}
+                  baseValue={baseDocument?.state.global.findings.isAligned}
+                  optionalLabel="Misaligned"
+                  viewMode={mode}
+                  label="Aligned"
+                  disabled={mode !== "edition"}
+                  name="findings.isAligned"
+                  onChange={() => {
+                    dispatch(
+                      actions.setFindings({
+                        isAligned: !documentState.findings.isAligned,
+                      }),
+                    );
+                  }}
+                />
+              )}
             </div>
           </div>
 
           <AdditionalGuidance
+            loading={loading}
             value={documentState.additionalGuidance}
             baselineValue={baseDocument?.state.global.additionalGuidance ?? ""}
             onSave={(value) => {
@@ -224,8 +245,14 @@ export function ExploratoryForm({
               getWidthClassName(!!isSplitMode),
             )}
           >
+            {preserveSpace &&
+              documentState.originalContextData.length === 0 && (
+                <div className={cn("h-[63px]")} />
+              )}
             <MultiUrlForm
+              loading={loading}
               viewMode={mode}
+              showAddField={showLastElement}
               baselineValue={
                 baseDocument?.state.global.originalContextData ?? []
               }
@@ -258,8 +285,12 @@ export function ExploratoryForm({
                 );
               }}
             />
+            {preserveSpace && documentState.originalContextData.length > 0 && (
+              <div className={cn("h-[36px]")} />
+            )}
 
             <GlobalTagsForm
+              loading={loading}
               value={documentState.globalTags}
               baselineValue={baseDocument?.state.global.globalTags ?? []}
               onSave={(value) => {

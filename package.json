@@ -1,6 +1,6 @@
 {
   "name": "@sky-ph/atlas",
-  "version": "1.2.39",
+  "version": "1.4.1",
   "license": "AGPL-3.0-only",
   "type": "module",
   "publishConfig": {
@@ -44,6 +44,9 @@
     },
     "./style.css": "./dist/style.css"
   },
+  "bin": {
+    "script:fetch-data": "./dist/scripts/fetch-data/script.js"
+  },
   "scripts": {
     "lint": "eslint .",
     "build:tsc": "tsc",
@@ -62,17 +65,17 @@
     "service-startup": "bash ./node_modules/@powerhousedao/ph-cli/dist/scripts/service-startup.sh",
     "service-unstartup": "bash ./node_modules/@powerhousedao/ph-cli/dist/scripts/service-unstartup.sh",
     "script:apply-changes": "bun run ./scripts/apply-changes.ts",
-    "script:fetch-data": "bun run ./scripts/fetch-data.ts",
+    "script:fetch-data": "bun run ./scripts/fetch-data/script.ts",
     "script:generate-gql-clients": "bun run ./scripts/gen-clients.ts",
     "script:generate-all": "bash ./docmodel-zips/generate-all.sh",
-    "script:generate-db-types": "bun run ./scripts/generate-db-types.ts"
+    "release": "semantic-release"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
-    "@powerhousedao/common": "dev",
-    "@powerhousedao/design-system": "dev",
-    "@powerhousedao/document-engineering": "1.6.0",
-    "@powerhousedao/reactor-browser": "dev",
+    "@powerhousedao/common": "latest",
+    "@powerhousedao/design-system": "latest",
+    "@powerhousedao/document-engineering": "1.22.0",
+    "@powerhousedao/reactor-browser": "latest",
     "@radix-ui/react-dialog": "^1.1.7",
     "@radix-ui/react-dropdown-menu": "^2.1.7",
     "@radix-ui/react-label": "^2.1.3",
@@ -84,8 +87,8 @@
     "cmdk": "^1.1.1",
     "date-fns-tz": "^3.2.0",
     "diff": "^7.0.0",
-    "document-drive": "dev",
-    "document-model": "dev",
+    "document-drive": "latest",
+    "document-model": "latest",
     "graphql-ts-client": "^10.4.0",
     "knex": "^3.1.0",
     "kysely": "^0.28.2",
@@ -112,13 +115,16 @@
   "devDependencies": {
     "@electric-sql/pglite": "^0.2.12",
     "@eslint/js": "^9.24.0",
-    "@powerhousedao/analytics-engine-core": "^0.5.0",
-    "@powerhousedao/builder-tools": "dev",
-    "@powerhousedao/codegen": "dev",
-    "@powerhousedao/ph-cli": "dev",
-    "@powerhousedao/reactor-api": "dev",
-    "@powerhousedao/reactor-local": "dev",
+    "@powerhousedao/analytics-engine-core": "^0.4.0",
+    "@powerhousedao/builder-tools": "latest",
+    "@powerhousedao/codegen": "latest",
+    "@powerhousedao/ph-cli": "latest",
+    "@powerhousedao/reactor-api": "latest",
+    "@powerhousedao/reactor-local": "latest",
+    "@powerhousedao/scalars": "latest",
     "@powerhousedao/sky-atlas-notion-data": "1.1.10",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
     "@tailwindcss/cli": "^4.1.3",
     "@testing-library/react": "^16.3.0",
     "@types/diff": "^7.0.2",
@@ -142,6 +148,7 @@
     "pm2": "^5.4.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "semantic-release": "^24.2.6",
     "tailwind-scrollbar": "^4.0.2",
     "tailwindcss": "^4.1.3",
     "typescript": "^5.8.3",

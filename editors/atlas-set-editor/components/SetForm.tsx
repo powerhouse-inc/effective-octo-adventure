@@ -9,11 +9,12 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
+  shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import { type IProps } from "../editor.js";
 import type { PHIDOption } from "@powerhousedao/document-engineering/ui";
 import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
-import { useBaseDocument } from "../../shared/hooks/useBaseDocument.js";
+import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
 
 interface SetFormProps
   extends Pick<IProps, "context" | "document" | "dispatch"> {
@@ -51,7 +52,8 @@ export function SetForm({
     value: parentId,
   };
 
-  const baseDocument = useBaseDocument(document, context);
+  const baseDocument = useBaseDocumentCached(document, context);
+  const loading = shouldShowSkeleton(mode, baseDocument);
 
   return (
     <FormModeProvider mode={mode}>
@@ -60,6 +62,7 @@ export function SetForm({
           <div className={getFlexLayoutClassName(isSplitMode ?? false)}>
             <div className={cn("flex-1")}>
               <DocNameForm
+                loading={loading}
                 value={documentState.name}
                 baselineValue={baseDocument?.state.global.name ?? ""}
                 onSave={(value) => {
@@ -71,6 +74,7 @@ export function SetForm({
 
             <div className={cn("flex-1")}>
               <SinglePhIdForm
+                loading={loading}
                 label="Parent Document"
                 value={documentState.parent}
                 fetchOptionsCallback={fetchOptionsCallback}

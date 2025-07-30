@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.4.1...v1.4.2) (2025-07-30)
+
+
+### Bug Fixes
+
+* print out the atlas version ([466be84](https://github.com/powerhouse-inc/effective-octo-adventure/commit/466be849423d09e820ac4f2657280dc4312b22fb))
+
 ## [1.4.1](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.4.0...v1.4.1) (2025-07-30)
 
 

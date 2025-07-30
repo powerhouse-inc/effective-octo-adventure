@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.4.0...v1.4.1) (2025-07-30)
+
+
+### Bug Fixes
+
+* **atlas:** edition mode dont show last phid ([85000ac](https://github.com/powerhouse-inc/effective-octo-adventure/commit/85000ac7059623804dd6f575225bc65054e2622c))
+
 # [1.4.0](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.3.2...v1.4.0) (2025-07-28)
 
 

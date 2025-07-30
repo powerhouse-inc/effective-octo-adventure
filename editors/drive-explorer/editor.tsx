@@ -1,4 +1,3 @@
-import { type EditorProps } from "document-model";
 import {
   type DriveEditorProps,
   DriveContextProvider,
@@ -11,17 +10,39 @@ import { WagmiContext } from "@powerhousedao/design-system";
 
 import { DriverLayout } from "./components/driver-layout.js";
 import { getRemoteDriveUrl } from "../shared/utils/utils.js";
+import { useState } from "react";
+import { useNodeStatusMap } from "./hooks/useNodeStatusMap.js";
 
 export type IProps = DriveEditorProps<DocumentDriveDocument>;
 
 export function BaseEditor(props: IProps) {
+  const [activeNodeId, setActiveNodeId] = useState<string | undefined>();
+
+  const [logAnalytics] = useState({
+    diff: false,
+    drive: false,
+    diffStatusMap: false,
+    driveStatusMap: false,
+    nodeStatusMap: false,
+  });
+
+  const nodeStatusMap = useNodeStatusMap(
+    undefined,
+    undefined,
+    props.document.header.id,
+    logAnalytics,
+  );
+
   return (
     <div className="atlas-drive-explorer" style={{ height: "100%" }}>
       <DriverLayout
         context={props.context}
-        driveId={props.document.id}
+        driveId={props.document.header.id}
         nodes={props.document.state.global.nodes}
         driveUrl={getRemoteDriveUrl(props.document)}
+        nodeStatusMap={nodeStatusMap}
+        activeNodeId={activeNodeId}
+        setActiveNodeId={setActiveNodeId}
       >
         <style>
           {`

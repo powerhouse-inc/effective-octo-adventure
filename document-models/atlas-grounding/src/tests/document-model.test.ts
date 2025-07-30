@@ -13,7 +13,7 @@ describe("Atlas Grounding Document Model", () => {
     const document = utils.createDocument();
 
     expect(document).toBeDefined();
-    expect(document.documentType).toBe("sky/atlas-grounding");
+    expect(document.header.documentType).toBe("sky/atlas-grounding");
   });
 
   it("should create a new Atlas Grounding document with a valid initial state", () => {

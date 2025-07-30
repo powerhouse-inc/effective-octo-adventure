@@ -24,9 +24,9 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
               id: docId,
               driveId: driveId,
               ...doc,
-              state: doc.state.global,
-              stateJSON: doc.state.global,
-              revision: doc.revision.global,
+              state: doc?.state.global,
+              stateJSON: doc?.state.global,
+              revision: doc?.header.revision.global ?? 0,
             };
           },
           getDocuments: async (args: any) => {
@@ -40,15 +40,15 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
                   id: docId,
                   driveId: driveId,
                   ...doc,
-                  state: doc.state.global,
-                  stateJSON: doc.state.global,
-                  revision: doc.revision.global,
+                  state: doc?.state.global,
+                  stateJSON: doc?.state.global,
+                  revision: doc?.header.revision.global ?? 0,
                 };
               }),
             );
 
             return docs.filter(
-              (doc) => doc.documentType === "makerdao/feedback-issues",
+              (doc) => doc?.header?.documentType === "makerdao/feedback-issues",
             );
           },
         };
@@ -94,7 +94,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.createIssue({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc?.header?.revision?.global ?? 0) + 1;
       },
 
       AtlasFeedbackIssues_deleteIssue: async (_: any, args: any) => {
@@ -108,7 +108,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.deleteIssue({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc?.header?.revision?.global ?? 0) + 1;
       },
 
       AtlasFeedbackIssues_addNotionId: async (_: any, args: any) => {
@@ -122,7 +122,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.addNotionId({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc?.header?.revision?.global ?? 0) + 1;
       },
 
       AtlasFeedbackIssues_removeNotionId: async (_: any, args: any) => {
@@ -136,7 +136,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.removeNotionId({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc?.header?.revision?.global ?? 0) + 1;
       },
 
       AtlasFeedbackIssues_createComment: async (_: any, args: any) => {
@@ -150,7 +150,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.createComment({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc?.header?.revision?.global ?? 0) + 1;
       },
 
       AtlasFeedbackIssues_deleteComment: async (_: any, args: any) => {
@@ -164,7 +164,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.deleteComment({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc?.header?.revision?.global ?? 0) + 1;
       },
 
       AtlasFeedbackIssues_editComment: async (_: any, args: any) => {
@@ -178,7 +178,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           actions.editComment({ ...args.input }),
         );
 
-        return doc.revision.global + 1;
+        return (doc?.header?.revision?.global ?? 0) + 1;
       },
     },
   };

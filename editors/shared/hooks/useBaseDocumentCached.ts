@@ -55,7 +55,7 @@ export function useBaseDocumentCached<T extends AtlasDocument>(
   const { getFromBaseDocumentCache, setInBaseDocumentCache } = cacheContext;
   const { getDocumentRevision } = context;
 
-  const cachedBaseDocument = getFromBaseDocumentCache(document.id);
+  const cachedBaseDocument = getFromBaseDocumentCache(document.header.id);
   const [baseDocument, setBaseDocument] = useState<T | null>(
     cachedBaseDocument ? (cachedBaseDocument as T) : null,
   );
@@ -74,7 +74,7 @@ export function useBaseDocumentCached<T extends AtlasDocument>(
 
       try {
         if (loadedBaseDocument) {
-          setInBaseDocumentCache(document.id, loadedBaseDocument);
+          setInBaseDocumentCache(document.header.id, loadedBaseDocument);
           setBaseDocument(loadedBaseDocument);
         }
       } catch (error) {
@@ -83,7 +83,7 @@ export function useBaseDocumentCached<T extends AtlasDocument>(
     };
 
     getBaseDocument();
-  }, [cachedBaseDocument, document.id]);
+  }, [cachedBaseDocument, document.header.id]);
 
   return baseDocument;
 }

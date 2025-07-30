@@ -77,8 +77,8 @@ export const getBaseDocumentTimestamp = (document: AtlasDocument): string => {
     return firstOperation.timestamp;
   }
 
-  if (document.initialState?.created) {
-    return document.initialState.created;
+  if (document.header.createdAtUtcIso) {
+    return document.header.createdAtUtcIso;
   }
 
   // fallback to current date if nothing is available

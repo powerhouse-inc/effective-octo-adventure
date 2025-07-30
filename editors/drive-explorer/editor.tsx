@@ -4,19 +4,24 @@ import {
 } from "@powerhousedao/reactor-browser";
 import { type DocumentDriveDocument } from "document-drive";
 import { WagmiContext } from "@powerhousedao/design-system";
+import packageJson from "../../package.json" with { type: "json" };
 
 // TODO: enable this after Web Worker implementation
 // import { AnalyticsProvider } from "@powerhousedao/reactor-browser/analytics/context";
 
 import { DriverLayout } from "./components/driver-layout.js";
 import { getRemoteDriveUrl } from "../shared/utils/utils.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNodeStatusMap } from "./hooks/useNodeStatusMap.js";
 
 export type IProps = DriveEditorProps<DocumentDriveDocument>;
 
 export function BaseEditor(props: IProps) {
   const [activeNodeId, setActiveNodeId] = useState<string | undefined>();
+
+  useEffect(() => {
+    console.log("Atlas version", packageJson.version);
+  }, []);
 
   const [logAnalytics] = useState({
     diff: false,

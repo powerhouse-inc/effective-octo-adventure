@@ -1,7 +1,7 @@
-@import url("@powerhousedao/design-system/style.css");
-@import url("@powerhousedao/document-engineering/style.css");
+@import "@powerhousedao/design-system/style.css";
+@import "@powerhousedao/document-engineering/style.css";
+@import "@uiw/react-md-editor/markdown-editor.css";
 @import "tailwindcss" source(".");
-@import url("@powerhousedao/document-engineering/style.css");
 
 @layer base {
   .atlas-drive-explorer h1,

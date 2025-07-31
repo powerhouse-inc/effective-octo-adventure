@@ -1,3 +1,10 @@
+## [1.4.4](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.4.3...v1.4.4) (2025-07-31)
+
+
+### Bug Fixes
+
+* markdown editor style issues ([ae3dea1](https://github.com/powerhouse-inc/effective-octo-adventure/commit/ae3dea1bfd3c44bfe6c7c8c50867e2ca9af632a4))
+
 ## [1.4.3](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.4.2...v1.4.3) (2025-07-31)
 
 

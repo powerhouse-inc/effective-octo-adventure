@@ -20,7 +20,7 @@ export function BaseEditor(props: IProps) {
   const [activeNodeId, setActiveNodeId] = useState<string | undefined>();
 
   useEffect(() => {
-    console.log("Atlas version", packageJson.version);
+    console.log("Atlas version =>", packageJson.version);
   }, []);
 
   const [logAnalytics] = useState({

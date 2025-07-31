@@ -5,7 +5,10 @@ import {
 import { type AtlasArticle } from "./components/types.js";
 import { type AtlasMultiParentState } from "../../document-models/atlas-multi-parent/index.js";
 
-export function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
+export function buildSidebarTree(
+  allNodes: Record<string, AtlasArticle>,
+  nodeStatusMap: Record<string, NodeStatus>,
+) {
   const nodesById: Record<string, SidebarNode> = {};
 
   for (const [key, node] of Object.entries(allNodes)) {
@@ -98,7 +101,20 @@ export function buildSidebarTree(allNodes: Record<string, AtlasArticle>) {
     (node) => !childrenIds.has(node.id),
   );
 
-  return sortSidebarNodes(result);
+  const sortedNodes = sortSidebarNodes(result);
+  // Add removed nodes to the root level
+  Object.entries(nodeStatusMap).forEach(([key, status]) => {
+    if (status === ("REMOVED" as NodeStatus) && !allNodes[key]) {
+      sortedNodes.push({
+        id: key,
+        title: key, // Use the deleted id as the name
+        children: [],
+        status: "REMOVED" as NodeStatus,
+      });
+    }
+  });
+
+  return sortedNodes;
 }
 
 function sortSidebarNodes(nodes: SidebarNode[]): SidebarNode[] {

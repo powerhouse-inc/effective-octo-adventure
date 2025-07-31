@@ -13,7 +13,7 @@ describe("Atlas Exploratory Document Model", () => {
     const document = utils.createDocument();
 
     expect(document).toBeDefined();
-    expect(document.documentType).toBe("sky/atlas-exploratory");
+    expect(document.header.documentType).toBe("sky/atlas-exploratory");
   });
 
   it("should create a new Atlas Exploratory document with a valid initial state", () => {

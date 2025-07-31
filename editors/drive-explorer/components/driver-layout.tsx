@@ -6,6 +6,7 @@ import {
   CreateDocumentModal,
 } from "@powerhousedao/design-system";
 import {
+  type NodeStatus,
   Sidebar,
   SidebarProvider,
   type SidebarNode,
@@ -17,7 +18,7 @@ import {
 } from "@powerhousedao/reactor-browser";
 import { type AtlasFeedbackIssue, type AtlasArticle } from "./types.js";
 import { EditorContainer } from "./EditorContainer.js";
-import { type DocumentModelModule, type EditorContext } from "document-model";
+import { type DocumentModelModule } from "document-model";
 import { CreateDocument } from "./create-document.js";
 import { Home } from "./home.js";
 import { documentModel as AtlasFeedbackIssues } from "../../../document-models/atlas-feedback-issues/gen/document-model.js";
@@ -33,6 +34,9 @@ export interface DriverLayoutProps {
   readonly context: DriveEditorContext;
   readonly nodes: Node[];
   readonly driveUrl?: string | null;
+  readonly nodeStatusMap?: Record<string, NodeStatus>;
+  readonly activeNodeId?: string;
+  readonly setActiveNodeId: (nodeId: string | undefined) => void;
 }
 
 export function DriverLayout({
@@ -41,23 +45,25 @@ export function DriverLayout({
   context,
   nodes: driveNodes,
   driveUrl,
+  nodeStatusMap = {},
+  activeNodeId,
+  setActiveNodeId,
 }: DriverLayoutProps) {
   const { getDocumentRevision } = context;
   const { useDriveDocumentStates, addDocument, documentModels } =
     useDriveContext();
-  const [activeNodeId, setActiveNodeId] = useState<string | undefined>();
   const [openModal, setOpenModal] = useState(false);
   const selectedDocumentModel = useRef<DocumentModelModule | null>(null);
 
-  const [state, fetchDocuments] = useDriveDocumentStates({ driveId });
+  const [state] = useDriveDocumentStates({ driveId });
   const { atlasNodes, feedbackIssues } = useMemo(() => {
     return Object.keys(state).reduce(
       (acc, curr) => {
         const document = state[curr];
         if (document.documentType.startsWith("sky/atlas")) {
-          acc.atlasNodes[curr] = document as AtlasArticle;
+          acc.atlasNodes[curr] = document as unknown as AtlasArticle;
         } else if (document.documentType === AtlasFeedbackIssues.id) {
-          acc.feedbackIssues[curr] = document as AtlasFeedbackIssue;
+          acc.feedbackIssues[curr] = document as unknown as AtlasFeedbackIssue;
         }
         return acc;
       },
@@ -69,8 +75,8 @@ export function DriverLayout({
   }, [state]);
 
   const nodes = useMemo(() => {
-    return buildSidebarTree(atlasNodes);
-  }, [atlasNodes]);
+    return buildSidebarTree(atlasNodes, nodeStatusMap);
+  }, [atlasNodes, nodeStatusMap]);
 
   const selectedNode = activeNodeId
     ? (state[activeNodeId] as AtlasArticle | AtlasFeedbackIssue) // TODO: atlas set doesn't have a docNo
@@ -96,13 +102,16 @@ export function DriverLayout({
     return "Atlas Feedback Issues";
   }, [selectedNode]);
 
-  const onActiveNodeChange = useCallback((node: SidebarNode) => {
-    setActiveNodeId(node.id);
-  }, []);
+  const onActiveNodeChange = useCallback(
+    (node: SidebarNode) => {
+      setActiveNodeId(node.id);
+    },
+    [setActiveNodeId],
+  );
 
   const onEditorClose = useCallback(() => {
     setActiveNodeId(undefined);
-  }, []);
+  }, [setActiveNodeId]);
 
   const onCreateDocument = useCallback(
     async (fileName: string) => {
@@ -118,7 +127,6 @@ export function DriverLayout({
       );
 
       selectedDocumentModel.current = null;
-      await fetchDocuments(driveId, [node.id]);
       setActiveNodeId(node.id);
     },
     [addDocument, driveId, setActiveNodeId],

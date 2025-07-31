@@ -13,7 +13,7 @@ describe("Atlas Foundation Document Model", () => {
     const document = utils.createDocument();
 
     expect(document).toBeDefined();
-    expect(document.documentType).toBe("sky/atlas-foundation");
+    expect(document.header.documentType).toBe("sky/atlas-foundation");
   });
 
   it("should create a new Atlas Foundation document with a valid initial state", () => {

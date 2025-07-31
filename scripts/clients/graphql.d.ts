@@ -608,6 +608,9 @@ export interface AddDriveArgs {
   slug?: string
   preferredEditor?: string
 }
+export interface DeleteDriveArgs {
+  id: string
+}
 export interface SetDriveIconArgs {
   id: string
   icon: string
@@ -2155,6 +2158,7 @@ export interface Mutation {
   AtlasSet_setNotionId?: number
   ForkAtlas?: string
   addDrive?: AddDriveResult
+  deleteDrive?: boolean
   setDriveIcon?: boolean
   setDriveName?: boolean
 }
@@ -4005,6 +4009,12 @@ export interface MutationSelection {
       preferredEditor?: string
     }
   } & AddDriveResultSelection
+  deleteDrive?: {
+    __headers?: { [key: string]: string }
+    __retry?: boolean
+    __alias?: string
+    __args: { id: string }
+  }
   setDriveIcon?: {
     __headers?: { [key: string]: string }
     __retry?: boolean
@@ -4968,6 +4978,16 @@ export declare const client: {
         __args: AddDriveArgs
       } & AddDriveResultSelection,
       DeepRequired<AddDriveResult>,
+      AllEnums
+    >
+    deleteDrive: Endpoint<
+      {
+        __headers?: { [key: string]: string }
+        __retry?: boolean
+        __alias?: string
+        __args: DeleteDriveArgs
+      },
+      boolean,
       AllEnums
     >
     setDriveIcon: Endpoint<

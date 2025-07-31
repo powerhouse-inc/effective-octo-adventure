@@ -1,3 +1,4 @@
+import type { PHDocumentHeader } from "document-model";
 import type { AtlasFeedbackIssuesDocument } from "../../../document-models/atlas-feedback-issues/index.js";
 
 export type AtlasArticle = {
@@ -25,6 +26,6 @@ export type AtlasArticle = {
 
 export type AtlasFeedbackIssue = AtlasFeedbackIssuesDocument["state"] &
   Pick<
-    AtlasFeedbackIssuesDocument,
-    "documentType" | "created" | "lastModified"
+    PHDocumentHeader,
+    "documentType" | "createdAtUtcIso" | "lastModifiedAtUtcIso"
   >;

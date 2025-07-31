@@ -52,6 +52,7 @@ export function arrayDiffIndexMapping(
   operations: MappingOperations[],
 ): MatchIndex[] {
   const result: MatchIndex[] = [];
+
   original.forEach((_, index) => {
     // we start assuming that the original and current array are the same
     result.push({ originalIndex: index, currentIndex: index });
@@ -83,7 +84,9 @@ export function arrayDiffIndexMapping(
         result[indexInResult].currentIndex = undefined;
         for (let i = indexInResult + 1; i < result.length; i++) {
           // as the item was removed, we need to decrement the index of all items after it
-          result[i].currentIndex = result[i].currentIndex! - 1;
+          if (result[i].currentIndex !== undefined) {
+            result[i].currentIndex = result[i].currentIndex! - 1;
+          }
         }
         break;
       }
@@ -130,7 +133,7 @@ export function getOperations<T extends AtlasDocument>(
       operations,
     );
 
-    const currentRevision = document.revision.global;
+    const currentRevision = document.header.revision.global;
     const relevantOperations: Operation[] = [];
 
     // Get all operations from base revision to current revision

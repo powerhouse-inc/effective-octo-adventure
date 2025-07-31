@@ -19,6 +19,7 @@ interface MultiUrlFormProps
     ArrayFieldProps<string, UrlFieldProps>,
     "fields" | "componentProps" | "component"
   > {
+  isSplitMode?: boolean;
   loading?: boolean;
   data: string[];
   document: AtlasDocument;
@@ -27,6 +28,7 @@ interface MultiUrlFormProps
 }
 
 const MultiUrlForm = ({
+  isSplitMode,
   loading,
   label,
   data,
@@ -57,6 +59,8 @@ const MultiUrlForm = ({
     );
     return mapping;
   }, [baselineValue, data, document]);
+
+  console.log("mapping", mapping);
 
   // this callback only recreates when renderComponentTrigger changes,
   // not on every data change, but still has access to latest data
@@ -118,23 +122,29 @@ const MultiUrlForm = ({
     setRenderComponentTrigger((prev) => !prev);
   }, [dataSignature]);
 
+  const fields = useMemo(() => {
+    const fields = mapping.map((_, index) => ({
+      id: index.toString(),
+      value:
+        mapping[index].currentIndex === undefined
+          ? ""
+          : data[mapping[index].currentIndex],
+    }));
+
+    // if (!isSplitMode && viewMode === "edition") {
+    //   fields = fields.filter((item) => item.value !== "");
+    // }
+
+    return fields;
+  }, [mapping, isSplitMode, viewMode, data]);
+
   return (
     <ArrayField<string, UrlFieldProps>
       onAdd={onAdd}
       onRemove={onRemove}
       onUpdate={onUpdate}
       showAddField={showAddField}
-      // fields={data.map((element) => ({
-      //   id: element.id,
-      //   value: element.value,
-      // }))}
-      fields={mapping.map((_, index) => ({
-        id: index.toString(),
-        value:
-          mapping[index].currentIndex === undefined
-            ? ""
-            : data[mapping[index].currentIndex],
-      }))}
+      fields={fields}
       label={label}
       component={renderComponent}
       componentProps={{

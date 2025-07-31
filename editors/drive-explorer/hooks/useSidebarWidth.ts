@@ -74,7 +74,7 @@ export function useSidebarWidth(initialWidth = 300) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [calculateMaxWidth, sidebarWidth, updateSidebarWidth]);
-  
+
   useEffect(() => {
     const handleSidebarResize = (event: Event) => {
       const width = (event as CustomEvent<{ sidebarWidth: number }>).detail

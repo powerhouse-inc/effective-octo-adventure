@@ -27,6 +27,7 @@ import { ShareDrive } from "../../shared/components/share-drive.js";
 import { buildSidebarTree } from "../sidebar-utils.js";
 import { BaseDocumentCacheProvider } from "../../shared/providers/BaseDocumentCacheProvider.js";
 import { ViewModeProvider } from "../../shared/providers/ViewModeProvider.js";
+import { useSidebarWidth } from "../hooks/useSidebarWidth.js";
 
 export interface DriverLayoutProps {
   readonly driveId: string;
@@ -54,6 +55,8 @@ export function DriverLayout({
     useDriveContext();
   const [openModal, setOpenModal] = useState(false);
   const selectedDocumentModel = useRef<DocumentModelModule | null>(null);
+
+  const { sidebarWidth, maxWidth } = useSidebarWidth(300);
 
   const [state] = useDriveDocumentStates({ driveId });
   const { atlasNodes, feedbackIssues } = useMemo(() => {
@@ -175,6 +178,8 @@ export function DriverLayout({
                 </div>
               }
               sidebarTitle="Atlas"
+              initialWidth={sidebarWidth}
+              maxWidth={maxWidth}
             />
             <div className="flex-1 bg-gray-50 p-4 dark:bg-slate-800 overflow-y-auto">
               <>

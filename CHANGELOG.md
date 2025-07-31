@@ -1,3 +1,10 @@
+## [1.4.5](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.4.4...v1.4.5) (2025-07-31)
+
+
+### Bug Fixes
+
+* css urls ([0beac6c](https://github.com/powerhouse-inc/effective-octo-adventure/commit/0beac6ce2441b225a1ff6c25cd0093a304b7ae1f))
+
 ## [1.4.4](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.4.3...v1.4.4) (2025-07-31)
 
 

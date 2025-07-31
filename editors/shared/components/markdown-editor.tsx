@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import { useLocalStorage } from "usehooks-ts";
-import "@uiw/react-md-editor/markdown-editor.css";
 
 // Custom preview renderer to make links open in new tabs and ensure proper list rendering
 const previewOptions = {

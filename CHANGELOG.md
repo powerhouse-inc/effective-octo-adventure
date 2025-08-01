@@ -1,3 +1,31 @@
+## [1.4.5](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.4.4...v1.4.5) (2025-07-31)
+
+
+### Bug Fixes
+
+* css urls ([0beac6c](https://github.com/powerhouse-inc/effective-octo-adventure/commit/0beac6ce2441b225a1ff6c25cd0093a304b7ae1f))
+
+## [1.4.4](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.4.3...v1.4.4) (2025-07-31)
+
+
+### Bug Fixes
+
+* markdown editor style issues ([ae3dea1](https://github.com/powerhouse-inc/effective-octo-adventure/commit/ae3dea1bfd3c44bfe6c7c8c50867e2ca9af632a4))
+
+## [1.4.3](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.4.2...v1.4.3) (2025-07-31)
+
+
+### Bug Fixes
+
+* change console.log for testing ([1041dc8](https://github.com/powerhouse-inc/effective-octo-adventure/commit/1041dc82a63c129bfcd2d122983de08eabc05263))
+
+## [1.4.2](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.4.1...v1.4.2) (2025-07-30)
+
+
+### Bug Fixes
+
+* print out the atlas version ([466be84](https://github.com/powerhouse-inc/effective-octo-adventure/commit/466be849423d09e820ac4f2657280dc4312b22fb))
+
 ## [1.4.1](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.4.0...v1.4.1) (2025-07-30)
 
 

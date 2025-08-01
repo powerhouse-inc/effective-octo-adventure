@@ -7,24 +7,28 @@ import {
   type UrlFieldProps,
   type ViewMode,
 } from "@powerhousedao/document-engineering/scalars";
-
-type CommonDataProps = {
-  id: string;
-  value: string;
-};
+import type { AtlasDocument } from "../../utils/utils.js";
+import {
+  arrayDiffIndexMapping,
+  contextDataToMappingOperations,
+  getOperations,
+} from "../../utils/array-diff.js";
 
 interface MultiUrlFormProps
   extends Omit<
     ArrayFieldProps<string, UrlFieldProps>,
     "fields" | "componentProps" | "component"
   > {
+  isSplitMode?: boolean;
   loading?: boolean;
-  data: CommonDataProps[];
+  data: string[];
+  document: AtlasDocument;
   viewMode: ViewMode;
   baselineValue: string[];
 }
 
 const MultiUrlForm = ({
+  isSplitMode,
   loading,
   label,
   data,
@@ -34,21 +38,26 @@ const MultiUrlForm = ({
   viewMode,
   baselineValue,
   showAddField,
+  document,
 }: MultiUrlFormProps) => {
   // boolean flag to trigger callback recreation only when needed
   const [renderComponentTrigger, setRenderComponentTrigger] = useState(false);
 
   // string value of latest data
-  const dataSignature = useMemo(
-    () =>
-      JSON.stringify(
-        data.map((item) => ({
-          id: item.id,
-          value: item.value,
-        })),
-      ),
-    [data],
-  );
+  const dataSignature = useMemo(() => JSON.stringify(data), [data]);
+
+  const mapping = useMemo(() => {
+    const operations = getOperations(document, [
+      "REPLACE_CONTEXT_DATA",
+      "ADD_CONTEXT_DATA",
+      "REMOVE_CONTEXT_DATA",
+    ]);
+    const mapping = arrayDiffIndexMapping(
+      baselineValue,
+      contextDataToMappingOperations(operations),
+    );
+    return mapping;
+  }, [baselineValue, document]);
 
   // this callback only recreates when renderComponentTrigger changes,
   // not on every data change, but still has access to latest data
@@ -56,21 +65,20 @@ const MultiUrlForm = ({
     (props: UrlFieldProps) => {
       let baseValue = undefined;
 
+      const mappingIndex = parseInt(props.name?.replace("item-", "") ?? "");
+      const isRemoved =
+        !isNaN(mappingIndex) &&
+        mapping?.[mappingIndex]?.currentIndex === undefined;
+
       if (props.name !== "item-new") {
-        const fieldId = props.name?.replace("item-", "");
-
-        const elementIndex = data.findIndex((d) => d.id === fieldId);
-
-        if (elementIndex >= 0 && elementIndex < baselineValue.length) {
-          baseValue = baselineValue[elementIndex];
-        }
+        baseValue =
+          mapping[mappingIndex].originalIndex === undefined
+            ? undefined
+            : baselineValue[mapping[mappingIndex].originalIndex];
       }
 
       const isFirstField =
-        (data.length === 0 && props.name === "item-new") ||
-        (props.name !== "item-new" &&
-          data.length > 0 &&
-          data[0].id === props.name?.replace("item-", ""));
+        (data.length === 0 && props.name === "item-new") || mappingIndex === 0;
 
       return loading ? (
         isFirstField ? (
@@ -80,26 +88,50 @@ const MultiUrlForm = ({
         )
       ) : (
         <UrlField
-          {...props}
+          {...(isRemoved ? { ...props, placeholder: undefined } : props)}
           viewMode={viewMode}
           baseValue={baseValue}
-          platformIcons={{
-            "example.com": "File",
-          }}
+          platformIcons={!isRemoved ? { "example.com": "File" } : undefined}
+          disabled={isRemoved}
           style={{
             paddingLeft: "32px",
           }}
         />
       );
     },
-    [renderComponentTrigger, viewMode, baselineValue],
+    // renderComponentTrigger is not needed here, but it's a workaround to trigger a re-render when the mapping changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      mapping,
+      data.length,
+      loading,
+      viewMode,
+      baselineValue,
+      renderComponentTrigger,
+    ],
   );
 
   // split rendering into two phases: this effect runs after data changes are complete,
   // then triggers a new render cycle by updating the boolean flag
   useEffect(() => {
-    setRenderComponentTrigger(!renderComponentTrigger);
+    setRenderComponentTrigger((prev) => !prev);
   }, [dataSignature]);
+
+  const fields = useMemo(() => {
+    let fields = mapping.map((_, index) => ({
+      id: index.toString(),
+      value:
+        mapping[index].currentIndex === undefined
+          ? ""
+          : data[mapping[index].currentIndex],
+    }));
+
+    if (!isSplitMode && viewMode === "edition") {
+      fields = fields.filter((item) => item.value !== "");
+    }
+
+    return fields;
+  }, [mapping, isSplitMode, viewMode, data]);
 
   return (
     <ArrayField<string, UrlFieldProps>
@@ -107,10 +139,7 @@ const MultiUrlForm = ({
       onRemove={onRemove}
       onUpdate={onUpdate}
       showAddField={showAddField}
-      fields={data.map((element) => ({
-        id: element.id,
-        value: element.value,
-      }))}
+      fields={fields}
       label={label}
       component={renderComponent}
       componentProps={{

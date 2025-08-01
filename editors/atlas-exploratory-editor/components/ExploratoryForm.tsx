@@ -28,7 +28,6 @@ import {
 } from "../../shared/utils/styles.js";
 import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
-import { transformUrl } from "../../shared/utils/utils.js";
 import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
 import { Skeleton } from "../../shared/components/ui/skeleton.js";
 import { useElementVisibility } from "../../shared/hooks/useElementVisibility.js";
@@ -37,7 +36,6 @@ interface ExploratoryFormProps
   extends Pick<IProps, "context" | "document" | "dispatch"> {
   mode: ViewMode;
   isSplitMode?: boolean;
-  isAligned?: boolean;
 }
 
 export function ExploratoryForm({
@@ -46,7 +44,6 @@ export function ExploratoryForm({
   dispatch,
   mode,
   isSplitMode,
-  isAligned,
 }: ExploratoryFormProps) {
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
@@ -142,7 +139,7 @@ export function ExploratoryForm({
               />
             </div>
           </div>
-          <div className={cn("flex-1 min-h-[350px]")}>
+          <div className={cn("min-h-[350px] flex-1")}>
             <MarkdownContentForm
               loading={loading}
               value={documentState.content ?? ""}
@@ -201,7 +198,7 @@ export function ExploratoryForm({
             />
           </div>
 
-          <div className="flex flex-row justify-end items-center gap-2">
+          <div className="flex flex-row items-center justify-end gap-2">
             <div className="flex items-center gap-2">
               {loading ? (
                 <Skeleton className="h-[22px]" />
@@ -250,6 +247,7 @@ export function ExploratoryForm({
                 <div className={cn("h-[63px]")} />
               )}
             <MultiUrlForm
+              isSplitMode={isSplitMode}
               loading={loading}
               viewMode={mode}
               showAddField={showLastElement}
@@ -257,12 +255,8 @@ export function ExploratoryForm({
                 baseDocument?.state.global.originalContextData ?? []
               }
               label="Original Context Data"
-              data={documentState.originalContextData.map((element) => {
-                return {
-                  id: transformUrl(element),
-                  value: element,
-                };
-              })}
+              data={documentState.originalContextData}
+              document={document}
               onAdd={(value) => {
                 dispatch(
                   actions.addContextData({

@@ -25,7 +25,6 @@ import {
 } from "../../shared/utils/styles.js";
 import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
 import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
-import { transformUrl } from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
 import { useElementVisibility } from "../../shared/hooks/useElementVisibility.js";
@@ -138,7 +137,7 @@ export function GroundingForm({
               />
             </div>
           </div>
-          <div className={cn("flex-1 min-h-[350px]")}>
+          <div className={cn("min-h-[350px] flex-1")}>
             <MarkdownContentForm
               loading={loading}
               value={documentState.content ?? ""}
@@ -200,6 +199,7 @@ export function GroundingForm({
                 <div className={cn("h-[63px]")} />
               )}
             <MultiUrlForm
+              isSplitMode={isSplitMode}
               loading={loading}
               showAddField={showLastElement}
               viewMode={mode}
@@ -207,12 +207,8 @@ export function GroundingForm({
                 baseDocument?.state.global.originalContextData ?? []
               }
               label="Original Context Data"
-              data={documentState.originalContextData.map((element) => {
-                return {
-                  id: transformUrl(element),
-                  value: element,
-                };
-              })}
+              data={documentState.originalContextData}
+              document={document}
               onAdd={(value) => {
                 dispatch(
                   actions.addContextData({

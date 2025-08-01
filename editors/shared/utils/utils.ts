@@ -64,10 +64,6 @@ export const parseTitleText = (title: string) => {
   return { docNo: "", name: title };
 };
 
-export const transformUrl = (url: string): string => {
-  return encodeURIComponent(url).replace(/\./g, "%2E");
-};
-
 export const getBaseDocumentTimestamp = (document: AtlasDocument): string => {
   const firstOperation = document.operations?.global?.find(
     (operation) => operation.index === 0,

@@ -55,8 +55,10 @@ const ArrayField = <TValue, TProps>({
 
       if (formValue !== field.value) {
         if (formValue === "" || formValue === null) {
-          onRemove({ value: field.value, id: field.id, index });
-          formRef.current?.unregister(formKey);
+          if (field.value !== "") {
+            onRemove({ value: field.value, id: field.id, index });
+            formRef.current?.unregister(formKey);
+          }
         } else {
           onUpdate({
             previousValue: field.value,

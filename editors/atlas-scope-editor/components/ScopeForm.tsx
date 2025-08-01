@@ -18,7 +18,6 @@ import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
-import { transformUrl } from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
 import { useElementVisibility } from "../../shared/hooks/useElementVisibility.js";
@@ -65,7 +64,7 @@ export function ScopeForm({
                 }}
               />
             </div>
-            <div className="flex-1 min-w-[200px]">
+            <div className="min-w-[200px] flex-1">
               <DocNameForm
                 loading={loading}
                 value={documentState.name}
@@ -91,7 +90,7 @@ export function ScopeForm({
               />
             </div>
           </div>
-          <div className={cn("flex-1 min-h-[350px]")}>
+          <div className={cn("min-h-[350px] flex-1")}>
             <MarkdownContentForm
               loading={loading}
               value={documentState.content ?? ""}
@@ -109,6 +108,8 @@ export function ScopeForm({
                   <div className={cn("h-[63px]")} />
                 )}
               <MultiUrlForm
+                isSplitMode={isSplitMode}
+                document={document}
                 loading={loading}
                 viewMode={mode}
                 showAddField={showLastElement}
@@ -116,12 +117,7 @@ export function ScopeForm({
                   baseDocument?.state.global.originalContextData ?? []
                 }
                 label="Original Context Data"
-                data={documentState.originalContextData.map((element) => {
-                  return {
-                    id: transformUrl(element),
-                    value: element,
-                  };
-                })}
+                data={documentState.originalContextData}
                 onAdd={(value) => {
                   dispatch(
                     actions.addContextData({

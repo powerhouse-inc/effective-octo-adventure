@@ -26,19 +26,17 @@ export type MappingOperations =
  * after applying a series of mutations (ADD, REMOVE, REPLACE operations).
  *
  * @param original - The original array before any mutations
- * @param current - The current array after applying all mutations
  * @param operations - Array of operations that were applied to transform original to current
  * @returns Array of MatchIndex objects representing the mapping between original and current indexes
  *
  * @example
  * ```typescript
  * const original = ["a", "b", "c"];
- * const current = ["a", "d", "c"];
  * const operations = [
  *   { type: "REPLACE", originalValue: "b", newValue: "d" }
  * ];
  *
- * const mapping = arrayDiffIndexMapping(original, current, operations);
+ * const mapping = arrayDiffIndexMapping(original, operations);
  * // Result: [
  * //   { originalIndex: 0, currentIndex: 0 }, // "a" unchanged
  * //   { originalIndex: 1, currentIndex: 1 }, // "b" replaced with "d"
@@ -48,7 +46,6 @@ export type MappingOperations =
  */
 export function arrayDiffIndexMapping(
   original: string[],
-  current: string[],
   operations: MappingOperations[],
 ): MatchIndex[] {
   const result: MatchIndex[] = [];

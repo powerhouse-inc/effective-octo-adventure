@@ -18,7 +18,6 @@ import { DocNameForm } from "../../shared/components/forms/DocNameForm.js";
 import { MasterStatusForm } from "../../shared/components/forms/MasterStatusForm.js";
 import { GlobalTagsForm } from "../../shared/components/forms/GlobalTagsForm.js";
 import { MultiUrlForm } from "../../shared/components/forms/MultiUrlForm.js";
-import { transformUrl } from "../../shared/utils/utils.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
 import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
 import { useElementVisibility } from "../../shared/hooks/useElementVisibility.js";
@@ -109,6 +108,7 @@ export function ScopeForm({
                   <div className={cn("h-[63px]")} />
                 )}
               <MultiUrlForm
+                isSplitMode={isSplitMode}
                 document={document}
                 loading={loading}
                 viewMode={mode}

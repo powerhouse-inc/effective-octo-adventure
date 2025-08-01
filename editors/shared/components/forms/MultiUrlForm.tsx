@@ -54,13 +54,10 @@ const MultiUrlForm = ({
     ]);
     const mapping = arrayDiffIndexMapping(
       baselineValue,
-      data,
       contextDataToMappingOperations(operations),
     );
     return mapping;
-  }, [baselineValue, data, document]);
-
-  console.log("mapping", mapping);
+  }, [baselineValue, document]);
 
   // this callback only recreates when renderComponentTrigger changes,
   // not on every data change, but still has access to latest data
@@ -91,12 +88,10 @@ const MultiUrlForm = ({
         )
       ) : (
         <UrlField
-          {...props}
+          {...(isRemoved ? { ...props, placeholder: undefined } : props)}
           viewMode={viewMode}
           baseValue={baseValue}
-          platformIcons={{
-            "example.com": "File",
-          }}
+          platformIcons={!isRemoved ? { "example.com": "File" } : undefined}
           disabled={isRemoved}
           style={{
             paddingLeft: "32px",
@@ -123,7 +118,7 @@ const MultiUrlForm = ({
   }, [dataSignature]);
 
   const fields = useMemo(() => {
-    const fields = mapping.map((_, index) => ({
+    let fields = mapping.map((_, index) => ({
       id: index.toString(),
       value:
         mapping[index].currentIndex === undefined
@@ -131,9 +126,9 @@ const MultiUrlForm = ({
           : data[mapping[index].currentIndex],
     }));
 
-    // if (!isSplitMode && viewMode === "edition") {
-    //   fields = fields.filter((item) => item.value !== "");
-    // }
+    if (!isSplitMode && viewMode === "edition") {
+      fields = fields.filter((item) => item.value !== "");
+    }
 
     return fields;
   }, [mapping, isSplitMode, viewMode, data]);

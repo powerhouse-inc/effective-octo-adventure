@@ -28,7 +28,6 @@ import {
 } from "../../shared/utils/styles.js";
 import { useParentOptions } from "../../shared/hooks/useParentOptions.js";
 import { MarkdownContentForm } from "../../shared/components/forms/MarkdownContentForm.js";
-import { transformUrl } from "../../shared/utils/utils.js";
 import { useBaseDocumentCached } from "../../shared/hooks/useBaseDocumentCached.js";
 import { Skeleton } from "../../shared/components/ui/skeleton.js";
 import { useElementVisibility } from "../../shared/hooks/useElementVisibility.js";
@@ -37,7 +36,6 @@ interface ExploratoryFormProps
   extends Pick<IProps, "context" | "document" | "dispatch"> {
   mode: ViewMode;
   isSplitMode?: boolean;
-  isAligned?: boolean;
 }
 
 export function ExploratoryForm({
@@ -46,7 +44,6 @@ export function ExploratoryForm({
   dispatch,
   mode,
   isSplitMode,
-  isAligned,
 }: ExploratoryFormProps) {
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
@@ -250,6 +247,7 @@ export function ExploratoryForm({
                 <div className={cn("h-[63px]")} />
               )}
             <MultiUrlForm
+              isSplitMode={isSplitMode}
               loading={loading}
               viewMode={mode}
               showAddField={showLastElement}

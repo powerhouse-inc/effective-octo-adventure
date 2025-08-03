@@ -45,7 +45,10 @@ export function GroundingForm({
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
 
-  const fetchOptionsCallback = useParentOptions("sky/atlas-grounding");
+  const fetchOptionsCallback = useParentOptions(
+    "sky/atlas-grounding",
+    document.header.id,
+  );
 
   const originalDocumentState = document.state.global;
   const parentId = originalDocumentState.parent?.id

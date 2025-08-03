@@ -42,7 +42,10 @@ export function FoundationForm({
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
 
-  const fetchOptionsCallback = useParentOptions("sky/atlas-foundation");
+  const fetchOptionsCallback = useParentOptions(
+    "sky/atlas-foundation",
+    document.header.id,
+  );
 
   const originalDocumentState = document.state.global;
   const parentId = originalDocumentState.parent?.id

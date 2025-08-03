@@ -32,7 +32,10 @@ export function SetForm({
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
 
-  const fetchOptionsCallback = useParentOptions("sky/atlas-set");
+  const fetchOptionsCallback = useParentOptions(
+    "sky/atlas-set",
+    document.header.id,
+  );
 
   const parentId = document.state.global.parent?.id
     ? `phd:${document.state.global.parent.id}`

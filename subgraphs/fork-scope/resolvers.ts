@@ -26,8 +26,6 @@ console.log("> GQL_ENDPOINT: ", GQL_ENDPOINT);
 const PREFERRED_EDITOR = "AtlasDriveExplorer";
 
 export const getResolvers = (subgraph: Subgraph) => {
-  // const reactor = subgraph.reactor;
-
   return {
     Mutation: {
       ForkAtlas: async (_: any, args: any) => {
@@ -69,29 +67,6 @@ export const getResolvers = (subgraph: Subgraph) => {
           }),
           new Promise((resolve) => setTimeout(resolve, 200)),
         ]);
-
-        /*
-        await reactor.addDriveAction(
-          driveId,
-          addFile({
-            id: docId,
-            name: args.name,
-            documentType: "sky/atlas-scope",
-            synchronizationUnits: [
-              {
-                branch: "main",
-                scope: "global",
-                syncId: generateId(),
-              },
-              {
-                branch: "main",
-                scope: "local",
-                syncId: generateId(),
-              },
-            ],
-          }),
-        );
-        */
 
         return driveId;
       },

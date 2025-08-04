@@ -17,9 +17,7 @@ import {
   type TimelineItem,
 } from "@powerhousedao/design-system";
 import { useState, Suspense, useCallback } from "react";
-import {
-  getRevisionFromDate /*, useTimelineItems */,
-} from "@powerhousedao/common";
+import { getRevisionFromDate } from "@powerhousedao/common";
 
 export interface EditorContainerProps {
   driveId: string;

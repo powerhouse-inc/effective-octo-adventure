@@ -29,7 +29,7 @@ export const DotsMenuButton = forwardRef<HTMLDivElement, Props>(
         {...rest}
         aria-expanded={open}
         className={cn(
-          "text-gray-600 hover:text-gray-900 transition opacity-0 group-hover:opacity-100 p-1 cursor-pointer",
+          "cursor-pointer p-1 text-gray-600 opacity-0 transition group-hover:opacity-100 hover:text-gray-900",
           className,
         )}
         onClick={(e) => {

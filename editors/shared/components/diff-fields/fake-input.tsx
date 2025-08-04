@@ -18,10 +18,10 @@ export const FakeInput = ({
   return (
     <div
       className={cn(
-        "flex w-full font-sans rounded-md text-sm font-normal leading-5 text-gray-600",
-        "border border-gray-300 bg-transparent px-3 py-[7px] cursor-not-allowed",
+        "flex w-full rounded-md font-sans text-sm leading-5 font-normal text-gray-600",
+        "cursor-not-allowed border border-gray-300 bg-transparent px-3 py-[7px]",
         !multiline && ellipsis && "truncate [&>span]:truncate",
-        multiline && "overflow-y-auto overflow-x-hidden whitespace-pre-wrap",
+        multiline && "overflow-x-hidden overflow-y-auto whitespace-pre-wrap",
         className,
       )}
       style={{

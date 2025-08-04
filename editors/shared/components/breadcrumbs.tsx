@@ -58,7 +58,7 @@ export function Breadcrumbs({
     <Breadcrumb className="max-w-full">
       <BreadcrumbList
         className={cn(
-          "flex-nowrap max-w-full",
+          "max-w-full flex-nowrap",
           "[&>li:not([data-ellipsis]):not([role='presentation'])]:flex-grow-1",
           "[&>li:not([data-ellipsis]):not([role='presentation'])]:flex-shrink-1",
           "[&>li:not([data-ellipsis]):not([role='presentation'])]:min-w-32",
@@ -95,7 +95,7 @@ export function Breadcrumbs({
         {firstItem && (
           <BreadcrumbItem>
             <span
-              className="truncate cursor-pointer text-gray-600"
+              className="cursor-pointer truncate text-gray-600"
               onClick={() => onBreadcrumbSelected(firstItem)}
             >
               {firstItem.name}
@@ -109,13 +109,13 @@ export function Breadcrumbs({
             <BreadcrumbItem data-ellipsis="true">
               <DropdownMenu open={open} onOpenChange={setOpen}>
                 <DropdownMenuTrigger
-                  className="flex items-center gap-1 cursor-pointer"
+                  className="flex cursor-pointer items-center gap-1"
                   aria-label="Toggle menu"
                 >
                   <BreadcrumbEllipsis className="h-4 w-4" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
-                  className="bg-white max-w-64"
+                  className="max-w-64 bg-white"
                   align="start"
                 >
                   {middleItems.map((item, index) => (
@@ -139,7 +139,7 @@ export function Breadcrumbs({
             <BreadcrumbItem
               onClick={() => onBreadcrumbSelected(lastTwoItems[0])}
             >
-              <span className="truncate cursor-pointer text-gray-600">
+              <span className="cursor-pointer truncate text-gray-600">
                 {lastTwoItems[0].name}
               </span>
             </BreadcrumbItem>

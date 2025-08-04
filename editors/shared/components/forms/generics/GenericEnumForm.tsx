@@ -1,7 +1,7 @@
 import { Form, EnumField } from "@powerhousedao/document-engineering/scalars";
 import { type SelectOption } from "@powerhousedao/document-engineering/ui";
 import { useFormMode } from "../../../providers/FormModeProvider.js";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import type { FieldValues, UseFormReturn } from "react-hook-form";
 import { useRef } from "react";
 

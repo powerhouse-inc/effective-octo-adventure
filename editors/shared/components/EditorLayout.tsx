@@ -79,9 +79,9 @@ const EditorLayoutContent = ({
   }, [nodes, activeNodeId]);
 
   return (
-    <div className="min-h-screen h-screen bg-white flex flex-col rounded-2xl p-6 gap-4 mt-4">
+    <div className="mt-4 flex h-screen min-h-screen flex-col gap-4 rounded-2xl bg-white p-6">
       <header>
-        <div className="flex justify-between items-center w-full h-9">
+        <div className="flex h-9 w-full items-center justify-between">
           <div>
             <h1 className="text-xl font-semibold">{title}</h1>
           </div>
@@ -97,7 +97,7 @@ const EditorLayoutContent = ({
       </header>
 
       <div>
-        <div className="flex items-center justify-between flex-wrap gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <div
             className={cn(
               "flex w-full flex-1",

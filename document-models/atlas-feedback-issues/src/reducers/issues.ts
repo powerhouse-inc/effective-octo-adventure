@@ -15,7 +15,7 @@ import {
 import { ADDRESS_ALLOW_LIST } from "../constants.js";
 
 export const reducer: AtlasFeedbackIssuesIssuesOperations = {
-  createIssueOperation(state, action, dispatch) {
+  createIssueOperation(state, action) {
     const creatorAddress = action.context?.signer?.user.address;
     if (!creatorAddress) {
       throw new Error("User is not signed in");
@@ -37,7 +37,7 @@ export const reducer: AtlasFeedbackIssuesIssuesOperations = {
     }
     state.issues.push(result.data);
   },
-  deleteIssueOperation(state, action, dispatch) {
+  deleteIssueOperation(state, action) {
     const creatorAddress = action.context?.signer?.user.address;
     if (!creatorAddress) {
       throw new Error("User is not signed in");
@@ -62,7 +62,7 @@ export const reducer: AtlasFeedbackIssuesIssuesOperations = {
     }
     state.issues = state.issues.filter((i) => i.phid !== issue.phid);
   },
-  addNotionIdOperation(state, action, dispatch) {
+  addNotionIdOperation(state, action) {
     const creatorAddress = action.context?.signer?.user.address;
     if (!creatorAddress) {
       throw new Error("User is not signed in");
@@ -91,7 +91,7 @@ export const reducer: AtlasFeedbackIssuesIssuesOperations = {
     issue.notionIds = [...issue.notionIds, action.input.notionId];
     state.issues = state.issues.map((i) => (i.phid === issue.phid ? issue : i));
   },
-  removeNotionIdOperation(state, action, dispatch) {
+  removeNotionIdOperation(state, action) {
     const creatorAddress = action.context?.signer?.user.address;
     if (!creatorAddress) {
       throw new Error("User is not signed in");

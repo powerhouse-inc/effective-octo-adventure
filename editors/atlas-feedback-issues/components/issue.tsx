@@ -37,7 +37,7 @@ export function Issue(props: Props) {
   return (
     <li>
       <button
-        className="flex items-center justify-between cursor-pointer text-gray-800 text-sm mb-3 group w-full"
+        className="group mb-3 flex w-full cursor-pointer items-center justify-between text-sm text-gray-800"
         onClick={() => {
           dispatchSelectIssueEvent(issue.phid);
         }}

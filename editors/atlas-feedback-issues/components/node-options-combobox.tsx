@@ -147,7 +147,7 @@ export function NodeOptionsCombobox(props: Props) {
         <button
           aria-expanded={open}
           className={cn(
-            "text-gray-400 hover:text-gray-900 transition",
+            "text-gray-400 transition hover:text-gray-900",
             !hasComments && "opacity-0 group-hover:opacity-100",
           )}
           onClick={(e) => e.stopPropagation()}

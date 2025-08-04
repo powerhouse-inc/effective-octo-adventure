@@ -21,7 +21,7 @@ export const CreateDocument: React.FC<CreateDocumentProps> = ({
 }) => {
   return (
     <div className="px-6">
-      <h3 className="mb-3 mt-4 text-sm font-bold text-gray-600">
+      <h3 className="mt-4 mb-3 text-sm font-bold text-gray-600">
         New document
       </h3>
       <div className="flex w-full flex-wrap gap-4">

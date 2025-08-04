@@ -72,7 +72,7 @@ export function Comment(props: Props) {
 
   return (
     <div
-      className={cn(containerClass, "p-2 rounded-lg group")}
+      className={cn(containerClass, "group rounded-lg p-2")}
       onClick={() => {
         dispatchSelectCommentEvent({
           phid: comment.phid,
@@ -83,7 +83,7 @@ export function Comment(props: Props) {
     >
       <div
         className={cn(
-          "flex text-left items-center justify-between",
+          "flex items-center justify-between text-left",
           userIsCreator ? "text-gray-600" : "text-gray-400",
         )}
       >
@@ -113,10 +113,10 @@ export function Comment(props: Props) {
         </div>
       ) : (
         <div className="px-2">
-          <p className="text-inherit pb-1.5">{formattedComment}</p>
+          <p className="pb-1.5 text-inherit">{formattedComment}</p>
         </div>
       )}
-      <span className={cn(timestampClass, "block text-right mr-1 mt-1")}>
+      <span className={cn(timestampClass, "mt-1 mr-1 block text-right")}>
         {formatDateForDisplay(comment.lastEditedAt)}
       </span>
     </div>

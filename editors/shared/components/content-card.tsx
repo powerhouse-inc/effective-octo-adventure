@@ -18,7 +18,7 @@ const ContentCard = ({
   return (
     <div
       className={cn(
-        "flex flex-col w-full border border-gray-200 rounded-md bg-gray-50",
+        "flex w-full flex-col rounded-md border border-gray-200 bg-gray-50",
         className,
       )}
     >
@@ -28,7 +28,7 @@ const ContentCard = ({
             <TagStatus text={tagText} variant={variant} />
           </div>
         )}
-        <div className="flex flex-col gap-4 pt-6 px-4 pb-4">{children}</div>
+        <div className="flex flex-col gap-4 px-4 pt-6 pb-4">{children}</div>
       </div>
     </div>
   );

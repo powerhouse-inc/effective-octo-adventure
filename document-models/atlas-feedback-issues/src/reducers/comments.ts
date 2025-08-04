@@ -17,7 +17,7 @@ import {
 } from "../utils.js";
 
 export const reducer: AtlasFeedbackIssuesCommentsOperations = {
-  createCommentOperation(state, action, dispatch) {
+  createCommentOperation(state, action) {
     const creatorAddress = action.context?.signer?.user.address;
     if (!creatorAddress) {
       throw new Error("User is not signed in");
@@ -48,7 +48,7 @@ export const reducer: AtlasFeedbackIssuesCommentsOperations = {
       issue.phid === action.input.issuePhid ? issue : issue,
     );
   },
-  deleteCommentOperation(state, action, dispatch) {
+  deleteCommentOperation(state, action) {
     const creatorAddress = action.context?.signer?.user.address;
     if (!creatorAddress) {
       throw new Error("User is not signed in");
@@ -81,7 +81,7 @@ export const reducer: AtlasFeedbackIssuesCommentsOperations = {
     issue.comments = issue.comments.filter((c) => c.phid !== comment.phid);
     state.issues = state.issues.map((i) => (i.phid === issue.phid ? issue : i));
   },
-  editCommentOperation(state, action, dispatch) {
+  editCommentOperation(state, action) {
     const creatorAddress = action.context?.signer?.user.address;
     if (!creatorAddress) {
       throw new Error("User is not signed in");

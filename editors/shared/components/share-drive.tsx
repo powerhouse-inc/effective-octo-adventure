@@ -23,7 +23,7 @@ export function ShareDrive({ driveUrl, classnamme }: IProps) {
             Could not copy the link. Please copy it manually:
           </p>
           <a
-            className="text-blue-500 font-medium"
+            className="font-medium text-blue-500"
             href={driveUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -44,7 +44,7 @@ export function ShareDrive({ driveUrl, classnamme }: IProps) {
     <button
       onClick={onClick}
       className={cn(
-        "flex h-8 items-center gap-x-2 rounded bg-gray-200 border border-gray-300 px-3 text-sm font-semibold text-gray-900 active:opacity-50 hover:opacity-75 cursor-pointer",
+        "flex h-8 cursor-pointer items-center gap-x-2 rounded border border-gray-300 bg-gray-200 px-3 text-sm font-semibold text-gray-900 hover:opacity-75 active:opacity-50",
         classnamme,
       )}
     >

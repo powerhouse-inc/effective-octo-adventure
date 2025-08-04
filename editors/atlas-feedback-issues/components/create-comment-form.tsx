@@ -63,7 +63,7 @@ export function CreateCommentForm(props: {
   return (
     <Form {...form}>
       <form
-        className="bg-white p-3 rounded-md"
+        className="rounded-md bg-white p-3"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField
@@ -74,7 +74,7 @@ export function CreateCommentForm(props: {
               <FormControl>
                 <Textarea
                   {...field}
-                  className="placeholder:text-gray-600 placeholder:text-sm text-sm"
+                  className="text-sm placeholder:text-sm placeholder:text-gray-600"
                   onKeyDown={onKeyDown}
                   placeholder="Add comment"
                   rows={1}
@@ -85,7 +85,7 @@ export function CreateCommentForm(props: {
           )}
         />
         <button
-          className="bg-gray-100 rounded-md h-10 py-2 px-4 flex justify-center items-center w-full"
+          className="flex h-10 w-full items-center justify-center rounded-md bg-gray-100 px-4 py-2"
           type="submit"
         >
           Comment

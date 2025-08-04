@@ -6,8 +6,8 @@ interface FieldSkeletonProps {
 }
 
 export const FieldSkeleton = ({ className }: FieldSkeletonProps) => (
-  <div className={cn("w-full flex flex-col gap-2")}>
-    <Skeleton className={cn("max-w-40 h-4 mb-[3px]")} />
+  <div className={cn("flex w-full flex-col gap-2")}>
+    <Skeleton className={cn("mb-[3px] h-4 max-w-40")} />
     <Skeleton className={className} />
   </div>
 );

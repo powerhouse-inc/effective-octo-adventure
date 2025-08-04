@@ -11,7 +11,6 @@ export const useNodeStatusFromDriveAnalytics = (
   from?: string,
   to?: string,
   driveId?: string,
-  logAnalytics = false,
 ) => {
   const statusMapRef = useRef<Record<string, NodeStatus>>({});
 

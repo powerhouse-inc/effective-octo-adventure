@@ -13,7 +13,7 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
 
   return {
     Query: {
-      AtlasExploratory: async (_: any, args: any, ctx: any) => {
+      AtlasExploratory: async () => {
         return {
           getDocument: async (args: any) => {
             const driveId: string = args.driveId || DEFAULT_DRIVE_ID;

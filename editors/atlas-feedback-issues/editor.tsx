@@ -331,8 +331,8 @@ export default function Editor(props: AtlasFeedbackIssuesEditorProps) {
     <WagmiContext>
       {showIssues ? (
         <section className="h-full p-2">
-          <h2 className="flex items-center relative mb-3">
-            <span className="w-full text-center text-gray-900 text-lg font-semibold">
+          <h2 className="relative mb-3 flex items-center">
+            <span className="w-full text-center text-lg font-semibold text-gray-900">
               Coordination Group
             </span>
             <div className="absolute right-0">{replyIcon}</div>
@@ -347,8 +347,8 @@ export default function Editor(props: AtlasFeedbackIssuesEditorProps) {
           />
           {!!selectedIssue && !!selectedNotionId && (
             <>
-              <div className="h-px bg-gray-300 mt-3.5 mb-5" />
-              <div className="bg-gray-100 p-2 rounded-xl">
+              <div className="mt-3.5 mb-5 h-px bg-gray-300" />
+              <div className="rounded-xl bg-gray-100 p-2">
                 <Comments
                   handleDeleteComment={handleDeleteComment}
                   handleEditComment={handleEditComment}
@@ -369,7 +369,7 @@ export default function Editor(props: AtlasFeedbackIssuesEditorProps) {
           )}
           <div className="px-5">
             <button
-              className="mt-2 bg-gray-900 text-gray-50 w-full flex justify-center items-center py-2 px-4 rounded-md"
+              className="mt-2 flex w-full items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-gray-50"
               onClick={() => dispatchCreateIssueEvent([])}
             >
               Create new issue

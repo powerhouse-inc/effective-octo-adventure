@@ -3,7 +3,6 @@ import {
   type DeleteCommentInput,
   type EditCommentInput,
   type AtlasFeedbackIssue,
-  AtlasFeedbackComment as TComment,
 } from "document-models/atlas-feedback-issues/index.js";
 import { type User } from "document-model";
 import { Comment } from "./comment.js";

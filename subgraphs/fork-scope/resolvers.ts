@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { type Subgraph } from "@powerhousedao/reactor-api";
+// import { type Subgraph } from "@powerhousedao/reactor-api";
 import { syncDocuments } from "../../scripts/apply-changes/syncDocuments.js";
 
 if (process.env.NODE_ENV === "development") {
@@ -25,8 +25,8 @@ console.log("> GQL_ENDPOINT: ", GQL_ENDPOINT);
 // Preferred editor for the drive when it's created
 const PREFERRED_EDITOR = "AtlasDriveExplorer";
 
-export const getResolvers = (subgraph: Subgraph) => {
-  const reactor = subgraph.reactor;
+export const getResolvers = (/* subgraph: Subgraph */) => {
+  // const reactor = subgraph.reactor;
 
   return {
     Mutation: {

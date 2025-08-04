@@ -165,7 +165,7 @@ export function DriverLayout({
       <ViewModeProvider>
         <SidebarProvider>
           <ToastContainer position="bottom-right"></ToastContainer>
-          <main className="flex overflow-hidden h-full">
+          <main className="flex h-full overflow-hidden">
             <Sidebar
               activeNodeId={activeNodeId}
               enableMacros={4}
@@ -181,7 +181,7 @@ export function DriverLayout({
               initialWidth={sidebarWidth}
               maxWidth={maxWidth}
             />
-            <div className="flex-1 bg-gray-50 p-4 dark:bg-slate-800 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto bg-gray-50 p-4 dark:bg-slate-800">
               <>
                 {activeNodeId && documentModelModule && editorModule ? (
                   <EditorContainer
@@ -200,8 +200,8 @@ export function DriverLayout({
                   />
                 ) : (
                   <>
-                    <div className="flex items-center justify-between mt-1 mb-4 px-1">
-                      <h1 className="text-lg text-gray-900 font-medium dark:text-gray-50">
+                    <div className="mt-1 mb-4 flex items-center justify-between px-1">
+                      <h1 className="text-lg font-medium text-gray-900 dark:text-gray-50">
                         {title}
                       </h1>
                       {driveUrl && <ShareDrive driveUrl={driveUrl} />}
@@ -209,7 +209,7 @@ export function DriverLayout({
                     <Home>
                       {Object.entries(feedbackIssues).length > 0 && (
                         <div className="my-4 px-6">
-                          <h2 className="mb-3 mt-4 text-sm font-bold text-gray-600">
+                          <h2 className="mt-4 mb-3 text-sm font-bold text-gray-600">
                             Feedback Issues
                           </h2>
                           <div className="flex flex-wrap gap-4">

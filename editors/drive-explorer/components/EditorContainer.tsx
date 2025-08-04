@@ -17,7 +17,9 @@ import {
   type TimelineItem,
 } from "@powerhousedao/design-system";
 import { useState, Suspense, useCallback } from "react";
-import { getRevisionFromDate, useTimelineItems } from "@powerhousedao/common";
+import {
+  getRevisionFromDate /*, useTimelineItems */,
+} from "@powerhousedao/common";
 
 export interface EditorContainerProps {
   driveId: string;
@@ -74,7 +76,7 @@ export const EditorContainer: React.FC<EditorContainerProps> = (props) => {
   }, [document, documentModelModule.documentModel.extension, title]);
 
   const loadingContent = (
-    <div className="flex-1 flex justify-center items-center h-full">
+    <div className="flex h-full flex-1 items-center justify-center">
       <DefaultEditorLoader />
     </div>
   );

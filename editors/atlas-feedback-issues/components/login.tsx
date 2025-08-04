@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { RenownIcon } from "./renown-icon.js";
 
 interface LoginProps {
@@ -6,10 +5,6 @@ interface LoginProps {
 }
 
 export function Login({ forbidden = false }: LoginProps) {
-  const handleLogin = useCallback(() => {
-    console.log("login");
-  }, []);
-
   const content = forbidden ? (
     "You don't have the right credentials to get access to this document."
   ) : (
@@ -23,9 +18,9 @@ export function Login({ forbidden = false }: LoginProps) {
   );
 
   return (
-    <div className="bg-gray-50 flex justify-center gap-x-4 items-center justify-items-center h-full">
-      <div className="bg-white rounded-2xl drop-shadow-sm p-6">
-        <h1 className="text-md text-gray-900 font-medium flex gap-x-2">
+    <div className="flex h-full items-center justify-center justify-items-center gap-x-4 bg-gray-50">
+      <div className="rounded-2xl bg-white p-6 drop-shadow-sm">
+        <h1 className="text-md flex gap-x-2 font-medium text-gray-900">
           {content}
         </h1>
       </div>

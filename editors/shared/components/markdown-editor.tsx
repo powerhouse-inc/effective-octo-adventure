@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import { useLocalStorage } from "usehooks-ts";
@@ -6,7 +6,7 @@ import { useLocalStorage } from "usehooks-ts";
 // Custom preview renderer to make links open in new tabs and ensure proper list rendering
 const previewOptions = {
   components: {
-    a: ({ node, ...props }: { node: any; [key: string]: any }) => (
+    a: ({ ...props }: { node: any; [key: string]: any }) => (
       <a {...props} target="_blank" rel="noopener noreferrer" />
     ),
   },
@@ -59,7 +59,7 @@ export function MarkdownEditor({
   useEffect(() => {
     if (!MDEditor) return;
 
-    const handleViewButtonClick = (event: Event) => {
+    const handleViewButtonClick = () => {
       const buttonLive = document.querySelector("button[data-name='live']");
       const buttonEdit = document.querySelector("button[data-name='edit']");
       const buttonPreview = document.querySelector(

@@ -11,16 +11,11 @@ export const useNodeStatusFromDocumentAnalytics = (
   from?: string,
   to?: string,
   driveId?: string,
-  logAnalytics = false,
 ) => {
   const statusMapRef = useRef<Record<string, NodeStatus>>({});
 
   const start = from ? DateTime.fromISO(from) : DateTime.now().startOf("day");
   const end = to ? DateTime.fromISO(to) : DateTime.now().endOf("day");
-
-  const driveSelect = driveId
-    ? AnalyticsPath.fromString(`drive/${driveId}`)
-    : AnalyticsPath.fromString("drive");
 
   const source = driveId
     ? AnalyticsPath.fromString(`ph/doc/${driveId}`)

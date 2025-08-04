@@ -22,15 +22,8 @@ export function EditCommentForm(props: {
   readonly handleDeleteComment: (input: DeleteCommentInput) => void;
   readonly onCancel: () => void;
 }) {
-  const {
-    issue,
-    comment,
-    state,
-    isEditing,
-    onSubmitEditComment,
-    handleDeleteComment,
-    onCancel,
-  } = props;
+  const { issue, comment, state, isEditing, onSubmitEditComment, onCancel } =
+    props;
   const schema = makeExistingCommentValidator(state);
 
   const defaultValues = {

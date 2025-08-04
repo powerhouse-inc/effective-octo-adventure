@@ -11,7 +11,7 @@ export function Chevron(
     <svg
       {...rest}
       className={twMerge(
-        "mt-0.5 flex-none transition text-gray-700",
+        "mt-0.5 flex-none text-gray-700 transition",
         open && "rotate-180",
         className,
       )}

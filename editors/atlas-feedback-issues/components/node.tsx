@@ -67,10 +67,10 @@ export function Node(props: Props) {
   return (
     <div className="mb-3" style={{ marginLeft: `${(level ?? 0) * 8}px` }}>
       <li
-        className="flex gap-2 items-start group cursor-pointer"
+        className="group flex cursor-pointer items-start gap-2"
         onClick={onNodeTitleClick}
       >
-        <div className="flex items-center gap-2 h-6">
+        <div className="flex h-6 items-center gap-2">
           <Chevron
             className={hasSubDocuments ? "visible" : "invisible"}
             open={open}
@@ -79,13 +79,13 @@ export function Node(props: Props) {
         </div>
         <span
           className={cn(
-            "font-normal text-sm text-gray-700",
+            "text-sm font-normal text-gray-700",
             selectedNotionId === viewNode.slugSuffix ? "font-medium" : "",
           )}
         >
           {title}
         </span>
-        <div className="flex items-center h-6">
+        <div className="flex h-6 items-center">
           <NodeOptionsCombobox {...props} />
         </div>
       </li>

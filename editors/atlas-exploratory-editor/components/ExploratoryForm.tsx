@@ -48,7 +48,10 @@ export function ExploratoryForm({
   const cardVariant = getCardVariant(mode);
   const tagText = getTagText(mode);
 
-  const fetchOptionsCallback = useParentOptions("sky/atlas-exploratory");
+  const fetchOptionsCallback = useParentOptions(
+    "sky/atlas-exploratory",
+    document.header.id,
+  );
 
   const originalDocumentState = document.state.global;
   const parentId = originalDocumentState.parent?.id

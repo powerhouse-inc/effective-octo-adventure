@@ -45,7 +45,10 @@ export function MultiParentForm({
   const tagText = getTagText(mode);
   const documentState = document.state.global;
 
-  const fetchOptionsCallback = useParentOptions("sky/atlas-multiparent");
+  const fetchOptionsCallback = useParentOptions(
+    "sky/atlas-multiparent",
+    document.header.id,
+  );
 
   const baseDocument = useBaseDocumentCached(document, context);
   const loading = shouldShowSkeleton(mode, baseDocument);

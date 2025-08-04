@@ -72,12 +72,17 @@ const filterFnMap: Record<AllowedDocumentType, FilterFn> = {
 
 export function useParentOptions(
   documentType: AllowedDocumentType,
+  documentId: string,
 ): (value: string) => PHIDOption[] {
   const documentsLink = useDocumentsLink(filterFnMap[documentType]);
   const fetchOptionsCallback = useCallback(
     (value: string) => {
       const lowerCaseValue = value.toLowerCase();
       return documentLinksToPHIDOptions(documentsLink).filter((doc) => {
+        if (doc.value === `phd:${documentId}`) {
+          return false;
+        }
+
         const pathText =
           typeof doc.path === "object" ? doc.path.text : doc.path;
         return (
@@ -87,7 +92,7 @@ export function useParentOptions(
         );
       });
     },
-    [documentsLink],
+    [documentsLink, documentId],
   );
 
   return fetchOptionsCallback;

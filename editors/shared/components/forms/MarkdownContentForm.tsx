@@ -41,7 +41,9 @@ const MarkdownContentForm: React.FC<MarkdownContentFormProps> = ({
   };
 
   if (mode === "edition") {
-    return (
+    return loading ? (
+      <FieldSkeleton className="h-[350px]" />
+    ) : (
       <div>
         <MarkdownEditor
           value={contentValue}

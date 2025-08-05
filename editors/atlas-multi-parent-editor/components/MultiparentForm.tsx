@@ -133,6 +133,7 @@ export function MultiParentForm({
             )}
           >
             <MultiPhIdForm
+              isSplitMode={isSplitMode ?? false}
               loading={loading}
               showAddField={showLastElementParents}
               label="Parent Documents"
@@ -151,6 +152,7 @@ export function MultiParentForm({
               })}
               fetchOptionsCallback={fetchOptionsCallback}
               baselineValue={baseDocument?.state.global.parents ?? []}
+              document={document}
               onAdd={(value) => {
                 const newData = fetchOptionsCallback(value)[0];
                 const newId = value.split(":")[1];
@@ -209,7 +211,7 @@ export function MultiParentForm({
               )}
 
             <MultiUrlForm
-              isSplitMode={isSplitMode}
+              isSplitMode={isSplitMode ?? false}
               loading={loading}
               viewMode={mode}
               showAddField={showLastElement}

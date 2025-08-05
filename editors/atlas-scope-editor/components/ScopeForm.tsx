@@ -108,7 +108,7 @@ export function ScopeForm({
                   <div className={cn("h-[63px]")} />
                 )}
               <MultiUrlForm
-                isSplitMode={isSplitMode}
+                isSplitMode={isSplitMode ?? false}
                 document={document}
                 loading={loading}
                 viewMode={mode}

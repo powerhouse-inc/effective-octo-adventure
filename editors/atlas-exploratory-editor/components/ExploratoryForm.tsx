@@ -250,7 +250,7 @@ export function ExploratoryForm({
                 <div className={cn("h-[63px]")} />
               )}
             <MultiUrlForm
-              isSplitMode={isSplitMode}
+              isSplitMode={isSplitMode ?? false}
               loading={loading}
               viewMode={mode}
               showAddField={showLastElement}

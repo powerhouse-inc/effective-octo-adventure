@@ -202,7 +202,7 @@ export function GroundingForm({
                 <div className={cn("h-[63px]")} />
               )}
             <MultiUrlForm
-              isSplitMode={isSplitMode}
+              isSplitMode={isSplitMode ?? false}
               loading={loading}
               showAddField={showLastElement}
               viewMode={mode}

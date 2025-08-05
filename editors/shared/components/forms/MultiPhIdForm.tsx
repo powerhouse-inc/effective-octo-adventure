@@ -9,6 +9,12 @@ import {
   type PHIDFieldProps,
 } from "@powerhousedao/document-engineering/scalars";
 import type { MDocumentLink } from "document-models/atlas-multi-parent/index.js";
+import type { AtlasDocument } from "../../utils/utils.js";
+import {
+  arrayDiffIndexMapping,
+  parentToMappingOperations,
+  getOperations,
+} from "../../utils/array-diff.js";
 
 type CommonDataProps = {
   id: string;
@@ -25,6 +31,8 @@ interface MultiPhIdFormProps
   fetchOptionsCallback: (value: string) => PHIDOption[];
   baselineValue: MDocumentLink[];
   showAddField: boolean;
+  document: AtlasDocument;
+  isSplitMode: boolean;
 }
 
 const MultiPhIdForm = ({
@@ -37,6 +45,8 @@ const MultiPhIdForm = ({
   fetchOptionsCallback,
   baselineValue,
   showAddField,
+  document,
+  isSplitMode,
 }: MultiPhIdFormProps) => {
   const viewMode = useFormMode();
   // boolean flag to trigger callback recreation only when needed
@@ -55,29 +65,75 @@ const MultiPhIdForm = ({
     [data],
   );
 
+  const mapping = useMemo(() => {
+    const operations = getOperations(document, [
+      "REPLACE_PARENT",
+      "ADD_PARENT",
+      "REMOVE_PARENT",
+    ]);
+    const baselineValueIds = baselineValue.map((item) => `phd:${item.id}`);
+    const mapping = arrayDiffIndexMapping(
+      baselineValueIds,
+      parentToMappingOperations(operations),
+    );
+    return mapping;
+  }, [baselineValue, document]);
+
+  const fields = useMemo(() => {
+    let fields = mapping.map((_, index) => ({
+      id: index.toString(),
+      value:
+        mapping[index].currentIndex === undefined
+          ? ""
+          : data[mapping[index].currentIndex]?.id || "",
+    }));
+
+    fields = fields.filter((item, index) => {
+      const baseValue =
+        mapping[index].originalIndex === undefined
+          ? undefined
+          : baselineValue[mapping[index].originalIndex]?.id;
+
+      if (!isSplitMode && viewMode === "edition") {
+        return item.value !== "";
+      } else {
+        return !(
+          item.value === "" &&
+          (baseValue === "" || baseValue === undefined)
+        );
+      }
+    });
+
+    return fields;
+  }, [mapping, isSplitMode, viewMode, baselineValue, renderComponentTrigger]);
+
   // this callback only recreates when renderComponentTrigger changes,
   // not on every data change, but still has access to latest data
   const renderComponent = useCallback(
     (props: PHIDFieldProps) => {
-      // the new item not have initialOptions
-      if (props.name === "item-new") {
-        return loading ? (
-          <FieldSkeleton className="h-[92px]" />
-        ) : (
-          <PHIDField {...props} />
-        );
+      let baseValue = undefined;
+
+      const mappingIndex = parseInt(props.name?.replace("item-", "") ?? "");
+      const isRemoved =
+        !isNaN(mappingIndex) &&
+        mapping?.[mappingIndex]?.currentIndex === undefined;
+
+      const actualDataIndex = mapping[mappingIndex]?.currentIndex;
+      const element =
+        props.name !== "item-new" && actualDataIndex !== undefined
+          ? data[actualDataIndex]
+          : undefined;
+
+      if (props.name !== "item-new") {
+        baseValue =
+          mapping[mappingIndex]?.originalIndex === undefined
+            ? undefined
+            : baselineValue[mapping[mappingIndex].originalIndex];
       }
 
-      // for existing fields, use the initialOptions of the corresponding element
-      const fieldId = props.name?.replace("item-", "");
-      const element = data.find((d) => d.id === fieldId);
-
-      const baseValue = baselineValue.find(
-        (baseItem) => baseItem.id === fieldId,
-      );
-
       const isFirstField =
-        data.length > 0 && data[0].id === props.name?.replace("item-", "");
+        (data.length === 0 && props.name === "item-new") ||
+        props.name === `item-${fields[0]?.id}`;
 
       return loading ? (
         isFirstField ? (
@@ -87,22 +143,23 @@ const MultiPhIdForm = ({
         )
       ) : (
         <PHIDField
-          {...props}
+          {...(isRemoved ? { ...props, placeholder: undefined } : props)}
           initialOptions={element?.initialOptions}
           viewMode={viewMode}
-          baseValue={baseValue?.id}
+          baseValue={baseValue ? `phd:${baseValue.id}` : undefined}
           basePreviewTitle={baseValue?.title ?? undefined}
           basePreviewPath={baseValue?.documentType ?? undefined}
+          disabled={isRemoved}
         />
       );
     },
-    [renderComponentTrigger, baselineValue],
+    [mapping, loading, viewMode, baselineValue, fields, renderComponentTrigger],
   );
 
   // split rendering into two phases: this effect runs after data changes are complete,
   // then triggers a new render cycle by updating the boolean flag
   useEffect(() => {
-    setRenderComponentTrigger(!renderComponentTrigger);
+    setRenderComponentTrigger((prev) => !prev);
   }, [dataSignature]);
 
   return (
@@ -111,10 +168,7 @@ const MultiPhIdForm = ({
       onRemove={onRemove}
       onUpdate={onUpdate}
       showAddField={showAddField}
-      fields={data.map((element) => ({
-        id: element.id,
-        value: element.id,
-      }))}
+      fields={fields}
       label={label}
       component={renderComponent}
       componentProps={{
@@ -140,7 +194,6 @@ const MultiPhIdForm = ({
           }
           return element?.initialOptions?.[0];
         },
-        viewMode: viewMode,
         validators: [
           (value: string, formState) => {
             if (!value) return true;

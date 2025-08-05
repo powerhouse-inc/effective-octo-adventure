@@ -19,16 +19,15 @@ interface MultiUrlFormProps
     ArrayFieldProps<string, UrlFieldProps>,
     "fields" | "componentProps" | "component"
   > {
-  isSplitMode?: boolean;
   loading?: boolean;
   data: string[];
   document: AtlasDocument;
   viewMode: ViewMode;
   baselineValue: string[];
+  isSplitMode: boolean;
 }
 
 const MultiUrlForm = ({
-  isSplitMode,
   loading,
   label,
   data,
@@ -39,6 +38,7 @@ const MultiUrlForm = ({
   baselineValue,
   showAddField,
   document,
+  isSplitMode,
 }: MultiUrlFormProps) => {
   // boolean flag to trigger callback recreation only when needed
   const [renderComponentTrigger, setRenderComponentTrigger] = useState(false);
@@ -59,6 +59,34 @@ const MultiUrlForm = ({
     return mapping;
   }, [baselineValue, document]);
 
+  const fields = useMemo(() => {
+    let fields = mapping.map((_, index) => ({
+      id: index.toString(),
+      value:
+        mapping[index].currentIndex === undefined
+          ? ""
+          : data[mapping[index].currentIndex],
+    }));
+
+    fields = fields.filter((item, index) => {
+      const baseValue =
+        mapping[index].originalIndex === undefined
+          ? undefined
+          : baselineValue[mapping[index].originalIndex];
+
+      if (!isSplitMode && viewMode === "edition") {
+        return item.value !== "";
+      } else {
+        return !(
+          item.value === "" &&
+          (baseValue === "" || baseValue === undefined)
+        );
+      }
+    });
+
+    return fields;
+  }, [mapping, isSplitMode, viewMode, data, baselineValue]);
+
   // this callback only recreates when renderComponentTrigger changes,
   // not on every data change, but still has access to latest data
   const renderComponent = useCallback(
@@ -78,7 +106,8 @@ const MultiUrlForm = ({
       }
 
       const isFirstField =
-        (data.length === 0 && props.name === "item-new") || mappingIndex === 0;
+        (data.length === 0 && props.name === "item-new") ||
+        props.name === `item-${fields[0]?.id}`;
 
       return loading ? (
         isFirstField ? (
@@ -108,6 +137,7 @@ const MultiUrlForm = ({
       viewMode,
       baselineValue,
       renderComponentTrigger,
+      fields,
     ],
   );
 
@@ -116,22 +146,6 @@ const MultiUrlForm = ({
   useEffect(() => {
     setRenderComponentTrigger((prev) => !prev);
   }, [dataSignature]);
-
-  const fields = useMemo(() => {
-    let fields = mapping.map((_, index) => ({
-      id: index.toString(),
-      value:
-        mapping[index].currentIndex === undefined
-          ? ""
-          : data[mapping[index].currentIndex],
-    }));
-
-    if (!isSplitMode && viewMode === "edition") {
-      fields = fields.filter((item) => item.value !== "");
-    }
-
-    return fields;
-  }, [mapping, isSplitMode, viewMode, data]);
 
   return (
     <ArrayField<string, UrlFieldProps>

@@ -190,3 +190,29 @@ export function contextDataToMappingOperations(
     })
     .filter((operation) => operation !== undefined) as MappingOperations[];
 }
+
+export function parentToMappingOperations(
+  operations: Operation[],
+): MappingOperations[] {
+  return operations
+    .map((operation) => {
+      if (operation.type === "ADD_PARENT") {
+        return {
+          type: "ADD",
+          value: `phd:${(operation.input as { id: string }).id}`,
+        };
+      } else if (operation.type === "REMOVE_PARENT") {
+        return {
+          type: "REMOVE",
+          value: `phd:${(operation.input as { id: string }).id}`,
+        };
+      } else if (operation.type === "REPLACE_PARENT") {
+        return {
+          type: "REPLACE",
+          originalValue: `phd:${(operation.input as { prevID: string; id: string }).prevID}`,
+          newValue: `phd:${(operation.input as { prevID: string; id: string }).id}`,
+        };
+      }
+    })
+    .filter((operation) => operation !== undefined) as MappingOperations[];
+}

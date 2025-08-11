@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { FieldSkeleton } from "../field-skeleton.js";
 import { Skeleton } from "../ui/skeleton.js";
 import { ArrayField, type ArrayFieldProps } from "../ArrayField.js";
@@ -29,7 +29,7 @@ interface MultiPhIdFormProps
   loading?: boolean;
   data: CommonDataProps[];
   fetchOptionsCallback: (value: string) => PHIDOption[];
-  baselineValue: MDocumentLink[];
+  baselineValue?: MDocumentLink[];
   showAddField: boolean;
   document: AtlasDocument;
   isSplitMode: boolean;
@@ -49,29 +49,16 @@ const MultiPhIdForm = ({
   isSplitMode,
 }: MultiPhIdFormProps) => {
   const viewMode = useFormMode();
-  // boolean flag to trigger callback recreation only when needed
-  const [renderComponentTrigger, setRenderComponentTrigger] = useState(false);
-
-  // string value of latest data
-  const dataSignature = useMemo(
-    () =>
-      JSON.stringify(
-        data.map((item) => ({
-          id: item.id,
-          title: item.initialOptions?.[0]?.title,
-          path: item.initialOptions?.[0]?.path,
-        })),
-      ),
-    [data],
-  );
 
   const mapping = useMemo(() => {
+    if (baselineValue === undefined) return [];
     const operations = getOperations(document, [
       "REPLACE_PARENT",
       "ADD_PARENT",
       "REMOVE_PARENT",
     ]);
-    const baselineValueIds = baselineValue.map((item) => `phd:${item.id}`);
+    const baselineValueIds =
+      baselineValue?.map((item) => `phd:${item.id}`) ?? [];
     const mapping = arrayDiffIndexMapping(
       baselineValueIds,
       parentToMappingOperations(operations),
@@ -92,7 +79,7 @@ const MultiPhIdForm = ({
       const baseValue =
         mapping[index].originalIndex === undefined
           ? undefined
-          : baselineValue[mapping[index].originalIndex]?.id;
+          : baselineValue?.[mapping[index].originalIndex]?.id;
 
       if (!isSplitMode && viewMode === "edition") {
         return item.value !== "";
@@ -105,10 +92,18 @@ const MultiPhIdForm = ({
     });
 
     return fields;
-  }, [mapping, isSplitMode, viewMode, baselineValue, renderComponentTrigger]);
+  }, [mapping, isSplitMode, viewMode, data, baselineValue]);
 
-  // this callback only recreates when renderComponentTrigger changes,
-  // not on every data change, but still has access to latest data
+  const mappingRef = useRef(mapping);
+  const baselineValueRef = useRef(baselineValue);
+  const fieldsRef = useRef(fields);
+  const dataRef = useRef(data);
+
+  mappingRef.current = mapping;
+  baselineValueRef.current = baselineValue;
+  fieldsRef.current = fields;
+  dataRef.current = data;
+
   const renderComponent = useCallback(
     (props: PHIDFieldProps) => {
       let baseValue = undefined;
@@ -116,24 +111,26 @@ const MultiPhIdForm = ({
       const mappingIndex = parseInt(props.name?.replace("item-", "") ?? "");
       const isRemoved =
         !isNaN(mappingIndex) &&
-        mapping?.[mappingIndex]?.currentIndex === undefined;
+        mappingRef.current?.[mappingIndex]?.currentIndex === undefined;
 
-      const actualDataIndex = mapping[mappingIndex]?.currentIndex;
+      const actualDataIndex = mappingRef.current?.[mappingIndex]?.currentIndex;
       const element =
         props.name !== "item-new" && actualDataIndex !== undefined
-          ? data[actualDataIndex]
+          ? dataRef.current?.[actualDataIndex]
           : undefined;
 
       if (props.name !== "item-new") {
         baseValue =
-          mapping[mappingIndex]?.originalIndex === undefined
+          mappingRef.current?.[mappingIndex]?.originalIndex === undefined
             ? undefined
-            : baselineValue[mapping[mappingIndex].originalIndex];
+            : baselineValueRef.current?.[
+                mappingRef.current[mappingIndex].originalIndex
+              ];
       }
 
       const isFirstField =
-        (data.length === 0 && props.name === "item-new") ||
-        props.name === `item-${fields[0]?.id}`;
+        (fieldsRef.current.length === 0 && props.name === "item-new") ||
+        props.name === `item-${fieldsRef.current?.[0]?.id}`;
 
       return loading ? (
         isFirstField ? (
@@ -153,14 +150,8 @@ const MultiPhIdForm = ({
         />
       );
     },
-    [mapping, loading, viewMode, baselineValue, fields, renderComponentTrigger],
+    [loading, viewMode],
   );
-
-  // split rendering into two phases: this effect runs after data changes are complete,
-  // then triggers a new render cycle by updating the boolean flag
-  useEffect(() => {
-    setRenderComponentTrigger((prev) => !prev);
-  }, [dataSignature]);
 
   return (
     <ArrayField<string, PHIDFieldProps>

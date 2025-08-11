@@ -1,6 +1,6 @@
+import { type ReactNode, useEffect, useMemo, useRef } from "react";
 import { Form } from "@powerhousedao/document-engineering/scalars";
-import type React from "react";
-import { useEffect, useMemo, useRef } from "react";
+import { useFormMode } from "../providers/FormModeProvider.js";
 import type { FieldValues, UseFormReturn } from "react-hook-form";
 
 interface UpdateOptions<TValue> {
@@ -27,7 +27,7 @@ export interface ArrayFieldProps<TValue, TProps> {
   onUpdate: (options: UpdateOptions<TValue>) => void;
   fields: Field<TValue>[];
   label: string;
-  component: (props: TProps) => React.ReactNode;
+  component: (props: TProps) => ReactNode;
   componentProps: TProps;
   showAddField?: boolean;
 }
@@ -43,6 +43,8 @@ const ArrayField = <TValue, TProps>({
   showAddField = true,
 }: ArrayFieldProps<TValue, TProps>) => {
   const formRef = useRef<UseFormReturn<FieldValues>>(null);
+  const prevFieldsStructure = useRef("");
+  const viewMode = useFormMode();
 
   const onSubmit = (data: Record<string, TValue>) => {
     fields.forEach((field, index) => {
@@ -89,11 +91,37 @@ const ArrayField = <TValue, TProps>({
     };
   }, [fields, showAddField]);
 
-  // update the form in case the field name changes due to the number of items
-  // also keep in sync the values with the state of the form
+  const currentFieldsStructure = useMemo(
+    () =>
+      fields.map((f) => f.id).join(",") + `|${showAddField ? "add" : "no-add"}`,
+    [fields, showAddField],
+  );
+
   useEffect(() => {
-    formRef.current?.reset(defaultValues);
-  }, [defaultValues]);
+    if (!formRef.current) return;
+
+    if (viewMode === "edition") {
+      const structureChanged =
+        currentFieldsStructure !== prevFieldsStructure.current;
+
+      if (structureChanged) {
+        formRef.current.reset(defaultValues);
+        prevFieldsStructure.current = currentFieldsStructure;
+      } else {
+        fields.forEach((field) => {
+          if (field.value === "") {
+            formRef.current?.setValue(`item-${field.id}`, "" as TValue, {
+              shouldValidate: false,
+              shouldDirty: false,
+              shouldTouch: false,
+            });
+          }
+        });
+      }
+    } else {
+      formRef.current.reset(defaultValues);
+    }
+  }, [defaultValues, currentFieldsStructure, viewMode, fields]);
 
   return (
     <Form

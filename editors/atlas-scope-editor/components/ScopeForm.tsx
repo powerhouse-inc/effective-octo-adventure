@@ -4,7 +4,6 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
-  shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import {
   getFlexLayoutClassName,
@@ -41,7 +40,7 @@ export function ScopeForm({
   const documentState = document.state.global;
 
   const baseDocument = useBaseDocumentCached(document, context);
-  const loading = shouldShowSkeleton(mode, baseDocument);
+  const loading = baseDocument === null;
 
   const { preserveSpace, showLastElement } = useElementVisibility({
     mode,
@@ -113,9 +112,7 @@ export function ScopeForm({
                 loading={loading}
                 viewMode={mode}
                 showAddField={showLastElement}
-                baselineValue={
-                  baseDocument?.state.global.originalContextData ?? []
-                }
+                baselineValue={baseDocument?.state.global.originalContextData}
                 label="Original Context Data"
                 data={documentState.originalContextData}
                 onAdd={(value) => {

@@ -4,7 +4,6 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
-  shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
 import type { IProps } from "../editor.js";
@@ -51,7 +50,7 @@ export function MultiParentForm({
   );
 
   const baseDocument = useBaseDocumentCached(document, context);
-  const loading = shouldShowSkeleton(mode, baseDocument);
+  const loading = baseDocument === null;
 
   const { preserveSpace, showLastElement } = useElementVisibility({
     mode,
@@ -151,7 +150,7 @@ export function MultiParentForm({
                 };
               })}
               fetchOptionsCallback={fetchOptionsCallback}
-              baselineValue={baseDocument?.state.global.parents ?? []}
+              baselineValue={baseDocument?.state.global.parents}
               document={document}
               onAdd={(value) => {
                 const newData = fetchOptionsCallback(value)[0];
@@ -215,9 +214,7 @@ export function MultiParentForm({
               loading={loading}
               viewMode={mode}
               showAddField={showLastElement}
-              baselineValue={
-                baseDocument?.state.global.originalContextData ?? []
-              }
+              baselineValue={baseDocument?.state.global.originalContextData}
               label="Original Context Data"
               data={documentState.originalContextData}
               document={document}

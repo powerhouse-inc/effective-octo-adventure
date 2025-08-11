@@ -46,6 +46,9 @@ export function buildSidebarTree(
     if (node.documentType === "sky/atlas-multiparent") {
       title = node.global.name || "Name";
     }
+    if (node.documentType === "sky/atlas-set") {
+      title = node.global.name || "Name";
+    }
     const isNewDocs = node.global?.docNo === "" && node.global.name === "";
     // check if the document is a new document with no docNo in the name to add placeholder
     const isNewDocsWithNoDocNoInTitle = isNewDocs;

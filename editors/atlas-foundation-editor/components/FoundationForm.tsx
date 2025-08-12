@@ -4,7 +4,6 @@ import {
   getCardVariant,
   getStringValue,
   getTagText,
-  shouldShowSkeleton,
 } from "../../shared/utils/utils.js";
 import { type PHIDOption } from "@powerhousedao/document-engineering/ui";
 import { FormModeProvider } from "../../shared/providers/FormModeProvider.js";
@@ -67,7 +66,7 @@ export function FoundationForm({
   };
 
   const baseDocument = useBaseDocumentCached(document, context);
-  const loading = shouldShowSkeleton(mode, baseDocument);
+  const loading = baseDocument === null;
 
   const { preserveSpace, showLastElement } = useElementVisibility({
     mode,
@@ -193,9 +192,7 @@ export function FoundationForm({
               loading={loading}
               viewMode={mode}
               showAddField={showLastElement}
-              baselineValue={
-                baseDocument?.state.global.originalContextData ?? []
-              }
+              baselineValue={baseDocument?.state.global.originalContextData}
               label="Original Context Data"
               data={documentState.originalContextData}
               document={document}

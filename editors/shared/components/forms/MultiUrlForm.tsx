@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { FieldSkeleton } from "../field-skeleton.js";
 import { Skeleton } from "../ui/skeleton.js";
 import { ArrayField, type ArrayFieldProps } from "../ArrayField.js";
@@ -23,7 +23,7 @@ interface MultiUrlFormProps
   data: string[];
   document: AtlasDocument;
   viewMode: ViewMode;
-  baselineValue: string[];
+  baselineValue?: string[];
   isSplitMode: boolean;
 }
 
@@ -40,13 +40,8 @@ const MultiUrlForm = ({
   document,
   isSplitMode,
 }: MultiUrlFormProps) => {
-  // boolean flag to trigger callback recreation only when needed
-  const [renderComponentTrigger, setRenderComponentTrigger] = useState(false);
-
-  // string value of latest data
-  const dataSignature = useMemo(() => JSON.stringify(data), [data]);
-
   const mapping = useMemo(() => {
+    if (baselineValue === undefined) return [];
     const operations = getOperations(document, [
       "REPLACE_CONTEXT_DATA",
       "ADD_CONTEXT_DATA",
@@ -72,7 +67,7 @@ const MultiUrlForm = ({
       const baseValue =
         mapping[index].originalIndex === undefined
           ? undefined
-          : baselineValue[mapping[index].originalIndex];
+          : baselineValue?.[mapping[index].originalIndex];
 
       if (!isSplitMode && viewMode === "edition") {
         return item.value !== "";
@@ -87,8 +82,16 @@ const MultiUrlForm = ({
     return fields;
   }, [mapping, isSplitMode, viewMode, data, baselineValue]);
 
-  // this callback only recreates when renderComponentTrigger changes,
-  // not on every data change, but still has access to latest data
+  const mappingRef = useRef(mapping);
+  const baselineValueRef = useRef(baselineValue);
+  const fieldsRef = useRef(fields);
+  const dataRef = useRef(data);
+
+  mappingRef.current = mapping;
+  baselineValueRef.current = baselineValue;
+  fieldsRef.current = fields;
+  dataRef.current = data;
+
   const renderComponent = useCallback(
     (props: UrlFieldProps) => {
       let baseValue = undefined;
@@ -96,18 +99,20 @@ const MultiUrlForm = ({
       const mappingIndex = parseInt(props.name?.replace("item-", "") ?? "");
       const isRemoved =
         !isNaN(mappingIndex) &&
-        mapping?.[mappingIndex]?.currentIndex === undefined;
+        mappingRef.current?.[mappingIndex]?.currentIndex === undefined;
 
       if (props.name !== "item-new") {
         baseValue =
-          mapping[mappingIndex].originalIndex === undefined
+          mappingRef.current?.[mappingIndex]?.originalIndex === undefined
             ? undefined
-            : baselineValue[mapping[mappingIndex].originalIndex];
+            : baselineValueRef.current?.[
+                mappingRef.current[mappingIndex].originalIndex
+              ];
       }
 
       const isFirstField =
-        (data.length === 0 && props.name === "item-new") ||
-        props.name === `item-${fields[0]?.id}`;
+        (fieldsRef.current.length === 0 && props.name === "item-new") ||
+        props.name === `item-${fieldsRef.current?.[0]?.id}`;
 
       return loading ? (
         isFirstField ? (
@@ -120,7 +125,11 @@ const MultiUrlForm = ({
           {...(isRemoved ? { ...props, placeholder: undefined } : props)}
           viewMode={viewMode}
           baseValue={baseValue}
-          platformIcons={!isRemoved ? { "example.com": "File" } : undefined}
+          platformIcons={
+            !isRemoved || (isRemoved && viewMode !== "edition")
+              ? { "example.com": "File" }
+              : undefined
+          }
           disabled={isRemoved}
           style={{
             paddingLeft: "32px",
@@ -128,24 +137,8 @@ const MultiUrlForm = ({
         />
       );
     },
-    // renderComponentTrigger is not needed here, but it's a workaround to trigger a re-render when the mapping changes
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      mapping,
-      data.length,
-      loading,
-      viewMode,
-      baselineValue,
-      renderComponentTrigger,
-      fields,
-    ],
+    [loading, viewMode],
   );
-
-  // split rendering into two phases: this effect runs after data changes are complete,
-  // then triggers a new render cycle by updating the boolean flag
-  useEffect(() => {
-    setRenderComponentTrigger((prev) => !prev);
-  }, [dataSignature]);
 
   return (
     <ArrayField<string, UrlFieldProps>

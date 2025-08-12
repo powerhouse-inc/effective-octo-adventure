@@ -81,13 +81,6 @@ export const getBaseDocumentTimestamp = (document: AtlasDocument): string => {
   return new Date().toISOString();
 };
 
-export const shouldShowSkeleton = (
-  mode: ViewMode,
-  baseDocument: AtlasDocument | null,
-) => {
-  return mode !== "edition" && baseDocument === null;
-};
-
 interface ShowLastElementOptions {
   mode: ViewMode;
   isSplitMode?: boolean;

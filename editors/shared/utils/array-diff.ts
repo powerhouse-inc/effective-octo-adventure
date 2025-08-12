@@ -1,6 +1,4 @@
-import { getRevisionFromDate } from "@powerhousedao/common";
 import type { AtlasDocument } from "./utils.js";
-import { getBaseDocumentTimestamp } from "./utils.js";
 import { type Operation } from "document-model";
 
 export interface MatchIndex {
@@ -115,38 +113,17 @@ export function getOperations<T extends AtlasDocument>(
   filterType?: T["operations"]["global"][number]["type"][],
 ): Operation[] {
   try {
-    const baseDocumentTimestamp = getBaseDocumentTimestamp(document);
-    const endDate = new Date(baseDocumentTimestamp);
-    endDate.setUTCSeconds(endDate.getUTCSeconds() + 30);
-
-    const operations = document.operations.global.sort(
-      (a, b) => b.index - a.index,
-    );
-
-    // Get the base revision (same as in useBaseDocumentCached)
-    const baseRevision = getRevisionFromDate(
-      new Date(baseDocumentTimestamp),
-      endDate,
-      operations,
-    );
-
-    const currentRevision = document.header.revision.global;
     const relevantOperations: Operation[] = [];
 
-    // Get all operations from base revision to current revision
+    // Get all operations from index 0 onwards (no revision filtering)
     for (const operation of document.operations.global) {
-      if (
-        operation.index >= baseRevision &&
-        operation.index <= currentRevision
-      ) {
-        // Filter by operation type if filterType is provided
-        if (filterType && filterType.length > 0) {
-          if (filterType.includes(operation.type)) {
-            relevantOperations.push(operation);
-          }
-        } else {
+      // Filter by operation type if filterType is provided
+      if (filterType && filterType.length > 0) {
+        if (filterType.includes(operation.type)) {
           relevantOperations.push(operation);
         }
+      } else {
+        relevantOperations.push(operation);
       }
     }
 

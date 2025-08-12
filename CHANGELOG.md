@@ -1,3 +1,24 @@
+# [1.5.0](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.4.5...v1.5.0) (2025-08-09)
+
+
+### Bug Fixes
+
+* array-diff tests ([1240435](https://github.com/powerhouse-inc/effective-octo-adventure/commit/12404351d379ccdf9eeb391cf683e561197d21f8))
+* **atlas:** avoid sidebar resize to 100% percent in connect ([e9a2cf6](https://github.com/powerhouse-inc/effective-octo-adventure/commit/e9a2cf607f25715cd558e8abb22c98e60eb016ad))
+* **atlas:** fix the prettier space ([4d3012d](https://github.com/powerhouse-inc/effective-octo-adventure/commit/4d3012dbc631ed925ce563db5bca4545f8a95adf))
+* build ([0f667a1](https://github.com/powerhouse-inc/effective-octo-adventure/commit/0f667a163d48ddcc3a03e55a0fd409fdb3b3076f))
+* contextDataToMappingOperations TS issue ([1d1b34f](https://github.com/powerhouse-inc/effective-octo-adventure/commit/1d1b34f57e8cc056943913e36ed9a1e3f356e515))
+* correctly display de diffs in "Original Context Data" field ([430313e](https://github.com/powerhouse-inc/effective-octo-adventure/commit/430313ecf20a6df6a62b734319832af4fe8335f7))
+* differences in Original Context Data & Parent Documents fields ([55c2e83](https://github.com/powerhouse-inc/effective-octo-adventure/commit/55c2e83b59cd38cf6e236a3e3afc056f9a320400))
+* eslint errors and most warnings ([0ff02b8](https://github.com/powerhouse-inc/effective-octo-adventure/commit/0ff02b85a78fbed90f1a2668baef212c6c0117a6))
+* exclude the current document from its parent list in PHID-based fields ([0fd9b40](https://github.com/powerhouse-inc/effective-octo-adventure/commit/0fd9b406efc31571259c85b138f63005e2b955f7))
+* remove commented code ([c0b2b68](https://github.com/powerhouse-inc/effective-octo-adventure/commit/c0b2b68b1c99c5277979879cfca17d7e91a16254))
+
+
+### Features
+
+* add differences mechanism for scope documents URL context ([ba631c6](https://github.com/powerhouse-inc/effective-octo-adventure/commit/ba631c69b821756480402ed8e67acca45ecbbfcd))
+
 ## [1.4.5](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.4.4...v1.4.5) (2025-07-31)
 
 

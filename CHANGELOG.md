@@ -1,3 +1,11 @@
+## [1.5.1](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.5.0...v1.5.1) (2025-08-21)
+
+
+### Bug Fixes
+
+* **atlas:** set document should no have number ([55b2e5e](https://github.com/powerhouse-inc/effective-octo-adventure/commit/55b2e5ec2b6c6a5a2926cd44c587cd16235e4242))
+* prevent losing focus and values in inputs when an operation is executed ([39469fc](https://github.com/powerhouse-inc/effective-octo-adventure/commit/39469fc09b33b819e0fab02f4c6b9cb2e570ec19))
+
 # [1.5.0](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.4.5...v1.5.0) (2025-08-09)
 
 

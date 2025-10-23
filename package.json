@@ -69,6 +69,7 @@
     "script:download-data": "bun run ./scripts/download-data.ts",
     "script:import-data": "bun run ./scripts/import-data.ts",
     "script:import-mock": "bun run ./scripts/import-data-mock-example.ts",
+    "script:record-operations": "bun run ./scripts/record-operations.ts",
     "script:generate-gql-clients": "bun run ./scripts/gen-clients.ts",
     "script:generate-all": "bash ./docmodel-zips/generate-all.sh",
     "release": "semantic-release"

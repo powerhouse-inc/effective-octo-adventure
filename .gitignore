@@ -5,6 +5,7 @@
 /storybook-static
 **/gen
 !/document-models/atlas-feedback-issues/gen
+recorded-operations.json
 
 .env
 .env.local

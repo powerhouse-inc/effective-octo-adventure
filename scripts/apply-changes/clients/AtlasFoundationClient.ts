@@ -8,6 +8,7 @@ import {
   type SetDocNumberInput,
   type SetFoundationNameInput,
   type SetParentInput,
+  actions,
 } from "document-models/atlas-foundation/index.js";
 import { gql } from "graphql-request";
 import {
@@ -79,10 +80,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<
   }
 
   protected async createDocumentFromInput(documentNode: ViewNodeExtended) {
-    return this.executeMutationViaAdapter<string>(
-      "AtlasFoundation_createDocument",
-      { __args: { driveId: this.driveId, name: getNodeTitle(documentNode) } }
-    );
+    return this.createDocumentViaAdapter(this.driveId, getNodeTitle(documentNode));
   }
 
   protected getTargetState(
@@ -143,32 +141,59 @@ export class AtlasFoundationClient extends AtlasBaseClient<
     target: AtlasFoundationState[K],
   ) {
     console.log(` > ${fieldName}: ${current ? JSON.stringify(current) : ""} > ${target ? JSON.stringify(target) : ""}`);
-    const arg = mutationArg(this.driveId, id);
 
     switch (fieldName) {
       case "docNo":
-        await this.executeMutationViaAdapter("AtlasFoundation_setDocNumber", arg<SetDocNumberInput>({ docNo: target as string }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setDocNumber({ docNo: target as string })
+        );
         break;
       case "name":
-        await this.executeMutationViaAdapter("AtlasFoundation_setFoundationName", arg<SetFoundationNameInput>({ name: target as string }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setFoundationName({ name: target as string })
+        );
         break;
       case "masterStatus":
-        await this.executeMutationViaAdapter("AtlasFoundation_setMasterStatus", arg<any>({ masterStatus: target as FStatus }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setMasterStatus({ masterStatus: target as FStatus })
+        );
         break;
       case "content":
-        await this.executeMutationViaAdapter("AtlasFoundation_setContent", arg<SetContentInput>({ content: target as string }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setContent({ content: target as string })
+        );
         break;
       case "notionId":
-        await this.executeMutationViaAdapter("AtlasFoundation_setNotionId", arg<any>({ notionID: target || undefined }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setNotionId({ notionID: target || undefined })
+        );
         break;
       case "globalTags":
-        await this.executeMutationViaAdapter("AtlasFoundation_addTags", arg<any>({ tags: target }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.addTags({ tags: target as string[] })
+        );
         break;
       case "originalContextData":
         if (target && Array.isArray(target) && target.length > 0) {
           await Promise.all(
             target.map(async (contextData) => {
-              await this.executeMutationViaAdapter("AtlasFoundation_addContextData", arg<any>({ id: contextDataIdToUrl(contextData) }));
+              await this.addActionViaAdapter(
+                this.driveId,
+                id,
+                actions.addContextData({ id: contextDataIdToUrl(contextData) })
+              );
             })
           );
         }
@@ -177,11 +202,18 @@ export class AtlasFoundationClient extends AtlasBaseClient<
         if (!target) {
           throw new Error("Parent is not found");
         }
-        const parsedTarget = target as FDocumentLink;
-        await this.executeMutationViaAdapter("AtlasFoundation_setParent", arg<SetParentInput>(parsedTarget));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setParent(target as FDocumentLink)
+        );
         break;
       case "atlasType":
-        await this.executeMutationViaAdapter("AtlasFoundation_setAtlasType", arg<any>({ atlasType: target }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setAtlasType({ atlasType: target as FAtlasType })
+        );
         break;
       default:
         throw new Error(`Patcher for field ${fieldName} not implemented`);

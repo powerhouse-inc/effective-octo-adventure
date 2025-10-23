@@ -9,6 +9,7 @@ import {
   type SetContentInput,
   type SetDocNumberInput,
   type SetScopeNameInput,
+  actions,
 } from "../../../document-models/atlas-scope/index.js";
 import {
   getNodeDocNo,
@@ -62,10 +63,7 @@ export class AtlasScopeClient extends AtlasBaseClient<
   }
 
   protected async createDocumentFromInput(documentNode: ViewNodeExtended) {
-    return this.executeMutationViaAdapter<string>(
-      "AtlasScope_createDocument",
-      { __args: { driveId: this.driveId, name: getNodeTitle(documentNode) } }
-    );
+    return this.createDocumentViaAdapter(this.driveId, getNodeTitle(documentNode));
   }
 
   protected getTargetState(
@@ -93,32 +91,59 @@ export class AtlasScopeClient extends AtlasBaseClient<
     target: AtlasScopeState[K]
   ) {
     console.log(` > ${fieldName}: ${current ? current + " " : ""}> ${target}`);
-    const arg = mutationArg(this.driveId, id);
 
     switch (fieldName) {
       case "docNo":
-        await this.executeMutationViaAdapter("AtlasScope_setDocNumber", arg<SetDocNumberInput>({ docNo: target as string }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setDocNumber({ docNo: target as string })
+        );
         break;
       case "name":
-        await this.executeMutationViaAdapter("AtlasScope_setScopeName", arg<SetScopeNameInput>({ name: target as string }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setScopeName({ name: target as string })
+        );
         break;
       case "masterStatus":
-        await this.executeMutationViaAdapter("AtlasScope_setMasterStatus", arg<any>({ masterStatus: target as string }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setMasterStatus({ masterStatus: target as Status })
+        );
         break;
       case "content":
-        await this.executeMutationViaAdapter("AtlasScope_setContent", arg<SetContentInput>({ content: target as string }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setContent({ content: target as string })
+        );
         break;
       case "notionId":
-        await this.executeMutationViaAdapter("AtlasScope_setNotionId", arg<any>({ notionID: target || undefined }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setNotionId({ notionID: target || undefined })
+        );
         break;
       case "globalTags":
-        await this.executeMutationViaAdapter("AtlasScope_addTags", arg<any>({ newTags: target }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.addTags({ newTags: target as string[] })
+        );
         break;
       case "originalContextData":
         if (target && Array.isArray(target) && target.length > 0) {
           await Promise.all(
             target.map(async (contextData) => {
-              await this.executeMutationViaAdapter("AtlasScope_addContextData", arg<any>({ id: contextDataIdToUrl(contextData) }));
+              await this.addActionViaAdapter(
+                this.driveId,
+                id,
+                actions.addContextData({ id: contextDataIdToUrl(contextData) })
+              );
             })
           );
         }

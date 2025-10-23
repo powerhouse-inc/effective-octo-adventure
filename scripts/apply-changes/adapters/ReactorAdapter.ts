@@ -3,6 +3,7 @@
  * Allows switching between remote HTTP reactor and in-memory/mock reactors.
  */
 
+import { type BaseAction } from "document-model";
 import { type DriveNodes } from "../common/ReactorClient.js";
 
 /**
@@ -35,6 +36,32 @@ export interface ReactorAdapter {
     mutationName: string,
     variables: object
   ): Promise<T>;
+
+  /**
+   * Add a document-model action to a document.
+   * @param driveId - The drive ID
+   * @param docId - The document ID
+   * @param documentType - The document type (e.g., "sky/atlas-scope")
+   * @param action - The action object from document-model
+   * @returns Action result
+   */
+  addAction(
+    driveId: string,
+    docId: string,
+    documentType: string,
+    action: BaseAction
+  ): Promise<any>;
+
+  /**
+   * Add a drive-level action (e.g., addFile).
+   * @param driveId - The drive ID
+   * @param driveAction - The drive action object
+   * @returns Action result
+   */
+  addDriveAction(
+    driveId: string,
+    driveAction: BaseAction
+  ): Promise<any>;
 
   /**
    * Get list of available drive IDs.

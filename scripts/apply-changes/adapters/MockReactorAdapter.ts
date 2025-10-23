@@ -3,6 +3,7 @@
  * Useful for testing import flows and understanding what operations would be performed.
  */
 
+import { type BaseAction } from "document-model";
 import {
   type ReactorAdapter,
   type ReactorOperationsSummary,
@@ -137,6 +138,83 @@ export class MockReactorAdapter implements ReactorAdapter {
     this.operations.push(operation);
 
     return result as T;
+  }
+
+  async addAction(
+    driveId: string,
+    docId: string,
+    documentType: string,
+    action: BaseAction
+  ): Promise<any> {
+    const operation: OperationLog = {
+      type: "mutation",
+      name: `addAction:${action.type}`,
+      timestamp: new Date(),
+      args: {
+        driveId,
+        docId,
+        documentType,
+        actionType: action.type,
+        actionInput: action.input,
+      },
+    };
+
+    if (this.verbose) {
+      console.log(`[MOCK ACTION] ${documentType} / ${action.type}`, {
+        driveId,
+        docId,
+        input: action.input,
+      });
+    }
+
+    // Simulate revision increment
+    const result = { success: true, revision: 2 };
+
+    operation.result = result;
+    this.operations.push(operation);
+
+    return result;
+  }
+
+  async addDriveAction(
+    driveId: string,
+    driveAction: BaseAction
+  ): Promise<any> {
+    const operation: OperationLog = {
+      type: "mutation",
+      name: `addDriveAction:${driveAction.type}`,
+      timestamp: new Date(),
+      args: {
+        driveId,
+        actionType: driveAction.type,
+        actionInput: driveAction.input,
+      },
+    };
+
+    if (this.verbose) {
+      console.log(`[MOCK DRIVE ACTION] ${driveAction.type}`, {
+        driveId,
+        input: driveAction.input,
+      });
+    }
+
+    // Handle specific drive actions
+    let result: any = { success: true };
+
+    if (driveAction.type === "ADD_FILE") {
+      const input = driveAction.input as any;
+      const docId = input.id || `phd:${randomUUID()}`;
+      result = { id: docId };
+
+      if (this.verbose) {
+        console.log(`  → Added file to drive: ${docId}`);
+      }
+    }
+
+    operation.result = result;
+    this.operations.push(operation);
+
+    return result;
   }
 
   async getDriveIds(): Promise<string[]> {

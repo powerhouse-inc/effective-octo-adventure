@@ -16,7 +16,7 @@ export type GqlResult<StateType> = {
 };
 
 export abstract class DocumentClient<StateType, InputType> {
-  private documentType: string;
+  protected documentType: string;
   private maxQueryBatchSize: number = DEFAULT_MAX_QUERY_BATCH_SIZE;
   protected readClient: ReactorClient;
   protected documentsCache: DocumentsCache;

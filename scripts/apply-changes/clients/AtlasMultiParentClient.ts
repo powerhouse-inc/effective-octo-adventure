@@ -7,6 +7,7 @@ import type {
   MDocumentLink,
   MAtlasType,
 } from "document-models/atlas-multi-parent/index.js";
+import { actions } from "document-models/atlas-multi-parent/index.js";
 import { gql } from "graphql-request";
 import {
   getNodeDocNo,
@@ -77,10 +78,7 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
   }
 
   protected async createDocumentFromInput(documentNode: ViewNodeExtended) {
-    return this.executeMutationViaAdapter<string>(
-      "AtlasMultiParent_createDocument",
-      { __args: { driveId: this.driveId, name: getNodeTitle(documentNode) } }
-    );
+    return this.createDocumentViaAdapter(this.driveId, getNodeTitle(documentNode));
   }
 
   protected getTargetState(
@@ -128,29 +126,52 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
     console.log(
       ` > ${fieldName}: ${current ? JSON.stringify(current) : ""} > ${target ? JSON.stringify(target) : ""}`
     );
-    const arg = mutationArg(this.driveId, id);
 
     switch (fieldName) {
       case "name":
-        await this.executeMutationViaAdapter("AtlasMultiParent_setExploratoryName", arg<SetExploratoryNameInput>({ name: target as string }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setExploratoryName({ name: target as string })
+        );
         break;
       case "masterStatus":
-        await this.executeMutationViaAdapter("AtlasMultiParent_setMasterStatus", arg<any>({ masterStatus: target as MStatus }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setMasterStatus({ masterStatus: target as MStatus })
+        );
         break;
       case "content":
-        await this.executeMutationViaAdapter("AtlasMultiParent_setContent", arg<SetContentInput>({ content: target as string }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setContent({ content: target as string })
+        );
         break;
       case "notionId":
-        await this.executeMutationViaAdapter("AtlasMultiParent_setNotionId", arg<any>({ notionId: target || undefined }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setNotionId({ notionId: target || undefined })
+        );
         break;
       case "globalTags":
-        await this.executeMutationViaAdapter("AtlasMultiParent_addTags", arg<any>({ tags: target }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.addTags({ tags: target as string[] })
+        );
         break;
       case "originalContextData":
         if (target && Array.isArray(target) && target.length > 0) {
           await Promise.all(
             target.map(async (contextData) => {
-              await this.executeMutationViaAdapter("AtlasMultiParent_addContextData", arg<any>({ id: contextDataIdToUrl(contextData as string) }));
+              await this.addActionViaAdapter(
+                this.driveId,
+                id,
+                actions.addContextData({ id: contextDataIdToUrl(contextData as string) })
+              );
             })
           );
         }
@@ -160,10 +181,18 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
           throw new Error("Parent is not found");
         }
         const parsedTarget = target as unknown as MDocumentLink[];
-        await this.executeMutationViaAdapter("AtlasMultiParent_addParent", arg<AddParentInput>(parsedTarget[0]));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.addParent(parsedTarget[0])
+        );
         break;
       case "atlasType":
-        await this.executeMutationViaAdapter("AtlasMultiParent_setAtlasType", arg<any>({ atlasType: target as MAtlasType }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setAtlasType({ atlasType: target as MAtlasType })
+        );
         break;
       default:
         throw new Error(`Patcher for field ${fieldName} not implemented`);

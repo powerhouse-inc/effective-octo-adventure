@@ -1,21 +1,20 @@
-import type { PHDocument, ExtendedState } from "document-model";
-import type { AtlasFeedbackIssuesState } from "./schema/types.js";
+import type { PHDocument, PHBaseState } from "document-model";
 import type { AtlasFeedbackIssuesAction } from "./actions.js";
+import type { AtlasFeedbackIssuesState as AtlasFeedbackIssuesGlobalState } from "./schema/types.js";
 
 export { z } from "./schema/index.js";
-export type * from "./schema/types.js";
+export * from "./schema/types.js";
 type AtlasFeedbackIssuesLocalState = Record<PropertyKey, never>;
-export type ExtendedAtlasFeedbackIssuesState = ExtendedState<
-  AtlasFeedbackIssuesState,
-  AtlasFeedbackIssuesLocalState
->;
-export type AtlasFeedbackIssuesDocument = PHDocument<
-  AtlasFeedbackIssuesState,
-  AtlasFeedbackIssuesLocalState,
-  AtlasFeedbackIssuesAction
->;
+type AtlasFeedbackIssuesPHState = PHBaseState & {
+  global: AtlasFeedbackIssuesGlobalState;
+  local: AtlasFeedbackIssuesLocalState;
+};
+type AtlasFeedbackIssuesDocument = PHDocument<AtlasFeedbackIssuesPHState>;
+
 export type {
-  AtlasFeedbackIssuesState,
+  AtlasFeedbackIssuesGlobalState,
   AtlasFeedbackIssuesLocalState,
+  AtlasFeedbackIssuesPHState,
   AtlasFeedbackIssuesAction,
+  AtlasFeedbackIssuesDocument,
 };

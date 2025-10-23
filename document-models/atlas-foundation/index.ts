@@ -4,24 +4,26 @@
  */
 
 import {
-  actions as BaseActions,
+  createState,
   type DocumentModelModule,
+  baseActions,
 } from "document-model";
+import { defaultBaseState } from "document-model/core";
 import { actions as AtlasFoundationActions } from "./gen/index.js";
 import { reducer } from "./gen/reducer.js";
 import { documentModel } from "./gen/document-model.js";
 import genUtils from "./gen/utils.js";
 import * as customUtils from "./src/utils.js";
-import { type AtlasFoundationDocument } from "./gen/types.js";
+import type { AtlasFoundationPHState } from "./gen/types.js";
 
 const utils = { ...genUtils, ...customUtils };
-const actions = { ...BaseActions, ...AtlasFoundationActions };
+const actions = { ...baseActions, ...AtlasFoundationActions };
 
-export const module: DocumentModelModule<AtlasFoundationDocument> = {
+export const module: DocumentModelModule<AtlasFoundationPHState> = {
   reducer,
   actions,
   utils,
-  documentModel,
+  documentModel: createState(defaultBaseState(), documentModel),
 };
 
 export { reducer, actions, utils, documentModel };

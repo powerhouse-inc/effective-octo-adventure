@@ -3,6 +3,7 @@
  * This wraps the current remote reactor implementation.
  */
 
+import { type BaseAction } from "document-model";
 import {
   type ReactorAdapter,
   type ReactorOperationsSummary,
@@ -100,6 +101,102 @@ export class HttpReactorAdapter implements ReactorAdapter {
       operation.result = result;
       this.operations.push(operation);
       return result as T;
+    } catch (error) {
+      operation.error = String(error);
+      this.operations.push(operation);
+      throw error;
+    }
+  }
+
+  async addAction(
+    driveId: string,
+    docId: string,
+    documentType: string,
+    action: BaseAction
+  ): Promise<any> {
+    const operation: OperationLog = {
+      type: "mutation",
+      name: `addAction:${action.type}`,
+      timestamp: new Date(),
+      args: {
+        driveId,
+        docId,
+        documentType,
+        actionType: action.type,
+        actionInput: action.input,
+      },
+    };
+
+    try {
+      // Convert document type to GraphQL prefix
+      // "sky/atlas-scope" -> "AtlasScope"
+      const typePrefix = this.documentTypeToPrefix(documentType);
+
+      // Convert action type to camelCase method name
+      // "SET_SCOPE_NAME" -> "setScopeName"
+      const methodName = this.actionTypeToMethodName(action.type);
+
+      // Build full mutation name: "AtlasScope_setScopeName"
+      const mutationName = `${typePrefix}_${methodName}`;
+
+      // Call the generated client
+      const mutationFn = (graphqlClient.mutations as any)[mutationName];
+      if (!mutationFn) {
+        throw new Error(`Mutation ${mutationName} not found in generated client`);
+      }
+
+      const result = await mutationFn({
+        __args: {
+          driveId,
+          docId,
+          input: action.input,
+        },
+      });
+
+      operation.result = result;
+      this.operations.push(operation);
+      return result;
+    } catch (error) {
+      operation.error = String(error);
+      this.operations.push(operation);
+      throw error;
+    }
+  }
+
+  async addDriveAction(
+    driveId: string,
+    driveAction: BaseAction
+  ): Promise<any> {
+    const operation: OperationLog = {
+      type: "mutation",
+      name: `addDriveAction:${driveAction.type}`,
+      timestamp: new Date(),
+      args: {
+        driveId,
+        actionType: driveAction.type,
+        actionInput: driveAction.input,
+      },
+    };
+
+    try {
+      let result: any;
+
+      // Handle specific drive actions
+      if (driveAction.type === "ADD_FILE") {
+        // Use graphqlClient for drive mutations
+        result = await graphqlClient.mutations.addFile({
+          __args: {
+            driveId,
+            ...driveAction.input,
+          },
+        });
+      } else {
+        throw new Error(`Unsupported drive action type: ${driveAction.type}`);
+      }
+
+      operation.result = result;
+      this.operations.push(operation);
+      return result;
     } catch (error) {
       operation.error = String(error);
       this.operations.push(operation);
@@ -210,5 +307,33 @@ export class HttpReactorAdapter implements ReactorAdapter {
   private extractOperationName(query: string): string | null {
     const match = query.match(/(?:query|mutation)\s+(\w+)/);
     return match ? match[1] : null;
+  }
+
+  /**
+   * Convert document type to GraphQL type prefix.
+   * E.g., "sky/atlas-scope" -> "AtlasScope"
+   */
+  private documentTypeToPrefix(documentType: string): string {
+    const parts = documentType.split("/");
+    const typeName = parts[parts.length - 1];
+    // Convert kebab-case to PascalCase
+    return typeName
+      .split("-")
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join("");
+  }
+
+  /**
+   * Convert action type to GraphQL method name.
+   * E.g., "SET_SCOPE_NAME" -> "setScopeName"
+   */
+  private actionTypeToMethodName(actionType: string): string {
+    // Split by underscore and convert to camelCase
+    const parts = actionType.toLowerCase().split("_");
+    return parts
+      .map((part, index) =>
+        index === 0 ? part : part.charAt(0).toUpperCase() + part.slice(1)
+      )
+      .join("");
   }
 }

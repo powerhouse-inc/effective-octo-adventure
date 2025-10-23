@@ -8,6 +8,7 @@ import type {
   SetExploratoryNameInput,
   SetParentInput,
 } from "document-models/atlas-exploratory/index.js";
+import { actions } from "document-models/atlas-exploratory/index.js";
 import { gql } from "graphql-request";
 import {
   getNodeDocNo,
@@ -79,10 +80,7 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
   }
 
   protected async createDocumentFromInput(documentNode: ViewNodeExtended) {
-    return this.executeMutationViaAdapter<string>(
-      "AtlasExploratory_createDocument",
-      { __args: { driveId: this.driveId, name: getNodeTitle(documentNode) } }
-    );
+    return this.createDocumentViaAdapter(this.driveId, getNodeTitle(documentNode));
   }
 
   protected getTargetState(
@@ -135,32 +133,59 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
     target: AtlasExploratoryState[K],
   ) {
     console.log(` > ${fieldName}: ${current ? JSON.stringify(current) : ""} > ${target ? JSON.stringify(target) : ""}`);
-    const arg = mutationArg(this.driveId, id);
 
     switch (fieldName) {
       case "docNo":
-        await this.executeMutationViaAdapter("AtlasExploratory_setDocNumber", arg<SetDocNumberInput>({ docNo: target as string }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setDocNumber({ docNo: target as string })
+        );
         break;
       case "name":
-        await this.executeMutationViaAdapter("AtlasExploratory_setExploratoryName", arg<SetExploratoryNameInput>({ name: target as string }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setExploratoryName({ name: target as string })
+        );
         break;
       case "masterStatus":
-        await this.executeMutationViaAdapter("AtlasExploratory_setMasterStatus", arg<any>({ masterStatus: target as EStatus }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setMasterStatus({ masterStatus: target as EStatus })
+        );
         break;
       case "content":
-        await this.executeMutationViaAdapter("AtlasExploratory_setContent", arg<SetContentInput>({ content: target as string }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setContent({ content: target as string })
+        );
         break;
       case "notionId":
-        await this.executeMutationViaAdapter("AtlasExploratory_setNotionId", arg<any>({ notionID: target || undefined }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setNotionId({ notionID: target || undefined })
+        );
         break;
       case "globalTags":
-        await this.executeMutationViaAdapter("AtlasExploratory_addTags", arg<any>({ newTags: target }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.addTags({ newTags: target as string[] })
+        );
         break;
       case "originalContextData":
         if (target && Array.isArray(target) && target.length > 0) {
           await Promise.all(
             target.map(async (contextData) => {
-              await this.executeMutationViaAdapter("AtlasExploratory_addContextData", arg<any>({ id: contextDataIdToUrl(contextData) }));
+              await this.addActionViaAdapter(
+                this.driveId,
+                id,
+                actions.addContextData({ id: contextDataIdToUrl(contextData) })
+              );
             })
           );
         }
@@ -169,10 +194,18 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
         if (!target || !("id" in target)) {
           throw new Error("Parent is not found");
         }
-        await this.executeMutationViaAdapter("AtlasExploratory_setParent", arg<SetParentInput>(target as EDocumentLink));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setParent(target as EDocumentLink)
+        );
         break;
       case "atlasType":
-        await this.executeMutationViaAdapter("AtlasExploratory_setAtlasType", arg<any>({ atlasType: target as EAtlasType }));
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setAtlasType({ atlasType: target as EAtlasType })
+        );
         break;
       default:
         throw new Error(`Patcher for field ${fieldName} not implemented`);

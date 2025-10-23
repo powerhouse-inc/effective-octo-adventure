@@ -1,6 +1,6 @@
-import type { DocumentModelState } from "document-model";
+import type { DocumentModelGlobalState } from "document-model";
 
-export const documentModel: DocumentModelState = {
+export const documentModel: DocumentModelGlobalState = {
   id: "makerdao/feedback-issues",
   name: "Atlas Feedback Issues",
   extension: ".phdm",

@@ -1,4 +1,4 @@
-import { type BaseAction } from "document-model";
+import { type Action } from "document-model";
 import type {
   CreateIssueInput,
   DeleteIssueInput,
@@ -6,26 +6,22 @@ import type {
   RemoveNotionIdInput,
 } from "../types.js";
 
-export type CreateIssueAction = BaseAction<
-  "CREATE_ISSUE",
-  CreateIssueInput,
-  "global"
->;
-export type DeleteIssueAction = BaseAction<
-  "DELETE_ISSUE",
-  DeleteIssueInput,
-  "global"
->;
-export type AddNotionIdAction = BaseAction<
-  "ADD_NOTION_ID",
-  AddNotionIdInput,
-  "global"
->;
-export type RemoveNotionIdAction = BaseAction<
-  "REMOVE_NOTION_ID",
-  RemoveNotionIdInput,
-  "global"
->;
+export type CreateIssueAction = Action & {
+  type: "CREATE_ISSUE";
+  input: CreateIssueInput;
+};
+export type DeleteIssueAction = Action & {
+  type: "DELETE_ISSUE";
+  input: DeleteIssueInput;
+};
+export type AddNotionIdAction = Action & {
+  type: "ADD_NOTION_ID";
+  input: AddNotionIdInput;
+};
+export type RemoveNotionIdAction = Action & {
+  type: "REMOVE_NOTION_ID";
+  input: RemoveNotionIdInput;
+};
 
 export type AtlasFeedbackIssuesIssuesAction =
   | CreateIssueAction

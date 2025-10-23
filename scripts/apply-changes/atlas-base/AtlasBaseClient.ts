@@ -1,4 +1,6 @@
-import { type Maybe } from "document-model";
+import { type Maybe, type BaseAction } from "document-model";
+import { addFile } from "document-drive";
+import { randomUUID } from "crypto";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { type ReactorClient } from "../common/ReactorClient.js";
 import { DocumentClient } from "../common/DocumentClient.js";
@@ -7,8 +9,12 @@ import { getNodeTitle, getPNDTitle } from "../../../document-models/utils.js";
 import _ from "lodash";
 import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
 
+// Helper to generate IDs (equivalent to document-model's generateId)
+const generateId = (): string => randomUUID();
+
 type WriteClientBase = {
   setUrl(url: string): void;
+  mutations: any;
 };
 
 type AtlasStateType = {
@@ -103,6 +109,127 @@ export abstract class AtlasBaseClient<
       throw new Error(`Mutation ${mutationName} not found on write client`);
     }
     return mutationFn(args);
+  }
+
+  /**
+   * Add an action through the adapter or fall back to GraphQL mutation.
+   * This is the document-model-level abstraction for applying changes.
+   */
+  protected async addActionViaAdapter(
+    driveId: string,
+    docId: string,
+    action: BaseAction
+  ): Promise<any> {
+    if (this.adapter) {
+      return this.adapter.addAction(driveId, docId, this.documentType, action);
+    }
+
+    // Fall back to GraphQL mutation approach
+    // Convert action to mutation call (same logic as HttpReactorAdapter)
+    const typePrefix = this.documentTypeToPrefix(this.documentType);
+    const methodName = this.actionTypeToMethodName(action.type);
+    const mutationName = `${typePrefix}_${methodName}`;
+
+    const mutationFn = (this.writeClient.mutations as any)[mutationName];
+    if (!mutationFn) {
+      throw new Error(`Mutation ${mutationName} not found on write client`);
+    }
+
+    return mutationFn({
+      __args: {
+        driveId,
+        docId,
+        input: action.input,
+      },
+    });
+  }
+
+  /**
+   * Convert document type to GraphQL type prefix.
+   * E.g., "sky/atlas-scope" -> "AtlasScope"
+   */
+  private documentTypeToPrefix(documentType: string): string {
+    const parts = documentType.split("/");
+    const typeName = parts[parts.length - 1];
+    return typeName
+      .split("-")
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join("");
+  }
+
+  /**
+   * Convert action type to GraphQL method name.
+   * E.g., "SET_SCOPE_NAME" -> "setScopeName"
+   */
+  private actionTypeToMethodName(actionType: string): string {
+    const parts = actionType.toLowerCase().split("_");
+    return parts
+      .map((part, index) =>
+        index === 0 ? part : part.charAt(0).toUpperCase() + part.slice(1)
+      )
+      .join("");
+  }
+
+  /**
+   * Add a drive-level action through the adapter or fall back to GraphQL mutation.
+   */
+  protected async addDriveActionViaAdapter(
+    driveId: string,
+    driveAction: BaseAction
+  ): Promise<any> {
+    if (this.adapter) {
+      return this.adapter.addDriveAction(driveId, driveAction);
+    }
+
+    // Fall back to GraphQL mutation for drive actions
+    if (driveAction.type === "ADD_FILE") {
+      const mutationFn = (this.writeClient.mutations as any).addFile;
+      if (!mutationFn) {
+        throw new Error("Mutation addFile not found on write client");
+      }
+      return mutationFn({
+        __args: {
+          driveId,
+          ...(driveAction.input as any),
+        },
+      });
+    }
+
+    throw new Error(`Unsupported drive action type: ${driveAction.type}`);
+  }
+
+  /**
+   * Create a new document using addFile action.
+   * Returns the generated document ID.
+   */
+  protected async createDocumentViaAdapter(
+    driveId: string,
+    name: string
+  ): Promise<string> {
+    const docId = generateId();
+
+    await this.addDriveActionViaAdapter(
+      driveId,
+      addFile({
+        id: docId,
+        name,
+        documentType: this.documentType,
+        synchronizationUnits: [
+          {
+            branch: "main",
+            scope: "global",
+            syncId: generateId(),
+          },
+          {
+            branch: "main",
+            scope: "local",
+            syncId: generateId(),
+          },
+        ],
+      })
+    );
+
+    return docId;
   }
 
   protected abstract patchField<K extends keyof AtlasStateType>(

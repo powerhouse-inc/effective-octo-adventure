@@ -5,6 +5,7 @@ import type {
   SetSetParentInput,
   SetDocumentLink,
 } from "../../../document-models/atlas-set/index.js";
+import { actions } from "../../../document-models/atlas-set/index.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import { graphqlClient as writeClient } from "../../clients/index.js";
 import { gql } from "graphql-request";
@@ -60,10 +61,7 @@ export class AtlasSetClient extends AtlasBaseClient<
   }
 
   protected async createDocumentFromInput(documentNode: ViewNodeExtended) {
-    return this.executeMutationViaAdapter<string>(
-      "AtlasSet_createDocument",
-      { __args: { driveId: this.driveId, name: getNodeName(documentNode) } }
-    );
+    return this.createDocumentViaAdapter(this.driveId, getNodeName(documentNode));
   }
 
   protected getTargetState(
@@ -99,28 +97,30 @@ export class AtlasSetClient extends AtlasBaseClient<
     target: AtlasSetState[K]
   ) {
     console.log(` > ${fieldName}: ${current ? current + " " : ""}> ${target}`);
-    const arg = mutationArg(this.driveId, id);
 
     switch (fieldName) {
       case "name":
-        await this.executeMutationViaAdapter(
-          "AtlasSet_setSetName",
-          arg<SetSetNameInput>({ name: target as string })
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setSetName({ name: target as string })
         );
         break;
       case "parent":
         if (!target) {
           throw new Error("Parent is not found");
         }
-        await this.executeMutationViaAdapter(
-          "AtlasSet_setSetParent",
-          arg<SetSetParentInput>(target as SetDocumentLink)
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setSetParent(target as SetDocumentLink)
         );
         break;
       case "notionId":
-        await this.executeMutationViaAdapter(
-          "AtlasSet_setNotionId",
-          arg<SetNotionIdInput>({ notionId: target as string })
+        await this.addActionViaAdapter(
+          this.driveId,
+          id,
+          actions.setNotionId({ notionId: target as string })
         );
         break;
     }

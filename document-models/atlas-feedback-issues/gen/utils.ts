@@ -1,41 +1,34 @@
+import type { DocumentModelUtils } from "document-model";
 import {
-  type DocumentModelUtils,
   baseCreateDocument,
-  baseCreateExtendedState,
-  baseSaveToFile,
   baseSaveToFileHandle,
-  baseLoadFromFile,
   baseLoadFromInput,
+  defaultBaseState,
   generateId,
-} from "document-model";
-import {
-  type AtlasFeedbackIssuesDocument,
-  type AtlasFeedbackIssuesState,
-  type AtlasFeedbackIssuesLocalState,
+} from "document-model/core";
+import type {
+  AtlasFeedbackIssuesGlobalState,
+  AtlasFeedbackIssuesLocalState,
 } from "./types.js";
+import type { AtlasFeedbackIssuesPHState } from "./types.js";
 import { reducer } from "./reducer.js";
 
-export const initialGlobalState: AtlasFeedbackIssuesState = {
+export const initialGlobalState: AtlasFeedbackIssuesGlobalState = {
   issues: [],
 };
 export const initialLocalState: AtlasFeedbackIssuesLocalState = {};
 
-const utils: DocumentModelUtils<AtlasFeedbackIssuesDocument> = {
+const utils: DocumentModelUtils<AtlasFeedbackIssuesPHState> = {
   fileExtension: ".phdm",
   createState(state) {
     return {
+      ...defaultBaseState(),
       global: { ...initialGlobalState, ...state?.global },
       local: { ...initialLocalState, ...state?.local },
     };
   },
-  createExtendedState(extendedState) {
-    return baseCreateExtendedState({ ...extendedState }, utils.createState);
-  },
   createDocument(state) {
-    const document = baseCreateDocument(
-      utils.createExtendedState(state),
-      utils.createState,
-    );
+    const document = baseCreateDocument(utils.createState, state);
 
     document.header.documentType = "makerdao/feedback-issues";
 
@@ -44,18 +37,17 @@ const utils: DocumentModelUtils<AtlasFeedbackIssuesDocument> = {
 
     return document;
   },
-  saveToFile(document, path, name) {
-    return baseSaveToFile(document, path, ".phdm", name);
-  },
   saveToFileHandle(document, input) {
     return baseSaveToFileHandle(document, input);
-  },
-  loadFromFile(path) {
-    return baseLoadFromFile(path, reducer);
   },
   loadFromInput(input) {
     return baseLoadFromInput(input, reducer);
   },
 };
+
+export const createDocument = utils.createDocument;
+export const createState = utils.createState;
+export const saveToFileHandle = utils.saveToFileHandle;
+export const loadFromInput = utils.loadFromInput;
 
 export default utils;

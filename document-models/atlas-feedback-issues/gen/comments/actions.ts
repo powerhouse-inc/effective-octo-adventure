@@ -1,25 +1,22 @@
-import { type BaseAction } from "document-model";
+import { type Action } from "document-model";
 import type {
   CreateCommentInput,
   DeleteCommentInput,
   EditCommentInput,
 } from "../types.js";
 
-export type CreateCommentAction = BaseAction<
-  "CREATE_COMMENT",
-  CreateCommentInput,
-  "global"
->;
-export type DeleteCommentAction = BaseAction<
-  "DELETE_COMMENT",
-  DeleteCommentInput,
-  "global"
->;
-export type EditCommentAction = BaseAction<
-  "EDIT_COMMENT",
-  EditCommentInput,
-  "global"
->;
+export type CreateCommentAction = Action & {
+  type: "CREATE_COMMENT";
+  input: CreateCommentInput;
+};
+export type DeleteCommentAction = Action & {
+  type: "DELETE_COMMENT";
+  input: DeleteCommentInput;
+};
+export type EditCommentAction = Action & {
+  type: "EDIT_COMMENT";
+  input: EditCommentInput;
+};
 
 export type AtlasFeedbackIssuesCommentsAction =
   | CreateCommentAction

@@ -15,6 +15,7 @@ export type DocumentSyncConfig = {
   processLimit: number;
   skipNodes: { [id: string]: boolean };
   saveToFile?: string;
+  atlasData?: ViewNodeExtended[]; // Optional: provide pre-loaded data instead of fetching
 };
 
 export const syncDocuments = async (config: DocumentSyncConfig) => {
@@ -48,7 +49,7 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
   console.log(documentsCache.getDocumentsCount());
   console.log("\nProcessing Notion documents...");
 
-  const atlasData = await getAtlasData();
+  const atlasData = config.atlasData ?? await getAtlasData();
   const queue: ViewNodeExtended[] = [...atlasData];
 
   let processed = 0;

@@ -11,7 +11,31 @@ import { type IconName } from "@powerhousedao/document-engineering/ui";
 import { fetchAllData } from "../scripts/fetch-data/fetch.js";
 
 /**
+ * Returns the atlas data from the local file system without auto-downloading.
+ * Throws an error if the data file doesn't exist.
+ * Use this when you want to ensure data is explicitly downloaded first.
+ */
+export const getAtlasDataFromFile = () => {
+  const __dirname = path.dirname(new URL(import.meta.url).pathname);
+  const jsonPath = path.resolve(__dirname, "../data/atlas-data-extended.json");
+
+  if (!fs.existsSync(jsonPath)) {
+    throw new Error(
+      `Atlas data file not found at ${jsonPath}\n` +
+      `Please run the download script first:\n` +
+      `  tsx scripts/download-data.ts`
+    );
+  }
+
+  console.log(`Reading Atlas Data from file: ${jsonPath}`);
+  const raw = fs.readFileSync(jsonPath, "utf-8");
+  return JSON.parse(raw) as ViewNodeExtended[];
+};
+
+/**
  * Returns the atlas data from the local file system dynamically.
+ * If the data is not available, it will automatically fetch it.
+ * For explicit download/import workflows, use getAtlasDataFromFile() instead.
  */
 export const getAtlasData = async () => {
   const __dirname = path.dirname(new URL(import.meta.url).pathname);

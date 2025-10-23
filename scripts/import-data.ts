@@ -1,20 +1,21 @@
 /**
- * Combined download and import script (legacy workflow).
+ * Import previously downloaded Atlas data to a reactor.
+ * This script reads data from the local file system (data/atlas-data-extended.json)
+ * and synchronizes it to the specified reactor drive.
  *
- * This script automatically downloads Atlas data from the API and immediately
- * imports it to the reactor in a single operation.
+ * Usage:
+ *   tsx scripts/import-data.ts
  *
- * For more control over the workflow, consider using the separate scripts:
- *   - tsx scripts/download-data.ts  (download only)
- *   - tsx scripts/import-data.ts    (import only)
+ * Prerequisites:
+ *   - Data must be downloaded first using: tsx scripts/download-data.ts
+ *   - Reactor must be running (default: http://localhost:4001)
  *
- * The separate workflow allows you to:
- *   - Download data once and import multiple times
- *   - Inspect/modify downloaded data before import
- *   - Import without requiring API access
+ * Configuration:
+ *   Edit the constants below to customize the import behavior
  */
 
 import { syncDocuments } from "./apply-changes/syncDocuments.js";
+import { getAtlasDataFromFile } from "../document-models/utils.js";
 
 const PORT = process.env.PORT || 4001;
 // Reactor where the documents will be synchronized to
@@ -51,6 +52,16 @@ const SKIP_NODES: { [id: string]: boolean } = {
 const SAVE_CACHE_FILE = false;
 
 async function main() {
+  console.log("=".repeat(60));
+  console.log("Atlas Data Import");
+  console.log("=".repeat(60));
+  console.log(`Target: ${GQL_ENDPOINT}`);
+  console.log(`Drive: ${DRIVE_NAME}`);
+  console.log("=".repeat(60));
+
+  // Load atlas data from file (will throw error if not found)
+  const atlasData = getAtlasDataFromFile();
+
   await syncDocuments({
     driveName: DRIVE_NAME,
     gqlEndpoint: GQL_ENDPOINT,
@@ -60,7 +71,12 @@ async function main() {
     saveToFile: SAVE_CACHE_FILE
       ? "./scripts/apply-changes/data/index.json"
       : undefined,
+    atlasData, // Use pre-loaded data
   });
+
+  console.log("\n" + "=".repeat(60));
+  console.log("Import complete!");
+  console.log("=".repeat(60));
 }
 
 await main();

@@ -14,130 +14,12 @@ import { randomUUID } from "crypto";
 
 export class MockReactorAdapter implements ReactorAdapter {
   private operations: OperationLog[] = [];
-  private drives: Map<string, { id: string; name: string; nodes: DriveResultNode[] }> = new Map();
+  private drives: Map<string, { id: string; name: string; icon?: string; nodes: DriveResultNode[] }> = new Map();
   private documents: Map<string, any> = new Map();
   private verbose: boolean;
 
   constructor(options?: { verbose?: boolean }) {
     this.verbose = options?.verbose ?? true;
-  }
-
-  async executeQuery<T>(
-    endpoint: string,
-    query: string,
-    variables?: object
-  ): Promise<T> {
-    const operation: OperationLog = {
-      type: "query",
-      name: this.extractOperationName(query) || "unknown",
-      timestamp: new Date(),
-      args: variables,
-    };
-
-    if (this.verbose) {
-      console.log(`[MOCK QUERY] ${operation.name}`, variables || "");
-    }
-
-    // Return mock data based on query patterns
-    let result: any = {};
-
-    if (query.includes("getDocumentDriveNodes")) {
-      const driveId = (variables as any)?.driveId;
-      const drive = this.drives.get(driveId);
-      result = {
-        document: {
-          id: driveId,
-          state: {
-            icon: drive?.icon || "Folder",
-            name: drive?.name || driveId,
-            nodes: drive?.nodes || [],
-          },
-        },
-      };
-    } else if (query.includes("getDriveIds")) {
-      result = {
-        drives: Array.from(this.drives.keys()),
-      };
-    } else if (query.includes("document(id:")) {
-      // Document query - return mock document
-      const docId = (variables as any)?.id;
-      const doc = this.documents.get(docId);
-      result = {
-        document: doc || {
-          id: docId,
-          name: "Mock Document",
-          revision: 1,
-          state: {},
-        },
-      };
-    }
-
-    operation.result = result;
-    this.operations.push(operation);
-
-    return result as T;
-  }
-
-  async executeMutation<T>(
-    endpoint: string,
-    mutationName: string,
-    variables: object
-  ): Promise<T> {
-    const operation: OperationLog = {
-      type: "mutation",
-      name: mutationName,
-      timestamp: new Date(),
-      args: variables,
-    };
-
-    if (this.verbose) {
-      console.log(`[MOCK MUTATION] ${mutationName}`, variables);
-    }
-
-    let result: any = {};
-
-    // Handle specific mutations
-    if (mutationName.includes("_createDocument")) {
-      const docId = `phd:${randomUUID()}`;
-      const docType = mutationName.split("_")[0];
-      const doc = {
-        id: docId,
-        name: (variables as any).__args?.name || "New Document",
-        revision: 1,
-        state: {},
-      };
-      this.documents.set(docId, doc);
-      result = docId;
-
-      if (this.verbose) {
-        console.log(`  → Created document: ${docId}`);
-      }
-    } else if (mutationName === "addDrive") {
-      const args = variables as any;
-      this.drives.set(args.__args.id, {
-        id: args.__args.id,
-        name: args.__args.name || args.__args.id,
-        nodes: [],
-      });
-      result = {
-        id: args.__args.id,
-        name: args.__args.name,
-        slug: args.__args.slug,
-        icon: args.__args.icon,
-      };
-
-      if (this.verbose) {
-        console.log(`  → Created drive: ${args.__args.id}`);
-      }
-    } else {
-      // Generic mutation - just log it
-      result = { success: true };
-    }
-
-    operation.result = result;
-    this.operations.push(operation);
-
-    return result as T;
   }
 
   async addAction(
@@ -218,26 +100,78 @@ export class MockReactorAdapter implements ReactorAdapter {
   }
 
   async getDriveIds(): Promise<string[]> {
-    return this.executeQuery(
-      "system",
-      "query getDriveIds { drives }"
-    ).then((r: any) => r.drives);
+    const operation: OperationLog = {
+      type: "query",
+      name: "getDriveIds",
+      timestamp: new Date(),
+      args: {},
+    };
+
+    if (this.verbose) {
+      console.log(`[MOCK QUERY] getDriveIds`);
+    }
+
+    const result = Array.from(this.drives.keys());
+
+    operation.result = result;
+    this.operations.push(operation);
+
+    return result;
   }
 
   async getDocumentDriveNodes(driveId: string): Promise<DriveNodes> {
-    const result = await this.executeQuery<any>(
-      "drive",
-      "query getDocumentDriveNodes($driveId: String!) { ... }",
-      { driveId }
-    );
-
-    return {
-      id: result.document.id,
-      slug: result.document.id,
-      icon: result.document.state.icon,
-      name: result.document.state.name,
-      nodes: result.document.state.nodes,
+    const operation: OperationLog = {
+      type: "query",
+      name: "getDocumentDriveNodes",
+      timestamp: new Date(),
+      args: { driveId },
     };
+
+    if (this.verbose) {
+      console.log(`[MOCK QUERY] getDocumentDriveNodes`, { driveId });
+    }
+
+    const drive = this.drives.get(driveId);
+    const result: DriveNodes = {
+      id: driveId,
+      slug: driveId,
+      icon: drive?.icon || "Folder",
+      name: drive?.name || driveId,
+      nodes: drive?.nodes || [],
+    };
+
+    operation.result = result;
+    this.operations.push(operation);
+
+    return result;
+  }
+
+  async getDocument(docId: string, schema: string): Promise<any> {
+    const operation: OperationLog = {
+      type: "query",
+      name: "getDocument",
+      timestamp: new Date(),
+      args: { docId, schema },
+    };
+
+    if (this.verbose) {
+      console.log(`[MOCK QUERY] getDocument`, { docId, schema });
+    }
+
+    const doc = this.documents.get(docId);
+    const result = {
+      document: doc || {
+        id: docId,
+        name: "Mock Document",
+        revision: 1,
+        state: {},
+      },
+    };
+
+    operation.result = result;
+    this.operations.push(operation);
+
+    return result;
   }
 
   async createDrive(args: {
@@ -247,7 +181,39 @@ export class MockReactorAdapter implements ReactorAdapter {
     icon?: string;
     preferredEditor?: string;
   }): Promise<any> {
-    return this.executeMutation("system", "addDrive", { __args: args });
+    const operation: OperationLog = {
+      type: "mutation",
+      name: "addDrive",
+      timestamp: new Date(),
+      args,
+    };
+
+    if (this.verbose) {
+      console.log(`[MOCK MUTATION] addDrive`, args);
+    }
+
+    this.drives.set(args.id, {
+      id: args.id,
+      name: args.name || args.id,
+      icon: args.icon,
+      nodes: [],
+    });
+
+    const result = {
+      id: args.id,
+      name: args.name,
+      slug: args.slug,
+      icon: args.icon,
+    };
+
+    if (this.verbose) {
+      console.log(`  → Created drive: ${args.id}`);
+    }
+
+    operation.result = result;
+    this.operations.push(operation);
+
+    return result;
   }
 
   getSummary(): ReactorOperationsSummary {
@@ -307,11 +273,4 @@ export class MockReactorAdapter implements ReactorAdapter {
     console.log("\n" + "=".repeat(60));
   }
 
-  /**
-   * Extract operation name from GraphQL query string.
-   */
-  private extractOperationName(query: string): string | null {
-    const match = query.match(/(?:query|mutation)\s+(\w+)/);
-    return match ? match[1] : null;
-  }
 }

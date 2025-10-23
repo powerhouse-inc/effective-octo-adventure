@@ -40,74 +40,6 @@ export class HttpReactorAdapter implements ReactorAdapter {
     graphqlClient.setUrl(this.driveEndpoint);
   }
 
-  async executeQuery<T>(
-    endpoint: string,
-    query: string,
-    variables?: object
-  ): Promise<T> {
-    const operation: OperationLog = {
-      type: "query",
-      name: this.extractOperationName(query) || "unknown",
-      timestamp: new Date(),
-      args: variables,
-    };
-
-    try {
-      const result = await queryGraphQL<T>(endpoint, query, variables);
-
-      if ((result as any).errors) {
-        const error = `GraphQL errors: ${JSON.stringify((result as any).errors)}`;
-        operation.error = error;
-        this.operations.push(operation);
-        throw new Error(error);
-      }
-
-      operation.result = result;
-      this.operations.push(operation);
-      return result;
-    } catch (error) {
-      operation.error = String(error);
-      this.operations.push(operation);
-      throw error;
-    }
-  }
-
-  async executeMutation<T>(
-    endpoint: string,
-    mutationName: string,
-    variables: object
-  ): Promise<T> {
-    const operation: OperationLog = {
-      type: "mutation",
-      name: mutationName,
-      timestamp: new Date(),
-      args: variables,
-    };
-
-    try {
-      // The generated clients handle mutations internally
-      // This method is mainly for tracking/logging
-      let result: any;
-
-      // Determine which client to use based on mutation name
-      if (mutationName === "addDrive") {
-        result = await systemClient.mutations.addDrive(variables as any);
-      } else {
-        // For document mutations, they're called directly by the Atlas clients
-        // This is a passthrough for logging purposes
-        result = { success: true };
-      }
-
-      operation.result = result;
-      this.operations.push(operation);
-      return result as T;
-    } catch (error) {
-      operation.error = String(error);
-      this.operations.push(operation);
-      throw error;
-    }
-  }
-
   async addAction(
     driveId: string,
     docId: string,
@@ -205,65 +137,138 @@ export class HttpReactorAdapter implements ReactorAdapter {
   }
 
   async getDriveIds(): Promise<string[]> {
-    const result = await this.executeQuery<any>(
-      this.systemEndpoint,
-      gql`
-        query getDriveIds {
-          drives
-        }
-      `
-    );
+    const operation: OperationLog = {
+      type: "query",
+      name: "getDriveIds",
+      timestamp: new Date(),
+      args: {},
+    };
 
-    if (!result.drives) {
-      throw new Error(`Failed to fetch drive ids from ${this.systemEndpoint}`);
+    try {
+      const result = await systemClient.queries.drives();
+
+      if (!result) {
+        throw new Error(`Failed to fetch drive ids from ${this.systemEndpoint}`);
+      }
+
+      operation.result = result;
+      this.operations.push(operation);
+      return result;
+    } catch (error) {
+      operation.error = String(error);
+      this.operations.push(operation);
+      throw error;
     }
-
-    return result.drives;
   }
 
   async getDocumentDriveNodes(driveId: string): Promise<DriveNodes> {
-    const result = await this.executeQuery<any>(
-      this.driveEndpoint,
-      gql`
-        query getDocumentDriveNodes($driveId: String!) {
-          document(id: $driveId) {
-            id
-            ... on DocumentDrive {
-              state {
-                icon
-                name
-                nodes {
-                  ... on DocumentDrive_FolderNode {
-                    id
-                    parentFolder
-                    name
-                  }
-                  ... on DocumentDrive_FileNode {
-                    id
-                    documentType
-                    parentFolder
-                    name
+    const operation: OperationLog = {
+      type: "query",
+      name: "getDocumentDriveNodes",
+      timestamp: new Date(),
+      args: { driveId },
+    };
+
+    try {
+      const result = await queryGraphQL<any>(
+        this.driveEndpoint,
+        gql`
+          query getDocumentDriveNodes($driveId: String!) {
+            document(id: $driveId) {
+              id
+              ... on DocumentDrive {
+                state {
+                  icon
+                  name
+                  nodes {
+                    ... on DocumentDrive_FolderNode {
+                      id
+                      parentFolder
+                      name
+                    }
+                    ... on DocumentDrive_FileNode {
+                      id
+                      documentType
+                      parentFolder
+                      name
+                    }
                   }
                 }
               }
             }
           }
-        }
-      `,
-      { driveId }
-    );
+        `,
+        { driveId }
+      );
 
-    if (!result.document) {
-      throw new Error(`Failed to fetch drive info from ${this.driveEndpoint}`);
+      if ((result as any).errors) {
+        const error = `GraphQL errors: ${JSON.stringify((result as any).errors)}`;
+        operation.error = error;
+        this.operations.push(operation);
+        throw new Error(error);
+      }
+
+      if (!result.document) {
+        throw new Error(`Failed to fetch drive info from ${this.driveEndpoint}`);
+      }
+
+      const driveNodes: DriveNodes = {
+        id: result.document.id,
+        slug: result.document.id,
+        icon: result.document.state.icon,
+        name: result.document.state.name,
+        nodes: result.document.state.nodes,
+      };
+
+      operation.result = driveNodes;
+      this.operations.push(operation);
+
+      return driveNodes;
+    } catch (error) {
+      operation.error = String(error);
+      this.operations.push(operation);
+      throw error;
     }
+  }
 
-    return {
-      id: result.document.id,
-      slug: result.document.id,
-      icon: result.document.state.icon,
-      name: result.document.state.name,
-      nodes: result.document.state.nodes,
+  async getDocument(docId: string, schema: string): Promise<any> {
+    const operation: OperationLog = {
+      type: "query",
+      name: "getDocument",
+      timestamp: new Date(),
+      args: { docId, schema },
     };
+
+    try {
+      const query = gql`
+        query getDocument($id: String!) {
+          document(id: $id) {
+            ... on ${schema}
+          }
+        }
+      `;
+
+      const result = await queryGraphQL<any>(
+        this.driveEndpoint,
+        query,
+        { id: docId }
+      );
+
+      if ((result as any).errors) {
+        const error = `GraphQL errors: ${JSON.stringify((result as any).errors)}`;
+        operation.error = error;
+        this.operations.push(operation);
+        throw new Error(error);
+      }
+
+      operation.result = result;
+      this.operations.push(operation);
+      return result;
+    } catch (error) {
+      operation.error = String(error);
+      this.operations.push(operation);
+      throw error;
+    }
   }
 
   async createDrive(args: {
@@ -273,13 +278,30 @@ export class HttpReactorAdapter implements ReactorAdapter {
     icon?: string;
     preferredEditor?: string;
   }): Promise<any> {
-    return this.executeMutation("system", "addDrive", {
-      __args: args,
-      id: true,
-      name: true,
-      slug: true,
-      icon: true,
-    });
+    const operation: OperationLog = {
+      type: "mutation",
+      name: "addDrive",
+      timestamp: new Date(),
+      args,
+    };
+
+    try {
+      const result = await systemClient.mutations.addDrive({
+        __args: args,
+        id: true,
+        name: true,
+        slug: true,
+        icon: true,
+      });
+
+      operation.result = result;
+      this.operations.push(operation);
+      return result;
+    } catch (error) {
+      operation.error = String(error);
+      this.operations.push(operation);
+      throw error;
+    }
   }
 
   getSummary(): ReactorOperationsSummary {
@@ -299,14 +321,6 @@ export class HttpReactorAdapter implements ReactorAdapter {
       documentsUpdated: updates.length,
       operations: this.operations,
     };
-  }
-
-  /**
-   * Extract operation name from GraphQL query string.
-   */
-  private extractOperationName(query: string): string | null {
-    const match = query.match(/(?:query|mutation)\s+(\w+)/);
-    return match ? match[1] : null;
   }
 
   /**

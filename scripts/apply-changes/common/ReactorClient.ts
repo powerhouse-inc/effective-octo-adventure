@@ -59,11 +59,21 @@ export class ReactorClient {
     variables?: object,
   ): Promise<ReturnType> {
     if (this.adapter) {
-      return this.adapter.executeQuery<ReturnType>(
-        this.driveEndpointUrl,
-        query,
-        variables,
-      );
+      // Extract docId and schema for getDocument call
+      // The query format is: query getDocument($id: String!) { document(id: $id) { ... on Schema } }
+      const docId = (variables as any)?.id;
+      if (!docId) {
+        throw new Error("queryReactor requires 'id' in variables when using adapter");
+      }
+
+      // Extract schema name from query (between "... on " and the closing brace)
+      const schemaMatch = query.match(/\.\.\.\s+on\s+(\w+)/);
+      if (!schemaMatch) {
+        throw new Error("Could not extract schema from query");
+      }
+      const schema = schemaMatch[1];
+
+      return this.adapter.getDocument(docId, schema) as Promise<ReturnType>;
     }
 
     const result = await queryGraphQL<ReturnType>(

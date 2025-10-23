@@ -12,32 +12,6 @@ import { type DriveNodes } from "../common/ReactorClient.js";
  */
 export interface ReactorAdapter {
   /**
-   * Execute a GraphQL query against the reactor.
-   * @param endpoint - The endpoint URL or path
-   * @param query - GraphQL query string
-   * @param variables - Query variables
-   * @returns Query result
-   */
-  executeQuery<T>(
-    endpoint: string,
-    query: string,
-    variables?: object
-  ): Promise<T>;
-
-  /**
-   * Execute a GraphQL mutation against the reactor.
-   * @param endpoint - The endpoint URL or path
-   * @param mutationName - Name of the mutation (e.g., "AtlasScope_createDocument")
-   * @param variables - Mutation variables
-   * @returns Mutation result
-   */
-  executeMutation<T>(
-    endpoint: string,
-    mutationName: string,
-    variables: object
-  ): Promise<T>;
-
-  /**
    * Add a document-model action to a document.
    * @param driveId - The drive ID
    * @param docId - The document ID
@@ -72,6 +46,14 @@ export interface ReactorAdapter {
    * Get drive structure (folders and files).
    */
   getDocumentDriveNodes(driveId: string): Promise<DriveNodes>;
+
+  /**
+   * Get a document with its state.
+   * @param docId - The document ID
+   * @param schema - The GraphQL schema fragment for document fields
+   * @returns Document data with state
+   */
+  getDocument(docId: string, schema: string): Promise<any>;
 
   /**
    * Create a new drive.

@@ -91,25 +91,6 @@ export abstract class AtlasBaseClient<
     return result;
   }
 
-  /**
-   * Execute a mutation through the adapter or the write client.
-   * Use this helper to avoid duplication in subclasses.
-   */
-  protected async executeMutationViaAdapter<T = any>(
-    mutationName: string,
-    args: any
-  ): Promise<T> {
-    if (this.adapter) {
-      return this.adapter.executeMutation<T>("drive", mutationName, args);
-    }
-
-    // Call the actual write client mutation
-    const mutationFn = (this.writeClient.mutations as any)[mutationName];
-    if (!mutationFn) {
-      throw new Error(`Mutation ${mutationName} not found on write client`);
-    }
-    return mutationFn(args);
-  }
 
   /**
    * Add an action through the adapter or fall back to GraphQL mutation.

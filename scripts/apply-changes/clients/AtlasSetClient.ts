@@ -10,6 +10,7 @@ import { graphqlClient as writeClient } from "../../clients/index.js";
 import { gql } from "graphql-request";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { ReactorClient } from "../common/ReactorClient.js";
+import type { ReactorAdapter } from "../adapters/ReactorAdapter.js";
 import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
 import { getNodeName } from "../../../document-models/utils.js";
 import { findAtlasParentInCache, Link } from "../atlas-base/utils.js";
@@ -27,14 +28,16 @@ export class AtlasSetClient extends AtlasBaseClient<
     mutationsSubgraphUrl: string,
     documentsCache: DocumentsCache,
     readClient: ReactorClient,
-    driveId: string
+    driveId: string,
+    adapter?: ReactorAdapter,
   ) {
     super(
       DOCUMENT_TYPE,
       mutationsSubgraphUrl,
       documentsCache,
       readClient,
-      writeClient
+      writeClient,
+      adapter,
     );
     this.driveId = driveId;
     this.setDocumentSchema(gql`
@@ -56,10 +59,11 @@ export class AtlasSetClient extends AtlasBaseClient<
     `);
   }
 
-  protected createDocumentFromInput(documentNode: ViewNodeExtended) {
-    return this.writeClient.mutations.AtlasSet_createDocument({
-      __args: { driveId: this.driveId, name: getNodeName(documentNode) },
-    });
+  protected async createDocumentFromInput(documentNode: ViewNodeExtended) {
+    return this.executeMutationViaAdapter<string>(
+      "AtlasSet_createDocument",
+      { __args: { driveId: this.driveId, name: getNodeName(documentNode) } }
+    );
   }
 
   protected getTargetState(
@@ -95,12 +99,12 @@ export class AtlasSetClient extends AtlasBaseClient<
     target: AtlasSetState[K]
   ) {
     console.log(` > ${fieldName}: ${current ? current + " " : ""}> ${target}`);
-    const patch = this.writeClient.mutations,
-      arg = mutationArg(this.driveId, id);
+    const arg = mutationArg(this.driveId, id);
 
     switch (fieldName) {
       case "name":
-        await patch.AtlasSet_setSetName(
+        await this.executeMutationViaAdapter(
+          "AtlasSet_setSetName",
           arg<SetSetNameInput>({ name: target as string })
         );
         break;
@@ -108,10 +112,14 @@ export class AtlasSetClient extends AtlasBaseClient<
         if (!target) {
           throw new Error("Parent is not found");
         }
-        await patch.AtlasSet_setSetParent(arg<SetSetParentInput>(target as SetDocumentLink));
+        await this.executeMutationViaAdapter(
+          "AtlasSet_setSetParent",
+          arg<SetSetParentInput>(target as SetDocumentLink)
+        );
         break;
       case "notionId":
-        await patch.AtlasSet_setNotionId(
+        await this.executeMutationViaAdapter(
+          "AtlasSet_setNotionId",
           arg<SetNotionIdInput>({ notionId: target as string })
         );
         break;

@@ -25,6 +25,7 @@ import {
 } from "../atlas-base/utils.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { type ReactorClient } from "../common/ReactorClient.js";
+import type { ReactorAdapter } from "../adapters/ReactorAdapter.js";
 import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
 
 const DOCUMENT_TYPE = "sky/atlas-foundation";
@@ -40,6 +41,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<
     documentsCache: DocumentsCache,
     readClient: ReactorClient,
     driveId: string,
+    adapter?: ReactorAdapter,
   ) {
     super(
       DOCUMENT_TYPE,
@@ -47,6 +49,7 @@ export class AtlasFoundationClient extends AtlasBaseClient<
       documentsCache,
       readClient,
       writeClient,
+      adapter,
     );
     this.driveId = driveId;
     this.setDocumentSchema(gql`
@@ -75,10 +78,11 @@ export class AtlasFoundationClient extends AtlasBaseClient<
     `);
   }
 
-  protected createDocumentFromInput(documentNode: ViewNodeExtended) {
-    return this.writeClient.mutations.AtlasFoundation_createDocument({
-      __args: { driveId: this.driveId, name: getNodeTitle(documentNode) },
-    });
+  protected async createDocumentFromInput(documentNode: ViewNodeExtended) {
+    return this.executeMutationViaAdapter<string>(
+      "AtlasFoundation_createDocument",
+      { __args: { driveId: this.driveId, name: getNodeTitle(documentNode) } }
+    );
   }
 
   protected getTargetState(
@@ -139,65 +143,45 @@ export class AtlasFoundationClient extends AtlasBaseClient<
     target: AtlasFoundationState[K],
   ) {
     console.log(` > ${fieldName}: ${current ? JSON.stringify(current) : ""} > ${target ? JSON.stringify(target) : ""}`);
-    const patch = this.writeClient.mutations,
-      arg = mutationArg(this.driveId, id);
+    const arg = mutationArg(this.driveId, id);
 
     switch (fieldName) {
       case "docNo":
-        await patch.AtlasFoundation_setDocNumber(
-          arg<SetDocNumberInput>({ docNo: target as string }),
-        );
+        await this.executeMutationViaAdapter("AtlasFoundation_setDocNumber", arg<SetDocNumberInput>({ docNo: target as string }));
         break;
       case "name":
-        await patch.AtlasFoundation_setFoundationName(
-          arg<SetFoundationNameInput>({ name: target as string }),
-        );
+        await this.executeMutationViaAdapter("AtlasFoundation_setFoundationName", arg<SetFoundationNameInput>({ name: target as string }));
         break;
       case "masterStatus":
-        await patch.AtlasFoundation_setMasterStatus(
-          arg<any>({ masterStatus: target as FStatus }),
-        );
+        await this.executeMutationViaAdapter("AtlasFoundation_setMasterStatus", arg<any>({ masterStatus: target as FStatus }));
         break;
       case "content":
-        await patch.AtlasFoundation_setContent(
-          arg<SetContentInput>({ content: target as string }),
-        );
+        await this.executeMutationViaAdapter("AtlasFoundation_setContent", arg<SetContentInput>({ content: target as string }));
         break;
       case "notionId":
-        await patch.AtlasFoundation_setNotionId(
-          arg<any>({ notionID: target || undefined }),
-        );
+        await this.executeMutationViaAdapter("AtlasFoundation_setNotionId", arg<any>({ notionID: target || undefined }));
         break;
       case "globalTags":
-        await patch.AtlasFoundation_addTags(
-          arg<any>({ tags: target }),
-        );
+        await this.executeMutationViaAdapter("AtlasFoundation_addTags", arg<any>({ tags: target }));
         break;
-      case "originalContextData": {
+      case "originalContextData":
         if (target && Array.isArray(target) && target.length > 0) {
           await Promise.all(
             target.map(async (contextData) => {
-              await patch.AtlasFoundation_addContextData(
-                arg<any>({ id: contextDataIdToUrl(contextData) }),
-              );
+              await this.executeMutationViaAdapter("AtlasFoundation_addContextData", arg<any>({ id: contextDataIdToUrl(contextData) }));
             })
           );
         }
         break;
-      }
       case "parent":
         if (!target) {
           throw new Error("Parent is not found");
         }
         const parsedTarget = target as FDocumentLink;
-        await patch.AtlasFoundation_setParent(
-          arg<SetParentInput>(parsedTarget),
-        );
+        await this.executeMutationViaAdapter("AtlasFoundation_setParent", arg<SetParentInput>(parsedTarget));
         break;
       case "atlasType":
-        await patch.AtlasFoundation_setAtlasType(
-          arg<any>({ atlasType: target }),
-        );
+        await this.executeMutationViaAdapter("AtlasFoundation_setAtlasType", arg<any>({ atlasType: target }));
         break;
       default:
         throw new Error(`Patcher for field ${fieldName} not implemented`);

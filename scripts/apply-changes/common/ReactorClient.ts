@@ -1,6 +1,7 @@
 import path from "path";
 import { queryGraphQL } from "./gql-utils.js";
 import { gql } from "graphql-request";
+import type { ReactorAdapter } from "../adapters/ReactorAdapter.js";
 
 export type DriveResultNode = {
   id: string;
@@ -40,17 +41,31 @@ export class ReactorClient {
   private endpointUrl: string | undefined;
   private driveEndpointUrl: string;
   private systemEndpointUrl: string;
+  private adapter?: ReactorAdapter;
 
-  constructor(endpointUrl: string | undefined, driveName: string) {
+  constructor(
+    endpointUrl: string | undefined,
+    driveName: string,
+    adapter?: ReactorAdapter
+  ) {
     this.endpointUrl = endpointUrl;
     this.driveEndpointUrl = path.join(endpointUrl || "", "d", driveName);
     this.systemEndpointUrl = new URL("./graphql/system", endpointUrl || "").href;
+    this.adapter = adapter;
   }
 
   public async queryReactor<ReturnType>(
     query: string,
     variables?: object,
   ): Promise<ReturnType> {
+    if (this.adapter) {
+      return this.adapter.executeQuery<ReturnType>(
+        this.driveEndpointUrl,
+        query,
+        variables,
+      );
+    }
+
     const result = await queryGraphQL<ReturnType>(
       this.driveEndpointUrl,
       query,
@@ -67,6 +82,10 @@ export class ReactorClient {
   }
 
   public async getDriveIds(): Promise<string[]> {
+    if (this.adapter) {
+      return this.adapter.getDriveIds();
+    }
+
     const result = await queryGraphQL<DriveIdsResult>(
       this.systemEndpointUrl,
       gql`
@@ -93,6 +112,10 @@ export class ReactorClient {
   }
 
   public async getDocumentDriveNodes(driveId: string): Promise<DriveNodes> {
+    if (this.adapter) {
+      return this.adapter.getDocumentDriveNodes(driveId);
+    }
+
     const result = await queryGraphQL<DocumentDriveResult>(
       this.driveEndpointUrl,
       gql`

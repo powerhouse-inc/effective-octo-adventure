@@ -96,7 +96,8 @@ export const createClientRegistry = (
         mutationsSubgraphUrl,
         documentCache,
         readClient,
-        config.driveName
+        config.driveName,
+        config.reactorAdapter
       )
     );
   });

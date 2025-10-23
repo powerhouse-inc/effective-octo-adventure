@@ -66,6 +66,9 @@
     "service-unstartup": "bash ./node_modules/@powerhousedao/ph-cli/dist/scripts/service-unstartup.sh",
     "script:apply-changes": "bun run ./scripts/apply-changes.ts",
     "script:fetch-data": "bun run ./scripts/fetch-data/script.ts",
+    "script:download-data": "bun run ./scripts/download-data.ts",
+    "script:import-data": "bun run ./scripts/import-data.ts",
+    "script:import-mock": "bun run ./scripts/import-data-mock-example.ts",
     "script:generate-gql-clients": "bun run ./scripts/gen-clients.ts",
     "script:generate-all": "bash ./docmodel-zips/generate-all.sh",
     "release": "semantic-release"

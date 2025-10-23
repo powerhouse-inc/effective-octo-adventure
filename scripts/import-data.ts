@@ -16,6 +16,28 @@
 
 import { syncDocuments } from "./apply-changes/syncDocuments.js";
 import { getAtlasDataFromFile } from "../document-models/utils.js";
+import { MockReactorAdapter } from "./apply-changes/adapters/MockReactorAdapter.js";
+
+/**
+ * ADAPTER CONFIGURATION
+ *
+ * To use a mock/in-memory reactor instead of sending data to a remote reactor:
+ * 1. Uncomment the line below to create a MockReactorAdapter
+ * 2. Pass it in the syncDocuments config as reactorAdapter
+ *
+ * The mock adapter will:
+ * - Log all operations (queries and mutations) without sending them over HTTP
+ * - Track document creates and updates
+ * - Print a summary at the end showing what would have been sent
+ *
+ * This is useful for:
+ * - Testing the import flow without affecting a real reactor
+ * - Understanding what operations the import performs
+ * - Developing/debugging import logic
+ */
+
+// Uncomment to use mock adapter:
+// const mockAdapter = new MockReactorAdapter({ verbose: true });
 
 const PORT = process.env.PORT || 4001;
 // Reactor where the documents will be synchronized to
@@ -72,6 +94,7 @@ async function main() {
       ? "./scripts/apply-changes/data/index.json"
       : undefined,
     atlasData, // Use pre-loaded data
+    // reactorAdapter: mockAdapter, // Uncomment to use mock adapter
   });
 
   console.log("\n" + "=".repeat(60));

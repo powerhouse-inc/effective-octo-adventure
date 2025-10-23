@@ -31,14 +31,16 @@ export class AtlasScopeClient extends AtlasBaseClient<
     mutationsSubgraphUrl: string,
     documentsCache: DocumentsCache,
     readClient: ReactorClient,
-    driveId: string
+    driveId: string,
+    adapter?: import("../adapters/ReactorAdapter.js").ReactorAdapter,
   ) {
     super(
       DOCUMENT_TYPE,
       mutationsSubgraphUrl,
       documentsCache,
       readClient,
-      writeClient
+      writeClient,
+      adapter,
     );
     this.driveId = driveId;
     this.setDocumentSchema(gql`
@@ -59,10 +61,11 @@ export class AtlasScopeClient extends AtlasBaseClient<
     `);
   }
 
-  protected createDocumentFromInput(documentNode: ViewNodeExtended) {
-    return this.writeClient.mutations.AtlasScope_createDocument({
-      __args: { driveId: this.driveId, name: getNodeTitle(documentNode) },
-    });
+  protected async createDocumentFromInput(documentNode: ViewNodeExtended) {
+    return this.executeMutationViaAdapter<string>(
+      "AtlasScope_createDocument",
+      { __args: { driveId: this.driveId, name: getNodeTitle(documentNode) } }
+    );
   }
 
   protected getTargetState(
@@ -90,52 +93,36 @@ export class AtlasScopeClient extends AtlasBaseClient<
     target: AtlasScopeState[K]
   ) {
     console.log(` > ${fieldName}: ${current ? current + " " : ""}> ${target}`);
-    const patch = this.writeClient.mutations,
-      arg = mutationArg(this.driveId, id);
+    const arg = mutationArg(this.driveId, id);
 
     switch (fieldName) {
       case "docNo":
-        await patch.AtlasScope_setDocNumber(
-          arg<SetDocNumberInput>({ docNo: target as string })
-        );
+        await this.executeMutationViaAdapter("AtlasScope_setDocNumber", arg<SetDocNumberInput>({ docNo: target as string }));
         break;
       case "name":
-        await patch.AtlasScope_setScopeName(
-          arg<SetScopeNameInput>({ name: target as string })
-        );
+        await this.executeMutationViaAdapter("AtlasScope_setScopeName", arg<SetScopeNameInput>({ name: target as string }));
         break;
       case "masterStatus":
-        await patch.AtlasScope_setMasterStatus(
-          arg<any>({ masterStatus: target as string })
-        );
+        await this.executeMutationViaAdapter("AtlasScope_setMasterStatus", arg<any>({ masterStatus: target as string }));
         break;
       case "content":
-        await patch.AtlasScope_setContent(
-          arg<SetContentInput>({ content: target as string })
-        );
+        await this.executeMutationViaAdapter("AtlasScope_setContent", arg<SetContentInput>({ content: target as string }));
         break;
       case "notionId":
-        await patch.AtlasScope_setNotionId(
-          arg<any>({ notionID: target || undefined })
-        );
+        await this.executeMutationViaAdapter("AtlasScope_setNotionId", arg<any>({ notionID: target || undefined }));
         break;
       case "globalTags":
-        await patch.AtlasScope_addTags(
-          arg<any>({ newTags: target })
-        );
+        await this.executeMutationViaAdapter("AtlasScope_addTags", arg<any>({ newTags: target }));
         break;
-      case "originalContextData": {
+      case "originalContextData":
         if (target && Array.isArray(target) && target.length > 0) {
           await Promise.all(
             target.map(async (contextData) => {
-              await patch.AtlasScope_addContextData(
-                arg<any>({ id: contextDataIdToUrl(contextData) })
-              );
+              await this.executeMutationViaAdapter("AtlasScope_addContextData", arg<any>({ id: contextDataIdToUrl(contextData) }));
             })
           );
         }
         break;
-      }
     }
   }
 

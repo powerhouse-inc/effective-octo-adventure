@@ -40,8 +40,9 @@ export abstract class AtlasBaseClient<
     documentsCache: DocumentsCache,
     readClient: ReactorClient,
     writeClient: WriteClientType,
+    adapter?: import("../adapters/ReactorAdapter.js").ReactorAdapter,
   ) {
-    super(documentType, documentsCache, readClient);
+    super(documentType, documentsCache, readClient, adapter);
     this.writeClient = writeClient;
     this.writeClient.setUrl(mutationsSubgraphUrl);
   }
@@ -84,12 +85,32 @@ export abstract class AtlasBaseClient<
     return result;
   }
 
+  /**
+   * Execute a mutation through the adapter or the write client.
+   * Use this helper to avoid duplication in subclasses.
+   */
+  protected async executeMutationViaAdapter<T = any>(
+    mutationName: string,
+    args: any
+  ): Promise<T> {
+    if (this.adapter) {
+      return this.adapter.executeMutation<T>("drive", mutationName, args);
+    }
+
+    // Call the actual write client mutation
+    const mutationFn = (this.writeClient.mutations as any)[mutationName];
+    if (!mutationFn) {
+      throw new Error(`Mutation ${mutationName} not found on write client`);
+    }
+    return mutationFn(args);
+  }
+
   protected abstract patchField<K extends keyof AtlasStateType>(
     id: string,
     fieldName: K,
     current: AtlasStateType[K],
     target: AtlasStateType[K],
   ): Promise<void>;
-  
+
   public abstract canHandle(node: ViewNodeExtended): boolean;
 }

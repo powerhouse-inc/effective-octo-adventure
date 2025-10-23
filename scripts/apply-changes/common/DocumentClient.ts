@@ -2,6 +2,7 @@ import { type Maybe } from "document-model";
 import { gql } from "graphql-request";
 import { type DocumentsCache } from "./DocumentsCache.js";
 import { type ReactorClient } from "./ReactorClient.js";
+import type { ReactorAdapter } from "../adapters/ReactorAdapter.js";
 
 const DEFAULT_MAX_QUERY_BATCH_SIZE = 5;
 
@@ -20,15 +21,18 @@ export abstract class DocumentClient<StateType, InputType> {
   protected readClient: ReactorClient;
   protected documentsCache: DocumentsCache;
   private documentSchema?: string;
+  protected adapter?: ReactorAdapter;
 
   constructor(
     documentType: string,
     documentsCache: DocumentsCache,
     readClient: ReactorClient,
+    adapter?: ReactorAdapter,
   ) {
     this.documentType = documentType;
     this.readClient = readClient;
     this.documentsCache = documentsCache;
+    this.adapter = adapter;
   }
 
   protected async setDocumentSchema(schema: string) {

@@ -19,6 +19,7 @@ import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import { contextDataIdToUrl, findAtlasParentInCache, processMarkdownContent, statusStringToEnum } from "../atlas-base/utils.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { type ReactorClient } from "../common/ReactorClient.js";
+import type { ReactorAdapter } from "../adapters/ReactorAdapter.js";
 import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
 
 const DOCUMENT_TYPE = "sky/atlas-grounding";
@@ -33,14 +34,16 @@ export class AtlasGroundingClient extends AtlasBaseClient<
     mutationsSubgraphUrl: string,
     documentsCache: DocumentsCache,
     readClient: ReactorClient,
-    driveId: string
+    driveId: string,
+    adapter?: ReactorAdapter,
   ) {
     super(
       DOCUMENT_TYPE,
       mutationsSubgraphUrl,
       documentsCache,
       readClient,
-      writeClient
+      writeClient,
+      adapter,
     );
     this.driveId = driveId;
     this.setDocumentSchema(gql`
@@ -69,10 +72,11 @@ export class AtlasGroundingClient extends AtlasBaseClient<
     `);
   }
 
-  protected createDocumentFromInput(documentNode: ViewNodeExtended) {
-    return this.writeClient.mutations.AtlasGrounding_createDocument({
-      __args: { driveId: this.driveId, name: getNodeTitle(documentNode) },
-    });
+  protected async createDocumentFromInput(documentNode: ViewNodeExtended) {
+    return this.executeMutationViaAdapter<string>(
+      "AtlasGrounding_createDocument",
+      { __args: { driveId: this.driveId, name: getNodeTitle(documentNode) } }
+    );
   }
 
   protected getTargetState(
@@ -130,62 +134,44 @@ export class AtlasGroundingClient extends AtlasBaseClient<
     console.log(
       ` > ${fieldName}: ${current ? JSON.stringify(current) : ""} > ${target ? JSON.stringify(target) : ""}`
     );
-    const patch = this.writeClient.mutations,
-      arg = mutationArg(this.driveId, id);
+    const arg = mutationArg(this.driveId, id);
 
     switch (fieldName) {
       case "docNo":
-        await patch.AtlasGrounding_setDocNumber(
-          arg<SetDocNumberInput>({ docNo: target as string })
-        );
+        await this.executeMutationViaAdapter("AtlasGrounding_setDocNumber", arg<SetDocNumberInput>({ docNo: target as string }));
         break;
       case "name":
-        await patch.AtlasGrounding_setGroundingName(
-          arg<SetGroundingNameInput>({ name: target as string })
-        );
+        await this.executeMutationViaAdapter("AtlasGrounding_setGroundingName", arg<SetGroundingNameInput>({ name: target as string }));
         break;
       case "masterStatus":
-        await patch.AtlasGrounding_setMasterStatus(
-          arg<any>({ masterStatus: target as GStatus })
-        );
+        await this.executeMutationViaAdapter("AtlasGrounding_setMasterStatus", arg<any>({ masterStatus: target as GStatus }));
         break;
       case "content":
-        await patch.AtlasGrounding_setContent(
-          arg<SetContentInput>({ content: target as string })
-        );
+        await this.executeMutationViaAdapter("AtlasGrounding_setContent", arg<SetContentInput>({ content: target as string }));
         break;
       case "notionId":
-        await patch.AtlasGrounding_setNotionId(
-          arg<any>({ notionID: target || undefined })
-        );
+        await this.executeMutationViaAdapter("AtlasGrounding_setNotionId", arg<any>({ notionID: target || undefined }));
         break;
       case "globalTags":
-        await patch.AtlasGrounding_addTags(
-          arg<any>({ tags: target })
-        );
+        await this.executeMutationViaAdapter("AtlasGrounding_addTags", arg<any>({ tags: target }));
         break;
-      case "originalContextData": {
+      case "originalContextData":
         if (target && Array.isArray(target) && target.length > 0) {
           await Promise.all(
             target.map(async (contextData) => {
-              await patch.AtlasGrounding_addContextData(
-                arg<any>({ id: contextDataIdToUrl(contextData) })
-              );
+              await this.executeMutationViaAdapter("AtlasGrounding_addContextData", arg<any>({ id: contextDataIdToUrl(contextData) }));
             })
           );
         }
         break;
-      }
       case "parent":
         if (!target) {
           throw new Error("Parent is not found");
         }
-        await patch.AtlasGrounding_setParent(arg<SetParentInput>(target as GDocumentLink));
+        await this.executeMutationViaAdapter("AtlasGrounding_setParent", arg<SetParentInput>(target as GDocumentLink));
         break;
       case "atlasType":
-        await patch.AtlasGrounding_setAtlasType(
-          arg<any>({ atlasType: target as GAtlasType }),
-        );
+        await this.executeMutationViaAdapter("AtlasGrounding_setAtlasType", arg<any>({ atlasType: target as GAtlasType }));
         break;
       default:
         throw new Error(`Patcher for field ${fieldName} not implemented`);

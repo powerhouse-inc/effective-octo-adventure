@@ -23,6 +23,7 @@ import {
 } from "../atlas-base/utils.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
 import { type ReactorClient } from "../common/ReactorClient.js";
+import type { ReactorAdapter } from "../adapters/ReactorAdapter.js";
 import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
 import { Maybe } from "document-model";
 
@@ -38,14 +39,16 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
     mutationsSubgraphUrl: string,
     documentsCache: DocumentsCache,
     readClient: ReactorClient,
-    driveId: string
+    driveId: string,
+    adapter?: ReactorAdapter,
   ) {
     super(
       DOCUMENT_TYPE,
       mutationsSubgraphUrl,
       documentsCache,
       readClient,
-      writeClient
+      writeClient,
+      adapter,
     );
     this.driveId = driveId;
     this.setDocumentSchema(gql`
@@ -73,10 +76,11 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
     `);
   }
 
-  protected createDocumentFromInput(documentNode: ViewNodeExtended) {
-    return this.writeClient.mutations.AtlasMultiParent_createDocument({
-      __args: { driveId: this.driveId, name: getNodeTitle(documentNode) },
-    });
+  protected async createDocumentFromInput(documentNode: ViewNodeExtended) {
+    return this.executeMutationViaAdapter<string>(
+      "AtlasMultiParent_createDocument",
+      { __args: { driveId: this.driveId, name: getNodeTitle(documentNode) } }
+    );
   }
 
   protected getTargetState(
@@ -124,60 +128,42 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
     console.log(
       ` > ${fieldName}: ${current ? JSON.stringify(current) : ""} > ${target ? JSON.stringify(target) : ""}`
     );
-    const patch = this.writeClient.mutations,
-      arg = mutationArg(this.driveId, id);
+    const arg = mutationArg(this.driveId, id);
 
     switch (fieldName) {
       case "name":
-        await patch.AtlasMultiParent_setExploratoryName(
-          arg<SetExploratoryNameInput>({ name: target as string })
-        );
+        await this.executeMutationViaAdapter("AtlasMultiParent_setExploratoryName", arg<SetExploratoryNameInput>({ name: target as string }));
         break;
       case "masterStatus":
-        await patch.AtlasMultiParent_setMasterStatus(
-          arg<any>({ masterStatus: target as MStatus })
-        );
+        await this.executeMutationViaAdapter("AtlasMultiParent_setMasterStatus", arg<any>({ masterStatus: target as MStatus }));
         break;
       case "content":
-        await patch.AtlasMultiParent_setContent(
-          arg<SetContentInput>({ content: target as string })
-        );
+        await this.executeMutationViaAdapter("AtlasMultiParent_setContent", arg<SetContentInput>({ content: target as string }));
         break;
       case "notionId":
-        await patch.AtlasMultiParent_setNotionId(
-          arg<any>({ notionId: target || undefined })
-        );
+        await this.executeMutationViaAdapter("AtlasMultiParent_setNotionId", arg<any>({ notionId: target || undefined }));
         break;
       case "globalTags":
-        await patch.AtlasMultiParent_addTags(
-          arg<any>({ tags: target })
-        );
+        await this.executeMutationViaAdapter("AtlasMultiParent_addTags", arg<any>({ tags: target }));
         break;
-      case "originalContextData": {
+      case "originalContextData":
         if (target && Array.isArray(target) && target.length > 0) {
           await Promise.all(
             target.map(async (contextData) => {
-              await patch.AtlasMultiParent_addContextData(
-                arg<any>({ id: contextDataIdToUrl(contextData as string) })
-              );
+              await this.executeMutationViaAdapter("AtlasMultiParent_addContextData", arg<any>({ id: contextDataIdToUrl(contextData as string) }));
             })
           );
         }
         break;
-      }
       case "parents":
         if (!target || target.length === 0) {
           throw new Error("Parent is not found");
         }
         const parsedTarget = target as unknown as MDocumentLink[];
-        await patch.AtlasMultiParent_addParent(
-          arg<AddParentInput>(parsedTarget[0])
-        );
+        await this.executeMutationViaAdapter("AtlasMultiParent_addParent", arg<AddParentInput>(parsedTarget[0]));
         break;
       case "atlasType":
-        await patch.AtlasMultiParent_setAtlasType(
-          arg<any>({ atlasType: target as MAtlasType })
-        );
+        await this.executeMutationViaAdapter("AtlasMultiParent_setAtlasType", arg<any>({ atlasType: target as MAtlasType }));
         break;
       default:
         throw new Error(`Patcher for field ${fieldName} not implemented`);

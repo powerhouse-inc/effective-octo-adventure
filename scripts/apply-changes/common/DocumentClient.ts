@@ -1,5 +1,4 @@
 import { type Maybe } from "document-model";
-import { gql } from "graphql-request";
 import { type DocumentsCache } from "./DocumentsCache.js";
 import { type ReactorClient } from "./ReactorClient.js";
 import type { ReactorAdapter } from "../adapters/ReactorAdapter.js";
@@ -46,16 +45,7 @@ export abstract class DocumentClient<StateType, InputType> {
       );
     }
 
-    return this.readClient.queryReactor<GqlResult<StateType>>(
-      gql`
-          query getDocument($id: String!) {
-            document(id: $id) {
-              ... on ${this.documentSchema}
-            }
-          }
-        `,
-      { id },
-    );
+    return this.readClient.getDocument<StateType>(id, this.documentSchema);
   }
 
   public async loadDriveDocumentCache() {

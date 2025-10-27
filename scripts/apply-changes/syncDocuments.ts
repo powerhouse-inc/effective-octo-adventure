@@ -5,9 +5,9 @@ import {
 } from "../../document-models/utils.js";
 import { DocumentsCache } from "./common/DocumentsCache.js";
 import { ReactorClient } from "./common/ReactorClient.js";
-import { systemClient } from "../clients/index.js";
 import { createClientRegistry } from "./clients/AtlasClientRegistry.js";
 import type { ReactorAdapter } from "./adapters/ReactorAdapter.js";
+import { HttpReactorAdapter } from "./adapters/HttpReactorAdapter.js";
 
 export type DocumentSyncConfig = {
   gqlEndpoint: string;
@@ -21,11 +21,9 @@ export type DocumentSyncConfig = {
 };
 
 export const syncDocuments = async (config: DocumentSyncConfig) => {
-  const readClient = new ReactorClient(
-    config.gqlEndpoint,
-    config.driveName,
-    config.reactorAdapter
-  );
+  const adapter = config.reactorAdapter ??
+    new HttpReactorAdapter(config.gqlEndpoint, config.driveName);
+  const readClient = new ReactorClient(adapter);
   const driveIds = await readClient.getDriveIds();
 
   if (driveIds.includes(config.driveName)) {
@@ -40,20 +38,7 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
       preferredEditor: config.preferredEditor,
     };
 
-    let newDriveResult;
-    if (config.reactorAdapter) {
-      newDriveResult = await config.reactorAdapter.createDrive(driveArgs);
-    } else {
-      systemClient.setUrl(new URL("./graphql/system", config.gqlEndpoint).href);
-      newDriveResult = await systemClient.mutations.addDrive({
-        __args: driveArgs,
-        id: true,
-        name: true,
-        slug: true,
-        icon: true,
-      });
-    }
-
+    const newDriveResult = await adapter.createDrive(driveArgs);
     console.log(newDriveResult);
   }
 
@@ -117,24 +102,21 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
     console.log(`Document cache saved to file.`);
   }
 
-  // Print adapter summary if using a mock adapter
-  if (config.reactorAdapter) {
-    // Check if it's a MockReactorAdapter with printSummary method
-    const adapter = config.reactorAdapter as any;
-    if (typeof adapter.printSummary === "function") {
-      adapter.printSummary();
-    } else {
-      const summary = config.reactorAdapter.getSummary();
-      console.log("\n" + "=".repeat(60));
-      console.log("Reactor Operations Summary");
-      console.log("=".repeat(60));
-      console.log(`Queries: ${summary.queriesExecuted}`);
-      console.log(`Mutations: ${summary.mutationsExecuted}`);
-      console.log(`Drives Created: ${summary.drivesCreated}`);
-      console.log(`Documents Created: ${summary.documentsCreated}`);
-      console.log(`Documents Updated: ${summary.documentsUpdated}`);
-      console.log("=".repeat(60));
-    }
+  // Print adapter summary
+  const adapterAny = adapter as any;
+  if (typeof adapterAny.printSummary === "function") {
+    adapterAny.printSummary();
+  } else {
+    const summary = adapter.getSummary();
+    console.log("\n" + "=".repeat(60));
+    console.log("Reactor Operations Summary");
+    console.log("=".repeat(60));
+    console.log(`Queries: ${summary.queriesExecuted}`);
+    console.log(`Mutations: ${summary.mutationsExecuted}`);
+    console.log(`Drives Created: ${summary.drivesCreated}`);
+    console.log(`Documents Created: ${summary.documentsCreated}`);
+    console.log(`Documents Updated: ${summary.documentsUpdated}`);
+    console.log("=".repeat(60));
   }
 
   const driveUrl = new URL(`./d/${config.driveName}`, config.gqlEndpoint).href;

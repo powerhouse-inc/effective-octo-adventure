@@ -8,8 +8,8 @@ import {
   type ReactorAdapter,
   type ReactorOperationsSummary,
   type OperationLog,
+  type DriveNodes,
 } from "./ReactorAdapter.js";
-import { type DriveNodes } from "../common/ReactorClient.js";
 import { queryGraphQL } from "../common/gql-utils.js";
 import { gql } from "graphql-request";
 import { graphqlClient, systemClient } from "../../clients/index.js";

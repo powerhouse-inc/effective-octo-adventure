@@ -7,8 +7,8 @@ import { type BaseAction } from "document-model";
 import {
   type ReactorAdapter,
   type ReactorOperationsSummary,
+  type DriveNodes,
 } from "./ReactorAdapter.js";
-import { type DriveNodes } from "../common/ReactorClient.js";
 import { promises as fs } from "fs";
 
 /**

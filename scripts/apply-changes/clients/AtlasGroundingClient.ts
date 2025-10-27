@@ -19,7 +19,6 @@ import { graphqlClient as writeClient } from "../../clients/index.js";
 import { AtlasBaseClient, mutationArg } from "../atlas-base/AtlasBaseClient.js";
 import { contextDataIdToUrl, findAtlasParentInCache, processMarkdownContent, statusStringToEnum } from "../atlas-base/utils.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
-import { type ReactorClient } from "../common/ReactorClient.js";
 import type { ReactorAdapter } from "../adapters/ReactorAdapter.js";
 import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
 
@@ -34,17 +33,15 @@ export class AtlasGroundingClient extends AtlasBaseClient<
   constructor(
     mutationsSubgraphUrl: string,
     documentsCache: DocumentsCache,
-    readClient: ReactorClient,
+    adapter: ReactorAdapter,
     driveId: string,
-    adapter?: ReactorAdapter,
   ) {
     super(
       DOCUMENT_TYPE,
       mutationsSubgraphUrl,
       documentsCache,
-      readClient,
-      writeClient,
       adapter,
+      writeClient,
     );
     this.driveId = driveId;
     this.setDocumentSchema(gql`

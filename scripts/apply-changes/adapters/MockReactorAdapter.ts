@@ -8,8 +8,9 @@ import {
   type ReactorAdapter,
   type ReactorOperationsSummary,
   type OperationLog,
+  type DriveNodes,
+  type DriveResultNode,
 } from "./ReactorAdapter.js";
-import { type DriveNodes, type DriveResultNode } from "../common/ReactorClient.js";
 import { randomUUID } from "crypto";
 
 export class MockReactorAdapter implements ReactorAdapter {

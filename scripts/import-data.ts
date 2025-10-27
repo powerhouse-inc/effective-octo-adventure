@@ -17,6 +17,7 @@
 import { syncDocuments } from "./apply-changes/syncDocuments.js";
 import { getAtlasDataFromFile } from "../document-models/utils.js";
 import { MockReactorAdapter } from "./apply-changes/adapters/MockReactorAdapter.js";
+import { exit } from "process";
 
 /**
  * ADAPTER CONFIGURATION
@@ -103,3 +104,4 @@ async function main() {
 }
 
 await main();
+exit(0);

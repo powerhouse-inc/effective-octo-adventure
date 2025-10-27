@@ -19,6 +19,7 @@
 import { syncDocuments } from "./apply-changes/syncDocuments.js";
 import { getAtlasDataFromFile } from "../document-models/utils.js";
 import { WriteReactorAdapter } from "./apply-changes/adapters/WriteReactorAdapter.js";
+import { exit } from "node:process";
 
 // Output file where operations will be recorded
 const OUTPUT_FILE = "./recorded-operations.json";
@@ -89,3 +90,4 @@ async function main() {
 }
 
 await main();
+exit(0);

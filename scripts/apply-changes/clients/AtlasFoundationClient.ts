@@ -25,7 +25,6 @@ import {
   statusStringToEnum,
 } from "../atlas-base/utils.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
-import { type ReactorClient } from "../common/ReactorClient.js";
 import type { ReactorAdapter } from "../adapters/ReactorAdapter.js";
 import { ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
 
@@ -40,17 +39,15 @@ export class AtlasFoundationClient extends AtlasBaseClient<
   constructor(
     mutationsSubgraphUrl: string,
     documentsCache: DocumentsCache,
-    readClient: ReactorClient,
+    adapter: ReactorAdapter,
     driveId: string,
-    adapter?: ReactorAdapter,
   ) {
     super(
       DOCUMENT_TYPE,
       mutationsSubgraphUrl,
       documentsCache,
-      readClient,
-      writeClient,
       adapter,
+      writeClient,
     );
     this.driveId = driveId;
     this.setDocumentSchema(gql`

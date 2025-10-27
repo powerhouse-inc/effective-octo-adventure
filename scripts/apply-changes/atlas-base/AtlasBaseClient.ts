@@ -2,7 +2,7 @@ import { type Maybe, type BaseAction } from "document-model";
 import { addFile } from "document-drive";
 import { randomUUID } from "crypto";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
-import { type ReactorClient } from "../common/ReactorClient.js";
+import type { ReactorAdapter } from "../adapters/ReactorAdapter.js";
 import { DocumentClient } from "../common/DocumentClient.js";
 // import { type ParsedNotionDocument } from "./NotionTypes.js";
 import { getNodeTitle, getPNDTitle } from "../../../document-models/utils.js";
@@ -44,11 +44,10 @@ export abstract class AtlasBaseClient<
     documentType: string,
     mutationsSubgraphUrl: string,
     documentsCache: DocumentsCache,
-    readClient: ReactorClient,
+    adapter: ReactorAdapter,
     writeClient: WriteClientType,
-    adapter?: import("../adapters/ReactorAdapter.js").ReactorAdapter,
   ) {
-    super(documentType, documentsCache, readClient, adapter);
+    super(documentType, documentsCache, adapter);
     this.writeClient = writeClient;
     this.writeClient.setUrl(mutationsSubgraphUrl);
   }

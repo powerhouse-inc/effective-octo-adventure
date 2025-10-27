@@ -11,6 +11,7 @@
  *   OUTPUT_PATH - Path to save data files (default: ./data)
  */
 
+import { exit } from "process";
 import { fetchAllData } from "./fetch-data/fetch.js";
 
 async function main() {
@@ -28,3 +29,4 @@ async function main() {
 }
 
 await main();
+exit(0);

@@ -17,6 +17,7 @@
 import { syncDocuments } from "./apply-changes/syncDocuments.js";
 import { getAtlasDataFromFile } from "../document-models/utils.js";
 import { MockReactorAdapter } from "./apply-changes/adapters/MockReactorAdapter.js";
+import { exit } from "process";
 
 // Create a mock adapter with verbose logging
 const mockAdapter = new MockReactorAdapter({ verbose: true });
@@ -38,7 +39,9 @@ async function main() {
   console.log("=".repeat(60));
   console.log("Mock Reactor Import Example");
   console.log("=".repeat(60));
-  console.log("This will simulate importing data without sending to a reactor.");
+  console.log(
+    "This will simulate importing data without sending to a reactor.",
+  );
   console.log("All operations will be logged and summarized.\n");
 
   // Load atlas data from file (will throw error if not found)
@@ -61,3 +64,4 @@ async function main() {
 }
 
 await main();
+exit(0);

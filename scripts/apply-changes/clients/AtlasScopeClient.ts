@@ -1,7 +1,7 @@
 import { gql } from "graphql-request";
 import { graphqlClient as writeClient } from "../../clients/index.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
-import { type ReactorClient } from "../common/ReactorClient.js";
+import type { ReactorAdapter } from "../adapters/ReactorAdapter.js";
 
 import {
   AtlasScopeState,
@@ -31,17 +31,15 @@ export class AtlasScopeClient extends AtlasBaseClient<
   constructor(
     mutationsSubgraphUrl: string,
     documentsCache: DocumentsCache,
-    readClient: ReactorClient,
+    adapter: ReactorAdapter,
     driveId: string,
-    adapter?: import("../adapters/ReactorAdapter.js").ReactorAdapter,
   ) {
     super(
       DOCUMENT_TYPE,
       mutationsSubgraphUrl,
       documentsCache,
-      readClient,
-      writeClient,
       adapter,
+      writeClient,
     );
     this.driveId = driveId;
     this.setDocumentSchema(gql`

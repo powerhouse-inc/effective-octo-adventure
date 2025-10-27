@@ -15,6 +15,7 @@
  */
 
 import { syncDocuments } from "./apply-changes/syncDocuments.js";
+import { exit } from "process";
 
 const PORT = process.env.PORT || 4001;
 // Reactor where the documents will be synchronized to
@@ -64,3 +65,4 @@ async function main() {
 }
 
 await main();
+exit(0);

@@ -4,7 +4,6 @@ import {
   getNodeTitle,
 } from "../../document-models/utils.js";
 import { DocumentsCache } from "./common/DocumentsCache.js";
-import { ReactorClient } from "./common/ReactorClient.js";
 import { createClientRegistry } from "./clients/AtlasClientRegistry.js";
 import type { ReactorAdapter } from "./adapters/ReactorAdapter.js";
 import { HttpReactorAdapter } from "./adapters/HttpReactorAdapter.js";
@@ -23,8 +22,7 @@ export type DocumentSyncConfig = {
 export const syncDocuments = async (config: DocumentSyncConfig) => {
   const adapter = config.reactorAdapter ??
     new HttpReactorAdapter(config.gqlEndpoint, config.driveName);
-  const readClient = new ReactorClient(adapter);
-  const driveIds = await readClient.getDriveIds();
+  const driveIds = await adapter.getDriveIds();
 
   if (driveIds.includes(config.driveName)) {
     console.log(`Drive ${config.driveName} already exists.`);
@@ -43,11 +41,11 @@ export const syncDocuments = async (config: DocumentSyncConfig) => {
   }
 
   console.log("Loading drive documents cache...");
-  const driveNodes = await readClient.getDocumentDriveNodes(config.driveName);
+  const driveNodes = await adapter.getDocumentDriveNodes(config.driveName);
 
   const documentsCache = new DocumentsCache(driveNodes);
 
-  const clientRegistry = createClientRegistry(config, documentsCache, readClient);
+  const clientRegistry = createClientRegistry(config, documentsCache, adapter);
   await clientRegistry.loadDriveDocumentCache();
 
   console.log(documentsCache.getDocumentsCount());

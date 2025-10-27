@@ -1,6 +1,5 @@
 import { type Maybe } from "document-model";
 import { type DocumentsCache } from "./DocumentsCache.js";
-import { type ReactorClient } from "./ReactorClient.js";
 import type { ReactorAdapter } from "../adapters/ReactorAdapter.js";
 
 const DEFAULT_MAX_QUERY_BATCH_SIZE = 5;
@@ -17,19 +16,16 @@ export type GqlResult<StateType> = {
 export abstract class DocumentClient<StateType, InputType> {
   protected documentType: string;
   private maxQueryBatchSize: number = DEFAULT_MAX_QUERY_BATCH_SIZE;
-  protected readClient: ReactorClient;
+  protected adapter: ReactorAdapter;
   protected documentsCache: DocumentsCache;
   private documentSchema?: string;
-  protected adapter?: ReactorAdapter;
 
   constructor(
     documentType: string,
     documentsCache: DocumentsCache,
-    readClient: ReactorClient,
-    adapter?: ReactorAdapter,
+    adapter: ReactorAdapter,
   ) {
     this.documentType = documentType;
-    this.readClient = readClient;
     this.documentsCache = documentsCache;
     this.adapter = adapter;
   }
@@ -45,7 +41,7 @@ export abstract class DocumentClient<StateType, InputType> {
       );
     }
 
-    return this.readClient.getDocument<StateType>(id, this.documentSchema);
+    return this.adapter.getDocument(id, this.documentSchema) as Promise<GqlResult<StateType>>;
   }
 
   public async loadDriveDocumentCache() {

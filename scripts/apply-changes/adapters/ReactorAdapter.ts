@@ -4,7 +4,40 @@
  */
 
 import { type BaseAction } from "document-model";
-import { type DriveNodes } from "../common/ReactorClient.js";
+
+export type DriveResultNode = {
+  id: string;
+  parentFolder: string;
+  name: string;
+  documentType?: string;
+};
+
+export type DriveResult = {
+  drive: DriveNodes;
+};
+
+export type DocumentDriveResult = {
+  document: {
+    id: string;
+    state: {
+      icon: string;
+      name: string;
+      nodes: DriveResultNode[];
+    };
+  };
+};
+
+export type DriveIdsResult = {
+  drives: string[];
+};
+
+export type DriveNodes = {
+  id: string;
+  slug: string;
+  name: string;
+  icon: string;
+  nodes: DriveResultNode[];
+};
 
 /**
  * Base interface for reactor adapters.

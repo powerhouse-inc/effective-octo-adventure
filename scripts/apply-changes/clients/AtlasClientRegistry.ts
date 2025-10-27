@@ -2,7 +2,7 @@ import { type ViewNodeExtended } from "@powerhousedao/sky-atlas-notion-data";
 import { type AtlasBaseClient } from "../atlas-base/AtlasBaseClient.js";
 import { type DocumentSyncConfig } from "../syncDocuments.js";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
-import { type ReactorClient } from "../common/ReactorClient.js";
+import type { ReactorAdapter } from "../adapters/ReactorAdapter.js";
 import { AtlasScopeClient } from "./AtlasScopeClient.js";
 import { AtlasFoundationClient } from "./AtlasFoundationClient.js";
 import { AtlasGroundingClient } from "./AtlasGroundingClient.js";
@@ -78,14 +78,14 @@ export class AtlasClientRegistry {
  * Creates a new client registry instance.
  * @param config - The configuration for all the clients.
  * @param documentCache - The document cache for all the clients.
- * @param readClient - The read client for all the clients.
+ * @param adapter - The reactor adapter for all the clients.
  *
  * @returns The new client registry.
  */
 export const createClientRegistry = (
   config: DocumentSyncConfig,
   documentCache: DocumentsCache,
-  readClient: ReactorClient
+  adapter: ReactorAdapter
 ): AtlasClientRegistry => {
   const mutationsSubgraphUrl = new URL("./graphql", config.gqlEndpoint).href;
 
@@ -95,9 +95,8 @@ export const createClientRegistry = (
       new client(
         mutationsSubgraphUrl,
         documentCache,
-        readClient,
-        config.driveName,
-        config.reactorAdapter
+        adapter,
+        config.driveName
       )
     );
   });

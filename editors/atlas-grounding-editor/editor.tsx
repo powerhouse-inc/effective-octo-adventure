@@ -1,10 +1,14 @@
 import { type EditorProps } from "document-model";
-import { type AtlasGroundingDocument } from "../../document-models/atlas-grounding/index.js";
+import { type AtlasGroundingDocument, type AtlasGroundingAction } from "../../document-models/atlas-grounding/index.js";
 import { EditorLayout } from "../shared/components/EditorLayout.js";
 import { SplitView } from "../shared/components/SplitView.js";
 import { GroundingForm } from "./components/GroundingForm.js";
 
-export type IProps = EditorProps<AtlasGroundingDocument>;
+export type IProps = EditorProps & {
+  document: AtlasGroundingDocument;
+  context?: any;
+  dispatch: (action: AtlasGroundingAction) => void;
+};
 
 export default function Editor(props: IProps) {
   return (

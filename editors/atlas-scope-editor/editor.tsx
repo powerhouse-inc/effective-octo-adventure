@@ -1,10 +1,14 @@
 import { type EditorProps } from "document-model";
-import { type AtlasScopeDocument } from "../../document-models/atlas-scope/index.js";
+import { type AtlasScopeDocument, type AtlasScopeAction } from "../../document-models/atlas-scope/index.js";
 import { EditorLayout } from "../shared/components/EditorLayout.js";
 import { SplitView } from "../shared/components/SplitView.js";
 import { ScopeForm } from "./components/ScopeForm.js";
 
-export type IProps = EditorProps<AtlasScopeDocument>;
+export type IProps = EditorProps & {
+  document: AtlasScopeDocument;
+  context?: any;
+  dispatch: (action: AtlasScopeAction) => void;
+};
 export default function Editor(props: IProps) {
   return (
     <EditorLayout

@@ -1,10 +1,14 @@
 import { type EditorProps } from "document-model";
-import { type AtlasFoundationDocument } from "../../document-models/atlas-foundation/index.js";
+import { type AtlasFoundationDocument, type AtlasFoundationAction } from "../../document-models/atlas-foundation/index.js";
 import { EditorLayout } from "../shared/components/EditorLayout.js";
 import { SplitView } from "../shared/components/SplitView.js";
 import { FoundationForm } from "./components/FoundationForm.js";
 
-export type IProps = EditorProps<AtlasFoundationDocument>;
+export type IProps = EditorProps & {
+  document: AtlasFoundationDocument;
+  context?: any;
+  dispatch: (action: AtlasFoundationAction) => void;
+};
 
 export default function Editor(props: IProps) {
   return (

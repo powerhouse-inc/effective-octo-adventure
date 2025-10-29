@@ -7,9 +7,9 @@ interface CreateDocumentProps {
   createDocument: (doc: DocumentModelModule) => Promise<FileNode>;
 }
 
-function getDocumentSpec(doc: DocumentModelModule) {
+function getDocumentSpec(doc: DocumentModelModule): any {
   if ("documentModelState" in doc) {
-    return doc.documentModelState as DocumentModelModule["documentModel"];
+    return doc.documentModelState;
   }
 
   return doc.documentModel;
@@ -31,7 +31,6 @@ export const CreateDocument: React.FC<CreateDocumentProps> = ({
             <Button
               key={spec.id}
               color="light"
-              size="small"
               className="cursor-pointer"
               aria-details={spec.description}
               onClick={() => createDocument(doc)}

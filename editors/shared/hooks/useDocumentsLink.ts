@@ -43,7 +43,7 @@ export function useDocumentsLink(filterFn?: FilterFn) {
     }
 
     const allDocs: Array<DocumentLink> = documents.map((doc) => {
-      const docState = doc.state.global as AnyDocumentState;
+      const docState = (doc.state as any).global as AnyDocumentState;
       return {
         documentType: doc.header.documentType,
         documentId: doc.header.id,
@@ -91,6 +91,6 @@ function createTitle(docNo: string | null, name: string | null) {
 function getIcon(doc: PHDocument) {
   return getDocumentIcon(
     doc.header.documentType,
-    (doc.state.global as AnyDocumentState).atlasType ?? "",
+    ((doc.state as any).global as AnyDocumentState).atlasType ?? "",
   );
 }

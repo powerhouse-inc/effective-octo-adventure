@@ -1,7 +1,4 @@
-import {
-  type DriveEditorProps,
-  DriveContextProvider,
-} from "@powerhousedao/reactor-browser";
+import { type EditorProps } from "document-model";
 import { type DocumentDriveDocument } from "document-drive";
 import { WagmiContext } from "@powerhousedao/design-system";
 import packageJson from "../../package.json" with { type: "json" };
@@ -12,9 +9,12 @@ import packageJson from "../../package.json" with { type: "json" };
 import { DriverLayout } from "./components/driver-layout.js";
 import { getRemoteDriveUrl } from "../shared/utils/utils.js";
 import { useEffect, useState } from "react";
-import { useNodeStatusMap } from "./hooks/useNodeStatusMap.js";
+// import { useNodeStatusMap } from "./hooks/useNodeStatusMap.js";
 
-export type IProps = DriveEditorProps<DocumentDriveDocument>;
+export type IProps = EditorProps & {
+  document: DocumentDriveDocument;
+  context?: any;
+};
 
 export function BaseEditor(props: IProps) {
   const [activeNodeId, setActiveNodeId] = useState<string | undefined>();
@@ -23,20 +23,22 @@ export function BaseEditor(props: IProps) {
     console.log("Atlas version =>", packageJson.version);
   }, []);
 
-  const [logAnalytics] = useState({
-    diff: false,
-    drive: false,
-    diffStatusMap: false,
-    driveStatusMap: false,
-    nodeStatusMap: false,
-  });
+  // TODO: Re-enable after Web Worker implementation
+  // const [logAnalytics] = useState({
+  //   diff: false,
+  //   drive: false,
+  //   diffStatusMap: false,
+  //   driveStatusMap: false,
+  //   nodeStatusMap: false,
+  // });
 
-  const nodeStatusMap = useNodeStatusMap(
-    undefined,
-    undefined,
-    props.document.header.id,
-    logAnalytics,
-  );
+  // const nodeStatusMap = useNodeStatusMap(
+  //   undefined,
+  //   undefined,
+  //   props.document.header.id,
+  //   logAnalytics,
+  // );
+  const nodeStatusMap = {};
 
   return (
     <div className="atlas-drive-explorer" style={{ height: "100%" }}>
@@ -88,10 +90,8 @@ export function BaseEditor(props: IProps) {
 // TODO: remove this after Web Worker implementation
 export default function Editor(props: IProps) {
   return (
-    <DriveContextProvider value={props.context}>
-      <WagmiContext>
-        <BaseEditor {...props} />
-      </WagmiContext>
-    </DriveContextProvider>
+    <WagmiContext>
+      <BaseEditor {...props} />
+    </WagmiContext>
   );
 }

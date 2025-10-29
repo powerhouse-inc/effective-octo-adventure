@@ -1,10 +1,14 @@
 import { type EditorProps } from "document-model";
-import { type AtlasSetDocument } from "../../document-models/atlas-set/index.js";
+import { type AtlasSetDocument, type AtlasSetAction } from "../../document-models/atlas-set/index.js";
 import { EditorLayout } from "../shared/components/EditorLayout.js";
 import { SplitView } from "../shared/components/SplitView.js";
 import { SetForm } from "./components/SetForm.js";
 
-export type IProps = EditorProps<AtlasSetDocument>;
+export type IProps = EditorProps & {
+  document: AtlasSetDocument;
+  context?: any;
+  dispatch: (action: AtlasSetAction) => void;
+};
 export default function Editor(props: IProps) {
   return (
     <EditorLayout

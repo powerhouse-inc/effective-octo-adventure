@@ -1,10 +1,14 @@
 import { type EditorProps } from "document-model";
-import { type AtlasExploratoryDocument } from "../../document-models/atlas-exploratory/index.js";
+import { type AtlasExploratoryDocument, type AtlasExploratoryAction } from "../../document-models/atlas-exploratory/index.js";
 import { EditorLayout } from "../shared/components/EditorLayout.js";
 import { SplitView } from "../shared/components/SplitView.js";
 import { ExploratoryForm } from "./components/ExploratoryForm.js";
 
-export type IProps = EditorProps<AtlasExploratoryDocument>;
+export type IProps = EditorProps & {
+  document: AtlasExploratoryDocument;
+  context?: any;
+  dispatch: (action: AtlasExploratoryAction) => void;
+};
 
 export default function Editor(props: IProps) {
   const documentState = props.document.state.global;

@@ -1,10 +1,14 @@
 import { type EditorProps } from "document-model";
-import { type AtlasMultiParentDocument } from "../../document-models/atlas-multi-parent/index.js";
+import { type AtlasMultiParentDocument, type AtlasMultiParentAction } from "../../document-models/atlas-multi-parent/index.js";
 import { EditorLayout } from "../shared/components/EditorLayout.js";
 import { SplitView } from "../shared/components/SplitView.js";
 import { MultiParentForm } from "./components/MultiparentForm.js";
 
-export type IProps = EditorProps<AtlasMultiParentDocument>;
+export type IProps = EditorProps & {
+  document: AtlasMultiParentDocument;
+  context?: any;
+  dispatch: (action: AtlasMultiParentAction) => void;
+};
 
 export default function Editor(props: IProps) {
   return (

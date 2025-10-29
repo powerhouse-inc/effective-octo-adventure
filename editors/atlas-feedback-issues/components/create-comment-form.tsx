@@ -1,4 +1,4 @@
-import { generateId } from "document-model";
+import { generateId } from "document-model/core";
 import {
   type AtlasFeedbackIssue as TIssue,
   type CreateCommentInput,

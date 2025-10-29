@@ -1,6 +1,7 @@
 import { WagmiContext } from "@powerhousedao/design-system";
 import { type ViewNode, type ViewNodeMap } from "./types/view-nodes.js";
-import { type EditorProps, generateId } from "document-model";
+import { type EditorProps } from "document-model";
+import { generateId } from "document-model/core";
 import {
   actions,
   type CreateIssueInput,
@@ -42,9 +43,12 @@ export type AtlasFeedbackIssuesEditorCustomProps = {
   readonly scopes?: ViewNode[];
   readonly selectedItemsState?: SelectedItemsState;
 };
-export type AtlasFeedbackIssuesEditorProps =
-  EditorProps<AtlasFeedbackIssuesDocument> &
-    AtlasFeedbackIssuesEditorCustomProps;
+export type AtlasFeedbackIssuesEditorProps = EditorProps &
+  AtlasFeedbackIssuesEditorCustomProps & {
+    document: AtlasFeedbackIssuesDocument;
+    context?: any;
+    dispatch: (action: any) => void;
+  };
 
 export default function Editor(props: AtlasFeedbackIssuesEditorProps) {
   const {

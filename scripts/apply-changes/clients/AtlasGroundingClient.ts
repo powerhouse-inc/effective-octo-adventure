@@ -160,11 +160,13 @@ export class AtlasGroundingClient extends AtlasBaseClient<
         );
         break;
       case "notionId":
-        await this.addActionViaAdapter(
-          this.driveId,
-          id,
-          actions.setNotionId({ notionID: typeof target === 'string' ? target : undefined })
-        );
+        if (typeof target === 'string') {
+          await this.addActionViaAdapter(
+            this.driveId,
+            id,
+            actions.setNotionId({ notionID: target })
+          );
+        }
         break;
       case "globalTags":
         await this.addActionViaAdapter(

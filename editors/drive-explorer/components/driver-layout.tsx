@@ -1,7 +1,6 @@
 import {
   Icon,
   FileItem,
-  type BaseUiFileNode,
   ToastContainer,
   CreateDocumentModal,
 } from "@powerhousedao/design-system";
@@ -13,8 +12,8 @@ import {
 } from "@powerhousedao/document-engineering/ui";
 import { useCallback, useState, useRef, useMemo } from "react";
 import {
-  useDriveContext,
-  type DriveEditorContext,
+  useDocumentModelModules,
+  addDocument,
 } from "@powerhousedao/reactor-browser";
 import { type AtlasFeedbackIssue, type AtlasArticle } from "./types.js";
 import { EditorContainer } from "./EditorContainer.js";
@@ -32,7 +31,7 @@ import { useSidebarWidth } from "../hooks/useSidebarWidth.js";
 export interface DriverLayoutProps {
   readonly driveId: string;
   readonly children: React.ReactNode;
-  readonly context: DriveEditorContext;
+  readonly context: any; // TODO: Update when DriveEditorContext is available
   readonly nodes: Node[];
   readonly driveUrl?: string | null;
   readonly nodeStatusMap?: Record<string, NodeStatus>;
@@ -51,14 +50,14 @@ export function DriverLayout({
   setActiveNodeId,
 }: DriverLayoutProps) {
   const { getDocumentRevision } = context;
-  const { useDriveDocumentStates, addDocument, documentModels } =
-    useDriveContext();
+  const documentModels = useDocumentModelModules() || [];
   const [openModal, setOpenModal] = useState(false);
   const selectedDocumentModel = useRef<DocumentModelModule | null>(null);
 
   const { sidebarWidth, maxWidth } = useSidebarWidth(300);
 
-  const [state] = useDriveDocumentStates({ driveId });
+  // TODO: Replace with proper state management when API is available
+  const state: Record<string, any> = {};
   const { atlasNodes, feedbackIssues } = useMemo(() => {
     return Object.keys(state).reduce(
       (acc, curr) => {
@@ -123,16 +122,23 @@ export function DriverLayout({
       const documentModel = selectedDocumentModel.current;
       if (!documentModel) return;
 
-      const node = await addDocument(
-        driveId,
-        fileName,
-        documentModel.documentModel.id,
-      );
+      // TODO: Implement fully when API is available
+      try {
+        const node = await addDocument(
+          driveId,
+          fileName,
+          (documentModel.documentModel as any).id,
+        );
 
-      selectedDocumentModel.current = null;
-      setActiveNodeId(node.id);
+        selectedDocumentModel.current = null;
+        if (node) {
+          setActiveNodeId(node.id);
+        }
+      } catch (error) {
+        console.error("Failed to create document:", error);
+      }
     },
-    [addDocument, driveId, setActiveNodeId],
+    [driveId, setActiveNodeId],
   );
 
   const onSelectDocumentModel = (documentModel: DocumentModelModule) => {
@@ -149,7 +155,7 @@ export function DriverLayout({
   );
 
   const filteredDocumentModels = documentModels.filter(
-    (docModel) => docModel.documentModel.id !== "powerhouse/document-model",
+    (docModel: any) => docModel.documentModel?.id !== "powerhouse/document-model",
   );
 
   const documentModelModule = activeNodeId
@@ -213,48 +219,16 @@ export function DriverLayout({
                             Feedback Issues
                           </h2>
                           <div className="flex flex-wrap gap-4">
+                            {/* TODO: Re-enable when FileItem API is updated */}
                             {Object.entries(feedbackIssues).map(
                               ([id, issue]) => (
-                                <FileItem
+                                <div
                                   key={id}
-                                  uiNode={{
-                                    kind: "FILE",
-                                    id,
-                                    name:
-                                      driveNodes.find((node) => node.id === id)
-                                        ?.name || "",
-                                    documentType: issue.documentType,
-                                    parentFolder: "",
-                                    driveId,
-                                    syncStatus: undefined,
-                                  }}
-                                  onSelectNode={(node) =>
-                                    setActiveNodeId(node.id)
-                                  }
-                                  isAllowedToCreateDocuments={false}
-                                  onRenameNode={function (
-                                    name: string,
-                                    uiNode: BaseUiFileNode,
-                                  ): void {
-                                    throw new Error(
-                                      "Function not implemented.",
-                                    );
-                                  }}
-                                  onDuplicateNode={function (
-                                    uiNode: BaseUiFileNode,
-                                  ): void {
-                                    throw new Error(
-                                      "Function not implemented.",
-                                    );
-                                  }}
-                                  onDeleteNode={function (
-                                    uiNode: BaseUiFileNode,
-                                  ): void {
-                                    throw new Error(
-                                      "Function not implemented.",
-                                    );
-                                  }}
-                                />
+                                  className="cursor-pointer p-2 border rounded"
+                                  onClick={() => setActiveNodeId(id)}
+                                >
+                                  {driveNodes.find((node) => node.id === id)?.name || id}
+                                </div>
                               ),
                             )}
                           </div>

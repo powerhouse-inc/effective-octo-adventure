@@ -1,16 +1,11 @@
-import { type DriveEditorModule } from "@powerhousedao/reactor-browser";
+import { type VetraEditorModule } from "@powerhousedao/reactor-browser";
 import Editor from "./editor.js";
-import { type DocumentDriveDocument } from "document-drive";
 
-export const module: DriveEditorModule<DocumentDriveDocument> = {
+export const module: VetraEditorModule = {
+  id: "AtlasDriveExplorer",
+  name: "Atlas Drive Explorer",
   Component: Editor,
   documentTypes: ["powerhouse/document-drive"],
-  config: {
-    id: "AtlasDriveExplorer",
-    disableExternalControls: true,
-    documentToolbarEnabled: true,
-    showSwitchboardLink: true,
-  },
 };
 
 export default module;

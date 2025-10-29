@@ -164,7 +164,7 @@ export class AtlasExploratoryClient extends AtlasBaseClient<
         await this.addActionViaAdapter(
           this.driveId,
           id,
-          actions.setNotionId({ notionID: target || undefined })
+          actions.setNotionId({ notionID: typeof target === 'string' ? target : undefined })
         );
         break;
       case "globalTags":

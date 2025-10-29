@@ -36,10 +36,10 @@ describe("General Operations", () => {
     );
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe(
+    expect(updatedDocument.operations.global[0].action.type).toBe(
       "SET_FOUNDATION_NAME",
     );
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle setDocNumber operation", () => {
@@ -48,8 +48,8 @@ describe("General Operations", () => {
     const updatedDocument = reducer(document, creators.setDocNumber(input));
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("SET_DOC_NUMBER");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].action.type).toBe("SET_DOC_NUMBER");
+    expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle setContent operation", () => {
@@ -58,8 +58,8 @@ describe("General Operations", () => {
     const updatedDocument = reducer(document, creators.setContent(input));
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("SET_CONTENT");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].action.type).toBe("SET_CONTENT");
+    expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle setMasterStatus operation", () => {
@@ -70,8 +70,8 @@ describe("General Operations", () => {
     const updatedDocument = reducer(document, creators.setMasterStatus(input));
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("SET_MASTER_STATUS");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].action.type).toBe("SET_MASTER_STATUS");
+    expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   // it("should handle setReferences operation", () => {
@@ -82,8 +82,8 @@ describe("General Operations", () => {
   //   const updatedDocument = reducer(document, creators.setReferences(input));
 
   //   expect(updatedDocument.operations.global).toHaveLength(1);
-  //   expect(updatedDocument.operations.global[0].type).toBe("SET_REFERENCES");
-  //   expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+  //   expect(updatedDocument.operations.global[0].action.type).toBe("SET_REFERENCES");
+  //   expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
   //   expect(updatedDocument.operations.global[0].index).toEqual(0);
   // });
   it("should handle setAtlasType operation", () => {
@@ -92,8 +92,8 @@ describe("General Operations", () => {
     const updatedDocument = reducer(document, creators.setAtlasType(input));
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("SET_ATLAS_TYPE");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].action.type).toBe("SET_ATLAS_TYPE");
+    expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
 });

@@ -28,8 +28,8 @@ describe("General Operations", () => {
     const updatedDocument = reducer(document, creators.setSetName(input));
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("SET_SET_NAME");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].action.type).toBe("SET_SET_NAME");
+    expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle setSetParent operation", () => {
@@ -38,8 +38,8 @@ describe("General Operations", () => {
     const updatedDocument = reducer(document, creators.setSetParent(input));
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("SET_SET_PARENT");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].action.type).toBe("SET_SET_PARENT");
+    expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle setNotionId operation", () => {
@@ -48,8 +48,8 @@ describe("General Operations", () => {
     const updatedDocument = reducer(document, creators.setNotionId(input));
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("SET_NOTION_ID");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].action.type).toBe("SET_NOTION_ID");
+    expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
 });

@@ -30,8 +30,8 @@ describe("Issues Operations", () => {
     const updatedDocument = reducer(document, creators.createIssue(input));
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("CREATE_ISSUE");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].action.type).toBe("CREATE_ISSUE");
+    expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle deleteIssue operation", () => {
@@ -40,8 +40,8 @@ describe("Issues Operations", () => {
     const updatedDocument = reducer(document, creators.deleteIssue(input));
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("DELETE_ISSUE");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].action.type).toBe("DELETE_ISSUE");
+    expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle addNotionId operation", () => {
@@ -50,8 +50,8 @@ describe("Issues Operations", () => {
     const updatedDocument = reducer(document, creators.addNotionId(input));
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("ADD_NOTION_ID");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].action.type).toBe("ADD_NOTION_ID");
+    expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle removeNotionId operation", () => {
@@ -62,8 +62,8 @@ describe("Issues Operations", () => {
     const updatedDocument = reducer(document, creators.removeNotionId(input));
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("REMOVE_NOTION_ID");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].action.type).toBe("REMOVE_NOTION_ID");
+    expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
 });

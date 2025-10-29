@@ -70,7 +70,7 @@ export const getBaseDocumentTimestamp = (document: AtlasDocument): string => {
   );
 
   if (firstOperation !== undefined) {
-    return firstOperation.timestamp;
+    return firstOperation.timestampUtcMs;
   }
 
   if (document.header.createdAtUtcIso) {

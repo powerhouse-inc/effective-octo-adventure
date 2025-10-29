@@ -31,8 +31,8 @@ describe("Comments Operations", () => {
     const updatedDocument = reducer(document, creators.createComment(input));
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("CREATE_COMMENT");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].action.type).toBe("CREATE_COMMENT");
+    expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle deleteComment operation", () => {
@@ -43,8 +43,8 @@ describe("Comments Operations", () => {
     const updatedDocument = reducer(document, creators.deleteComment(input));
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("DELETE_COMMENT");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].action.type).toBe("DELETE_COMMENT");
+    expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle editComment operation", () => {
@@ -53,8 +53,8 @@ describe("Comments Operations", () => {
     const updatedDocument = reducer(document, creators.editComment(input));
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("EDIT_COMMENT");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].action.type).toBe("EDIT_COMMENT");
+    expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
 });

@@ -4,7 +4,7 @@ import {
   AnalyticsPath,
   DateTime,
   useAnalyticsQuery,
-} from "@powerhousedao/reactor-browser/analytics";
+} from "@powerhousedao/reactor-browser";
 import { useRef } from "react";
 
 export const useNodeStatusFromDocumentAnalytics = (

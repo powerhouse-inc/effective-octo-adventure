@@ -31,8 +31,8 @@ describe("Context Operations", () => {
     const updatedDocument = reducer(document, creators.addContextData(input));
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("ADD_CONTEXT_DATA");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].action.type).toBe("ADD_CONTEXT_DATA");
+    expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle removeContextData operation", () => {
@@ -46,10 +46,10 @@ describe("Context Operations", () => {
     );
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe(
+    expect(updatedDocument.operations.global[0].action.type).toBe(
       "REMOVE_CONTEXT_DATA",
     );
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
   it("should handle setNotionId operation", () => {
@@ -58,8 +58,8 @@ describe("Context Operations", () => {
     const updatedDocument = reducer(document, creators.setNotionId(input));
 
     expect(updatedDocument.operations.global).toHaveLength(1);
-    expect(updatedDocument.operations.global[0].type).toBe("SET_NOTION_ID");
-    expect(updatedDocument.operations.global[0].input).toStrictEqual(input);
+    expect(updatedDocument.operations.global[0].action.type).toBe("SET_NOTION_ID");
+    expect(updatedDocument.operations.global[0].action.input).toStrictEqual(input);
     expect(updatedDocument.operations.global[0].index).toEqual(0);
   });
 });

@@ -1,8 +1,7 @@
 import { type IconName } from "@powerhousedao/document-engineering/ui";
-import { useDriveContext } from "@powerhousedao/reactor-browser";
+import { useDocumentsInSelectedDrive } from "@powerhousedao/reactor-browser";
 import { useMemo } from "react";
-import { type HookState } from "@powerhousedao/reactor-browser/hooks/document-state";
-import { type Maybe } from "document-model";
+import { type Maybe, type PHDocument } from "document-model";
 import { getDocumentIcon } from "../../../document-models/utils.js";
 
 export type DocumentLink = {
@@ -36,41 +35,24 @@ export type FilterFn = (node: DocumentLink) => boolean;
  * @returns The documents link
  */
 export function useDocumentsLink(filterFn?: FilterFn) {
-  let driveContext;
-  // check if the context is available before using it
-  try {
-    driveContext = useDriveContext();
-  } catch {
-    console.warn(
-      "DriveContext not available, returning an empty documents list",
-    );
-    return [];
-  }
-
-  const { selectedNode, useDriveDocumentStates } = driveContext;
-
-  const [state] = useDriveDocumentStates({
-    driveId: selectedNode?.id ?? "",
-  });
+  const documents = useDocumentsInSelectedDrive();
 
   const documentsLink = useMemo(() => {
-    const allDocs: Array<DocumentLink> = [];
+    if (!documents) {
+      return [];
+    }
 
-    Object.keys(state).forEach((key) => {
-      const node = state[key];
-
-      const docState = node.global as AnyDocumentState;
-      const doc: DocumentLink = {
-        documentType: node.documentType,
-        documentId: key,
+    const allDocs: Array<DocumentLink> = documents.map((doc) => {
+      const docState = doc.state.global as AnyDocumentState;
+      return {
+        documentType: doc.header.documentType,
+        documentId: doc.header.id,
         atlasType: docState.atlasType ?? "",
         name: docState.name ?? "",
         docNo: docState.docNo ?? "",
         title: createTitle(docState.docNo ?? "", docState.name ?? ""),
-        icon: getIcon(node),
+        icon: getIcon(doc),
       };
-
-      allDocs.push(doc);
     });
 
     if (filterFn) {
@@ -78,7 +60,7 @@ export function useDocumentsLink(filterFn?: FilterFn) {
     }
 
     return allDocs;
-  }, [state]);
+  }, [documents, filterFn]);
 
   return documentsLink;
 }
@@ -103,12 +85,12 @@ function createTitle(docNo: string | null, name: string | null) {
 /**
  * Get the icon name for the node.
  *
- * @param node - The node to get the icon for
+ * @param doc - The document to get the icon for
  * @returns The icon for the node
  */
-function getIcon(node: HookState) {
+function getIcon(doc: PHDocument) {
   return getDocumentIcon(
-    node.documentType,
-    (node.global as AnyDocumentState).atlasType ?? "",
+    doc.header.documentType,
+    (doc.state.global as AnyDocumentState).atlasType ?? "",
   );
 }

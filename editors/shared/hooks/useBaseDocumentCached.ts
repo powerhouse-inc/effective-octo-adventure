@@ -1,15 +1,35 @@
 import { useState, useEffect, useContext } from "react";
-import { getRevisionFromDate } from "@powerhousedao/common";
 import {
   getBaseDocumentTimestamp,
   type AtlasDocument,
 } from "../utils/utils.js";
-import type { EditorContext } from "document-model";
+import { type Operation } from "document-model";
 import { BaseDocumentCacheContext } from "../providers/BaseDocumentCacheProvider.js";
+
+// Replacement for getRevisionFromDate from @powerhousedao/common
+const getRevisionFromDate = (
+  startDate: Date,
+  endDate: Date,
+  operations: Operation[],
+): number => {
+  const startTimestamp = startDate.getTime();
+  const endTimestamp = endDate.getTime();
+
+  // Find the last operation within the time range
+  for (let i = operations.length - 1; i >= 0; i--) {
+    const opTimestamp = new Date(operations[i].timestampUtcMs).getTime();
+    if (opTimestamp >= startTimestamp && opTimestamp <= endTimestamp) {
+      return operations[i].index;
+    }
+  }
+
+  // If no operation found in range, return the first operation's index or 0
+  return operations.length > 0 ? operations[0].index : 0;
+};
 
 const loadBaseDocument = async <T extends AtlasDocument>(
   document: T,
-  getDocumentRevision: EditorContext["getDocumentRevision"],
+  getDocumentRevision: ((options: { revisions: { global: number } }) => Promise<unknown>) | undefined,
 ): Promise<T | null> => {
   if (!getDocumentRevision) {
     return null;
@@ -43,7 +63,7 @@ const loadBaseDocument = async <T extends AtlasDocument>(
 
 export function useBaseDocumentCached<T extends AtlasDocument>(
   document: T,
-  context: EditorContext,
+  context: { getDocumentRevision?: (options: { revisions: { global: number } }) => Promise<unknown> },
 ): T | null {
   const cacheContext = useContext(BaseDocumentCacheContext);
   if (!cacheContext) {

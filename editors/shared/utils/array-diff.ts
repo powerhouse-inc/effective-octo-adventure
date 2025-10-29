@@ -110,7 +110,7 @@ export function arrayDiffIndexMapping(
  */
 export function getOperations<T extends AtlasDocument>(
   document: T,
-  filterType?: T["operations"]["global"][number]["type"][],
+  filterType?: string[],
 ): Operation[] {
   try {
     const relevantOperations: Operation[] = [];
@@ -119,7 +119,7 @@ export function getOperations<T extends AtlasDocument>(
     for (const operation of document.operations.global) {
       // Filter by operation type if filterType is provided
       if (filterType && filterType.length > 0) {
-        if (filterType.includes(operation.type)) {
+        if (filterType.includes(operation.action.type)) {
           relevantOperations.push(operation);
         }
       } else {
@@ -146,22 +146,22 @@ export function contextDataToMappingOperations(
 ): MappingOperations[] {
   return operations
     .map((operation) => {
-      if (operation.type === "ADD_CONTEXT_DATA") {
+      if (operation.action.type === "ADD_CONTEXT_DATA") {
         return {
           type: "ADD",
-          value: (operation.input as { id: string }).id,
+          value: (operation.action.input as { id: string }).id,
         };
-      } else if (operation.type === "REMOVE_CONTEXT_DATA") {
+      } else if (operation.action.type === "REMOVE_CONTEXT_DATA") {
         return {
           type: "REMOVE",
-          value: (operation.input as { id: string }).id,
+          value: (operation.action.input as { id: string }).id,
         };
-      } else if (operation.type === "REPLACE_CONTEXT_DATA") {
+      } else if (operation.action.type === "REPLACE_CONTEXT_DATA") {
         return {
           type: "REPLACE",
-          originalValue: (operation.input as { prevId: string; id: string })
+          originalValue: (operation.action.input as { prevId: string; id: string })
             .prevId,
-          newValue: (operation.input as { prevId: string; id: string }).id,
+          newValue: (operation.action.input as { prevId: string; id: string }).id,
         };
       }
     })
@@ -173,21 +173,21 @@ export function parentToMappingOperations(
 ): MappingOperations[] {
   return operations
     .map((operation) => {
-      if (operation.type === "ADD_PARENT") {
+      if (operation.action.type === "ADD_PARENT") {
         return {
           type: "ADD",
-          value: `phd:${(operation.input as { id: string }).id}`,
+          value: `phd:${(operation.action.input as { id: string }).id}`,
         };
-      } else if (operation.type === "REMOVE_PARENT") {
+      } else if (operation.action.type === "REMOVE_PARENT") {
         return {
           type: "REMOVE",
-          value: `phd:${(operation.input as { id: string }).id}`,
+          value: `phd:${(operation.action.input as { id: string }).id}`,
         };
-      } else if (operation.type === "REPLACE_PARENT") {
+      } else if (operation.action.type === "REPLACE_PARENT") {
         return {
           type: "REPLACE",
-          originalValue: `phd:${(operation.input as { prevID: string; id: string }).prevID}`,
-          newValue: `phd:${(operation.input as { prevID: string; id: string }).id}`,
+          originalValue: `phd:${(operation.action.input as { prevID: string; id: string }).prevID}`,
+          newValue: `phd:${(operation.action.input as { prevID: string; id: string }).id}`,
         };
       }
     })

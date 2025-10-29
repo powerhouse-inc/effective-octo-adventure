@@ -150,7 +150,7 @@ export class AtlasMultiParentClient extends AtlasBaseClient<
         await this.addActionViaAdapter(
           this.driveId,
           id,
-          actions.setNotionId({ notionId: target || undefined })
+          actions.setNotionId({ notionId: typeof target === 'string' ? target : undefined })
         );
         break;
       case "globalTags":

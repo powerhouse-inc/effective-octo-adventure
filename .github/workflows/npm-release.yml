@@ -20,6 +20,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
       - name: Install PNPM
         uses: pnpm/action-setup@v3
         with:
@@ -30,7 +36,7 @@ jobs:
         run: pnpm install
 
       - name: Generate document models
-        run: pnpm script:generate-all
+        run: pnpm script:generate-all-doc-models
 
       - name: Install bun
         uses: oven-sh/setup-bun@v2
@@ -40,9 +46,9 @@ jobs:
 
       - name: Build
         run: pnpm run build
-  
+
       - name: Release
         env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: pnpm run release

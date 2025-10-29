@@ -1,14 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { type Subgraph } from "@powerhousedao/reactor-api";
+import { type ISubgraph } from "@powerhousedao/reactor-api";
 import { addFile } from "document-drive";
-import { actions } from "../../document-models/atlas-feedback-issues/index.js";
-import { generateId } from "document-model";
+import {
+  type AtlasFeedbackIssuesPHState,
+  actions,
+} from "../../document-models/atlas-feedback-issues/index.js";
+import { generateId } from "document-model/core";
+import { type PHDocument } from "document-model";
 
 const DEFAULT_DRIVE_ID = "powerhouse";
 
-export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
+export const getResolvers = (subgraph: ISubgraph): Record<string, any> => {
   const reactor = subgraph.reactor;
 
   return {
@@ -18,7 +22,9 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
           getDocument: async (args: any) => {
             const driveId: string = args.driveId || DEFAULT_DRIVE_ID;
             const docId: string = args.docId || "";
-            const doc = await reactor.getDocument(driveId, docId);
+            const doc = await reactor.getDocument<
+              PHDocument<AtlasFeedbackIssuesPHState>
+            >(driveId, docId);
             return {
               // @ts-ignore
               id: docId,
@@ -34,7 +40,9 @@ export const getResolvers = (subgraph: Subgraph): Record<string, any> => {
             const docsIds = await reactor.getDocuments(driveId);
             const docs = await Promise.all(
               docsIds.map(async (docId) => {
-                const doc = await reactor.getDocument(driveId, docId);
+                const doc = await reactor.getDocument<
+                  PHDocument<AtlasFeedbackIssuesPHState>
+                >(driveId, docId);
                 return {
                   // @ts-ignore
                   id: docId,

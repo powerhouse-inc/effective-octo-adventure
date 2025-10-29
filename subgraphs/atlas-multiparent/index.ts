@@ -1,14 +1,23 @@
-import { Subgraph } from "@powerhousedao/reactor-api";
+import { type SubgraphArgs, type ISubgraph } from "@powerhousedao/reactor-api";
 
 import { schema } from "./schema.js";
 import { getResolvers } from "./resolvers.js";
+import { type IDocumentDriveServer, type IRelationalDb } from "document-drive";
 
-export class AtlasMultiparentSubgraph extends Subgraph {
+export class AtlasMultiparentSubgraph implements ISubgraph {
   name = "atlas-multiparent";
-
   typeDefs = schema;
   resolvers = getResolvers(this);
   additionalContextFields = {};
+
+  reactor: IDocumentDriveServer;
+  relationalDb: IRelationalDb;
+
+  constructor(args: SubgraphArgs) {
+    this.reactor = args.reactor;
+    this.relationalDb = args.relationalDb;
+  }
+
   async onSetup() {}
   async onDisconnect() {}
 }

@@ -1,4 +1,4 @@
-import { type Maybe, type BaseAction } from "document-model";
+import { type Maybe, type Action } from "document-model";
 import { addFile } from "document-drive";
 import { randomUUID } from "crypto";
 import { type DocumentsCache } from "../common/DocumentsCache.js";
@@ -90,7 +90,6 @@ export abstract class AtlasBaseClient<
     return result;
   }
 
-
   /**
    * Add an action through the adapter or fall back to GraphQL mutation.
    * This is the document-model-level abstraction for applying changes.
@@ -98,7 +97,7 @@ export abstract class AtlasBaseClient<
   protected async addActionViaAdapter(
     driveId: string,
     docId: string,
-    action: BaseAction
+    action: Action,
   ): Promise<any> {
     if (this.adapter) {
       return this.adapter.addAction(driveId, docId, this.documentType, action);
@@ -145,7 +144,7 @@ export abstract class AtlasBaseClient<
     const parts = actionType.toLowerCase().split("_");
     return parts
       .map((part, index) =>
-        index === 0 ? part : part.charAt(0).toUpperCase() + part.slice(1)
+        index === 0 ? part : part.charAt(0).toUpperCase() + part.slice(1),
       )
       .join("");
   }
@@ -155,7 +154,7 @@ export abstract class AtlasBaseClient<
    */
   protected async addDriveActionViaAdapter(
     driveId: string,
-    driveAction: BaseAction
+    driveAction: Action,
   ): Promise<any> {
     if (this.adapter) {
       return this.adapter.addDriveAction(driveId, driveAction);
@@ -184,7 +183,7 @@ export abstract class AtlasBaseClient<
    */
   protected async createDocumentViaAdapter(
     driveId: string,
-    name: string
+    name: string,
   ): Promise<string> {
     const docId = generateId();
 
@@ -206,7 +205,7 @@ export abstract class AtlasBaseClient<
             syncId: generateId(),
           },
         ],
-      })
+      }),
     );
 
     return docId;

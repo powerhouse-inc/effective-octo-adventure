@@ -3,7 +3,7 @@
  * Allows switching between remote HTTP reactor and in-memory/mock reactors.
  */
 
-import { type BaseAction } from "document-model";
+import { type Action } from "document-model";
 
 export type DriveResultNode = {
   id: string;
@@ -56,7 +56,7 @@ export interface ReactorAdapter {
     driveId: string,
     docId: string,
     documentType: string,
-    action: BaseAction
+    action: Action,
   ): Promise<any>;
 
   /**
@@ -65,10 +65,7 @@ export interface ReactorAdapter {
    * @param driveAction - The drive action object
    * @returns Action result
    */
-  addDriveAction(
-    driveId: string,
-    driveAction: BaseAction
-  ): Promise<any>;
+  addDriveAction(driveId: string, driveAction: Action): Promise<any>;
 
   /**
    * Get list of available drive IDs.

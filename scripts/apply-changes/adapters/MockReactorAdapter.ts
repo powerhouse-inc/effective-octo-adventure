@@ -3,7 +3,7 @@
  * Useful for testing import flows and understanding what operations would be performed.
  */
 
-import { type BaseAction } from "document-model";
+import { type Action } from "document-model";
 import {
   type ReactorAdapter,
   type ReactorOperationsSummary,
@@ -15,7 +15,10 @@ import { randomUUID } from "crypto";
 
 export class MockReactorAdapter implements ReactorAdapter {
   private operations: OperationLog[] = [];
-  private drives: Map<string, { id: string; name: string; icon?: string; nodes: DriveResultNode[] }> = new Map();
+  private drives: Map<
+    string,
+    { id: string; name: string; icon?: string; nodes: DriveResultNode[] }
+  > = new Map();
   private documents: Map<string, any> = new Map();
   private verbose: boolean;
 
@@ -27,7 +30,7 @@ export class MockReactorAdapter implements ReactorAdapter {
     driveId: string,
     docId: string,
     documentType: string,
-    action: BaseAction
+    action: Action,
   ): Promise<any> {
     const operation: OperationLog = {
       type: "mutation",
@@ -59,10 +62,7 @@ export class MockReactorAdapter implements ReactorAdapter {
     return result;
   }
 
-  async addDriveAction(
-    driveId: string,
-    driveAction: BaseAction
-  ): Promise<any> {
+  async addDriveAction(driveId: string, driveAction: Action): Promise<any> {
     const operation: OperationLog = {
       type: "mutation",
       name: `addDriveAction:${driveAction.type}`,
@@ -220,9 +220,12 @@ export class MockReactorAdapter implements ReactorAdapter {
   getSummary(): ReactorOperationsSummary {
     const queries = this.operations.filter((op) => op.type === "query");
     const mutations = this.operations.filter((op) => op.type === "mutation");
-    const creates = mutations.filter((op) => op.name.includes("createDocument"));
+    const creates = mutations.filter((op) =>
+      op.name.includes("createDocument"),
+    );
     const updates = mutations.filter(
-      (op) => !op.name.includes("createDocument") && !op.name.includes("addDrive")
+      (op) =>
+        !op.name.includes("createDocument") && !op.name.includes("addDrive"),
     );
     const drives = mutations.filter((op) => op.name.includes("addDrive"));
 
@@ -273,5 +276,4 @@ export class MockReactorAdapter implements ReactorAdapter {
 
     console.log("\n" + "=".repeat(60));
   }
-
 }

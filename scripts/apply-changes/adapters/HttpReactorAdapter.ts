@@ -3,7 +3,7 @@
  * This wraps the current remote reactor implementation.
  */
 
-import { type BaseAction } from "document-model";
+import { type Action } from "document-model";
 import {
   type ReactorAdapter,
   type ReactorOperationsSummary,
@@ -44,7 +44,7 @@ export class HttpReactorAdapter implements ReactorAdapter {
     driveId: string,
     docId: string,
     documentType: string,
-    action: BaseAction
+    action: Action,
   ): Promise<any> {
     const operation: OperationLog = {
       type: "mutation",
@@ -74,7 +74,9 @@ export class HttpReactorAdapter implements ReactorAdapter {
       // Call the generated client
       const mutationFn = (graphqlClient.mutations as any)[mutationName];
       if (!mutationFn) {
-        throw new Error(`Mutation ${mutationName} not found in generated client`);
+        throw new Error(
+          `Mutation ${mutationName} not found in generated client`,
+        );
       }
 
       const result = await mutationFn({
@@ -95,10 +97,7 @@ export class HttpReactorAdapter implements ReactorAdapter {
     }
   }
 
-  async addDriveAction(
-    driveId: string,
-    driveAction: BaseAction
-  ): Promise<any> {
+  async addDriveAction(driveId: string, driveAction: Action): Promise<any> {
     const operation: OperationLog = {
       type: "mutation",
       name: `addDriveAction:${driveAction.type}`,
@@ -119,7 +118,7 @@ export class HttpReactorAdapter implements ReactorAdapter {
         result = await graphqlClient.mutations.addFile({
           __args: {
             driveId,
-            ...driveAction.input,
+            ...(driveAction.input as any),
           },
         });
       } else {
@@ -148,7 +147,9 @@ export class HttpReactorAdapter implements ReactorAdapter {
       const result = await systemClient.queries.drives();
 
       if (!result) {
-        throw new Error(`Failed to fetch drive ids from ${this.systemEndpoint}`);
+        throw new Error(
+          `Failed to fetch drive ids from ${this.systemEndpoint}`,
+        );
       }
 
       operation.result = result;
@@ -198,7 +199,7 @@ export class HttpReactorAdapter implements ReactorAdapter {
             }
           }
         `,
-        { driveId }
+        { driveId },
       );
 
       if ((result as any).errors) {
@@ -209,7 +210,9 @@ export class HttpReactorAdapter implements ReactorAdapter {
       }
 
       if (!result.document) {
-        throw new Error(`Failed to fetch drive info from ${this.driveEndpoint}`);
+        throw new Error(
+          `Failed to fetch drive info from ${this.driveEndpoint}`,
+        );
       }
 
       const driveNodes: DriveNodes = {
@@ -248,11 +251,9 @@ export class HttpReactorAdapter implements ReactorAdapter {
         }
       `;
 
-      const result = await queryGraphQL<any>(
-        this.driveEndpoint,
-        query,
-        { id: docId }
-      );
+      const result = await queryGraphQL<any>(this.driveEndpoint, query, {
+        id: docId,
+      });
 
       if ((result as any).errors) {
         const error = `GraphQL errors: ${JSON.stringify((result as any).errors)}`;
@@ -307,9 +308,12 @@ export class HttpReactorAdapter implements ReactorAdapter {
   getSummary(): ReactorOperationsSummary {
     const queries = this.operations.filter((op) => op.type === "query");
     const mutations = this.operations.filter((op) => op.type === "mutation");
-    const creates = mutations.filter((op) => op.name.includes("createDocument"));
+    const creates = mutations.filter((op) =>
+      op.name.includes("createDocument"),
+    );
     const updates = mutations.filter(
-      (op) => !op.name.includes("createDocument") && !op.name.includes("addDrive")
+      (op) =>
+        !op.name.includes("createDocument") && !op.name.includes("addDrive"),
     );
     const drives = mutations.filter((op) => op.name.includes("addDrive"));
 
@@ -346,7 +350,7 @@ export class HttpReactorAdapter implements ReactorAdapter {
     const parts = actionType.toLowerCase().split("_");
     return parts
       .map((part, index) =>
-        index === 0 ? part : part.charAt(0).toUpperCase() + part.slice(1)
+        index === 0 ? part : part.charAt(0).toUpperCase() + part.slice(1),
       )
       .join("");
   }

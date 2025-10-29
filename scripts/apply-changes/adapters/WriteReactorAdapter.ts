@@ -3,7 +3,7 @@
  * Does not actually execute operations against a real reactor.
  */
 
-import { type BaseAction } from "document-model";
+import { type Action } from "document-model";
 import {
   type ReactorAdapter,
   type ReactorOperationsSummary,
@@ -33,7 +33,7 @@ export class WriteReactorAdapter implements ReactorAdapter {
     driveId: string,
     docId: string,
     documentType: string,
-    action: BaseAction
+    action: Action,
   ): Promise<any> {
     this.operations.push({
       type: "mutation",
@@ -50,10 +50,7 @@ export class WriteReactorAdapter implements ReactorAdapter {
     return { success: true };
   }
 
-  async addDriveAction(
-    driveId: string,
-    driveAction: BaseAction
-  ): Promise<any> {
+  async addDriveAction(driveId: string, driveAction: Action): Promise<any> {
     this.operations.push({
       type: "mutation",
       name: "addDriveAction",
@@ -136,9 +133,12 @@ export class WriteReactorAdapter implements ReactorAdapter {
   getSummary(): ReactorOperationsSummary {
     const queries = this.operations.filter((op) => op.type === "query");
     const mutations = this.operations.filter((op) => op.type === "mutation");
-    const creates = mutations.filter((op) => op.name.includes("createDocument"));
+    const creates = mutations.filter((op) =>
+      op.name.includes("createDocument"),
+    );
     const updates = mutations.filter(
-      (op) => !op.name.includes("createDocument") && !op.name.includes("createDrive")
+      (op) =>
+        !op.name.includes("createDocument") && !op.name.includes("createDrive"),
     );
     const drives = mutations.filter((op) => op.name.includes("createDrive"));
 
@@ -164,7 +164,7 @@ export class WriteReactorAdapter implements ReactorAdapter {
     await fs.writeFile(
       this.filePath,
       JSON.stringify(this.operations, null, 2),
-      "utf-8"
+      "utf-8",
     );
   }
 

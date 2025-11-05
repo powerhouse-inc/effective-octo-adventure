@@ -1,3 +1,10 @@
+# [1.6.0-canary.1](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.5.1...v1.6.0-canary.1) (2025-11-05)
+
+
+### Features
+
+* testing ([ced5007](https://github.com/powerhouse-inc/effective-octo-adventure/commit/ced5007ebe2b408a1889e748c1990db8df51d4c4))
+
 ## [1.5.1](https://github.com/powerhouse-inc/effective-octo-adventure/compare/v1.5.0...v1.5.1) (2025-08-21)
 
 

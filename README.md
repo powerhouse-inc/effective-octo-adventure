@@ -76,4 +76,4 @@ If the Connect App is set up to [bundle this library](https://github.com/powerho
 -   `build`: Builds the library project using Vite.
 -   `storybook`: Starts Storybook in development mode.
 -   `build-storybook`: Builds Storybook.
--   `test`: Runs Jest for testing.
+-   `test`: Runs Jest for testing. 
